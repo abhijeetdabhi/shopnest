@@ -691,10 +691,10 @@ if (isset($_POST['submitBtn'])) {
         }
     }
 
-    $profileImage1 = $profileImages[0];
-    $profileImage2 = $profileImages[1];
-    $profileImage3 = $profileImages[2];
-    $profileImage4 = $profileImages[3];
+    $profileImage1 = isset($profileImages[0]) ? $profileImages[0] : '';
+    $profileImage2 = isset($profileImages[1]) ? $profileImages[1] : '';
+    $profileImage3 = isset($profileImages[2]) ? $profileImages[2] : '';
+    $profileImage4 = isset($profileImages[3]) ? $profileImages[3] : '';
 
     // Process cover images
     $coverImages = [];
@@ -759,6 +759,13 @@ if (isset($_POST['submitBtn'])) {
         exit();
     }
 
+
+    if (isset($_SESSION['productSameId'])) {
+        echo '<script>displayErrorMessage("Please Select Different Product Id.");</script>';
+        exit();
+    }
+
+
     if (empty($full_name)) {
         echo '<script>displayErrorMessage("Please fill Product Title.");</script>';
         exit();
@@ -816,7 +823,7 @@ if (isset($_POST['submitBtn'])) {
 
     if (
         empty($same_id) || empty($full_name) || empty($Company_name) || empty($type) ||
-        empty($your_price) || empty($MRP) || empty($quantity) || empty($condition) || empty($keywords_value) || empty($profileImage1) || empty($profileImage2)
+        empty($your_price) || empty($MRP) || empty($quantity) || empty($condition) || empty($keywords_value) || empty($profileImage1) || empty($profileImage2) || isset($_SESSION['productSameId'])
     ) {
         echo '<script>displayErrorMessage("Please fill in all required fields.");</script>';
     } else {
