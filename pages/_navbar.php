@@ -334,7 +334,7 @@ if (isset($_COOKIE['user_id'])) {
 
                             </button>
                         </div>
-                        <div x-show="loginUser" x-transition x-cloak class="w-40 bg-white border text-black overflow-hidden absolute right-4 top-20 md:right-40 rounded-md">
+                        <div x-show="loginUser" x-transition x-cloak class="w-40 bg-white border text-black overflow-hidden absolute right-4 top-[4rem] md:right-40 rounded-md z-10">
                             <div class="py-2 px-3">
                                 <a href="../index.php" class="w-full">Hi,<?php echo isset($_COOKIE['fname']) ? $_COOKIE['fname'] : 'User Name' ?></a>
                             </div>
@@ -407,7 +407,7 @@ if (isset($_COOKIE['user_id'])) {
                                 </svg>
                             </button>
                             <!-- popup for without login -->
-                            <div x-show="withOutLogin" x-transition x-cloak class="text-sm border rounded-md flex flex-col space-y-1 absolute top-16  bg-white text-black overflow-hidden">
+                            <div x-show="withOutLogin" x-transition x-cloak class="text-sm border rounded-md flex flex-col space-y-1 absolute top-14  bg-white text-black overflow-hidden z-10">
                                 <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="/shopnest/authentication/user_auth/user_login.php">
                                     <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                                         <g>

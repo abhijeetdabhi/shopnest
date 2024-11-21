@@ -333,10 +333,10 @@ if (isset($_GET['product_id'])) {
         <form action="" Method="post">
             <div class="flex flex-col gap-3 w-full mt-12 px-2">
                 <div class="flex flex-col gap-2">
-                    <h1 class="text-base font-medium text-[#1d2128] leading-6 md:leading-10 md:font-medium md:text-[28px]"><?php echo isset($_GET['product_id']) ? $title : 'Product title' ?></h1>
+                    <h1 class="text-xl font-medium text-[#1d2128] leading-6 md:leading-10 md:font-medium md:text-[28px]"><?php echo isset($_GET['product_id']) ? $title : 'Product title' ?></h1>
                 </div>
                 <!-- vendor Store -->
-                <a href="../vendor/vendor_store.php?vendor_id=<?php echo $ven['vendor_id']; ?>" class="text-lg text-gray-600 font-bold hover:underline cursor-pointer max-w-max">Visit a <span><?php echo isset($product_id) ? $ven['username'] : 'vendor store Name'; ?></span> Store</a>
+                <a href="../vendor/vendor_store.php?vendor_id=<?php echo $ven['vendor_id']; ?>" class="text-base text-gray-600 font-bold hover:underline cursor-pointer max-w-max">Visit a <span><?php echo isset($product_id) ? $ven['username'] : 'vendor store Name'; ?></span> Store</a>
                 <!-- price -->
                 <div class="flex items-center justify-between flex-wrap gap-y-3 mt-3">
                     <div class="flex items-baseline gap-2">

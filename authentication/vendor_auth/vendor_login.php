@@ -53,7 +53,7 @@ if (isset($_COOKIE['adminEmail'])) {
     </style>
 </head>
 
-<body class="flex justify-center items-center h-[100vh] p-2" style="font-family: 'Outfit', sans-serif;">
+<body class="flex justify-center items-center h-[100vh] py-2 px-6" style="font-family: 'Outfit', sans-serif;">
     <!-- Successfully message container -->
     <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
         <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
@@ -234,11 +234,11 @@ if (isset($_COOKIE['adminEmail'])) {
             <a class="flex items-center mb-2" href="/shopnest/index.php">
                 <!-- icon logo div -->
                 <div>
-                    <img class="w-7 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                    <img class="w-9 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-16 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                    <img class="w-28 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
                 </div>
             </a>
         </div>
