@@ -40,7 +40,7 @@ if (isset($_GET['product_id'])) {
 
         $productPrice = implode("", $products_price);
 
-        $totalPriceWithQty = number_format($productPrice * $qty);
+        $totalPriceWithQty = $productPrice * $qty;
     }
 
 
@@ -119,11 +119,11 @@ if (isset($_GET['product_id'])) {
             <a class="flex items-center" href="/shopnest/index.php">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-7 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-9 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-20 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-28 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>
@@ -153,7 +153,7 @@ if (isset($_GET['product_id'])) {
                         <img class="m-2 h-full md:h-32 rounded-md object-cover object-center" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $product_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
                         <div class="flex w-full flex-col px-4 py-4 gap-y-3">
                             <span class="font-semibold line-clamp-2"><?php echo isset($product_id) ? $title : 'product title' ?></span>
-                            <p class="text-lg font-semibold text-green-500">₹<?php echo isset($product_id) ? number_format($MRP) : 'MRP' ?></p>
+                            <p class="text-lg font-semibold text-green-500">₹<?php echo isset($product_id) ? $MRP : 'MRP' ?></p>
                             <div class="flex item-center justify-between">
                                 <div class="flex item-center gap-1">
                                     <h1 class="text-lg font-semibold">Color:</h1>
