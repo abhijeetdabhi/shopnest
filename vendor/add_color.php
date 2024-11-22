@@ -98,11 +98,11 @@ if (isset($_COOKIE['vendor_id'])) {
             <a class="flex items-center" href="choose_product.php">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-7 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-9 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-20 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-28 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>

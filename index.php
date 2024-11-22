@@ -476,28 +476,28 @@ function displayRandomProducts($con, $limit)
                         prevEl: ".prev-button-swiper1",
                     },
                     slidesPerView: 1,
-                    slidesPerGroup: 1, // Only move one slide at a time
+                    slidesPerGroup: 1, // Move one slide at a time
                     spaceBetween: 15,
                     breakpoints: {
-                        1200: {
+                        1125: { // For 1125px and above
                             slidesPerView: 4,
-                            spaceBetween: 15,
+                            spaceBetween: 25,
                         },
-                        992: {
+                        825: { // For 825px to 1124px
                             slidesPerView: 3,
-                            spaceBetween: 15,
+                            spaceBetween: 25,
                         },
-                        535: {
+                        630: { // For 630px to 824px
                             slidesPerView: 2,
-                            spaceBetween: 0,
+                            spaceBetween: 25,
                         },
                     },
                     on: {
                         init: function() {
-                            // Add a short delay to ensure Swiper has fully initialized
+                            // Short delay to ensure Swiper fully initializes
                             setTimeout(() => {
                                 updateNavButtons(this); // Check buttons status on init
-                            }, 100); // Adjust this time if needed
+                            }, 100);
                         },
                         slideChange: function() {
                             updateNavButtons(this); // Update buttons on slide change
@@ -506,12 +506,11 @@ function displayRandomProducts($con, $limit)
                 });
 
                 // Function to update button states based on swiper status
-                // Function to update button states based on swiper status
                 function updateNavButtons(swiperInstance) {
                     const prevButton = document.querySelector(".prev-button-swiper1");
                     const nextButton = document.querySelector(".next-button-swiper1");
 
-                    // Handle 'prev' button state (disable if swiper is at the beginning)
+                    // Handle 'prev' button state
                     if (swiperInstance.isBeginning) {
                         prevButton.classList.add("cursor-not-allowed", "opacity-50");
                         prevButton.classList.remove("cursor-pointer");
@@ -522,22 +521,17 @@ function displayRandomProducts($con, $limit)
                         prevButton.removeAttribute("disabled");
                     }
 
-                    // Handle 'next' button state (disable if swiper is at the end)
+                    // Handle 'next' button state
                     if (swiperInstance.isEnd) {
                         nextButton.classList.add("cursor-not-allowed", "opacity-50");
                         nextButton.classList.remove("cursor-pointer");
                         nextButton.setAttribute("disabled", "true");
-                        console.log(nextButton);
-
                     } else {
                         nextButton.classList.remove("cursor-not-allowed", "opacity-50");
                         nextButton.classList.add("cursor-pointer");
                         nextButton.removeAttribute("disabled");
-                        console.log("call else next button");
-
                     }
                 }
-
             });
         </script>
 
@@ -690,28 +684,28 @@ function displayRandomProducts($con, $limit)
                         prevEl: ".prev-button-swiper2",
                     },
                     slidesPerView: 1,
-                    slidesPerGroup: 1, // Only move one slide at a time
+                    slidesPerGroup: 1, // Move one slide at a time
                     spaceBetween: 15,
                     breakpoints: {
-                        1200: {
+                        1125: { // For 1125px and above
                             slidesPerView: 4,
-                            spaceBetween: 15,
+                            spaceBetween: 25,
                         },
-                        992: {
+                        825: { // For 825px to 1124px
                             slidesPerView: 3,
-                            spaceBetween: 15,
+                            spaceBetween: 25,
                         },
-                        535: {
+                        630: { // For 630px to 824px
                             slidesPerView: 2,
-                            spaceBetween: 0,
+                            spaceBetween: 25,
                         },
                     },
                     on: {
                         init: function() {
-                            // Add a short delay to ensure Swiper has fully initialized
+                            // Short delay to ensure Swiper fully initializes
                             setTimeout(() => {
                                 updateNavButtons(this); // Check buttons status on init
-                            }, 100); // Adjust this time if needed
+                            }, 100);
                         },
                         slideChange: function() {
                             updateNavButtons(this); // Update buttons on slide change
@@ -720,12 +714,11 @@ function displayRandomProducts($con, $limit)
                 });
 
                 // Function to update button states based on swiper status
-                // Function to update button states based on swiper status
                 function updateNavButtons(swiperInstance) {
                     const prevButton = document.querySelector(".prev-button-swiper2");
                     const nextButton = document.querySelector(".next-button-swiper2");
 
-                    // Handle 'prev' button state (disable if swiper is at the beginning)
+                    // Handle 'prev' button state
                     if (swiperInstance.isBeginning) {
                         prevButton.classList.add("cursor-not-allowed", "opacity-50");
                         prevButton.classList.remove("cursor-pointer");
@@ -736,22 +729,17 @@ function displayRandomProducts($con, $limit)
                         prevButton.removeAttribute("disabled");
                     }
 
-                    // Handle 'next' button state (disable if swiper is at the end)
+                    // Handle 'next' button state
                     if (swiperInstance.isEnd) {
                         nextButton.classList.add("cursor-not-allowed", "opacity-50");
                         nextButton.classList.remove("cursor-pointer");
                         nextButton.setAttribute("disabled", "true");
-                        console.log(nextButton);
-
                     } else {
                         nextButton.classList.remove("cursor-not-allowed", "opacity-50");
                         nextButton.classList.add("cursor-pointer");
                         nextButton.removeAttribute("disabled");
-                        console.log("call else next button");
-
                     }
                 }
-
             });
         </script>
 
@@ -842,28 +830,28 @@ function displayRandomProducts($con, $limit)
                         prevEl: ".prev-button-swiper3",
                     },
                     slidesPerView: 1,
-                    slidesPerGroup: 1, // Only move one slide at a time
+                    slidesPerGroup: 1, // Move one slide at a time
                     spaceBetween: 15,
                     breakpoints: {
-                        1200: {
+                        1125: { // For 1125px and above
                             slidesPerView: 4,
                             spaceBetween: 15,
                         },
-                        992: {
+                        825: { // For 825px to 1124px
                             slidesPerView: 3,
                             spaceBetween: 15,
                         },
-                        535: {
+                        630: { // For 630px to 824px
                             slidesPerView: 2,
                             spaceBetween: 0,
                         },
                     },
                     on: {
                         init: function() {
-                            // Add a short delay to ensure Swiper has fully initialized
+                            // Short delay to ensure Swiper fully initializes
                             setTimeout(() => {
                                 updateNavButtons(this); // Check buttons status on init
-                            }, 100); // Adjust this time if needed
+                            }, 100);
                         },
                         slideChange: function() {
                             updateNavButtons(this); // Update buttons on slide change
@@ -872,12 +860,11 @@ function displayRandomProducts($con, $limit)
                 });
 
                 // Function to update button states based on swiper status
-                // Function to update button states based on swiper status
                 function updateNavButtons(swiperInstance) {
                     const prevButton = document.querySelector(".prev-button-swiper3");
                     const nextButton = document.querySelector(".next-button-swiper3");
 
-                    // Handle 'prev' button state (disable if swiper is at the beginning)
+                    // Handle 'prev' button state
                     if (swiperInstance.isBeginning) {
                         prevButton.classList.add("cursor-not-allowed", "opacity-50");
                         prevButton.classList.remove("cursor-pointer");
@@ -888,22 +875,17 @@ function displayRandomProducts($con, $limit)
                         prevButton.removeAttribute("disabled");
                     }
 
-                    // Handle 'next' button state (disable if swiper is at the end)
+                    // Handle 'next' button state
                     if (swiperInstance.isEnd) {
                         nextButton.classList.add("cursor-not-allowed", "opacity-50");
                         nextButton.classList.remove("cursor-pointer");
                         nextButton.setAttribute("disabled", "true");
-                        console.log(nextButton);
-
                     } else {
                         nextButton.classList.remove("cursor-not-allowed", "opacity-50");
                         nextButton.classList.add("cursor-pointer");
                         nextButton.removeAttribute("disabled");
-                        console.log("call else next button");
-
                     }
                 }
-
             });
         </script>
 
