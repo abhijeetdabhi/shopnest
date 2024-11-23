@@ -376,11 +376,15 @@ if (isset($_GET['product_id'])) {
                         $color_product_query = mysqli_query($con, $color_product_find);
 
                         while($clr = mysqli_fetch_assoc($color_product_query)){
-                            ?>
-                                <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
-                                    <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
-                                </a>
-                            <?php
+                            if ($clr['color'] == '-') {
+                                echo '';
+                            } else{
+                                ?>
+                                    <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
+                                        <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
+                                    </a>
+                                <?php
+                            }
                         }
                     
                     ?>
