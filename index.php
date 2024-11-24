@@ -302,8 +302,8 @@ function displayRandomProducts($con, $limit)
                 </div>
                 <div>
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Processor">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/electronic/wp-content/uploads/sites/6/2023/02/homev9-think-outside-the-box.jpg?w=300&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Think outside the box</span>
+                        <img class="rounded-full rings" src="https://img.freepik.com/premium-photo/photo-school-stationary-items-books-table_763111-41995.jpg" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Stationery</span>
                     </a>
                 </div>
                 <div>
