@@ -301,7 +301,7 @@ function displayRandomProducts($con, $limit)
                     </a>
                 </div>
                 <div>
-                    <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Processor">
+                    <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Stationery">
                         <img class="rounded-full rings" src="https://img.freepik.com/premium-photo/photo-school-stationary-items-books-table_763111-41995.jpg" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate ...">Stationery</span>
                     </a>
