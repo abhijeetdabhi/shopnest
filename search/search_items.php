@@ -129,30 +129,39 @@ $_SESSION['searchWord'] = $keywords;
             /* Include padding and border in the element's total width and height */
         }
 
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .pagination-btn {
-            background-color: #4b5563;
-            border: none;
-            width: 1.5rem;
-            height: 1.5rem;
-            margin: 0 5px;
+            padding: 0 0.5rem;
+            background-color: #e5e7eb;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
             cursor: pointer;
-            font-weight: 500;
-            color: white;
-            border-top-left-radius: 6px;
-            border-bottom-right-radius: 6px;
+            transition: background-color 0.2s;
         }
 
-        .pagination-btn:hover {
-            background-color: #586474;
+        .pagination-btn.active {
+            background-color: #0066ff;
+            color: #ffffff;
         }
 
-        .pagination-btn:focus {
-            background-color: #586474;
+        .arrow-button button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Only apply styles to buttons with the pagination-button class */
+        .pagination-button:disabled {
+            cursor: not-allowed;
+            /* Indicate the button is not clickable */
+            opacity: 0.5;
+            /* Dim the appearance */
+            pointer-events: none;
+            /* Ensure no interactions */
         }
     </style>
 
@@ -562,9 +571,9 @@ $_SESSION['searchWord'] = $keywords;
                             $MRP = $res['vendor_mrp'];
 
                             // for qty
-                            if($res['Quantity'] > 0){
+                            if ($res['Quantity'] > 0) {
                                 $qty = 1;
-                            }else{
+                            } else {
                                 $qty = 0;
                             }
 
@@ -601,15 +610,15 @@ $_SESSION['searchWord'] = $keywords;
                                 </div>
                                 <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
                                     <?php
-                                        if($qty > 0){
-                                            ?>
-                                                <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                            <?php
-                                        }else{
-                                            ?>
-                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                            <?php
-                                        }
+                                    if ($qty > 0) {
+                                    ?>
+                                        <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                    <?php
+                                    }
                                     ?>
                                 </div>
                             </div>
@@ -635,7 +644,7 @@ $_SESSION['searchWord'] = $keywords;
 
                 <!-- Add more product cards as needed -->
 
-                <div class="pagination flex justify-center items-center gap-2">
+                <div class="pagination flex justify-center items-center gap-2 mt-5">
                     <button class=" bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md cursor-pointer" id="prev-page"><svg class="w-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 492 492" style="enable-background:new 0 0 512 512" xml:space="preserve">
                             <g>
                                 <path d="M198.608 246.104 382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor" opacity="1" data-original="currentColor"></path>
@@ -658,20 +667,21 @@ $_SESSION['searchWord'] = $keywords;
     <!-- pagination js -->
     <script>
         $(document).ready(function() {
-            var rowsPerPage = 2; // Always show 2 rows per page
+            var rowsPerPage = 2; // Rows per page
             var currentPage = 1;
             var totalPages = 0;
-            var maxVisiblePages = 3; // Maximum number of visible pages
 
             function getCardsPerRow() {
                 if (window.innerWidth >= 1536) {
-                    return 6;
+                    return 6; // 6 cards per row for 2xl screens
                 } else if (window.innerWidth >= 1280) {
-                    return 5;
+                    return 5; // 5 cards per row for xl screens
                 } else if (window.innerWidth >= 1024) {
-                    return 3;
+                    return 3; // 3 cards per row for lg screens
+                } else if (window.innerWidth >= 768) {
+                    return 2; // 2 cards per row for md screens
                 } else {
-                    return 2;
+                    return 1; // 1 card per row for smaller screens
                 }
             }
 
@@ -681,81 +691,114 @@ $_SESSION['searchWord'] = $keywords;
                 var $productCards = $('.product-card');
                 var totalItems = $productCards.length;
 
-                // Recalculate total pages when columns per row changes
+                // Recalculate total pages based on screen size
                 totalPages = Math.ceil(totalItems / itemsPerPage);
 
-                // Ensure the current page is within the valid range
+                // Ensure current page is valid
                 if (page > totalPages) {
                     page = totalPages;
-                    currentPage = page;
+                } else if (page < 1) {
+                    page = 1;
                 }
+                currentPage = page;
 
-                // Hide all product cards
+                // Hide all cards
                 $productCards.hide();
 
-                // Calculate the range of product cards to show
+                // Calculate visible range
                 var startIndex = (page - 1) * itemsPerPage;
                 var endIndex = startIndex + itemsPerPage;
 
-                // Show product cards for the current page
+                // Show visible cards
                 $productCards.slice(startIndex, endIndex).show();
 
-                // Update pagination buttons only if there are at least 12 cards
-                if (totalItems >= 12) {
-                    createPagination();
-                } else {
-                    $('.pagination-buttons').empty(); // Clear pagination if not enough cards
-                    $('#prev-page, #next-page').hide(); // Hide pagination arrows
-                }
+                // Update pagination buttons and arrow states
+                updatePagination();
 
-                // Update arrow buttons
-                $('#prev-page').prop('disabled', page === 1);
-                $('#next-page').prop('disabled', page === totalPages);
-            }
-
-            function createPagination() {
-                var $paginationButtons = $('.pagination-buttons');
-                $paginationButtons.empty(); // Clear existing pagination buttons
-
-                // Show pagination with buttons and arrows
-                for (var i = 1; i <= totalPages; i++) {
-                    $paginationButtons.append('<button class="pagination-btn" data-page="' + i + '">' + i + '</button>');
-                }
-
-                // Add previous and next buttons
-                $('#prev-page').show();
-                $('#next-page').show();
-
-                // Add event listeners for pagination buttons
-                $('.pagination-btn').on('click', function() {
-                    var page = $(this).data('page');
-                    currentPage = page;
-                    showPage(page);
+                // Scroll the page to the top (smooth scroll)
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Smooth scroll effect
                 });
             }
 
-            // Initialize pagination
-            showPage(1);
+            function updatePagination() {
+                var $paginationButtons = $('.pagination-buttons');
+                var $paginationContainer = $('.pagination'); // Select the entire pagination container
 
-            // Recalculate layout on window resize
-            $(window).on('resize', function() {
-                showPage(currentPage); // Show the correct page after resizing
-            });
+                $paginationButtons.empty(); // Clear existing pagination buttons
 
-            // Add event listeners for arrows
+                // Only show pagination if there is more than one page
+                if (totalPages > 1) {
+                    // Always show the first page
+                    $paginationButtons.append(`
+                <button class="pagination-btn ${currentPage === 1 ? 'active' : ''}" data-page="1">1</button>
+            `);
+
+                    // Add dots after the first page if the current page is greater than 2
+                    if (currentPage > 2) {
+                        $paginationButtons.append('<span class="dots">...</span>');
+                    }
+
+                    // Show the current page
+                    if (currentPage !== 1 && currentPage !== totalPages) {
+                        $paginationButtons.append(`
+                    <button class="pagination-btn active" data-page="${currentPage}">
+                        ${currentPage}
+                    </button>
+                `);
+                    }
+
+                    // Add dots before the last page if the current page is less than the last page minus 1
+                    if (currentPage < totalPages - 1) {
+                        $paginationButtons.append('<span class="dots">...</span>');
+                    }
+
+                    // Always show the last page
+                    $paginationButtons.append(`
+                <button class="pagination-btn ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">
+                    ${totalPages}
+                </button>
+            `);
+
+                    // Update arrow button states
+                    $('#prev-page').prop('disabled', currentPage === 1);
+                    $('#next-page').prop('disabled', currentPage === totalPages);
+
+                    // Attach event listeners to pagination buttons
+                    $('.pagination-btn').on('click', function() {
+                        var page = parseInt($(this).data('page'));
+                        showPage(page);
+                    });
+
+                    // Show pagination container
+                    $paginationContainer.show();
+                } else {
+                    // Hide pagination if there is only 1 page
+                    $paginationContainer.hide();
+                }
+            }
+
+            // Arrow button click handlers
             $('#prev-page').on('click', function() {
                 if (currentPage > 1) {
-                    currentPage--;
-                    showPage(currentPage);
+                    showPage(currentPage - 1);
                 }
             });
 
             $('#next-page').on('click', function() {
                 if (currentPage < totalPages) {
-                    currentPage++;
-                    showPage(currentPage);
+                    showPage(currentPage + 1);
                 }
             });
+
+            // Recalculate pagination on window resize
+            $(window).resize(function() {
+                showPage(currentPage);
+            });
+
+            // Initialize
+            showPage(currentPage);
         });
     </script>
 

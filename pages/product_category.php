@@ -130,30 +130,39 @@ $Category = $_GET['Category'];
             /* Include padding and border in the element's total width and height */
         }
 
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .pagination-btn {
-            background-color: #4b5563;
-            border: none;
-            width: 1.5rem;
-            height: 1.5rem;
-            margin: 0 5px;
+            padding: 0 0.5rem;
+            background-color: #e5e7eb;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
             cursor: pointer;
-            font-weight: 500;
-            color: white;
-            border-top-left-radius: 6px;
-            border-bottom-right-radius: 6px;
+            transition: background-color 0.2s;
         }
 
-        .pagination-btn:hover {
-            background-color: #586474;
+        .pagination-btn.active {
+            background-color: #0066ff;
+            color: #ffffff;
         }
 
-        .pagination-btn:focus {
-            background-color: #586474;
+        .arrow-button button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Only apply styles to buttons with the pagination-button class */
+        .pagination-button:disabled {
+            cursor: not-allowed;
+            /* Indicate the button is not clickable */
+            opacity: 0.5;
+            /* Dim the appearance */
+            pointer-events: none;
+            /* Ensure no interactions */
         }
     </style>
 
@@ -559,9 +568,9 @@ $Category = $_GET['Category'];
                             $MRP = $res['vendor_mrp'];
 
                             // for qty
-                            if($res['Quantity'] > 0){
+                            if ($res['Quantity'] > 0) {
                                 $qty = 1;
-                            }else{
+                            } else {
                                 $qty = 0;
                             }
 
@@ -598,15 +607,15 @@ $Category = $_GET['Category'];
                                 </div>
                                 <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
                                     <?php
-                                        if($qty > 0){
-                                            ?>
-                                                <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                            <?php
-                                        }else{
-                                            ?>
-                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                            <?php
-                                        }
+                                    if ($qty > 0) {
+                                    ?>
+                                        <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                    <?php
+                                    }
                                     ?>
                                 </div>
                             </div>
@@ -632,25 +641,35 @@ $Category = $_GET['Category'];
 
                 <!-- Add more product cards as needed -->
                 <!-- pagination arrow -->
-                <div class="pagination flex justify-center items-center gap-2">
-                    <div class="arrow-button hidden">
-                        <button class="bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md cursor-pointer" id="prev-page">
+                <div class="pagination flex justify-center items-center gap-2 mt-5">
+                    <!-- Left Arrow -->
+                    <div class="arrow-button">
+                        <button
+                            id="prev-page"
+                            class="pagination-button bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md"
+                            disabled>
                             <svg class="w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492">
                                 <path d="M198.608 246.104L382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor"></path>
                             </svg>
-                        </button> <!-- Left Arrow -->
+                        </button>
                     </div>
 
+                    <!-- Pagination Buttons -->
                     <div class="pagination-buttons"></div>
 
-                    <div class="arrow-button hidden">
-                        <button class="bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md cursor-pointer" id="next-page">
+                    <!-- Right Arrow -->
+                    <div class="arrow-button">
+                        <button
+                            id="next-page"
+                            class="pagination-button bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md">
                             <svg class="w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492.004 492.004">
                                 <path d="M382.678 226.804L163.73 7.86C158.666 2.792 151.906 0 144.698 0s-13.968 2.792-19.032 7.86l-16.124 16.12c-10.492 10.504-10.492 27.576 0 38.064L293.398 245.9l-184.06 184.06c-5.064 5.068-7.86 11.824-7.86 19.028 0 7.212 2.796 13.968 7.86 19.04l16.124 16.116c5.068 5.068 11.824 7.86 19.032 7.86s13.968-2.792 19.032-7.86L382.678 265c5.076-5.084 7.864-11.872 7.848-19.088.016-7.244-2.772-14.028-7.848-19.108z" fill="currentColor"></path>
                             </svg>
-                        </button> <!-- Right Arrow -->
+                        </button>
                     </div>
                 </div>
+
+
 
             </div>
         </div>
@@ -660,20 +679,21 @@ $Category = $_GET['Category'];
 
     <script>
         $(document).ready(function() {
-            var rowsPerPage = 2; // Always show 2 rows per page
+            var rowsPerPage = 2; // Rows per page
             var currentPage = 1;
             var totalPages = 0;
-            var maxVisiblePages = 3; // Maximum number of visible pages
 
             function getCardsPerRow() {
                 if (window.innerWidth >= 1536) {
-                    return 6;
+                    return 6; // 6 cards per row for 2xl screens
                 } else if (window.innerWidth >= 1280) {
-                    return 5;
+                    return 5; // 5 cards per row for xl screens
                 } else if (window.innerWidth >= 1024) {
-                    return 3;
+                    return 3; // 3 cards per row for lg screens
+                } else if (window.innerWidth >= 768) {
+                    return 2; // 2 cards per row for md screens
                 } else {
-                    return 2;
+                    return 1; // 1 card per row for smaller screens
                 }
             }
 
@@ -683,103 +703,117 @@ $Category = $_GET['Category'];
                 var $productCards = $('.product-card');
                 var totalItems = $productCards.length;
 
-                // Recalculate total pages when columns per row changes
+                // Recalculate total pages based on screen size
                 totalPages = Math.ceil(totalItems / itemsPerPage);
 
-                // Ensure the current page is within the valid range
+                // Ensure current page is valid
                 if (page > totalPages) {
                     page = totalPages;
-                    currentPage = page;
+                } else if (page < 1) {
+                    page = 1;
                 }
+                currentPage = page;
 
-                // Hide all product cards
+                // Hide all cards
                 $productCards.hide();
 
-                // Calculate the range of product cards to show
+                // Calculate visible range
                 var startIndex = (page - 1) * itemsPerPage;
                 var endIndex = startIndex + itemsPerPage;
 
-                // Show product cards for the current page
+                // Show visible cards
                 $productCards.slice(startIndex, endIndex).show();
 
-                // Update pagination buttons
-                createPagination();
+                // Update pagination buttons and arrow states
+                updatePagination();
 
-                // Update arrow buttons visibility and enable/disable state
-                $('#prev-page').prop('disabled', page === 1);
-                $('#next-page').prop('disabled', page === totalPages);
-
-                // Hide arrows if there are 6 or fewer products
-                updatePaginationVisibility(totalItems);
-            }
-
-            function createPagination() {
-                var $paginationButtons = $('.pagination-buttons');
-                $paginationButtons.empty(); // Clear existing pagination buttons
-
-                if (totalPages <= maxVisiblePages) {
-                    // Show all pages if total pages are less than or equal to maxVisiblePages
-                    for (var i = 1; i <= totalPages; i++) {
-                        $paginationButtons.append('<button class="pagination-btn" data-page="' + i + '">' + i + '</button>');
-                    }
-                } else {
-                    // Show pagination with dots
-                    if (currentPage <= Math.floor(maxVisiblePages / 2) + 1) {
-                        // Show first few pages and last page with dots
-                        for (var i = 1; i <= maxVisiblePages - 1; i++) {
-                            $paginationButtons.append('<button class="pagination-btn" data-page="' + i + '">' + i + '</button>');
-                        }
-                        $paginationButtons.append('<span class="dots">...</span>');
-                        $paginationButtons.append('<button class="pagination-btn" data-page="' + totalPages + '">' + totalPages + '</button>');
-                    } else if (currentPage > Math.floor(maxVisiblePages / 2) && currentPage <= totalPages - Math.floor(maxVisiblePages / 2)) {
-                        // Show first page, dots, current page, dots, and last page
-                        $paginationButtons.append('<button class="pagination-btn" data-page="1">1</button>');
-                        $paginationButtons.append('<span class="dots">...</span>');
-
-                        // Ensure three pages around the current page
-                        var startPage = Math.max(currentPage - 1, 2);
-                        var endPage = Math.min(currentPage + 1, totalPages - 1);
-                        for (var i = startPage; i <= endPage; i++) {
-                            $paginationButtons.append('<button class="pagination-btn" data-page="' + i + '">' + i + '</button>');
-                        }
-
-                        $paginationButtons.append('<span class="dots">...</span>');
-                        $paginationButtons.append('<button class="pagination-btn" data-page="' + totalPages + '">' + totalPages + '</button>');
-                    } else {
-                        // Show first page, dots, and last few pages
-                        $paginationButtons.append('<button class="pagination-btn" data-page="1">1</button>');
-                        $paginationButtons.append('<span class="dots">...</span>');
-
-                        // Ensure last few pages are shown
-                        for (var i = totalPages - (maxVisiblePages - 2); i <= totalPages; i++) {
-                            $paginationButtons.append('<button class="pagination-btn" data-page="' + i + '">' + i + '</button>');
-                        }
-                    }
-                }
-
-                // Add event listeners for pagination buttons
-                $('.pagination-btn').on('click', function() {
-                    var page = $(this).data('page');
-                    currentPage = page; // Update current page
-                    showPage(currentPage); // Show selected page
+                // Scroll the page to the top (smooth scroll)
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Smooth scroll effect
                 });
             }
 
-            function updatePaginationVisibility(totalItems) {
-                // Show/hide the arrow buttons and pagination if total items exceed 6
-                if (totalItems > 12) {
-                    $('.arrow-button').removeClass('hidden'); // Show arrow buttons
-                    $('.pagination-buttons').show(); // Show pagination buttons
+            function updatePagination() {
+                var $paginationButtons = $('.pagination-buttons');
+                var $paginationContainer = $('.pagination'); // Select the entire pagination container
+
+                $paginationButtons.empty(); // Clear existing pagination buttons
+
+                // Only show pagination if there is more than one page
+                if (totalPages > 1) {
+                    // Always show the first page
+                    $paginationButtons.append(`
+                <button class="pagination-btn ${currentPage === 1 ? 'active' : ''}" data-page="1">1</button>
+            `);
+
+                    // Add dots after the first page if the current page is greater than 2
+                    if (currentPage > 2) {
+                        $paginationButtons.append('<span class="dots">...</span>');
+                    }
+
+                    // Show the current page
+                    if (currentPage !== 1 && currentPage !== totalPages) {
+                        $paginationButtons.append(`
+                    <button class="pagination-btn active" data-page="${currentPage}">
+                        ${currentPage}
+                    </button>
+                `);
+                    }
+
+                    // Add dots before the last page if the current page is less than the last page minus 1
+                    if (currentPage < totalPages - 1) {
+                        $paginationButtons.append('<span class="dots">...</span>');
+                    }
+
+                    // Always show the last page
+                    $paginationButtons.append(`
+                <button class="pagination-btn ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">
+                    ${totalPages}
+                </button>
+            `);
+
+                    // Update arrow button states
+                    $('#prev-page').prop('disabled', currentPage === 1);
+                    $('#next-page').prop('disabled', currentPage === totalPages);
+
+                    // Attach event listeners to pagination buttons
+                    $('.pagination-btn').on('click', function() {
+                        var page = parseInt($(this).data('page'));
+                        showPage(page);
+                    });
+
+                    // Show pagination container
+                    $paginationContainer.show();
                 } else {
-                    $('.arrow-button').addClass('hidden'); // Hide arrow buttons
-                    $('.pagination-buttons').hide(); // Hide pagination buttons
+                    // Hide pagination if there is only 1 page
+                    $paginationContainer.hide();
                 }
             }
 
-            // Initial load
+            // Arrow button click handlers
+            $('#prev-page').on('click', function() {
+                if (currentPage > 1) {
+                    showPage(currentPage - 1);
+                }
+            });
+
+            $('#next-page').on('click', function() {
+                if (currentPage < totalPages) {
+                    showPage(currentPage + 1);
+                }
+            });
+
+            // Recalculate pagination on window resize
+            $(window).resize(function() {
+                showPage(currentPage);
+            });
+
+            // Initialize
             showPage(currentPage);
         });
     </script>
+
     <!-- sidebar -->
     <!-- add hidden in container -->
     <div id="filterSidebarContainer" class="hidden bg-gray-50 pb-3 font-medium fixed top-0 right-0 w-fit h-[100vh] overflow-y-auto z-50 sidebarScroll" x-cloak>
