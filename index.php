@@ -98,9 +98,9 @@ function displayRandomProducts($con, $limit)
 ?>
             <div class="swiper-slide">
                 <div class=" flex justify-center">
-                    <div class="product-card card flex flex-col items-center ring-2 ring-gray-300 rounded-tl-2xl rounded-br-2xl w-64 hover:ring-none overflow-hidden">
+                    <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                         <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-cover rounded-tl-xl rounded-br-xl" loading="lazy" sizes="">
+                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                         </div>
                         <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                             <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -120,7 +120,7 @@ function displayRandomProducts($con, $limit)
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
+                        <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
                             <?php
                             if ($qty > 0) {
                             ?>

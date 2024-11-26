@@ -57,9 +57,10 @@ $company_name = $_GET['brandName'];
     <link rel="shortcut icon" href="/shopnest/src/logo/favicon.svg">
 
     <style>
-        [x-cloak]{
+        [x-cloak] {
             display: none;
         }
+
         .outfit {
             font-family: "Outfit", sans-serif;
             font-optical-sizing: auto;
@@ -568,12 +569,12 @@ $company_name = $_GET['brandName'];
                             $MRP = $res['vendor_mrp'];
 
                             // for qty
-                            if($res['Quantity'] > 0){
+                            if ($res['Quantity'] > 0) {
                                 $qty = 1;
-                            }else{
+                            } else {
                                 $qty = 0;
                             }
-                            
+
                             // for the size
                             $size = $res['size'];
                             $filter_size = explode(',', $size);
@@ -583,9 +584,9 @@ $company_name = $_GET['brandName'];
                             }
 
                         ?>
-                            <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-fit w-60 overflow-hidden">
+                            <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                                 <div class="p-2" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-cover rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                                 </div>
                                 <div class="mt-2 space-y-3" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -605,17 +606,17 @@ $company_name = $_GET['brandName'];
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
+                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
                                     <?php
-                                        if($qty > 0){
-                                            ?>
-                                                <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                            <?php
-                                        }else{
-                                            ?>
-                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                            <?php
-                                        }
+                                    if ($qty > 0) {
+                                    ?>
+                                        <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                    <?php
+                                    }
                                     ?>
                                 </div>
                             </div>

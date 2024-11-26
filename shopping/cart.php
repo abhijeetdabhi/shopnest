@@ -1,24 +1,24 @@
 <?php
-    if(isset($_COOKIE['vendor_id'])){
-        header("Location: /shopnest/vendor/vendor_dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /shopnest/admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /shopnest/admin/dashboard.php");
+    exit;
+}
 ?>
 
 <?php
 include "../include/connect.php";
 session_start();
 
-if(isset($_SESSION['searchWord'])){
+if (isset($_SESSION['searchWord'])) {
     unset($_SESSION['searchWord']);
 }
 
-if(isset($_SESSION['selectedSize'])){
+if (isset($_SESSION['selectedSize'])) {
     unset($_SESSION['selectedSize']);
 }
 ?>
@@ -106,7 +106,7 @@ if(isset($_SESSION['selectedSize'])){
                                     $resultNumeric = intval($result);
                                     $totalCartPrice = isset($totalCartPrice) ? $totalCartPrice + $resultNumeric : $resultNumeric;
 
-                                    ?>
+                        ?>
                                     <div class="rounded-lg bg-white p-4 shadow-md md:p-6">
                                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                             <a href="" class="shrink-0 md:order-1">
@@ -117,7 +117,7 @@ if(isset($_SESSION['selectedSize'])){
                                             <div class="flex items-center justify-between md:order-3 md:justify-end">
                                                 <form method="post" action="">
                                                     <select name="qty" id="qty_<?php echo $cart_products_id; ?>" class="border mt-1 rounded pr-9 pl-4 bg-gray-50 focus:border-gray-600 focus:ring-gray-600" onchange="this.form.submit()">
-                                                    <?php
+                                                        <?php
                                                         $forQty = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
                                                         $qty_query = mysqli_query($con, $forQty);
 
@@ -253,21 +253,21 @@ if(isset($_SESSION['selectedSize'])){
             <?php
             $product_find = "SELECT * FROM products ORDER BY RAND() LIMIT 4";
             $product_query = mysqli_query($con, $product_find);
-        
+
             if ($product_query) {
-        
+
                 while ($res = mysqli_fetch_assoc($product_query)) {
                     $product_id = $res['product_id'];
-                    
+
                     $MRP = $res['vendor_mrp'];
 
                     // for qty
-                    if($res['Quantity'] > 0){
+                    if ($res['Quantity'] > 0) {
                         $qty = 1;
-                    }else{
+                    } else {
                         $qty = 0;
                     }
-        
+
                     // for the size
                     $size = $res['size'];
                     $filter_size = explode(',', $size);
@@ -275,13 +275,13 @@ if(isset($_SESSION['selectedSize'])){
                         $product_size;
                         break;
                     }
-                    ?>
-        
+            ?>
+
                     <div class="swiper-slide">
                         <div class=" flex justify-center">
-                            <div class="product-card card flex flex-col items-center ring-2 ring-gray-300 rounded-tl-2xl rounded-br-2xl w-64 hover:ring-none overflow-hidden">
+                            <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                                 <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '/shopnest/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-cover rounded-tl-xl rounded-br-xl" loading="lazy" sizes="">
+                                    <img src="<?php echo '/shopnest/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                                 </div>
                                 <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -301,23 +301,23 @@ if(isset($_SESSION['selectedSize'])){
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
+                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
                                     <?php
-                                        if($qty > 0){
-                                            ?>
-                                                <a href="<?php echo $qty > 0 ? '/shopnest/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                            <?php
-                                        }else{
-                                            ?>
-                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                            <?php
-                                        }
+                                    if ($qty > 0) {
+                                    ?>
+                                        <a href="<?php echo $qty > 0 ? '/shopnest/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                    <?php
+                                    }
                                     ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-        <?php
+            <?php
                 }
             } else {
                 echo "Error " . mysqli_errno($con);
