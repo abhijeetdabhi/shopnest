@@ -272,7 +272,11 @@ if (isset($_COOKIE['user_id'])) {
                                         highlightSuggestion();
                                         scrollToSuggestion();
                                     } else if (e.key === 'Enter') {
-                                        if (currentIndex >= 0 && currentIndex < items.length) {
+                                        if (query === '') {
+                                            // If search input is empty, redirect to the index page
+                                            e.preventDefault();
+                                            window.location.href = '/shopnest/index.php'; // Redirect to index page
+                                        } else if (currentIndex >= 0 && currentIndex < items.length) {
                                             const selectedSuggestion = items[currentIndex];
                                             const link = selectedSuggestion.querySelector('a');
                                             if (link) {
@@ -676,7 +680,11 @@ if (isset($_COOKIE['user_id'])) {
                                     highlightSuggestion();
                                     scrollToSuggestion();
                                 } else if (e.key === 'Enter') {
-                                    if (currentIndex >= 0 && currentIndex < items.length) {
+                                    if (query === '') {
+                                        // If search input is empty, redirect to the index page
+                                        e.preventDefault();
+                                        window.location.href = '/shopnest/index.php'; // Redirect to index page
+                                    } else if (currentIndex >= 0 && currentIndex < items.length) {
                                         const selectedSuggestion = items[currentIndex];
                                         const link = selectedSuggestion.querySelector('a');
                                         if (link) {
