@@ -344,7 +344,7 @@ if (isset($_COOKIE['user_id'])) {
                             <p class="text-sm text-center text-gray-600 mt-2">Please speak clearly into the microphone.</p>
                         </div>
                     </div>
-
+                    <!-- speech recognition search 1 -->
                     <script>
                         // Check for browser support
                         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -365,7 +365,7 @@ if (isset($_COOKIE['user_id'])) {
                             // Event handler for result
                             recognition.onresult = (event) => {
                                 const transcript = event.results[event.resultIndex][0].transcript;
-                                document.getElementById('SearchInput').value = transcript;
+                                document.getElementById('search-input').value = transcript;
                                 document.getElementById('searchBtns').click();
                             };
 
@@ -567,10 +567,10 @@ if (isset($_COOKIE['user_id'])) {
                 <div class="flex justify-center items-center" x-data="{showMic2:false}">
                     <div class="relative w-full">
                         <!-- search input -->
-                        <input id="SearchInput2" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems2" class="w-full h-12 pr-10 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
+                        <input id="search-input2" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems2" class="w-full h-12 pr-10 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
                         <!-- suggetion -->
                         <input type="submit" id="searchBtn2" name="searchBtn2" class="hidden">
-                        <div id="productList2" class="w-full bg-white absolute top-12 left-0 rounded-md z-[100]"></div>
+                        <div id="suggestions-list2" class="w-full bg-white absolute top-12 left-0 rounded-md z-[100]"></div>
                         <!-- microphone button -->
                         <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn2" @click="showMic2=true">
                             <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -581,6 +581,98 @@ if (isset($_COOKIE['user_id'])) {
                             </svg>
                         </div>
                     </div>
+                    <!-- js for suggetion search 2 -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const searchInput = document.getElementById('search-input2');
+                            const suggestionsList = document.getElementById('suggestions-list2');
+                            let currentIndex = -1;
+
+                            // Fetch search suggestions
+                            const fetchSuggestions = (query) => {
+                                if (query.length === 0) {
+                                    suggestionsList.classList.add('hidden');
+                                    return;
+                                }
+
+                                fetch('/shopnest/search/suggestion.php', {
+                                        method: 'POST',
+                                        body: new URLSearchParams({
+                                            query
+                                        }),
+                                    })
+                                    .then((response) => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! status: ${response.status}`);
+                                        }
+                                        return response.text();
+                                    })
+                                    .then((data) => {
+                                        suggestionsList.innerHTML = data;
+                                        suggestionsList.classList.toggle('hidden', data.trim() === '');
+                                        currentIndex = -1; // Reset index
+                                    })
+                                    .catch((error) => console.error('Error fetching suggestions:', error));
+                            };
+
+                            // Update suggestions on input
+                            searchInput.addEventListener('input', (e) => {
+                                const query = e.target.value.trim();
+                                fetchSuggestions(query);
+                                currentIndex = -1;
+                            });
+
+                            // Handle key navigation and Enter
+                            searchInput.addEventListener('keydown', (e) => {
+                                const items = suggestionsList.querySelectorAll('li');
+                                const query = searchInput.value.trim();
+
+                                if (e.key === 'ArrowDown') {
+                                    currentIndex = (currentIndex + 1) % items.length;
+                                    highlightSuggestion();
+                                } else if (e.key === 'ArrowUp') {
+                                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                                    highlightSuggestion();
+                                } else if (e.key === 'Enter') {
+                                    if (currentIndex >= 0 && currentIndex < items.length) {
+                                        const selectedSuggestion = items[currentIndex];
+                                        const link = selectedSuggestion.querySelector('a');
+                                        if (link) {
+                                            e.preventDefault();
+                                            window.location.href = link.href;
+                                        }
+                                    } else if (query) {
+                                        window.location.assign(`/shopnest/search/search_items.php?query=${encodeURIComponent(query)}`);
+                                    }
+                                }
+                            });
+
+                            // Highlight suggestions
+                            const highlightSuggestion = () => {
+                                const items = suggestionsList.querySelectorAll('li');
+                                items.forEach((item) => item.classList.remove('bg-gray-300'));
+                                if (currentIndex >= 0 && currentIndex < items.length) {
+                                    const selectedItem = items[currentIndex];
+                                    selectedItem.classList.add('bg-gray-300');
+                                }
+                            };
+
+                            // Click suggestion to update input and search
+                            suggestionsList.addEventListener('click', (e) => {
+                                if (e.target.tagName === 'LI') {
+                                    searchInput.value = e.target.textContent;
+                                    suggestionsList.classList.add('hidden');
+                                }
+                            });
+
+                            // Close suggestions if clicking outside
+                            document.addEventListener('click', (e) => {
+                                if (!e.target.closest('.relative')) {
+                                    suggestionsList.classList.add('hidden');
+                                }
+                            });
+                        });
+                    </script>
                     <label for="searchBtn2" id="searchBtns2">
                         <div class="search-btn bg-[#b7ff1d] px-3 h-12 flex items-center justify-center rounded-e-md transition duration-300 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" x="0" y="0" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -593,7 +685,7 @@ if (isset($_COOKIE['user_id'])) {
                     <div id="mic-popup2" class="w-full h-full z-[100] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-40 px-5 hidden" x-show="showMic2">
                         <div class="w-max h-max z-[100] flex flex-col items-center justify-center p-8 bg-white border-2 border-blue-600 rounded-lg shadow-2xl relative">
                             <span class="absolute top-2 right-2">
-                                <svg @click="showMic2=false" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                <svg id="mic-close-btn2" @click="showMic2=false" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                                     <g>
                                         <path d="M436.896 74.869c-99.84-99.819-262.208-99.819-362.048 0-99.797 99.819-99.797 262.229 0 362.048 49.92 49.899 115.477 74.837 181.035 74.837s131.093-24.939 181.013-74.837c99.819-99.818 99.819-262.229 0-362.048zm-75.435 256.448c8.341 8.341 8.341 21.824 0 30.165a21.275 21.275 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251l-75.413-75.435-75.392 75.413a21.348 21.348 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251c-8.341-8.341-8.341-21.845 0-30.165l75.392-75.413-75.413-75.413c-8.341-8.341-8.341-21.845 0-30.165 8.32-8.341 21.824-8.341 30.165 0l75.413 75.413 75.413-75.413c8.341-8.341 21.824-8.341 30.165 0 8.341 8.32 8.341 21.824 0 30.165l-75.413 75.413 75.415 75.435z" fill="#ff0000" opacity="1" data-original="#ff0000" class=""></path>
                                     </g>
@@ -622,14 +714,15 @@ if (isset($_COOKIE['user_id'])) {
                             <p class="text-sm text-center text-gray-600 mt-2">Please speak clearly into the microphone.</p>
                         </div>
                     </div>
+                    <!-- speech recognisation for search 2 -->
                     <script>
                         // Check for browser support
-                        if (!SpeechRecognition) {
+                        const SpeechRecognition2 = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        if (!SpeechRecognition2) {
                             alert("Your browser does not support speech recognition.");
                         } else {
-
                             const recognition = new SpeechRecognition();
-                            recognition.continuous = false; // Stop after one recognition
+                            recognition.continuous = true; // Continuous listening until stopped
                             recognition.interimResults = false; // Don't return interim results
 
                             const micPopup = document.getElementById('mic-popup2');
@@ -641,10 +734,21 @@ if (isset($_COOKIE['user_id'])) {
 
                             // Event handler for result
                             recognition.onresult = (event) => {
-                                const transcript = event.results[0][0].transcript;
-                                document.getElementById('SearchInput2').value = transcript;
-                                document.getElementById('searchBtns2').click();
-                                micPopup.classList.add('hidden'); // Hide popup after result
+                                const transcript = event.results[event.resultIndex][0].transcript;
+
+                                const searchInput = document.getElementById('search-input2');
+                                if (searchInput) {
+                                    searchInput.value = transcript;
+                                    document.getElementById('searchBtns2').click();
+                                } else {
+                                    console.error("Search input element not found.");
+                                }
+                            };
+
+                            // Error handling
+                            recognition.onerror = (event) => {
+                                console.error('Error occurred in recognition: ' + event.error);
+                                micPopup.classList.add('hidden'); // Hide popup on error
                             };
 
                             // Start recognition when button is clicked
@@ -652,11 +756,16 @@ if (isset($_COOKIE['user_id'])) {
                                 recognition.start();
                             });
 
-                            // Error handling
-                            recognition.onerror = (event) => {
-                                console.error('Error occurred in recognition: ' + event.error);
-                                micPopup.classList.add('hidden'); // Hide popup on error
-                            };
+                            // Stop recognition function
+                            function stopRecognition() {
+                                recognition.stop();
+                                micPopup.classList.add('hidden');
+                            }
+
+                            // Stop recognition when the popup is closed
+                            document.getElementById('mic-close-btn2').addEventListener('click', () => {
+                                stopRecognition();
+                            });
                         }
                     </script>
                 </div>
@@ -866,39 +975,6 @@ if (isset($_COOKIE['user_id'])) {
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            let SearchInput2 = document.getElementById("SearchInput2");
-            let productList2 = document.getElementById("productList2");
-
-            SearchInput2.addEventListener("keyup", () => {
-                let query2 = SearchInput2.value;
-                if (query2 != '') {
-                    let xhr = new XMLHttpRequest();
-                    xhr.open("POST", '/shopnest/search/suggestion.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.onload = function() {
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            productList2.style.display = 'block';
-                            productList2.innerHTML = xhr.responseText;
-                        }
-                    }
-                    xhr.send('query2=' + encodeURIComponent(query2));
-                } else {
-                    productList2.style.display = 'none';
-                    productList2.innerHTML = '';
-                }
-            });
-
-            document.addEventListener('click', () => {
-                if (event.target.tagName === 'li') {
-                    SearchInput2.value = event.target.textContent;
-                    productList2.style.display = 'none';
-                }
-            })
-        });
-    </script>
 
 </body>
 
