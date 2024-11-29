@@ -191,10 +191,10 @@ if (isset($_COOKIE['user_id'])) {
                     <div class="flex items-center">
                         <div class="relative">
                             <!-- search input -->
-                            <input id="SearchInput" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems" class="lg:w-[26vw] xl:w-[40vw] h-12 pr-12 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
+                            <input id="search-input" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems" class="lg:w-[26vw] xl:w-[40vw] h-12 pr-12 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
                             <!-- suggation -->
                             <input type="submit" id="searchBtn" name="searchBtn" class="hidden">
-                            <div id="productList" class="w-full bg-white absolute top-11 left-0 rounded-b-md z-[100]"></div>
+                            <div id="suggestions-list" class="w-full bg-white absolute top-11 left-0 rounded-b-md z-[100]"></div>
                             <!-- microphone button -->
                             <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn" @click="showMic=true">
                                 <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -205,6 +205,99 @@ if (isset($_COOKIE['user_id'])) {
                                 </svg>
                             </div>
                         </div>
+                        <!-- js for suggetion -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const searchInput = document.getElementById('search-input');
+                                const suggestionsList = document.getElementById('suggestions-list');
+                                let currentIndex = -1;
+
+                                // Fetch search suggestions
+                                const fetchSuggestions = (query) => {
+                                    if (query.length === 0) {
+                                        suggestionsList.classList.add('hidden');
+                                        return;
+                                    }
+
+                                    fetch('/shopnest/search/suggestion.php', {
+                                            method: 'POST',
+                                            body: new URLSearchParams({
+                                                query
+                                            }),
+                                        })
+                                        .then((response) => {
+                                            if (!response.ok) {
+                                                throw new Error(`HTTP error! status: ${response.status}`);
+                                            }
+                                            return response.text();
+                                        })
+                                        .then((data) => {
+                                            suggestionsList.innerHTML = data;
+                                            suggestionsList.classList.toggle('hidden', data.trim() === '');
+                                            currentIndex = -1; // Reset index
+                                        })
+                                        .catch((error) => console.error('Error fetching suggestions:', error));
+                                };
+
+                                // Update suggestions on input
+                                searchInput.addEventListener('input', (e) => {
+                                    const query = e.target.value.trim();
+                                    fetchSuggestions(query);
+                                    currentIndex = -1;
+                                });
+
+                                // Handle key navigation and Enter
+                                searchInput.addEventListener('keydown', (e) => {
+                                    const items = suggestionsList.querySelectorAll('li');
+                                    const query = searchInput.value.trim();
+
+                                    if (e.key === 'ArrowDown') {
+                                        currentIndex = (currentIndex + 1) % items.length;
+                                        highlightSuggestion();
+                                    } else if (e.key === 'ArrowUp') {
+                                        currentIndex = (currentIndex - 1 + items.length) % items.length;
+                                        highlightSuggestion();
+                                    } else if (e.key === 'Enter') {
+                                        if (currentIndex >= 0 && currentIndex < items.length) {
+                                            const selectedSuggestion = items[currentIndex];
+                                            const link = selectedSuggestion.querySelector('a');
+                                            if (link) {
+                                                e.preventDefault();
+                                                window.location.href = link.href;
+                                            }
+                                        } else if (query) {
+                                            window.location.assign(`/shopnest/search/search_items.php?query=${encodeURIComponent(query)}`);
+                                        }
+                                    }
+                                });
+
+                                // Highlight suggestions
+                                const highlightSuggestion = () => {
+                                    const items = suggestionsList.querySelectorAll('li');
+                                    items.forEach((item) => item.classList.remove('bg-gray-300'));
+                                    if (currentIndex >= 0 && currentIndex < items.length) {
+                                        const selectedItem = items[currentIndex];
+                                        selectedItem.classList.add('bg-gray-300');
+                                    }
+                                };
+
+                                // Click suggestion to update input and search
+                                suggestionsList.addEventListener('click', (e) => {
+                                    if (e.target.tagName === 'LI') {
+                                        searchInput.value = e.target.textContent;
+                                        suggestionsList.classList.add('hidden');
+                                    }
+                                });
+
+                                // Close suggestions if clicking outside
+                                document.addEventListener('click', (e) => {
+                                    if (!e.target.closest('.relative')) {
+                                        suggestionsList.classList.add('hidden');
+                                    }
+                                });
+                            });
+                        </script>
+
                         <!-- search button -->
                         <label for="searchBtn">
                             <div id="searchBtns" class="search-btn bg-[#b7ff1d] px-3 h-12 flex items-center justify-center rounded-e-md hover:bg-[#81b909] transition duration-300 cursor-pointer">
@@ -274,7 +367,6 @@ if (isset($_COOKIE['user_id'])) {
                                 const transcript = event.results[event.resultIndex][0].transcript;
                                 document.getElementById('SearchInput').value = transcript;
                                 document.getElementById('searchBtns').click();
-                                console.log(transcript);
                             };
 
                             // Error handling
@@ -552,7 +644,6 @@ if (isset($_COOKIE['user_id'])) {
                                 const transcript = event.results[0][0].transcript;
                                 document.getElementById('SearchInput2').value = transcript;
                                 document.getElementById('searchBtns2').click();
-                                console.log(transcript);
                                 micPopup.classList.add('hidden'); // Hide popup after result
                             };
 
@@ -775,41 +866,6 @@ if (isset($_COOKIE['user_id'])) {
             </div>
         </div>
     </div>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let SearchInput = document.getElementById("SearchInput");
-            let productList = document.getElementById("productList");
-
-            SearchInput.addEventListener("keyup", function() {
-                let query = SearchInput.value;
-                if (query != '') {
-                    let xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/shopnest/search/suggestion.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.onload = function() {
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            productList.style.display = 'block';
-                            productList.innerHTML = xhr.responseText;
-                        }
-                    };
-                    xhr.send('query=' + encodeURIComponent(query));
-
-                } else {
-                    productList.style.display = 'none';
-                    productList.innerHTML = '';
-                }
-            });
-
-            document.addEventListener('click', function() {
-                if (event.target.tagName === 'li') {
-                    SearchInput.value = event.target.textContent;
-                    productList.style.display = 'none';
-                }
-            });
-        });
-    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
