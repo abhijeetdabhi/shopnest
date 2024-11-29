@@ -63,7 +63,6 @@ if (isset($_POST["query"])) {
     $result = mysqli_query($con, $query);
 
     // Output list items dynamically
-    $output = '<ul class="max-h-60 overflow-y-auto border border-gray-300 bg-white rounded-b-lg shadow-lg custom-scrollbar">';
 
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_array($result)) {
@@ -83,7 +82,6 @@ if (isset($_POST["query"])) {
         $output .= "<li class='p-2 text-gray-500 text-center'>Product not found</li>";
     }
 
-    $output .= "</ul>";
     echo $output;
 }
 ?>

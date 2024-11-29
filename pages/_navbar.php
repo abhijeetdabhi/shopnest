@@ -157,6 +157,12 @@ if (isset($_COOKIE['user_id'])) {
                 opacity: 1;
             }
         }
+
+        #suggestions-list,
+        #suggestions-list2 {
+            max-height: 15rem;
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -194,7 +200,7 @@ if (isset($_COOKIE['user_id'])) {
                             <input id="search-input" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems" class="lg:w-[26vw] xl:w-[40vw] h-12 pr-12 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
                             <!-- suggation -->
                             <input type="submit" id="searchBtn" name="searchBtn" class="hidden">
-                            <div id="suggestions-list" class="w-full bg-white absolute top-11 left-0 rounded-b-md z-[100]"></div>
+                            <div id="suggestions-list" class="w-full h-60 bg-white absolute top-11 left-0 rounded-b-md z-[100] list-none hidden custom-scrollbar"></div>
                             <!-- microphone button -->
                             <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn" @click="showMic=true">
                                 <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -252,11 +258,19 @@ if (isset($_COOKIE['user_id'])) {
                                     const query = searchInput.value.trim();
 
                                     if (e.key === 'ArrowDown') {
-                                        currentIndex = (currentIndex + 1) % items.length;
+                                        // Move to the next suggestion
+                                        if (currentIndex < items.length - 1) {
+                                            currentIndex++;
+                                        }
                                         highlightSuggestion();
+                                        scrollToSuggestion();
                                     } else if (e.key === 'ArrowUp') {
-                                        currentIndex = (currentIndex - 1 + items.length) % items.length;
+                                        // Move to the previous suggestion
+                                        if (currentIndex > 0) {
+                                            currentIndex--;
+                                        }
                                         highlightSuggestion();
+                                        scrollToSuggestion();
                                     } else if (e.key === 'Enter') {
                                         if (currentIndex >= 0 && currentIndex < items.length) {
                                             const selectedSuggestion = items[currentIndex];
@@ -278,6 +292,24 @@ if (isset($_COOKIE['user_id'])) {
                                     if (currentIndex >= 0 && currentIndex < items.length) {
                                         const selectedItem = items[currentIndex];
                                         selectedItem.classList.add('bg-gray-300');
+                                    }
+                                };
+
+                                // Scroll to the selected suggestion
+                                const scrollToSuggestion = () => {
+                                    const items = suggestionsList.querySelectorAll('li');
+                                    const selectedItem = items[currentIndex];
+                                    if (selectedItem) {
+                                        const container = suggestionsList;
+                                        const itemRect = selectedItem.getBoundingClientRect();
+                                        const containerRect = container.getBoundingClientRect();
+
+                                        // Scroll the container to ensure the selected item is visible
+                                        if (itemRect.top < containerRect.top) {
+                                            container.scrollTop -= (containerRect.top - itemRect.top);
+                                        } else if (itemRect.bottom > containerRect.bottom) {
+                                            container.scrollTop += (itemRect.bottom - containerRect.bottom);
+                                        }
                                     }
                                 };
 
@@ -570,7 +602,7 @@ if (isset($_COOKIE['user_id'])) {
                         <input id="search-input2" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems2" class="w-full h-12 pr-10 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
                         <!-- suggetion -->
                         <input type="submit" id="searchBtn2" name="searchBtn2" class="hidden">
-                        <div id="suggestions-list2" class="w-full bg-white absolute top-12 left-0 rounded-md z-[100]"></div>
+                        <div id="suggestions-list2" class="w-full h-60 bg-white absolute top-11 left-0 rounded-b-md z-[100] list-none hidden custom-scrollbar"></div>
                         <!-- microphone button -->
                         <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn2" @click="showMic2=true">
                             <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -628,11 +660,19 @@ if (isset($_COOKIE['user_id'])) {
                                 const query = searchInput.value.trim();
 
                                 if (e.key === 'ArrowDown') {
-                                    currentIndex = (currentIndex + 1) % items.length;
+                                    // Move to the next suggestion
+                                    if (currentIndex < items.length - 1) {
+                                        currentIndex++;
+                                    }
                                     highlightSuggestion();
+                                    scrollToSuggestion();
                                 } else if (e.key === 'ArrowUp') {
-                                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                                    // Move to the previous suggestion
+                                    if (currentIndex > 0) {
+                                        currentIndex--;
+                                    }
                                     highlightSuggestion();
+                                    scrollToSuggestion();
                                 } else if (e.key === 'Enter') {
                                     if (currentIndex >= 0 && currentIndex < items.length) {
                                         const selectedSuggestion = items[currentIndex];
@@ -654,6 +694,24 @@ if (isset($_COOKIE['user_id'])) {
                                 if (currentIndex >= 0 && currentIndex < items.length) {
                                     const selectedItem = items[currentIndex];
                                     selectedItem.classList.add('bg-gray-300');
+                                }
+                            };
+
+                            // Scroll to the selected suggestion
+                            const scrollToSuggestion = () => {
+                                const items = suggestionsList.querySelectorAll('li');
+                                const selectedItem = items[currentIndex];
+                                if (selectedItem) {
+                                    const container = suggestionsList;
+                                    const itemRect = selectedItem.getBoundingClientRect();
+                                    const containerRect = container.getBoundingClientRect();
+
+                                    // Scroll the container to ensure the selected item is visible
+                                    if (itemRect.top < containerRect.top) {
+                                        container.scrollTop -= (containerRect.top - itemRect.top);
+                                    } else if (itemRect.bottom > containerRect.bottom) {
+                                        container.scrollTop += (itemRect.bottom - containerRect.bottom);
+                                    }
                                 }
                             };
 
