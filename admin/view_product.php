@@ -193,7 +193,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                         <div class="bg-white rounded-tl-xl rounded-br-xl shadow-sm overflow-hidden max-w-xs w-full">
                                             <div class="relative flex justify-center p-2">
                                                 <a href="../src/product_image/"></a>
-                                                <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-64 w-64 object-cover rounded-tl-xl rounded-br-xl">
+                                                <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-64 w-64 object-fill rounded-tl-xl rounded-br-xl">
                                                 <?php
                                                 $conditionClass = isset($_COOKIE['adminEmail']) ? ($res['Item_Condition'] === 'Old Condition' ? 'bg-orange-500' : 'bg-green-500'): 'bg-green-500';
                                                 ?>
