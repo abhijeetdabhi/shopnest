@@ -76,8 +76,8 @@
 
         <!-- tissot -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Tissot">
-                <img class="pt-1" src="/shopnest/src/company_partner/tissot.svg" alt="">
+            <a href="/shopnest/pages/brands_products.php?brandName=Citizen">
+                <img class="pt-1" src="/shopnest/src/company_partner/citizen.svg" alt="">
             </a>
         </div>
 
