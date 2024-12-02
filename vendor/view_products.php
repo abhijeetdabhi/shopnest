@@ -187,12 +187,12 @@ if (isset($_COOKIE['vendor_id'])) {
                                 if (mysqli_num_rows($product_query) > 0) {
                                     while ($res = mysqli_fetch_assoc($product_query)) {
                                         ?>
-                                            <div class="card w-full flex-shrink-0 p-4">
+                                            <div class="card flex-shrink-0 p-4">
 
-                                                <div class="bg-white border rounded-tl-xl rounded-br-xl transition transform hover:shadow-lg overflow-hidden">
+                                                <div class="bg-white border rounded-tl-xl rounded-br-xl transition transform hover:shadow-lg overflow-hidden h-[28rem] w-[17rem]">
                                                     <div class="p-3">
                                                         <div>
-                                                            <img src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" class="h-56 w-full object-cover mix-blend-multiply" alt="">
+                                                            <img src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" class="h-56 w-full object-fill mix-blend-multiply" alt="">
                                                         </div>
                                                         <div class="mt-2">
                                                             <div class="space-y-1">
