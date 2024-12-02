@@ -187,7 +187,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                 if (mysqli_num_rows($product_query) > 0) {
                                     while ($res = mysqli_fetch_assoc($product_query)) {
                                         ?>
-                                            <div class="card flex-shrink-0 p-4">
+                                            <div class="card flex-shrink-0 p-4 relative">
 
                                                 <div class="bg-white border rounded-tl-xl rounded-br-xl transition transform hover:shadow-lg overflow-hidden h-[28rem] w-[17rem]">
                                                     <div class="p-3">
@@ -205,29 +205,31 @@ if (isset($_COOKIE['vendor_id'])) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="w-full flex justify-between h-10 divide-x-2 border-t-2">
-                                                        <!-- edit -->
-                                                        <a href="update_product.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" title="Edit Your Product" class="w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
-                                                            <i class="fa-regular fa-pen-to-square"></i>
-                                                            Edit
-                                                        </a>
-
-                                                        <!-- delete -->
-                                                        <a href="delete_product.php?product_id=<?php echo $res['product_id'] ?>" title="Delete Your Product" class="w-full inline-flex justify-center items-center gap-1 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer">
-                                                            <i class="fa-solid fa-trash text-base"></i>
-                                                            Remove
-                                                        </a>
-                                                    </div>
-                                                    <div class="border-t-2 w-full ">
-                                                        <!-- edit -->
-                                                        <a href="add_color.php?product_id=<?php echo $res['product_id'] ?>" class="inline-flex justify-center items-center gap-1 text-blue-600 w-full py-2">
-                                                            <svg class="w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                                                <g>
-                                                                    <path d="M14 32a5 5 0 1 0 5 5 5.006 5.006 0 0 0-5-5Zm0 8a3 3 0 1 1 3-3 3.003 3.003 0 0 1-3 3Zm9 3a5 5 0 1 0 5 5 5.006 5.006 0 0 0-5-5Zm0 8a3 3 0 1 1 3-3 3.003 3.003 0 0 1-3 3Zm-6-23a5 5 0 1 0-5-5 5.006 5.006 0 0 0 5 5Zm0-8a3 3 0 1 1-3 3 3.003 3.003 0 0 1 3-3Zm13 1a5 5 0 1 0-5-5 5.006 5.006 0 0 0 5 5Zm0-8a3 3 0 1 1-3 3 3.003 3.003 0 0 1 3-3Zm31.363-8.363C58.798 2.072 51.15 8 46.458 12.41A26.998 26.998 0 1 0 29 60c2.852 0 5.09-.979 6.146-2.686.663-1.072 1.158-2.943-.251-5.761a6.297 6.297 0 0 1-.052-5.961C35.89 43.896 38.02 43 41 43c7.417 0 15-1.188 15-10a27.003 27.003 0 0 0-3.171-12.662c4.443-4.57 11.25-12.983 8.534-15.701ZM59.95 6.05c.626.675-1.721 6.07-9.119 13.467a62.857 62.857 0 0 1-5.708 5.071 12.112 12.112 0 0 0-3.711-3.711 62.857 62.857 0 0 1 5.071-5.708C53.88 7.772 59.276 5.427 59.95 6.05ZM38.125 25.888a25.742 25.742 0 0 1 2.089-3.407 10.117 10.117 0 0 1 3.305 3.305 25.742 25.742 0 0 1-3.407 2.089 6.034 6.034 0 0 0-1.987-1.987ZM39 31c0 2.365-2.464 5-6 5a8.602 8.602 0 0 1-5.924-2.023c2.116-.458 3.069-2.247 3.87-3.751C32.012 28.226 32.777 27 35 27a4.004 4.004 0 0 1 4 4Zm2 10c-4.687 0-6.86 1.925-7.858 3.54a8.211 8.211 0 0 0-.037 7.907c.801 1.6.915 2.885.34 3.817C32.771 57.35 31.11 58 29 58a25 25 0 1 1 16-44.174c-4.05 4.06-7.23 8.197-8.732 11.312A5.996 5.996 0 0 0 35 25c-3.537 0-4.802 2.376-5.818 4.285-1.093 2.052-1.768 3.102-4.018 2.729a1 1 0 0 0-1.059 1.433C24.198 33.633 26.457 38 33 38c4.785 0 8-3.62 8-7a5.996 5.996 0 0 0-.138-1.268 44.957 44.957 0 0 0 10.48-7.926A24.998 24.998 0 0 1 54 33c0 5.757-3.645 8-13 8Z" data-name="29-Art" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                                </g>
-                                                            </svg>
-                                                            <h2>Add colors</h2>
-                                                        </a>
+                                                    <div class="absolute bottom-0 w-full">
+                                                        <div class="w-full flex justify-between h-10 divide-x-2 border-t-2">
+                                                            <!-- edit -->
+                                                            <a href="update_product.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" title="Edit Your Product" class="w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
+                                                                <i class="fa-regular fa-pen-to-square"></i>
+                                                                Edit
+                                                            </a>
+    
+                                                            <!-- delete -->
+                                                            <a href="delete_product.php?product_id=<?php echo $res['product_id'] ?>" title="Delete Your Product" class="w-full inline-flex justify-center items-center gap-1 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer">
+                                                                <i class="fa-solid fa-trash text-base"></i>
+                                                                Remove
+                                                            </a>
+                                                        </div>
+                                                        <div class="border-t-2 w-full ">
+                                                            <!-- edit -->
+                                                            <a href="add_color.php?product_id=<?php echo $res['product_id'] ?>" class="inline-flex justify-center items-center gap-1 text-blue-600 w-full py-2">
+                                                                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                                                    <g>
+                                                                        <path d="M14 32a5 5 0 1 0 5 5 5.006 5.006 0 0 0-5-5Zm0 8a3 3 0 1 1 3-3 3.003 3.003 0 0 1-3 3Zm9 3a5 5 0 1 0 5 5 5.006 5.006 0 0 0-5-5Zm0 8a3 3 0 1 1 3-3 3.003 3.003 0 0 1-3 3Zm-6-23a5 5 0 1 0-5-5 5.006 5.006 0 0 0 5 5Zm0-8a3 3 0 1 1-3 3 3.003 3.003 0 0 1 3-3Zm13 1a5 5 0 1 0-5-5 5.006 5.006 0 0 0 5 5Zm0-8a3 3 0 1 1-3 3 3.003 3.003 0 0 1 3-3Zm31.363-8.363C58.798 2.072 51.15 8 46.458 12.41A26.998 26.998 0 1 0 29 60c2.852 0 5.09-.979 6.146-2.686.663-1.072 1.158-2.943-.251-5.761a6.297 6.297 0 0 1-.052-5.961C35.89 43.896 38.02 43 41 43c7.417 0 15-1.188 15-10a27.003 27.003 0 0 0-3.171-12.662c4.443-4.57 11.25-12.983 8.534-15.701ZM59.95 6.05c.626.675-1.721 6.07-9.119 13.467a62.857 62.857 0 0 1-5.708 5.071 12.112 12.112 0 0 0-3.711-3.711 62.857 62.857 0 0 1 5.071-5.708C53.88 7.772 59.276 5.427 59.95 6.05ZM38.125 25.888a25.742 25.742 0 0 1 2.089-3.407 10.117 10.117 0 0 1 3.305 3.305 25.742 25.742 0 0 1-3.407 2.089 6.034 6.034 0 0 0-1.987-1.987ZM39 31c0 2.365-2.464 5-6 5a8.602 8.602 0 0 1-5.924-2.023c2.116-.458 3.069-2.247 3.87-3.751C32.012 28.226 32.777 27 35 27a4.004 4.004 0 0 1 4 4Zm2 10c-4.687 0-6.86 1.925-7.858 3.54a8.211 8.211 0 0 0-.037 7.907c.801 1.6.915 2.885.34 3.817C32.771 57.35 31.11 58 29 58a25 25 0 1 1 16-44.174c-4.05 4.06-7.23 8.197-8.732 11.312A5.996 5.996 0 0 0 35 25c-3.537 0-4.802 2.376-5.818 4.285-1.093 2.052-1.768 3.102-4.018 2.729a1 1 0 0 0-1.059 1.433C24.198 33.633 26.457 38 33 38c4.785 0 8-3.62 8-7a5.996 5.996 0 0 0-.138-1.268 44.957 44.957 0 0 0 10.48-7.926A24.998 24.998 0 0 1 54 33c0 5.757-3.645 8-13 8Z" data-name="29-Art" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                                    </g>
+                                                                </svg>
+                                                                <h2>Add colors</h2>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

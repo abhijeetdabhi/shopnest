@@ -190,7 +190,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                     $row = mysqli_fetch_assoc($vendor_query);
     
                                     ?>
-                                        <div class="bg-white rounded-tl-xl rounded-br-xl shadow-sm overflow-hidden max-w-xs w-full">
+                                        <div class="bg-white rounded-tl-xl rounded-br-xl shadow-sm overflow-hidden max-w-xs w-full h-[33.5rem] relative">
                                             <div class="relative flex justify-center p-2">
                                                 <a href="../src/product_image/"></a>
                                                 <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-64 w-64 object-fill rounded-tl-xl rounded-br-xl">
@@ -215,7 +215,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                                     <p class="text-sm font-medium text-gray-500 line-through">₹<?php echo isset($_COOKIE['adminEmail']) ? $res['vendor_price'] : 'Delete Price' ?></p>
                                                 </div>
                                             </div>
-                                            <div class="w-full flex justify-between h-10 divide-x-2 border-t-2 mt-2">
+                                            <div class="w-full flex justify-between h-10 divide-x-2 border-t-2 mt-2 absolute bottom-0">
                                                 <a href="edit_vendor_products.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
                                                     <i class="fa-regular fa-pen-to-square"></i>
                                                     <span>Edit</span>
