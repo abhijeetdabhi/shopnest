@@ -51,7 +51,7 @@ if(!isset($_GET['vendor_id'])){
                         </g>
                     </svg>
                 </a>
-                <h2 class="font-manrope font-bold text-xl md:text-4xl leading-10 text-black w-full text-center">Vendor Producs</h2>
+                <h2 class="font-manrope font-bold text-xl md:text-4xl leading-10 text-black w-full text-center">Vendor Products</h2>
             </div>
             <section class="py-4 px-6 overflow-auto">
             <?php

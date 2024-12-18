@@ -178,64 +178,86 @@ if (isset($_COOKIE['vendor_id'])) {
                         $vendor_data = "SELECT * FROM vendor_registration";
                         $vendor_query = mysqli_query($con, $vendor_data);
 
-                        ?>
-                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 min-[1544px]:grid-cols-4 gap-6 mx-4 md:mx-12 my-12">
-                                <?php
-                                if (mysqli_num_rows($vendor_query) > 0) {
-                                    while ($row = mysqli_fetch_assoc($vendor_query)) {
-                                    ?>
-                                        <div class="w-full h-auto m-auto bg-white rounded-tl-3xl rounded-br-3xl shadow-lg text-center overflow-hidden">
-                                            <div class="flex justify-center">
+                    ?>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 min-[1544px]:grid-cols-4 gap-6 mx-4 md:mx-12 my-12">
+                            <?php
+                            if (mysqli_num_rows($vendor_query) > 0) {
+                                while ($row = mysqli_fetch_assoc($vendor_query)) {
+                            ?>
+                                    <div class="w-full h-auto m-auto bg-white rounded-tl-3xl rounded-br-3xl shadow-lg text-center overflow-hidden">
+                                        <div class="flex justify-center">
+                                            <div class="w-full">
                                                 <div class="w-full">
-                                                    <div class="w-full">
-                                                        <img class="w-full h-40" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://demo.tailadmin.com/src/images/cover/cover-01.png' ?>" alt="">
-                                                    </div>
-                                                    <div class="h-28 -my-10 z-10 flex justify-center">
-                                                        <img class="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://via.placeholder.com/150' ?>" alt="Profile Picture">
-                                                    </div>
+                                                    <img class="w-full h-40" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://demo.tailadmin.com/src/images/cover/cover-01.png' ?>" alt="">
                                                 </div>
-                                            </div>
-                                            <div class=" text-center">
-                                                <div class="px-6 py-4">
-                                                    <h2 class="text-xl font-semibold"><?php echo isset($_COOKIE['adminEmail']) ? $row['username'] : 'UserName' ?></h2>
-                                                    <a href="mailto:<?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email' ?>" class="text-sm text-gray-500"><?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email' ?></a>
-                                                </div>
-                                                <div class="flex justify-between items-center divide-x-2 border-t-2">
-                                                    <a href="tel:<?php echo isset($_COOKIE['adminEmail']) ? $row['phone'] : 'phone' ?>" class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
-                                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 480.56 480.56" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                                            <g>
-                                                                <path d="M365.354 317.9c-15.7-15.5-35.3-15.5-50.9 0-11.9 11.8-23.8 23.6-35.5 35.6-3.2 3.3-5.9 4-9.8 1.8-7.7-4.2-15.9-7.6-23.3-12.2-34.5-21.7-63.4-49.6-89-81-12.7-15.6-24-32.3-31.9-51.1-1.6-3.8-1.3-6.3 1.8-9.4 11.9-11.5 23.5-23.3 35.2-35.1 16.3-16.4 16.3-35.6-.1-52.1-9.3-9.4-18.6-18.6-27.9-28-9.6-9.6-19.1-19.3-28.8-28.8-15.7-15.3-35.3-15.3-50.9.1-12 11.8-23.5 23.9-35.7 35.5-11.3 10.7-17 23.8-18.2 39.1-1.9 24.9 4.2 48.4 12.8 71.3 17.6 47.4 44.4 89.5 76.9 128.1 43.9 52.2 96.3 93.5 157.6 123.3 27.6 13.4 56.2 23.7 87.3 25.4 21.4 1.2 40-4.2 54.9-20.9 10.2-11.4 21.7-21.8 32.5-32.7 16-16.2 16.1-35.8.2-51.8-19-19.1-38.1-38.1-57.2-57.1zM346.254 238.2l36.9-6.3c-5.8-33.9-21.8-64.6-46.1-89-25.7-25.7-58.2-41.9-94-46.9l-5.2 37.1c27.7 3.9 52.9 16.4 72.8 36.3 18.8 18.8 31.1 42.6 35.6 68.8zM403.954 77.8c-42.6-42.6-96.5-69.5-156-77.8l-5.2 37.1c51.4 7.2 98 30.5 134.8 67.2 34.9 34.9 57.8 79 66.1 127.5l36.9-6.3c-9.7-56.2-36.2-107.2-76.6-147.7z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                            </g>
-                                                        </svg>
-                                                        <h1><?php echo isset($_COOKIE['adminEmail']) ? $row['phone'] : 'phone' ?></h1>
-                                                    </a>
-                                                    <a href="remove_vendor.php?id=<?php echo $row['vendor_id'] ?>" class="w-full py-2 space-x-1 text-red-600">
-                                                        <i class="fa-solid fa-trash text-base"></i>
-                                                        <span>Remove</span>
-                                                    </a>
-                                                </div>
-                                                <div class="flex justify-between items-center divide-x-2 border-t-2">
-                                                    <a href="vendor_products.php?vendor_id=<?php echo isset($_COOKIE['adminEmail']) ? $row['vendor_id'] : '' ?>" class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
-                                                        <h1>Vendor's Products</h1>
-                                                    </a>
+                                                <div class="h-28 -my-10 z-10 flex justify-center">
+                                                    <img class="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://via.placeholder.com/150' ?>" alt="Profile Picture">
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php
+                                        <div class=" text-center">
+                                            <div class="px-6 py-4">
+                                                <h2 class="text-xl font-semibold"><?php echo isset($_COOKIE['adminEmail']) ? $row['username'] : 'UserName' ?></h2>
+                                                <a href="mailto:<?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email' ?>" class="text-sm text-gray-500"><?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email' ?></a>
+                                            </div>
+                                            <div class="flex justify-between items-center divide-x-2 border-t-2">
+                                                <a href="tel:<?php echo isset($_COOKIE['adminEmail']) ? $row['phone'] : 'phone' ?>" class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
+                                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 480.56 480.56" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                                        <g>
+                                                            <path d="M365.354 317.9c-15.7-15.5-35.3-15.5-50.9 0-11.9 11.8-23.8 23.6-35.5 35.6-3.2 3.3-5.9 4-9.8 1.8-7.7-4.2-15.9-7.6-23.3-12.2-34.5-21.7-63.4-49.6-89-81-12.7-15.6-24-32.3-31.9-51.1-1.6-3.8-1.3-6.3 1.8-9.4 11.9-11.5 23.5-23.3 35.2-35.1 16.3-16.4 16.3-35.6-.1-52.1-9.3-9.4-18.6-18.6-27.9-28-9.6-9.6-19.1-19.3-28.8-28.8-15.7-15.3-35.3-15.3-50.9.1-12 11.8-23.5 23.9-35.7 35.5-11.3 10.7-17 23.8-18.2 39.1-1.9 24.9 4.2 48.4 12.8 71.3 17.6 47.4 44.4 89.5 76.9 128.1 43.9 52.2 96.3 93.5 157.6 123.3 27.6 13.4 56.2 23.7 87.3 25.4 21.4 1.2 40-4.2 54.9-20.9 10.2-11.4 21.7-21.8 32.5-32.7 16-16.2 16.1-35.8.2-51.8-19-19.1-38.1-38.1-57.2-57.1zM346.254 238.2l36.9-6.3c-5.8-33.9-21.8-64.6-46.1-89-25.7-25.7-58.2-41.9-94-46.9l-5.2 37.1c27.7 3.9 52.9 16.4 72.8 36.3 18.8 18.8 31.1 42.6 35.6 68.8zM403.954 77.8c-42.6-42.6-96.5-69.5-156-77.8l-5.2 37.1c51.4 7.2 98 30.5 134.8 67.2 34.9 34.9 57.8 79 66.1 127.5l36.9-6.3c-9.7-56.2-36.2-107.2-76.6-147.7z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                        </g>
+                                                    </svg>
+                                                    <h1><?php echo isset($_COOKIE['adminEmail']) ? $row['phone'] : 'phone' ?></h1>
+                                                </a>
+                                                <a href="remove_vendor.php?id=<?php echo $row['vendor_id'] ?>" class="w-full py-2 space-x-1 text-red-600">
+                                                    <i class="fa-solid fa-trash text-base"></i>
+                                                    <span>Remove</span>
+                                                </a>
+                                            </div>
+                                            <div class="flex justify-between items-center divide-x-2 border-t-2">
+                                                <a href="vendor_products.php?vendor_id=<?php echo isset($_COOKIE['adminEmail']) ? $row['vendor_id'] : '' ?>" class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-blue-600">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-6">
+                                                            <g>
+                                                                <defs>
+                                                                    <clipPath id="a" clipPathUnits="userSpaceOnUse">
+                                                                        <path d="M0 512h512V0H0Z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                                    </clipPath>
+                                                                </defs>
+                                                                <g clip-path="url(#a)" transform="matrix(1.33333 0 0 -1.33333 0 682.667)">
+                                                                    <path d="m0 0-120-40v-181L0-181Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(496 236)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0 120-40v-181L0-181Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 236)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0-120-40-120 40 120 40Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(496 236)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0-120-40v-181L0-181Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 236)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0 120-40v-181L0-181Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(16 236)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0-120-40-120 40 120 40Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 236)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0-120-40v-181L0-181Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(376 457)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0 120-40v-181L0-181Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(136 457)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                    <path d="m0 0-120-40-120 40 120 40Z" style="stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(376 457)" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor"></path>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="text-lg tracking-wider">Products</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
 
-                                    }
-                                }else{
-                                    ?>
-                                        <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Vendor Found for this period.</div>
-                                    <?php
                                 }
+                            } else {
                                 ?>
-                            </div>
-                        <?php
-                    } else{
-                        ?>
-                            <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Vendor Found for this period.</div>
-                        <?php
+                                <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Vendor Found for this period.</div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Vendor Found for this period.</div>
+                    <?php
                     }
                     ?>
                 </main>
@@ -247,4 +269,5 @@ if (isset($_COOKIE['vendor_id'])) {
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
 </body>
+
 </html>
