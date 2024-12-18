@@ -1,17 +1,17 @@
 <?php
 
 if (!isset($_GET['product_id']) || !isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: /index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: /vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: /admin/dashboard.php");
     exit;
 }
 ?>
@@ -40,7 +40,7 @@ if (isset($_GET['product_id'])) {
 
         $productPrice = implode("", $products_price);
 
-        $totalPriceWithQty = $productPrice * $qty;
+        $totalPriceWithQty = number_format($productPrice * $qty);
     }
 
 
@@ -108,7 +108,7 @@ if (isset($_GET['product_id'])) {
     <div id="overlay" class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 text-white flex items-center justify-center text-xl font-semibold z-50 hidden">
         <div>
             <div class="text-gray-200 w-12 h-12 border-4 border-white border-opacity-30 border-t-4 border-t-black rounded-full animate-spin mx-auto"></div>
-            <p class="mt-4">Sending Email... Please Wait.</p>
+            <p class="mt-4">Re-Order Placing...</p>
         </div>
     </div>
 
@@ -116,27 +116,27 @@ if (isset($_GET['product_id'])) {
 
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
         <div class="flex items-center justify-center">
-            <a class="flex items-center" href="/shopnest/index.php">
+            <a class="flex items-center" href="/index.php">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-9 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-7 sm:w-14" src="/src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-28 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-20 sm:w-36" src="/src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>
         <div class="flex items-center">
             <div x-data="{ dropdownOpen: false }" class="relative">
                 <button @click="dropdownOpen = !dropdownOpen" class="relative block w-8 h-8 md:w-10 md:h-10 overflow-hidden rounded-full shadow-lg focus:outline-none transition-transform transform hover:scale-105">
-                    <img class="object-cover w-full h-full" src="<?php echo isset($_COOKIE['user_id']) ? '/shopnest/src/user_dp/' . $us['profile_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png'; ?>" alt="Your avatar">
+                    <img class="object-cover w-full h-full" src="<?php echo isset($_COOKIE['user_id']) ? '/src/user_dp/' . $us['profile_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png'; ?>" alt="Your avatar">
                 </button>
                 <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 z-10 w-full h-full" style="display: none;"></div>
                 <div x-show="dropdownOpen" class="absolute right-0 z-10 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl ring-2 ring-gray-300 divide-y-2 divide-gray-300" style="display: none;">
-                    <a href="/shopnest/user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Profile</a>
-                    <a href="/shopnest/user/show_orders.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Orders</a>
-                    <a href="/shopnest/user/user_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
+                    <a href="/user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Profile</a>
+                    <a href="/user/show_orders.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Orders</a>
+                    <a href="/user/user_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
                 </div>
             </div>
         </div>
@@ -369,7 +369,7 @@ if (isset($_GET['product_id'])) {
                 SpopUp.style.display = 'none';
                 SpopUp.style.opacity = '0';
                 document.getElementById('overlay').style.display = 'none';
-                window.location.href = "/shopnest/index.php";
+                window.location.href = "/index.php";
             }, 1500);
         }
     </script>
@@ -506,103 +506,6 @@ include "../include/connect.php";
         $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
         $update_qty_quary = mysqli_query($con, $update_qty);
 
-        if($update_qty_quary){
-            echo "<script>document.getElementById('overlay').style.display = 'flex';</script>";
-
-            // Include PHPMailer
-            include '../pages/mail.php';
-
-            // Add recipient and other email properties
-            $mail->addAddress($user_email);
-            $mail->isHTML(true);
-
-            if(isset($_GET['product_id'])){
-                $product_id = $_GET['product_id'];
-    
-                $retrieve_order = "SELECT * FROM orders WHERE product_id = '$product_id' AND user_email	= '$user_email' AND payment_type = '$paymentType' AND date = '$order_place_date'";
-                $retrieve_order_query = mysqli_query($con, $retrieve_order);
-                $res = mysqli_fetch_assoc($retrieve_order_query);
-            
-                $username = $FirstName .' '. $lastName;
-                $order_id = $res['order_id'];
-                $order_date = date('d-m-Y');
-
-                $order_titles = $order_title;
-                $order_images = $order_image;
-                $order_prices = $order_price;
-                $order_colors = $order_color;
-                $order_sizes = $order_size;
-                $order_qtys = $product_qty;
-            
-                $user_emails = $user_email;
-                $user_mobile = $Phone_number;
-                $user_address = $Address;
-            
-                $total_price = $totalProductPrice;
-                $today = date('d-m-Y', strtotime($res['date']));
-                $delivery_date = date('d-m-Y', strtotime('+5 days', strtotime($today)));
-            }
-
-            $mail->Subject = "New Order Confirmation - #$order_id";
-            $mail->Body = "<html>
-            <head>
-                <title>Order Confirmation</title>
-            </head>
-            <body>
-                <p>Dear $username,</p>
-                <p>Thank you for placing an order with us! We are excited to confirm the details of your purchase. Below are the specifics of your order:</p>
-                <p><strong>Order Number:</strong> $order_id<br>
-                <strong>Order Date:</strong> $order_date</p>
-                <h3>Items Ordered:</h3>
-                <table border='1' cellpadding='10'>
-                    <tr>
-                        <td><strong>Product Name:</strong></td>
-                        <td>$order_titles</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Image:</strong></td>
-                        <td><img src='$order_images' alt='Product Image' width='100'></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Price:</strong></td>
-                        <td>$order_prices</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Quantity:</strong></td>
-                        <td>$order_qtys</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Color:</strong></td>
-                        <td>$order_colors</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Size:</strong></td>
-                        <td>$order_sizes</td>
-                    </tr>
-                </table>
-                <p><strong>Mobile Number:</strong> $user_mobile</p>
-                <p><strong>Billing E-mail:</strong> $user_emails</p>
-                <p><strong>Billing Address:</strong> $user_address</p>
-                <p><strong>Order Total Price:</strong> $total_price</p>
-                <p><strong>Estimated Delivery Date:</strong> $delivery_date</p>
-                <p>We will send you an update when your order is on its way. If you have any questions or need further assistance, please do not hesitate to contact us.</p>
-                <p>Thank you for choosing shopNest. We look forward to serving you again!</p>
-                <p>Best regards,<br>
-                shopNest<br>
-                shopnest2603@gmail.com</p>
-            </body>
-            </html>";
-
-            // Send the email
-            if ($mail->send()) {
-                echo "<script>
-                    document.getElementById('overlay').style.display = 'none';
-                    window.location.href = '../index.php';
-                </script>";
-            } else {
-                echo "<p class='text-red-500'>There was an error sending the email. Please try again later.</p>";
-            }
-        }
     }
     ?>
     

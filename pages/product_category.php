@@ -52,7 +52,7 @@ $Category = $_GET['Category'];
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="/shopnest/src/logo/favicon.svg">
+    <link rel="shortcut icon" href="/src/logo/favIcon.svg">
 
     <style>
         .outfit {
@@ -515,7 +515,7 @@ $Category = $_GET['Category'];
                 $sort_order = 'ASC';
 
                 if ($filter_query) {
-                    $products = "SELECT * FROM products WHERE Category = '$Category' AND $filter_query";
+                    $products = "SELECT * FROM products WHERE Category = '$Category' AND $filter_query ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
                 } elseif ($selected === 'Newest') {
                     $products = "SELECT * FROM products WHERE Category = '$Category'";
                 } elseif ($selected === 'All') {
@@ -584,8 +584,8 @@ $Category = $_GET['Category'];
 
                         ?>
                             <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
-                                <div class="p-2" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                                <div class="p-2 " onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                                 </div>
                                 <div class="mt-2 space-y-3" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>

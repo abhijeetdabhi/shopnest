@@ -1,11 +1,11 @@
 <?php 
 if(isset($_COOKIE['vendor_id'])){
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: /vendor/vendor_dashboard.php");
     exit;
 }
 
 if(isset($_COOKIE['adminEmail'])){
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: /admin/dashboard.php");
     exit;
 }
 ?>
@@ -67,14 +67,14 @@ if(isset($_COOKIE['adminEmail'])){
     <footer class="p-2 outfit bg-gray-950 text-white mt-5">
         <div class="md:flex justify-between gap-10 px-2 md:px-8 py-4 space-y-5 sm:space-y-0">
             <div>
-                <a class="flex w-fit py-2" href="/shopnest/index.php">
+                <a class="flex w-fit py-2" href="/index.php">
                     <!-- icon logo div -->
                     <div>
-                        <img class="w-7 sm:w-12 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                        <img class="w-7 sm:w-12 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
                     </div>
                     <!-- text logo -->
                     <div>
-                        <img class="w-16 sm:w-32" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                        <img class="w-16 sm:w-32" src="/src/logo/white_text_logo.svg" alt="">
                     </div>
                 </a>
                 <div class="md:w-60 lg:w-[30rem] 2xl:w-[40rem] mt-3">
@@ -88,27 +88,27 @@ if(isset($_COOKIE['adminEmail'])){
                         <div class="space-y-3">
                             <h1 class="text-lg sm:text-xl">Get to know us</h1>
                             <ul class="space-y-3 text-xs sm:text-sm">
-                                <li><a class="link" href="/shopnest/pages/about_us.php">About us</a></li>
-                                <li><a class="link" href="/shopnest/pages/contact_us.php">Contact us</a></li>
-                                <li><a class="link" href="/shopnest/pages/Investor.php">Investors</a></li>
+                                <li><a class="link" href="/pages/about_us.php">About us</a></li>
+                                <li><a class="link" href="/pages/contact_us.php">Contact us</a></li>
+                                <li><a class="link" href="/pages/Investor.php">Investors</a></li>
                             </ul>
                         </div>
 
                         <div class="space-y-3">
                             <h1 class="text-lg sm:text-xl">Customer service</h1>
                             <ul class="space-y-3 text-xs sm:text-sm">
-                                <li><a class="link" href="/shopnest/pages/help_center.php">Help center</a></li>
-                                <li><a class="link" href="/shopnest/pages/FAQ.php">FAQ's</a></li>
-                                <li><a class="link" href="/shopnest/pages/payment_method.php">Payment method</a></li>
+                                <li><a class="link" href="/pages/help_center.php">Help center</a></li>
+                                <li><a class="link" href="/pages/FAQ.php">FAQ's</a></li>
+                                <li><a class="link" href="/pages/payment_method.php">Payment method</a></li>
                             </ul>
                         </div>
 
                         <div class="space-y-3">
                             <h1 class="text-lg sm:text-xl">Orders & Returns</h1>
                             <ul class="space-y-3 text-xs sm:text-sm">
-                                <li><a class="link" href="/shopnest/pages/track_order.php">Track orders</a></li>
-                                <li><a class="link" href="/shopnest/pages/shipping_&_delivery.php">Shipping & Dilivery</a></li>
-                                <li><a class="link" href="/shopnest/pages/return-exchange.php">Return & Exchange</a></li>
+                                <li><a class="link" href="/pages/track_order.php">Track orders</a></li>
+                                <li><a class="link" href="/pages/shipping_&_delivery.php">Shipping & Dilivery</a></li>
+                                <li><a class="link" href="/pages/return-exchange.php">Return & Exchange</a></li>
                             </ul>
                         </div>
                     </div>

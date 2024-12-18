@@ -1,16 +1,16 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../../admin/dashboard.php");
     exit;
 }
 ?>
@@ -153,7 +153,7 @@ if (isset($_COOKIE['adminEmail'])) {
             if ($up_query) {
             ?>
                 <!-- Successfully -->
-                <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="ApopUp" style="display: none;">
+                <div class="validInfo fixed top-0 mt-2 w-max bg-transparent px-16 h-full transition duration-300 z-50 select-none" id="ApopUp" style="display: none;">
                     <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
@@ -242,14 +242,14 @@ if (isset($_COOKIE['adminEmail'])) {
     }
     ?>
     <div class="p-2 flex items-center justify-center">
-        <a class="flex items-center mb-2" href="/shopnest/index.php">
+        <a class="flex items-center mb-2" href="../../index.php">
             <!-- icon logo div -->
             <div>
-                <img class="w-7 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                <img class="w-7 sm:w-12 mt-0.5" src="../../src/logo/black_cart_logo.svg" alt="">
             </div>
             <!-- text logo -->
             <div>
-                <img class="w-16 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                <img class="w-16 sm:w-32" src="../../src/logo/black_text_logo.svg" alt="">
             </div>
         </a>
     </div>

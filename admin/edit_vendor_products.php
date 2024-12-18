@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: /index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: /vendor/vendor_dashboard.php");
     exit;
 }
 ?>
@@ -88,11 +88,11 @@ if (isset($_GET['product_id'])) {
             <a class="flex w-fit" href="view_product.php">
                 <!-- icon logo div -->
                 <div>
-                    <img class="w-7 sm:w-14 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                    <img class="w-7 sm:w-14 mt-0.5" src="/src/logo/black_cart_logo.svg" alt="">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-16 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                    <img class="w-16 sm:w-36" src="/src/logo/black_text_logo.svg" alt="">
                 </div>
             </a>
         </div>
@@ -128,7 +128,7 @@ if (isset($_GET['product_id'])) {
                                 </div>
 
                                 <div class="md:col-span-3">
-                                    <label for="MRP" class="require">MRP:</label>
+                                    <label for="MRP" class="require">Sell Price:</label>
                                     <div class="relative">
                                         <input type="text" name="MyMRP" id="MRP" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:border-gray-600 focus:ring-gray-600 z-10" value="<?php echo isset($_GET['product_id']) ? $MRP : 'MRP' ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
@@ -136,7 +136,7 @@ if (isset($_GET['product_id'])) {
                                 </div>
 
                                 <div class="md:col-span-2">
-                                    <label for="your_price" class="require">Your price:</label>
+                                    <label for="your_price" class="require">MRP:</label>
                                     <div class="relative">
                                         <input type="text" name="My_your_price" id="your_price" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:border-gray-600 focus:ring-gray-600 z-10" value="<?php echo isset($_GET['product_id']) ? $Your_Price : 'Your_Price' ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
@@ -163,7 +163,7 @@ if (isset($_GET['product_id'])) {
 
                                 <div class="md:col-span-5 mt-5">
                                     <label for="keyword" class="require">Keywords:</label>
-                                    <div id="keyword-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-2 gap-3">
+                                    <div id="keyword-container" class="grid grid-cols-1 md:grid-cols-3 mt-2 gap-3">
 
                                     </div>
                                     <?php
@@ -343,7 +343,7 @@ if (isset($_GET['product_id'])) {
                             <div class="flex justify-between mt-10">
                                 <div>
 
-                                    <a href="view_products.php" class="flex items-center gap-1 bg-black text-white font-semibold py-2 px-8 rounded-tl-lg rounded-br-lg cursor-pointer">
+                                    <a href="view_product.php" class="flex items-center gap-1 bg-black text-white font-semibold py-2 px-8 rounded-tl-lg rounded-br-lg cursor-pointer">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 31.418 31.418" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-3">
                                                 <g>
@@ -440,7 +440,8 @@ if (isset($_POST['updateBtn'])) {
     }
 
     // Escape user inputs
-    $full_name = mysqli_real_escape_string($con, $_POST['full_name']);
+    $products_name = $_POST['full_name'];
+    $full_name = str_replace(['"', ',', '`'], '', $products_name);
     $Company_name = mysqli_real_escape_string($con, $_POST['Company_name']);
     $Category = mysqli_real_escape_string($con, $_GET['name']);
     $type = mysqli_real_escape_string($con, $_POST['type']);
@@ -492,7 +493,8 @@ if (isset($_POST['updateBtn'])) {
     $keyword = isset($_POST['keyword']) && is_array($_POST['keyword']) ? $_POST['keyword'] : [];
     $size = isset($_POST['size']) && is_array($_POST['size']) ? $_POST['size'] : [];
 
-    $key_value = implode(',', $keyword);
+    $myKwrd = str_replace("'", "`", $keyword);
+    $key_value = implode(',', $myKwrd);
     $size_value = !empty($size) ? implode(', ', $size) : '-';
 
     if (isset($_POST['size']) && !empty($_POST['size'])) {
@@ -574,4 +576,48 @@ if (isset($_POST['updateBtn'])) {
         echo "not updated";
     }
 }
+?><?php
+if (isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
+
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /vendor/vendor_dashboard.php");
+    exit;
+}
+?>
+<?php
+
+include "../include/connect.php";
+
+if (isset($_GET['product_id'])) {
+
+    $product = $_GET['name'];
+
+    $product_id = $_GET['product_id'];
+    $product_find = "SELECT * FROM products WHERE product_id = '$product_id'";
+    $product_query = mysqli_query($con, $product_find);
+    $row = mysqli_fetch_assoc($product_query);
+
+    $colors = $row['color'];
+
+    $productType = $_GET['name'];
+
+    $title = $row['title'];
+
+    $MRP = $row['vendor_mrp'];
+    $Your_Price = $row['vendor_price'];
+
+    if (isset($_COOKIE['vendor_id'])) {
+        $vendor_id = $_COOKIE['vendor_id'];
+
+        $retrieve_data = "SELECT * FROM vendor_registration WHERE vendor_id = '$vendor_id'";
+        $retrieve_query = mysqli_query($con, $retrieve_data);
+
+        $res = mysqli_fetch_assoc($retrieve_query);
+    }
+}
+
+
 ?>

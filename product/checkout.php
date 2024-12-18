@@ -1,17 +1,17 @@
 <?php
 
 if (!isset($_GET['product_id']) || !isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -110,7 +110,7 @@ if (isset($_GET['product_id'])) {
     <div id="overlay" class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 text-white flex items-center justify-center text-xl font-semibold z-50 hidden">
         <div>
             <div class="text-gray-200 w-12 h-12 border-4 border-white border-opacity-30 border-t-4 border-t-black rounded-full animate-spin mx-auto"></div>
-            <p class="mt-4">Sending Email... Please Wait.</p>
+            <p class="mt-4">Order Placing...</p>
         </div>
     </div>
 
@@ -118,27 +118,27 @@ if (isset($_GET['product_id'])) {
 
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
         <div class="flex items-center justify-center">
-            <a class="flex items-center" href="/shopnest/index.php">
+            <a class="flex items-center" href="/index.php">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-7 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-7 sm:w-14" src="/src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-20 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-20 sm:w-36" src="/src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>
         <div class="flex items-center">
             <div x-data="{ dropdownOpen: false }" class="relative">
                 <button @click="dropdownOpen = !dropdownOpen" class="relative block w-8 h-8 md:w-10 md:h-10 overflow-hidden rounded-full shadow-lg focus:outline-none transition-transform transform hover:scale-105">
-                    <img class="object-cover w-full h-full" src="<?php echo isset($_COOKIE['user_id']) ? '/shopnest/src/user_dp/' . $us['profile_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png'; ?>" alt="Your avatar">
+                    <img class="object-cover w-full h-full" src="<?php echo isset($_COOKIE['user_id']) ? '/src/user_dp/' . $us['profile_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png'; ?>" alt="Your avatar">
                 </button>
                 <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 z-10 w-full h-full" style="display: none;"></div>
                 <div x-show="dropdownOpen" class="absolute right-0 z-10 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl ring-2 ring-gray-300 divide-y-2 divide-gray-300" style="display: none;">
-                    <a href="/shopnest/user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Profile</a>
-                    <a href="/shopnest/user/show_orders.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Orders</a>
-                    <a href="/shopnest/user/user_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
+                    <a href="/user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Profile</a>
+                    <a href="/user/show_orders.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Orders</a>
+                    <a href="/user/user_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
                 </div>
             </div>
         </div>

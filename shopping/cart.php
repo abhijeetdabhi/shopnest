@@ -1,24 +1,24 @@
 <?php
-if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
-    exit;
-}
+    if(isset($_COOKIE['vendor_id'])){
+        header("Location: /vendor/vendor_dashboard.php");
+        exit;
+    }
 
-if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
-    exit;
-}
+    if(isset($_COOKIE['adminEmail'])){
+        header("Location: /admin/dashboard.php");
+        exit;
+    }
 ?>
 
 <?php
 include "../include/connect.php";
 session_start();
 
-if (isset($_SESSION['searchWord'])) {
+if(isset($_SESSION['searchWord'])){
     unset($_SESSION['searchWord']);
 }
 
-if (isset($_SESSION['selectedSize'])) {
+if(isset($_SESSION['selectedSize'])){
     unset($_SESSION['selectedSize']);
 }
 ?>
@@ -43,7 +43,7 @@ if (isset($_SESSION['selectedSize'])) {
     <link rel="stylesheet" href="">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="../src/logo/favIcon.svg">
+    <link rel="shortcut icon" href="/src/logo/favIcon.svg">
 
     <!-- title -->
     <title>Cart</title>
@@ -106,18 +106,18 @@ if (isset($_SESSION['selectedSize'])) {
                                     $resultNumeric = intval($result);
                                     $totalCartPrice = isset($totalCartPrice) ? $totalCartPrice + $resultNumeric : $resultNumeric;
 
-                        ?>
+                                    ?>
                                     <div class="rounded-lg bg-white p-4 shadow-md md:p-6">
                                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                             <a href="" class="shrink-0 md:order-1">
-                                                <img class="md:h-32 w-full" src="<?php echo isset($_COOKIE['Cart_products']) ? '../src/product_image/product_profile/' . $cart_products_image : '' ?>" alt="imac image" />
+                                                <img class="md:h-32 w-full" src="<?php echo isset($_COOKIE['Cart_products']) ? '/src/product_image/product_profile/' . $cart_products_image : '' ?>" alt="imac image" />
                                             </a>
 
                                             <label for="counter-input" class="sr-only">Choose quantity:</label>
                                             <div class="flex items-center justify-between md:order-3 md:justify-end">
                                                 <form method="post" action="">
                                                     <select name="qty" id="qty_<?php echo $cart_products_id; ?>" class="border mt-1 rounded pr-9 pl-4 bg-gray-50 focus:border-gray-600 focus:ring-gray-600" onchange="this.form.submit()">
-                                                        <?php
+                                                    <?php
                                                         $forQty = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
                                                         $qty_query = mysqli_query($con, $forQty);
 
@@ -141,7 +141,7 @@ if (isset($_SESSION['selectedSize'])) {
 
                                             <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                                                 <div class="flex flex-col gap-y-2">
-                                                    <a href="../product/product_detail.php?product_id=<?php echo isset($_COOKIE['Cart_products']) ? $cart_products_id : '' ?>" class="text-base font-medium hover:underline line-clamp-2"><?php echo isset($_COOKIE['Cart_products']) ? $cart_products_title : '' ?></a>
+                                                    <a href="/product/product_detail.php?product_id=<?php echo isset($_COOKIE['Cart_products']) ? $cart_products_id : '' ?>" class="text-base font-medium hover:underline line-clamp-2"><?php echo isset($_COOKIE['Cart_products']) ? $cart_products_title : '' ?></a>
                                                     <h1>Color: <?php echo isset($_COOKIE['Cart_products']) ? $cart_products_color : '' ?></h1>
                                                     <h1>Size: <?php echo isset($_COOKIE['Cart_products']) ? $cart_products_size : '' ?></h1>
                                                 </div>
@@ -207,7 +207,7 @@ if (isset($_SESSION['selectedSize'])) {
                             $size = 'size';
                             $url = 'checkout_from_cart.php?totalPrice=' . urlencode($totalCartPrice) . '&qty=' . urlencode($encode_josn);
                         } else {
-                            $url = '../authentication/user_auth/user_login.php';
+                            $url = '/authentication/user_auth/user_login.php';
                         }
                         ?>
                         <?php
@@ -233,7 +233,7 @@ if (isset($_SESSION['selectedSize'])) {
 
                         <div class="flex items-center justify-center gap-2">
                             <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
-                            <a href="../index.php" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+                            <a href="/index.php" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
                                 Continue shopping
                                 <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
@@ -253,21 +253,21 @@ if (isset($_SESSION['selectedSize'])) {
             <?php
             $product_find = "SELECT * FROM products ORDER BY RAND() LIMIT 4";
             $product_query = mysqli_query($con, $product_find);
-
+        
             if ($product_query) {
-
+        
                 while ($res = mysqli_fetch_assoc($product_query)) {
                     $product_id = $res['product_id'];
-
+                    
                     $MRP = $res['vendor_mrp'];
 
                     // for qty
-                    if ($res['Quantity'] > 0) {
+                    if($res['Quantity'] > 0){
                         $qty = 1;
-                    } else {
+                    }else{
                         $qty = 0;
                     }
-
+        
                     // for the size
                     $size = $res['size'];
                     $filter_size = explode(',', $size);
@@ -275,16 +275,16 @@ if (isset($_SESSION['selectedSize'])) {
                         $product_size;
                         break;
                     }
-            ?>
-
+                    ?>
+        
                     <div class="swiper-slide">
                         <div class=" flex justify-center">
-                            <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
-                                <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '/shopnest/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                            <div class="product-card card flex flex-col items-center ring-2 ring-gray-300 rounded-tl-2xl rounded-br-2xl w-64 hover:ring-none overflow-hidden">
+                                <div class="p-2" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                    <img src="<?php echo '/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                                 </div>
-                                <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
+                                <div class="mt-2 space-y-3" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                    <a href="/product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
                                     <div class="flex justify-between px-2">
                                         <p class="space-x-1">
                                             <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
@@ -301,23 +301,23 @@ if (isset($_SESSION['selectedSize'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
+                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
                                     <?php
-                                    if ($qty > 0) {
-                                    ?>
-                                        <a href="<?php echo $qty > 0 ? '/shopnest/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                    <?php
-                                    } else {
-                                    ?>
-                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                    <?php
-                                    }
+                                        if($qty > 0){
+                                            ?>
+                                                <a href="<?php echo $qty > 0 ? '/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                            <?php
+                                        }else{
+                                            ?>
+                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                            <?php
+                                        }
                                     ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <?php
+        <?php
                 }
             } else {
                 echo "Error " . mysqli_errno($con);

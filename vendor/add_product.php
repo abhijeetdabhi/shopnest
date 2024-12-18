@@ -6,12 +6,12 @@ if (!isset($_GET['name'])) {
 }
 
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/user/profile.php");
+    header("Location: ../user/profile.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -85,11 +85,11 @@ if (isset($_GET['name'])) {
             <a class="flex items-center" href="choose_product.php">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-9 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-7 sm:w-14" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-28 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-20 sm:w-36" src="../src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>
@@ -145,7 +145,7 @@ if (isset($_GET['name'])) {
                                 </div>
 
                                 <div class="md:col-span-3">
-                                    <label for="MRP" class="require">MRP:</label>
+                                    <label for="MRP" class="require">Sell Price:</label>
                                     <div class="relative">
                                         <input type="number" name="MRP" id="MRP" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['MRP']) ? $_SESSION['MRP'] : ''; ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
@@ -153,7 +153,7 @@ if (isset($_GET['name'])) {
                                 </div>
 
                                 <div class="md:col-span-2">
-                                    <label for="your_price" class="require">Your price:</label>
+                                    <label for="your_price" class="require">MRP:</label>
                                     <div class="relative">
                                         <input type="number" name="your_price" id="your_price" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['your_price']) ? $_SESSION['your_price'] : ''; ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
@@ -180,9 +180,9 @@ if (isset($_GET['name'])) {
 
                                 <div class="md:col-span-5 mt-5">
                                     <label for="keyword" class="require">Keywords:</label>
-                                    <div id="keyword-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-2 gap-3">
+                                    <div id="keyword-container" class="grid grid-cols-2 md:grid-cols-3 mt-2 gap-3">
                                         <div class="flex items-center relative">
-                                            <input type="text" name="keyword[]" placeholder="Enter keyword" class="relative h-10 border rounded px-4 md:w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600">
+                                            <input type="text" name="keyword[]" placeholder="Enter keyword" class="relative h-10 border rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600">
                                         </div>
                                     </div>
                                     <button id="add-keyword" class="px-4 py-2 bg-gray-600 text-white rounded-tl-lg rounded-br-lg mt-2">Add more keyword</button>
@@ -602,7 +602,7 @@ if (isset($_POST['submitBtn'])) {
 
     $same_id = $_POST['same_id'];
     $products_name = $_POST['full_name'];
-    $full_name = str_replace("'", "/", $products_name);
+    $full_name = str_replace(['"', ',', "'"], '`', $products_name);
     $Company_name = mysqli_real_escape_string($con, $_POST['Company_name']);
     $Category = mysqli_real_escape_string($con, $_GET['name']);
     $type = mysqli_real_escape_string($con, $_POST['type']);
@@ -656,8 +656,9 @@ if (isset($_POST['submitBtn'])) {
     $kwrd = [];
     foreach ($keyword as $kwrd) {
         $kwrd = $_POST['keyword'];
+        $myKwrd = str_replace("'", "`", $kwrd);
     }
-    $keywords_value = implode(', ', $kwrd);
+    $keywords_value = implode(', ', $myKwrd);
 
 
     // main images 
@@ -843,9 +844,9 @@ if (isset($_POST['submitBtn'])) {
                 unset($_SESSION['description']);
                 unset($_SESSION['color']);
 
-                echo '<script>displaySuccessMessage("Data Inserted.");</script>';
+                echo '<script>displaySuccessMessage("Your Product Added Successfully.");</script>';
             } else {
-                echo '<script>displayErrorMessage("Data not Inserted Properly.");</script>';
+                echo '<script>displayErrorMessage("Your Product not Added Properly.");</script>';
             }
         } else {
             echo '<script>displayErrorMessage("Some files could not be uploaded.");</script>';

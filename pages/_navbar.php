@@ -37,7 +37,7 @@ if (isset($_COOKIE['user_id'])) {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="../src/logo/favicon.svg">
+    <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <script>
         function showSidebar() {
@@ -179,14 +179,14 @@ if (isset($_COOKIE['user_id'])) {
                 </button>
                 <!-- logo -->
                 <div>
-                    <a class="flex w-fit py-2 focus:outline-none" href="/shopnest/index.php">
+                    <a class="flex w-fit py-2 focus:outline-none" href="../index.php">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-7 sm:w-12 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-7 sm:w-12 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-16 sm:w-32" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-16 sm:w-32" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -225,7 +225,7 @@ if (isset($_COOKIE['user_id'])) {
                                         return;
                                     }
 
-                                    fetch('/shopnest/search/suggestion.php', {
+                                    fetch('../search/suggestion.php', {
                                             method: 'POST',
                                             body: new URLSearchParams({
                                                 query
@@ -275,7 +275,7 @@ if (isset($_COOKIE['user_id'])) {
                                         if (query === '') {
                                             // If search input is empty, redirect to the index page
                                             e.preventDefault();
-                                            window.location.href = '/shopnest/index.php'; // Redirect to index page
+                                            window.location.href = '../index.php'; // Redirect to index page
                                         } else if (currentIndex >= 0 && currentIndex < items.length) {
                                             const selectedSuggestion = items[currentIndex];
                                             const link = selectedSuggestion.querySelector('a');
@@ -284,7 +284,7 @@ if (isset($_COOKIE['user_id'])) {
                                                 window.location.href = link.href;
                                             }
                                         } else if (query) {
-                                            window.location.assign(`/shopnest/search/search_items.php?query=${encodeURIComponent(query)}`);
+                                            window.location.assign(`../search/search_items.php?query=${encodeURIComponent(query)}`);
                                         }
                                     }
                                 });
@@ -435,10 +435,14 @@ if (isset($_COOKIE['user_id'])) {
                 <?php
                 if (isset($_POST["searchBtn"])) {
                     $searchName = $_POST['searchInputItems'];
-                    $filterName = str_replace(' ', '+', $searchName);
-                ?>
+                    $filterName = str_replace(' ', '+', $searchName); // Replace spaces with "+" for URL compatibility
+                    ?>
                     <script>
-                        window.location.href = "/shopnest/search/search_items.php?searchName=<?php echo $filterName; ?>"
+                        let filterName = "<?php echo htmlspecialchars($filterName, ENT_QUOTES, 'UTF-8'); ?>";
+
+                        if (filterName != "") {
+                            window.location.href = "../search/search_items.php?searchName=" + filterName;
+                        }
                     </script>
                 <?php
                 }
@@ -454,7 +458,7 @@ if (isset($_COOKIE['user_id'])) {
                         <div>
                             <button class="flex items-center gap-2 text-white rounded-full px-0.5 py-0.5 hover:ring-1 hover:ring-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:bg-gray-800" x-on:click="loginUser = !loginUser" @click.outside="loginUser=false">
                                 <div class="w-6 h-6 md:w-9 md:h-9 m-auto">
-                                    <img class="w-full h-full rounded-full flex justify-center object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '/shopnest/src/user_dp/' . $row['profile_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>" alt="" class="bg-white">
+                                    <img class="w-full h-full rounded-full flex justify-center object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '../src/user_dp/' . $row['profile_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>" alt="" class="bg-white">
                                 </div>
                                 <svg class="w-3 mr-0.5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                                     <g>
@@ -464,14 +468,14 @@ if (isset($_COOKIE['user_id'])) {
 
                             </button>
                         </div>
-                        <div x-show="loginUser" x-transition x-cloak class="w-40 bg-white border text-black overflow-hidden absolute right-4 top-[4rem] md:right-40 rounded-md z-10">
+                        <div x-show="loginUser" x-transition x-cloak class="w-40 bg-white border text-black overflow-hidden absolute right-4 top-[5rem] md:right-40 rounded-md z-10">
                             <div class="py-2 px-3">
                                 <a href="../index.php" class="w-full">Hi,<?php echo isset($_COOKIE['fname']) ? $_COOKIE['fname'] : 'User Name' ?></a>
                             </div>
                             <hr class="border">
                             <ul class="text-sm lg:text-base">
                                 <li class="hover:bg-gray-500 hover:text-white px-3">
-                                    <a class="flex items-center gap-x-2 py-2" href="/shopnest/user/profile.php">
+                                    <a class="flex items-center gap-x-2 py-2" href="../user/profile.php">
                                         <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                             <g>
                                                 <path d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zm0 240c-57.897 0-105-47.103-105-105S198.103 30 256 30s105 47.103 105 105-47.103 105-105 105zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805zM61.66 482c7.515-85.086 78.351-152 164.34-152h60c85.989 0 156.825 66.914 164.34 152H61.66z" fill="currentColor" opacity="1" data-original="currentColor"></path>
@@ -481,7 +485,7 @@ if (isset($_COOKIE['user_id'])) {
                                     </a>
                                 </li>
                                 <li class="hover:bg-gray-500 hover:text-white px-3">
-                                    <a class="flex items-center gap-x-2 py-2" href="/shopnest/user/show_orders.php">
+                                    <a class="flex items-center gap-x-2 py-2" href="../user/show_orders.php">
                                         <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                             <g>
                                                 <path d="m458.737 422.218-22.865-288.116c-1.425-18.562-17.123-33.103-35.739-33.103H354.97v-2.03C354.97 44.397 310.573 0 256.001 0s-98.969 44.397-98.969 98.969v2.03H111.87c-18.617 0-34.316 14.54-35.736 33.064L53.262 422.257c-1.77 23.075 6.235 46.048 21.961 63.026C90.949 502.261 113.242 512 136.385 512h239.231c23.142 0 45.436-9.738 61.163-26.717 15.726-16.979 23.73-39.951 21.958-63.065zM187.022 98.969c0-38.035 30.945-68.979 68.979-68.979s68.979 30.945 68.979 68.979v2.03H187.022v-2.03zm227.754 365.936c-10.218 11.03-24.124 17.105-39.16 17.105h-239.23c-15.036 0-28.942-6.075-39.16-17.105-10.217-11.031-15.211-25.363-14.063-40.315l22.87-288.195c.232-3.032 2.796-5.406 5.837-5.406h45.162v36.935c0 8.281 6.714 14.995 14.995 14.995 8.281 0 14.995-6.714 14.995-14.995v-36.935H324.98v36.935c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-36.935h45.163c3.04 0 5.604 2.375 5.84 5.446l22.865 288.115c1.15 14.992-3.845 29.323-14.062 40.355z" fill="currentColor" opacity="1" data-original="currentColor"></path>
@@ -493,7 +497,7 @@ if (isset($_COOKIE['user_id'])) {
                                 </li>
                                 <hr class="border">
                                 <li class="hover:bg-gray-500 hover:text-white px-3">
-                                    <a class="flex items-center gap-x-2 py-2" href="/shopnest/user/user_logout.php">
+                                    <a class="flex items-center gap-x-2 py-2" href="../user/user_logout.php">
                                         <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                             <g>
                                                 <g fill="#000">
@@ -520,7 +524,7 @@ if (isset($_COOKIE['user_id'])) {
                             </svg>
                             <div class="text-xs hidden md:block">
                                 <h1>Username</h1>
-                                <a class="underline focus:outline-none" href="/shopnest/authentication/user_auth/user_login.php">Login</a> / <a class="underline focus:outline-none" href="/shopnest/authentication/user_auth/user_register.php">Register</a>
+                                <a class="underline focus:outline-none" href="../authentication/user_auth/user_login.php">Login</a> / <a class="underline focus:outline-none" href="../authentication/user_auth/user_register.php">Register</a>
                             </div>
                         </div>
                         <div class="md:hidden" x-data="{withOutLogin:false}">
@@ -538,7 +542,7 @@ if (isset($_COOKIE['user_id'])) {
                             </button>
                             <!-- popup for without login -->
                             <div x-show="withOutLogin" x-transition x-cloak class="text-sm border rounded-md flex flex-col space-y-1 absolute top-14  bg-white text-black overflow-hidden z-10">
-                                <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="/shopnest/authentication/user_auth/user_login.php">
+                                <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="../authentication/user_auth/user_login.php">
                                     <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                                         <g>
                                             <g fill="#000">
@@ -547,7 +551,7 @@ if (isset($_COOKIE['user_id'])) {
                                             </g>
                                         </g>
                                     </svg>Login</a>
-                                <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="/shopnest/authentication/user_auth/user_register.php">
+                                <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="../authentication/user_auth/user_register.php">
                                     <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 1.27 1.27" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd">
                                         <g>
                                             <g fill="currentColor">
@@ -565,7 +569,7 @@ if (isset($_COOKIE['user_id'])) {
                 ?>
 
                 <div>
-                    <a href="/shopnest/shopping/cart.php" class="relative focus:outline-none">
+                    <a href="../shopping/cart.php" class="relative focus:outline-none">
                         <svg class="w-5 sm:w-7" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                             <g>
                                 <path d="M164.96 300.004h.024c.02 0 .04-.004.059-.004H437a15.003 15.003 0 0 0 14.422-10.879l60-210a15.003 15.003 0 0 0-2.445-13.152A15.006 15.006 0 0 0 497 60H130.367l-10.722-48.254A15.003 15.003 0 0 0 105 0H15C6.715 0 0 6.715 0 15s6.715 15 15 15h77.969c1.898 8.55 51.312 230.918 54.156 243.71C131.184 280.64 120 296.536 120 315c0 24.812 20.188 45 45 45h272c8.285 0 15-6.715 15-15s-6.715-15-15-15H165c-8.27 0-15-6.73-15-15 0-8.258 6.707-14.977 14.96-14.996zM477.114 90l-51.43 180H177.032l-40-180zM150 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zM362 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
@@ -587,7 +591,7 @@ if (isset($_COOKIE['user_id'])) {
                     </a>
                 </div>
                 <div>
-                    <a class="flex items-center gap-2 text-white text-xs focus:outline-none" href="/shopnest/authentication/vendor_auth/vendor_register.php">
+                    <a class="flex items-center gap-2 text-white text-xs focus:outline-none" href="../authentication/vendor_auth/vendor_register.php">
                         <svg class="w-5 h-5 xl:w-7 xl:h-7" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                             <g>
                                 <path d="M143.5 326.255a7.5 7.5 0 0 0-7.5 7.5v13.5a7.5 7.5 0 0 0 15 0v-13.5a7.5 7.5 0 0 0-7.5-7.5z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
@@ -633,7 +637,7 @@ if (isset($_COOKIE['user_id'])) {
                                     return;
                                 }
 
-                                fetch('/shopnest/search/suggestion.php', {
+                                fetch('../search/suggestion.php', {
                                         method: 'POST',
                                         body: new URLSearchParams({
                                             query
@@ -683,7 +687,7 @@ if (isset($_COOKIE['user_id'])) {
                                     if (query === '') {
                                         // If search input is empty, redirect to the index page
                                         e.preventDefault();
-                                        window.location.href = '/shopnest/index.php'; // Redirect to index page
+                                        window.location.href = '../index.php'; // Redirect to index page
                                     } else if (currentIndex >= 0 && currentIndex < items.length) {
                                         const selectedSuggestion = items[currentIndex];
                                         const link = selectedSuggestion.querySelector('a');
@@ -692,7 +696,7 @@ if (isset($_COOKIE['user_id'])) {
                                             window.location.href = link.href;
                                         }
                                     } else if (query) {
-                                        window.location.assign(`/shopnest/search/search_items.php?query=${encodeURIComponent(query)}`);
+                                        window.location.assign(`../search/search_items.php?query=${encodeURIComponent(query)}`);
                                     }
                                 }
                             });
@@ -841,15 +845,19 @@ if (isset($_COOKIE['user_id'])) {
                 </div>
             </form>
             <?php
-            if (isset($_POST["searchBtn2"])) {
-                $searchName = $_POST['searchInputItems2'];
-                $filterName = str_replace(' ', '+', $searchName);
-            ?>
-                <script>
-                    window.location.href = "/shopnest/search/search_items.php?searchName=<?php echo $filterName; ?>"
-                </script>
-            <?php
-            }
+                if (isset($_POST["searchBtn2"])) {
+                    $searchName = $_POST['searchInputItems2'];
+                    $filterName = str_replace(' ', '+', $searchName); // Replace spaces with "+" for URL compatibility
+                    ?>
+                    <script>
+                        let filterName = "<?php echo htmlspecialchars($filterName, ENT_QUOTES, 'UTF-8'); ?>";
+
+                        if (filterName != "") {
+                            window.location.href = "../search/search_items.php?searchName=" + filterName;
+                        }
+                    </script>
+                <?php
+                }
             ?>
         </div>
         </div>
@@ -862,7 +870,7 @@ if (isset($_COOKIE['user_id'])) {
                 if (isset($_COOKIE['user_id'])) {
                 ?>
                     <div class="w-7 h-7 md:w-8 md:h-8 border m-auto">
-                        <img class="w-full h-full rounded-full flex justify-center object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '/shopnest/src/user_dp/' . $row['profile_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>" alt="" class="bg-white">
+                        <img class="w-full h-full rounded-full flex justify-center object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '../src/user_dp/' . $row['profile_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>" alt="" class="bg-white">
                     </div>
                 <?php
                 } else {
@@ -885,13 +893,13 @@ if (isset($_COOKIE['user_id'])) {
         </div>
         <div id="sidebarBody">
             <div class="w-full py-3">
-                <a class="flex items-center gap-3 px-9 h-12 hover:bg-gray-200 transition" href="/shopnest/pages/track_order.php"><svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                <a class="flex items-center gap-3 px-9 h-12 hover:bg-gray-200 transition" href="../pages/track_order.php"><svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                         <g>
                             <path d="M492.522 118.3 266.433 3.743l-.094-.047c-10.067-5.012-22.029-4.9-32.002.3L137.368 55.46c-.788.334-1.545.739-2.27 1.205L18.896 118.337C7.24 124.44 0 136.398 0 149.559V362.44c0 13.161 7.24 25.118 18.896 31.221l215.345 114.292.097.051a35.255 35.255 0 0 0 16.297 3.981 35.232 35.232 0 0 0 15.704-3.682l226.183-114.604C504.538 387.69 512 375.618 512 362.18V149.82c0-13.439-7.462-25.512-19.478-31.52zM248.237 30.569a5.26 5.26 0 0 1 4.705-.042l211.629 107.23-82.364 41.005L175.308 69.275l72.929-38.706zM235.424 474.63 32.91 367.147l-.097-.051a5.237 5.237 0 0 1-2.824-4.656V163.091l205.435 107.124V474.63zm15.153-230.335L46.272 137.76l97.024-51.493L349.171 195.21l-98.594 49.085zm231.432 117.883a5.22 5.22 0 0 1-2.911 4.703L265.414 475.152V270.408l98.386-48.982v51.355c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-66.286l88.219-43.92v199.603z" fill="#000000" opacity="1" data-original="#000000"></path>
                         </g>
                     </svg>Track order</a>
 
-                <a class="flex items-center gap-3 px-9 h-12 hover:bg-gray-200 transition" href="/shopnest/pages/help_center.php"><svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                <a class="flex items-center gap-3 px-9 h-12 hover:bg-gray-200 transition" href="../pages/help_center.php"><svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                         <g>
                             <path d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm0 476.279c-121.462 0-220.279-98.816-220.279-220.279S134.538 35.721 256 35.721c121.463 0 220.279 98.816 220.279 220.279S377.463 476.279 256 476.279z" fill="#000000" opacity="1" data-original="#000000"></path>
                             <path d="M248.425 323.924c-14.153 0-25.61 11.794-25.61 25.946 0 13.817 11.12 25.948 25.61 25.948s25.946-12.131 25.946-25.948c0-14.152-11.794-25.946-25.946-25.946zM252.805 127.469c-45.492 0-66.384 26.959-66.384 45.155 0 13.142 11.12 19.208 20.218 19.208 18.197 0 10.784-25.948 45.155-25.948 16.848 0 30.328 7.414 30.328 22.915 0 18.196-18.871 28.642-29.991 38.077-9.773 8.423-22.577 22.24-22.577 51.22 0 17.522 4.718 22.577 18.533 22.577 16.511 0 19.881-7.413 19.881-13.817 0-17.522.337-27.631 18.871-42.121 9.098-7.076 37.74-29.991 37.74-61.666s-28.642-55.6-71.774-55.6z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -906,7 +914,7 @@ if (isset($_COOKIE['user_id'])) {
                     <ul class="lg:text-lg">
                         <!-- tv -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=TV">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=TV">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 30 30" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M26.315 3.687H3.685a3.432 3.432 0 0 0-3.427 3.43v12.742a3.43 3.43 0 0 0 3.427 3.429h8.307L9 24.875c-.887.412-.27 1.769.626 1.363.051-.039 5.312-2.809 5.374-2.85l5.293 2.813a.74.74 0 0 0 .351.088c.765.031 1.045-1.079.356-1.414l-2.992-1.587h8.307a3.431 3.431 0 0 0 3.427-3.428V7.117a3.432 3.432 0 0 0-3.427-3.43zm1.927 16.171a1.928 1.928 0 0 1-1.927 1.929H3.685a1.93 1.93 0 0 1-1.927-1.928V7.117c0-1.065.862-1.928 1.927-1.929h22.63a1.93 1.93 0 0 1 1.927 1.928z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -918,7 +926,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- laptop -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Laptops/MacBook">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Laptops/MacBook">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512.021 512.021" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M304.947 385.93v8.714h-97.382v-8.714H0v3.584c0 5.642 2.048 11.274 6.154 15.38 4.096 4.096 9.738 6.154 15.38 6.154h468.951c5.642 0 11.274-2.048 15.38-6.154 4.096-4.096 6.154-9.738 6.154-15.38v-3.584H304.947zM68.68 400.276H47.155v-2.56H68.68v2.56zM60.989 377.728H451.01c3.584 0 7.178-1.536 9.738-4.096s4.096-6.154 4.096-9.738V114.806c0-3.584-1.536-7.178-4.096-9.738s-6.154-4.096-9.738-4.096H60.989c-3.584 0-7.178 1.536-9.738 4.096s-4.096 6.154-4.096 9.738v249.078c0 3.584 1.536 7.178 4.096 9.738 3.072 3.082 6.154 4.106 9.738 4.106zm195.267-270.602c2.56 0 4.608 2.048 4.608 4.608s-2.048 4.608-4.608 4.608-4.608-2.048-4.608-4.608 2.048-4.608 4.608-4.608zm-187.064 15.37h374.139v233.707H69.192V122.496z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -929,7 +937,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- ipad/tab -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Tabs/Ipad">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Tabs/Ipad">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <g fill="#222020">
@@ -945,7 +953,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- mobille -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Phones">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Phones">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M381.333 124.87c-.089 0-.162.048-.249.05V77.366c0-26.234-21.347-47.581-47.581-47.581H178.478c-26.234 0-47.581 21.347-47.581 47.581v47.551c-.081-.002-.149-.047-.23-.047a9.805 9.805 0 0 0-9.811 9.811v29.166a9.805 9.805 0 0 0 9.811 9.811c.081 0 .148-.044.23-.047v10.173c-.081-.002-.149-.047-.23-.047a9.805 9.805 0 0 0-9.811 9.811v29.166a9.805 9.805 0 0 0 9.811 9.811c.081 0 .148-.044.23-.047v202.155c0 26.234 21.347 47.581 47.581 47.581h155.026c26.234 0 47.581-21.347 47.581-47.581V173.608c.087.002.16.05.249.05a9.805 9.805 0 0 0 9.811-9.811v-29.166a9.807 9.807 0 0 0-9.812-9.811zm-19.872 309.764c0 15.407-12.532 27.958-27.958 27.958H178.478c-15.426 0-27.958-12.552-27.958-27.958V77.366c0-15.407 12.532-27.958 27.958-27.958h22.153V62.23a8.673 8.673 0 0 0 8.672 8.672h93.382a8.673 8.673 0 0 0 8.672-8.672V49.408h22.146c15.426 0 27.958 12.552 27.958 27.958z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -956,7 +964,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- headphone -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Headphone">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Headphone">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <g data-name="STATIONERY AND OFFICE">
@@ -970,7 +978,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- cloths -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Clothes">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Clothes">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M26.516 5.65A4.383 4.383 0 0 0 23.4 4.36h-.005l-2.934.002c-.191 0-.37.074-.537.158-2.693 1.717-5.313 1.72-8.007 0-.167-.084-.346-.159-.537-.158L8.44 4.36h-.004a4.38 4.38 0 0 0-3.115 1.29L3.538 7.435a5.261 5.261 0 0 0-.003 7.425l2.496 2.5v5.028a5.258 5.258 0 0 0 5.252 5.252h9.277a5.258 5.258 0 0 0 5.252-5.252v-4.714l2.65-2.65a5.259 5.259 0 0 0 0-7.427zm-7.602 1.587a3.533 3.533 0 0 1-2.992 1.667 3.534 3.534 0 0 1-2.993-1.666c1.992.743 3.993.743 5.985 0zm8.134 6.373-1.236 1.236v-2.632a1 1 0 1 0-2 0v10.174a3.256 3.256 0 0 1-3.252 3.252h-9.277a3.256 3.256 0 0 1-3.252-3.252V12.373a1 1 0 1 0-2 0v2.156l-1.08-1.082a3.258 3.258 0 0 1 .001-4.598l1.784-1.784a2.389 2.389 0 0 1 1.701-.705h.002l2.036.002c.473 2.58 2.733 4.542 5.447 4.542s4.973-1.963 5.446-4.542l2.03-.002h.003c.642 0 1.245.25 1.7.704l1.947 1.947a3.257 3.257 0 0 1 0 4.6z" fill="#000000" opacity="1" data-original="#000000" class=""></path>
@@ -981,7 +989,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- watch -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Watch">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Watch">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M10.5 6.5h.41a2.34 2.34 0 0 0 .377-.884l.562-3.203A.497.497 0 0 1 12.34 2h6.32c.243 0 .45.174.492.414l.564 3.213c.064.321.193.616.373.873h.411c.743 0 1.415.28 1.938.728A.48.48 0 0 0 22.5 7a.5.5 0 0 0-.5-.5c-.632 0-1.18-.449-1.301-1.057l-.562-3.201A1.496 1.496 0 0 0 18.66 1h-6.32c-.731 0-1.352.522-1.477 1.241l-.559 3.19A1.333 1.333 0 0 1 9 6.5a.5.5 0 0 0-.5.5.48.48 0 0 0 .062.228A2.968 2.968 0 0 1 10.5 6.5zM20.5 25.5h-.41a2.34 2.34 0 0 0-.377.884l-.562 3.203a.497.497 0 0 1-.491.413h-6.32a.499.499 0 0 1-.492-.414l-.564-3.213a2.304 2.304 0 0 0-.373-.873H10a1.988 1.988 0 0 1-1.469-.652A.478.478 0 0 0 8.5 25a.5.5 0 0 0 .5.5c.632 0 1.18.449 1.301 1.057l.562 3.201c.125.72.746 1.242 1.477 1.242h6.32c.731 0 1.352-.522 1.477-1.241l.559-3.19A1.333 1.333 0 0 1 22 25.5a.5.5 0 0 0 .5-.5.48.48 0 0 0-.062-.228 2.968 2.968 0 0 1-1.938.728zM24 10h-.5v1h.5v2h-.5v1h.5c.551 0 1-.449 1-1v-2c0-.551-.449-1-1-1zm0 3.5V13z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -993,7 +1001,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- Stationary -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Stationary">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Stationary">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M359.167 231.568a7.498 7.498 0 0 1-3.24-10.099L436.323 65.1 398.72 45.832l-93.788 182.495a7.5 7.5 0 0 1-13.342-6.857l97.213-189.157a7.502 7.502 0 0 1 10.091-3.247l50.953 26.11a7.502 7.502 0 0 1 3.25 10.104l-83.831 163.047a7.499 7.499 0 0 1-10.099 3.241z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -1011,7 +1019,7 @@ if (isset($_COOKIE['user_id'])) {
                         </li>
                         <!-- camera -->
                         <li>
-                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="/shopnest/pages/product_category.php?Category=Cameras">
+                            <a class="px-9 h-12 flex items-center gap-3 hover:bg-gray-200" href="../pages/product_category.php?Category=Cameras">
                                 <svg class="w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M27.348 7h-4.294l-.5-1.5A3.645 3.645 0 0 0 19.089 3h-6.178a3.646 3.646 0 0 0-3.464 2.5L8.946 7H4.652A3.656 3.656 0 0 0 1 10.652v14.7A3.656 3.656 0 0 0 4.652 29h22.7A3.656 3.656 0 0 0 31 25.348v-14.7A3.656 3.656 0 0 0 27.348 7ZM29 25.348A1.654 1.654 0 0 1 27.348 27H4.652A1.654 1.654 0 0 1 3 25.348v-14.7A1.654 1.654 0 0 1 4.652 9h5.015a1 1 0 0 0 .948-.684l.729-2.187A1.65 1.65 0 0 1 12.911 5h6.178a1.649 1.649 0 0 1 1.567 1.13l.729 2.186a1 1 0 0 0 .948.684h5.015A1.654 1.654 0 0 1 29 10.652Z" fill="#000000" opacity="1" data-original="#000000"></path>

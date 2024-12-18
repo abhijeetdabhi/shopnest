@@ -1,19 +1,20 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../../admin/dashboard.php");
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,13 +26,16 @@ if (isset($_COOKIE['adminEmail'])) {
     <!-- Tailwind Script  -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="../../src/logo/favicon.svg">
+    <link rel="shortcut icon" href="../../src/logo/favIcon.svg">
 
     <!-- alpinejs CDN -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js" defer></script>
@@ -54,208 +58,23 @@ if (isset($_COOKIE['adminEmail'])) {
 </head>
 
 <body class="flex justify-center h-[100%] py-2 px-6" style="font-family: 'Outfit', sans-serif;">
-
-    <!-- Successfully message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div id="Successfully"></div>
-        </div>
-    </div>
-
-    <!-- Error message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="popUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div id="errorMessage"></div>
-        </div>
-    </div>
-
-    <!-- JavaScript function -->
-    <script>
-        function displayErrorMessage(message) {
-            let popUp = document.getElementById('popUp');
-            let errorMessage = document.getElementById('errorMessage');
-
-            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            popUp.style.display = 'flex';
-            popUp.style.opacity = '100';
-
-            setTimeout(() => {
-                popUp.style.display = 'none';
-                popUp.style.opacity = '0';
-            }, 1800);
-        }
-
-        function displaySuccessMessage(message) {
-            let SpopUp = document.getElementById('SpopUp');
-            let Successfully = document.getElementById('Successfully');
-
-            Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
-            SpopUp.style.display = 'flex';
-            SpopUp.style.opacity = '100';
-
-            setTimeout(() => {
-                SpopUp.style.display = 'none';
-                SpopUp.style.opacity = '0';
-                window.location.href = "user_login.php";
-            }, 1500);
-        }
-    </script>
-
-    <?php
-    include "../../include/connect.php";
-
-    session_start();
-
-    unset($_SESSION['userEmail']);
-
-
-    if (isset($_POST['regBtn'])) {
-        $fname = $_POST['fname'];
-        $lname = $_POST['lname'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $address = $_POST['address'];
-        $mobileno = $_POST['mobileno'];
-        $state = $_POST['state'];
-        $city = $_POST['city'];
-        $pincode = $_POST['pincode'];
-        $user_reg_date = date('d-m-Y');
-
-        // preg_match
-        $firstname_pattern = "/^[a-zA-Z]([0-9a-zA-Z]){2,10}$/";
-        $lastname_pattern = "/^[a-zA-Z]([0-9a-zA-Z]){2,10}$/";
-        $email_pattern = "/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
-        $password_pattern = '/^.{8,}$/';
-        $address_pattern = "/^[\w\d\s#.,'-]{5,}$/i";
-        $number_pattern = "/^[0-9]{10}$/";
-        $state_pattern = "/^[a-zA-Z\s'-]+$/";
-        $city_pattern = "/^[a-zA-Z\s'-]+$/";
-        $pincode_pattern = "/^[1-9][0-9]{5}$/";
-
-        // Validation for first name
-        if (!preg_match($firstname_pattern, $fname)) {
-            echo '<script>displayErrorMessage("First name must be 2-10 character long and shuld not start with a number.");</script>';
-        } else {
-            $_SESSION['fname'] = $fname;
-        }
-        // Validation for last name
-        if (!preg_match($lastname_pattern, $lname)) {
-            echo '<script>displayErrorMessage("Last name must be 2-10 character long and shuld not start with a number.");</script>';
-        } else {
-            $_SESSION['lname'] = $lname;
-        }
-
-        // Validation for email
-        if (!preg_match($email_pattern, $email)) {
-            echo '<script>displayErrorMessage("Invalid Email.");</script>';
-        } else {
-            $_SESSION['user_email'] = $email;
-        }
-        // Validation for password
-        if (!preg_match($password_pattern, $password)) {
-            echo '<script>displayErrorMessage("Invalid Password.");</script>';
-        }
-        // Validation for adddress
-        if (!preg_match($address_pattern, $address)) {
-            echo '<script>displayErrorMessage("Invalid Address.");</script>';
-        } else {
-            $_SESSION['user_address'] = $address;
-        }
-        // Validation for phone number
-        if (!preg_match($number_pattern, $mobileno)) {
-            echo '<script>displayErrorMessage("Invalid Phone Number.");</script>';
-        } else {
-            $_SESSION['user_mobileno'] = $mobileno;
-        }
-        // Validation for state
-        if (!preg_match($state_pattern, $state)) {
-            echo '<script>displayErrorMessage("Invalid State.");</script>';
-        } else {
-            $_SESSION['user_state'] = $state;
-        }
-        // Validation for City
-        if (!preg_match($city_pattern, $city)) {
-            echo '<script>displayErrorMessage("Invalid City.");</script>';
-        } else {
-            $_SESSION['user_city'] = $city;
-        }
-        // Validation for pincode
-        if (!preg_match($pincode_pattern, $pincode)) {
-            echo '<script>displayErrorMessage("Invalid Pincode.");</script>';
-        } else {
-            $_SESSION['user_pincode'] = $pincode;
-        }
-
-
-        // hash pass
-        $pass = password_hash($password, PASSWORD_BCRYPT);
-
-        $email_check = "SELECT * FROM user_registration WHERE email = '$email'";
-        $check_query = mysqli_query($con, $email_check);
-
-        $emailCount = mysqli_num_rows($check_query);
-
-        // first alphabet of user's first name
-        $first_letter = substr($fname, 0, 1);
-        $user_name_first_letter = $first_letter . '.png';
-
-        if ($emailCount > 0) {
-            // error Message
-            echo '<script>displayErrorMessage("Email already Exists.");</script>';
-        } elseif (!preg_match($firstname_pattern, $fname) && !preg_match($lastname_pattern, $lname) && !preg_match($email_pattern, $email) && !preg_match($password_pattern, $password) && !preg_match($address_pattern, $address) && !preg_match($number_pattern, $mobileno) && !preg_match($state_pattern, $state) && !preg_match($city_pattern, $city) && !preg_match($pincode_pattern, $pincode)) {
-            echo '<script>displayErrorMessage("All fields are invalid. Please correct them.");</script>';
-        } elseif (preg_match($firstname_pattern, $fname) && preg_match($lastname_pattern, $lname) && preg_match($email_pattern, $email) && preg_match($password_pattern, $password) && preg_match($address_pattern, $address) && preg_match($number_pattern, $mobileno) && preg_match($state_pattern, $state) && preg_match($city_pattern, $city) && preg_match($pincode_pattern, $pincode)) {
-            $insert_reg_data = "INSERT INTO user_registration(first_name, last_name, phone, email, profile_image, Address, state, city, pin, password, date) VALUES ('$fname','$lname','$mobileno','$email','$user_name_first_letter','$address','$state','$city','$pincode','$pass','$user_reg_date')";
-            $iquery = mysqli_query($con, $insert_reg_data);
-
-            if ($iquery) {
-                unset(
-                    $_SESSION['fname'],
-                    $_SESSION['lname'],
-                    $_SESSION['user_email'],
-                    $_SESSION['user_address'],
-                    $_SESSION['user_mobileno'],
-                    $_SESSION['user_state'],
-                    $_SESSION['user_city'],
-                    $_SESSION['user_pincode']
-                );
-
-                // Successfully
-                echo '<script>displaySuccessMessage("Register successful.");</script>';
-            } else {
-                // error Message
-                echo '<script>displayErrorMessage("Register Failed.");</script>';
-            }
-        }
-    }
-    ?>
-
-
     <div class="w-full md:w-[85%] lg:w-[70%] 2xl:w-[50%]">
         <!-- header -->
         <div class="p-2 flex items-center justify-center">
-            <a class="flex items-center mb-2 focus:outline-none" href="/shopnest/index.php">
+            <a class="flex items-center mb-2 focus:outline-none" href="../../index.php">
                 <!-- icon logo div -->
                 <div>
-                    <img class="w-9 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                    <img class="w-12 mt-0.5" src="../../src/logo/black_cart_logo.svg" alt="">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-28 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                    <img class="w-32" src="../../src/logo/black_text_logo.svg" alt="">
                 </div>
             </a>
         </div>
 
 
-        <form enctype="multipart/form-data" action="" method="post">
+        <form enctype="multipart/form-data" action="" id="userRegi" method="post">
             <div class="border-2 rounded-md">
                 <h1 class="border-b-2 p-2 text-2xl font-semibold">User Registration</h1>
                 <div class="grid grid-cols-1 p-5 md:grid-cols-2 gap-5">
@@ -333,11 +152,169 @@ if (isset($_COOKIE['adminEmail'])) {
                         <path d="M420.361 192.229a31.967 31.967 0 0 0-5.535-.41H99.305l6.88-3.2a63.998 63.998 0 0 0 18.08-12.8l88.48-88.48c11.653-11.124 13.611-29.019 4.64-42.4-10.441-14.259-30.464-17.355-44.724-6.914a32.018 32.018 0 0 0-3.276 2.754l-160 160c-12.504 12.49-12.515 32.751-.025 45.255l.025.025 160 160c12.514 12.479 32.775 12.451 45.255-.063a32.084 32.084 0 0 0 2.745-3.137c8.971-13.381 7.013-31.276-4.64-42.4l-88.32-88.64a64.002 64.002 0 0 0-16-11.68l-9.6-4.32h314.24c16.347.607 30.689-10.812 33.76-26.88 2.829-17.445-9.019-33.88-26.464-36.71z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
                     </g>
                 </svg>
-                Return to home page</a>
+                Return to home page
+            </a>
         </div>
     </div>
 
 
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-0 mt-2 w-max border-t-4 rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully">login successfully</div>
+        </div>
+    </div>
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-0 mt-2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage">enter Valid email address</div>
+        </div>
+    </div>
+
+    <!-- JavaScript function -->
+    <script>
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        function loader(){
+            let loader =document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+            
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = "user_login.php";
+            }, 2200);
+        }
+    </script>
+
+    <!-- script for user registration page -->
+    <script>
+        $(document).ready(function () {
+            $("#userRegi").on("submit", function(e){
+                e.preventDefault();
+
+                let fname = $('#fname').val().trim();
+                let lname = $('#lname').val().trim();
+                let email = $('#email').val().trim();
+                let password = $('#password').val().trim();
+                let address = $('#address').val().trim();
+                let mobileno = $('#mobileno').val().trim();
+                let state = $('#state').val().trim();
+                let city = $('#city').val().trim();
+                let pincode = $('#pincode').val().trim();
+
+                // patterns
+                let firstname_pattern = /^[a-zA-Z]([0-9a-zA-Z]){2,10}$/;
+                let lastname_pattern = /^[a-zA-Z]([0-9a-zA-Z]){2,10}$/;
+                let email_pattern = /^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                let password_pattern = /^.{8,}$/;
+                let address_pattern = /^[\w\d\s#.,'-]{5,}$/i;
+                let number_pattern = /^[6-9]\d{9}$/;
+                let state_pattern = /^[a-zA-Z\s'-]+$/;
+                let city_pattern = /^[a-zA-Z\s'-]+$/;
+                let pincode_pattern = /^[1-9][0-9]{5}$/;
+
+                if(fname === "" || lname === "" || email === "" || password === "" || address === "" || mobileno === "" || state === "" || city === "" || pincode === ""){
+                    displayErrorMessage("Please Fill the Input fields");
+                    return
+                }else if(fname === "" || !firstname_pattern.test(fname)){
+                    displayErrorMessage("Enter Valid First Name");
+                    return
+                }else if(lname === "" || !lastname_pattern.test(lname)){
+                    displayErrorMessage("Enter Valid Last Name");
+                    return
+                }else if(email === "" || !email_pattern.test(email)){
+                    displayErrorMessage("Enter Valid Email");
+                    return
+                }else if(password === "" || !password_pattern.test(password)){
+                    displayErrorMessage("Enter Valid Password");
+                    return
+                }else if(address === "" || !address_pattern.test(address)){
+                    displayErrorMessage("Enter Valid Address");
+                    return
+                }else if(mobileno === "" || !number_pattern.test(mobileno)){
+                    displayErrorMessage("Enter Valid Mobile Number");
+                    return
+                }else if(state === "" || !state_pattern.test(state)){
+                    displayErrorMessage("Enter Valid State");
+                    return
+                }
+                else if(city === "" || !city_pattern.test(city)){
+                    displayErrorMessage("Enter Valid City");
+                    return
+                }
+                else if(pincode === "" || !pincode_pattern.test(pincode)){
+                    displayErrorMessage("Enter Valid Pincode");
+                    return
+                }
+            
+
+                $.ajax({
+                    type: "post",
+                    url: "user_regi_ajax.php",
+                    data: {
+                        fname: fname,
+                        lname: lname,
+                        email: email,
+                        password: password,
+                        address: address,
+                        mobileno: mobileno,
+                        state: state,
+                        city: city,
+                        pincode: pincode
+                    },
+                    success: function (response) {
+                        if (response === 'email_exists') {
+                            displayErrorMessage("Email is already used. Please choose another email.");
+                        }else if(response === 'phone_exists'){
+                            displayErrorMessage("Mobile Number is already used. Please choose another Number.");
+                        } else if (response === 'success') {
+                            loader();
+                            displaySuccessMessage("Login Successfully.");
+                        } 
+                    }
+                });
+
+            })
+        });
+    </script>
 
 
     <!-- scriopt -->

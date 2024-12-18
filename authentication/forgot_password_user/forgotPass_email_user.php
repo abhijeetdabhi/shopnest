@@ -1,144 +1,19 @@
 <?php
+session_start();
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../../admin/dashboard.php");
     exit;
 }
-?>
-
-<?php
-
-if (isset($_POST['GetMail'])) {
-
-    $email = $_POST['userEmail'];
-    $email_pattern = "/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
-
-
-    if (!preg_match($email_pattern, $email)) {
-?>
-        <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp_2" style="display: none;">
-            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">Enter Valid Email.</span>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            let EpopUp_2 = document.getElementById('EpopUp_2');
-
-            EpopUp_2.style.display = 'flex';
-            EpopUp_2.style.opacity = '100';
-
-            setTimeout(() => {
-                EpopUp_2.style.display = 'none';
-                EpopUp_2.style.opacity = '0';
-            }, 1500);
-        </script>
-    <?php
-    }
-
-    session_start();
-    function generateOTP($length = 6)
-    {
-        $otp = random_int(100000, 999999); // Generates a 6-digit OTP
-        return $otp;
-    }
-
-    $otp = generateOTP();
-    $_SESSION['otp'] = $otp;
-    $_SESSION['email'] = $email;
-    $_SESSION['otp_expiry'] = time() + 300;
-
-    include "mailOTP_verify_user.php";
-
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $mail->addAddress($email);
-    } else {
-    ?>
-        <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp_2" style="display: none;">
-            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">Enter Valid Email.</span>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            let EpopUp_2 = document.getElementById('EpopUp_2');
-
-            EpopUp_2.style.display = 'flex';
-            EpopUp_2.style.opacity = '100';
-
-            setTimeout(() => {
-                EpopUp_2.style.display = 'none';
-                EpopUp_2.style.opacity = '0';
-            }, 1500);
-        </script>
-<?php
-    }
-    $mail->isHTML(true);
-    $mail->Body = "<!DOCTYPE html>
-                    <html lang='en'>
-                    <head>
-                        <meta charset='UTF-8'>
-                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                        <title>Password Reset OTP</title>
-                        <style>
-                            h2 {
-                                color: #333333;
-                            }
-                            .otp {
-                                font-size: 24px;
-                                font-weight: bold;
-                                color: #4CAF50;
-                            }
-                        </style>
-                    </head>
-                    <body>
-
-                    <div class='container'>
-                        <h2>Password Reset Request</h2>
-                        <p>Dear Customer,</p>
-                        <p>We received a request to reset your password. To proceed, please use the one-time password (OTP) below:</p>
-
-                        <p class='otp'>Your OTP: $otp</p>
-
-                        <p>This OTP is valid for the next 10 minutes. Please enter it in the designated field on the password reset page.</p>
-
-                        <p>If you did not request a password reset, please ignore this email.</p>
-
-                        <div class='footer'>
-                            <p>Thank you!</p>
-                            <p>Best regards,<br>shopNest<br>shopNest2603@gmail.com</p>
-                        </div>
-                    </div>
-
-                    </body>
-                    </html>";
-
-    $mail->send();
-
-    header("Location: forgotPass_otp_user.php");
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -191,14 +66,14 @@ if (isset($_POST['GetMail'])) {
 
 <body class="h-[100vh] flex flex-col justify-center items-center outfit">
     <div class="p-2 flex items-center justify-center">
-        <a class="flex items-center mb-2" href="/shopnest/index.php">
+        <a class="flex items-center mb-2" href="../../index.php">
             <!-- icon logo div -->
             <div>
-                <img class="w-7 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                <img class="w-7 sm:w-12 mt-0.5" src="../../src/logo/black_cart_logo.svg" alt="">
             </div>
             <!-- text logo -->
             <div>
-                <img class="w-16 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                <img class="w-16 sm:w-32" src="../../src/logo/black_text_logo.svg" alt="">
             </div>
         </a>
     </div>
@@ -260,3 +135,83 @@ if (isset($_POST['GetMail'])) {
 </body>
 
 </html>
+
+<?php
+
+include "../../include/connect.php";
+
+if (isset($_POST['GetMail'])) {
+
+    $email = $_POST['userEmail'];
+    $email_pattern = "/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+
+
+    if (!preg_match($email_pattern, $email)) {
+        ?>
+        <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp_2" style="display: none;">
+            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Enter Valid Email.</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let EpopUp_2 = document.getElementById('EpopUp_2');
+
+            EpopUp_2.style.display = 'flex';
+            EpopUp_2.style.opacity = '100';
+
+            setTimeout(() => {
+                EpopUp_2.style.display = 'none';
+                EpopUp_2.style.opacity = '0';
+            }, 1500);
+        </script>
+        <?php
+    }
+    
+    $_SESSION['email'] = $email;
+    
+    $find_email = "SELECT * FROM user_registration WHERE email = '$email'";
+    $find_email_query = mysqli_query($con, $find_email);
+
+    if (mysqli_num_rows($find_email_query) > 0) {
+        ?>
+            <script>
+                window.location.href = "forgotPassword_user.php";
+            </script>
+        <?php
+    } else {
+        ?>
+        <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp_2" style="display: none;">
+            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Enter Valid Email.</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let EpopUp_2 = document.getElementById('EpopUp_2');
+
+            EpopUp_2.style.display = 'flex';
+            EpopUp_2.style.opacity = '100';
+
+            setTimeout(() => {
+                EpopUp_2.style.display = 'none';
+                EpopUp_2.style.opacity = '0';
+            }, 1500);
+        </script>
+        <?php
+    }
+}
+
+?>

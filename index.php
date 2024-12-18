@@ -1,12 +1,12 @@
 <?php
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: admin/dashboard.php");
     exit;
 }
 
@@ -32,30 +32,6 @@ if (isset($_SESSION['userEmail'])) {
 if (isset($_SESSION['vendorEmail'])) {
     unset($_SESSION['vendorEmail']);
 }
-
-// unset session for user registration
-unset(
-    $_SESSION['fname'],
-    $_SESSION['lname'],
-    $_SESSION['user_email'],
-    $_SESSION['user_address'],
-    $_SESSION['user_mobileno'],
-    $_SESSION['user_state'],
-    $_SESSION['user_city'],
-    $_SESSION['user_pincode']
-);
-
-
-
-// unset session for vendor registration
-unset(
-    $_SESSION['vendor_name'],
-    $_SESSION['vendor_email'],
-    $_SESSION['username'],
-    $_SESSION['vendor_phone'],
-    $_SESSION['vendor_gst'],
-    $_SESSION['vendor_bio']
-);
 
 if (isset($_SESSION['views'])) {
     $_SESSION['views'] = $_SESSION['views'] + 1;
@@ -100,7 +76,7 @@ function displayRandomProducts($con, $limit)
                 <div class=" flex justify-center">
                     <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                         <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                         </div>
                         <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                             <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -124,7 +100,7 @@ function displayRandomProducts($con, $limit)
                             <?php
                             if ($qty > 0) {
                             ?>
-                                <a href="<?php echo $qty > 0 ? '/shopnest/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                <a href="<?php echo $qty > 0 ? 'shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
                             <?php
                             } else {
                             ?>
@@ -171,7 +147,7 @@ function displayRandomProducts($con, $limit)
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="src/logo/favicon.svg">
+    <link rel="shortcut icon" href="src/logo/favIcon.svg">
 
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -274,7 +250,8 @@ function displayRandomProducts($con, $limit)
 
 </head>
 
-<body>
+<body class="overflow-hidden">
+
     <!-- navbar -->
     <?php
     include "pages/_navbar.php";
@@ -892,11 +869,173 @@ function displayRandomProducts($con, $limit)
         <!-- partner -->
         <div class="w-full flex flex-col items-center mt-12 mb-8">
             <h1 class="text-2xl mt-3">Trending brands</h1>
-            <?php
-            include "src/company_partner/_company.php";
-            ?>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-20 gap-y-10 px-10">
+                <!-- asus -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Asus">
+                        <img src="src/company_partner/asus.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- sony -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Sony">
+                        <img src="src/company_partner/sony.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- canon -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Canon">
+                        <img src="src/company_partner/canon.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- casio -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Casio">
+                        <img src="src/company_partner/casio.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- Bose -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Bose">
+                        <img src="src/company_partner/bose.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- hyperX -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=HyperX">
+                        <img class="pt-2" src="src/company_partner/hyperx.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- citizen -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=citizen">
+                        <img class="pt-1" src="src/company_partner/citizen.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- puma -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Puma">
+                        <img src="src/company_partner/puma.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- msi -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Msi">
+                        <img class="pt-1" src="src/company_partner/msi.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- louis philippe -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Louis Philippe">
+                        <img src="src/company_partner/louisphilippe.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- lenovo -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=Lenovo">
+                        <img src="src/company_partner/lenovo.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- nvidia -->
+                <div class="cursor-pointer">
+                    <a href="pages/brands_products.php?brandName=nvidia">
+                        <img src="src/company_partner/nvidia.svg" alt="">
+                    </a>
+                </div>
+            </div>
         </div>
 
+    </div>
+
+
+    <div x-data="{ showLocation: false }">
+        <div id="locationPopup" class="absolute top-0 bg-black/30 backdrop-blur-md h-full w-full z-30">
+            <div class="fixed top-7 left-7 bg-white rounded-lg p-3 w-72 space-y-5 z-50">
+                <div class="flex items-center gap-3">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-7">
+                            <g>
+                                <path d="M256 0C166.035 0 91 72.47 91 165c0 35.202 10.578 66.592 30.879 96.006l121.494 189.58c5.894 9.216 19.372 9.198 25.254 0l122.021-190.225C410.512 232.28 421 199.307 421 165 421 74.019 346.981 0 256 0zm0 240c-41.353 0-75-33.647-75-75s33.647-75 75-75 75 33.647 75 75-33.647 75-75 75z" fill="currentColor" opacity="1" data-original="#000000"></path>
+                                <path d="m373.264 344.695-75.531 118.087c-19.551 30.482-64.024 30.382-83.481.029l-75.654-118.085C72.034 360.116 31 388.309 31 422c0 58.462 115.928 90 225 90s225-31.538 225-90c0-33.715-41.091-61.923-107.736-77.305z" fill="currentColor" opacity="1" data-original="#000000"></path>
+                            </g>
+                        </svg>
+                    </span>
+                    <span class="text-sm">To deliver as quickly as possible, we would like your current location</span>
+                </div>
+                <div class="w-full flex justify-start">
+                    <button id="manualLocationBtn" @click="showLocation = true" class="rounded-tl-lg rounded-br-lg h-10 bg-gray-300 text-gray-700 px-3 cursor-pointer">
+                        Enter location manually
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="showLocation" @keydown.escape.window="showLocation = false" id="locationContainer" class="absolute top-0 left-0 z-50 w-full h-screen bg-white overflow-auto" x-cloak>
+            <!-- Header -->
+            <header class="flex items-center bg-white p-2 h-14 shadow-md border-b-2 border-gray-400">
+                <button @click="showLocation = false" class="p-2">
+                    <!-- Left Arrow Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492" class="w-5 h-5">
+                        <path d="M198.608 246.104 382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor"></path>
+                    </svg>
+                </button>
+                <h1 class="flex-grow text-center text-lg font-semibold">Your Location</h1>
+            </header>
+
+            <!-- Search Section -->
+            <section class="p-4">
+                <div class="max-w-lg mx-auto">
+                    <input
+                        type="search"
+                        name="locationSearch"
+                        id="locationSearch"
+                        placeholder="Search a new address"
+                        class="w-full h-12 rounded-lg border-0 ring-2 ring-gray-500 focus:ring-2 focus:ring-gray-700 focus:outline-none text-base sm:text-lg px-4" />
+                </div>
+            </section>
+
+            <!-- Location Suggestion List -->
+            <section class="p-4 bg-gray-200 overflow-y-auto max-h-[calc(100vh-7rem)] sm:max-h-[70vh]">
+                <div id="locationSuggestion" class="space-y-4">
+                    <!-- Location Item 1 -->
+                    <div class="flex items-center gap-3 p-2 bg-white rounded-lg shadow">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-7 h-7">
+                                <path d="M256 0C166.035 0 91 72.47 91 165c0 35.202 10.578 66.592 30.879 96.006l121.494 189.58c5.894 9.216 19.372 9.198 25.254 0l122.021-190.225C410.512 232.28 421 199.307 421 165 421 74.019 346.981 0 256 0zm0 240c-41.353 0-75-33.647-75-75s33.647-75 75-75 75 33.647 75 75-33.647 75-75 75z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold">Vesu</h4>
+                            <p class="text-gray-600 text-sm">Vesu, Surat, Gujarat, India</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-2 bg-white rounded-lg shadow">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-7 h-7">
+                                <path d="M256 0C166.035 0 91 72.47 91 165c0 35.202 10.578 66.592 30.879 96.006l121.494 189.58c5.894 9.216 19.372 9.198 25.254 0l122.021-190.225C410.512 232.28 421 199.307 421 165 421 74.019 346.981 0 256 0zm0 240c-41.353 0-75-33.647-75-75s33.647-75 75-75 75 33.647 75 75-33.647 75-75 75z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold">Adajan</h4>
+                            <p class="text-gray-600 text-sm">Adajan, Surat, Gujarat, India</p>
+                        </div>
+                    </div>
+                    <!-- Repeatable Location Items -->
+                </div>
+            </section>
+        </div>
     </div>
 
     <!-- footer -->

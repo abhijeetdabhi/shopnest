@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 ?>
@@ -65,11 +65,11 @@ if (isset($_COOKIE['vendor_id'])) {
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-7 sm:w-14 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-7 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-16 sm:w-36" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-16 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -188,10 +188,10 @@ if (isset($_COOKIE['vendor_id'])) {
                                             <div class="flex justify-center">
                                                 <div class="w-full">
                                                     <div class="w-full">
-                                                        <img class="w-full h-36 object-cover" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://demo.tailadmin.com/src/images/cover/cover-01.png' ?>" alt="">
+                                                        <img class="w-full h-40" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://demo.tailadmin.com/src/images/cover/cover-01.png' ?>" alt="">
                                                     </div>
-                                                    <div class="h-36 -my-12 z-10 flex justify-center">
-                                                        <img class="w-24 h-24 rounded-full object-cover ring-2 ring-gray-300" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://via.placeholder.com/150' ?>" alt="Profile Picture">
+                                                    <div class="h-28 -my-10 z-10 flex justify-center">
+                                                        <img class="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://via.placeholder.com/150' ?>" alt="Profile Picture">
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,5 +242,4 @@ if (isset($_COOKIE['vendor_id'])) {
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
 </body>
-
 </html>

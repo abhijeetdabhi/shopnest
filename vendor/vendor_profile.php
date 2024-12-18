@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: /index.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: /admin/dashboard.php");
     exit;
 }
 ?>
@@ -79,11 +79,11 @@ if (isset($_COOKIE['vendor_id'])) {
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-9 sm:w-14 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-7 sm:w-14 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-28 sm:w-36" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-16 sm:w-36" src="/src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -146,7 +146,7 @@ if (isset($_COOKIE['vendor_id'])) {
                 </nav>
             </div>
 
-            <div class="flex flex-col flex-1 overflow-hidden">
+            <div class="flex flex-col flex-1">
                 <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
                     <div class="flex items-center">
                         <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
@@ -175,18 +175,18 @@ if (isset($_COOKIE['vendor_id'])) {
                         </div>
                     </div>
                 </header>
-                <main id="main" class="overflow-y-scroll scrollBar overflow-hidden">
+                <main id="main" class="overflow-y-auto scrollBar">
                     <div class="mx-4 md:mx-12 my-12 bg-white shadow-lg">
                         <div class="relative">
                             <div class="relative">
-                                <img class="h-40 md:h-72 w-full object-cover" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png' ?>" alt="">
+                                <img class="h-40 md:h-80 w-full" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png' ?>" alt="">
                             </div>
                         </div>
-                        <div class="relative m-auto -translate-y-20">
-                            <img class="bg-white/20 filter backdrop-blur-xl p-3 w-28 h-28 md:w-40 md:h-40 m-auto rounded-full object-cover" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png' ?>" alt="">
+                        <div class="relative m-auto -translate-y-[3rem] md:-translate-y-[4rem]">
+                            <img class="w-20 h-20 md:w-28 md:h-28 m-auto rounded-full object-cover" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png' ?>" alt="">
                             <input type="file" id="dpImage" name="dp" class="hidden">
                         </div>
-                        <div class="m-auto text-center -mt-28 py-8">
+                        <div class="m-auto text-center -mt-20 py-8">
                             <div class="mt-3">
                                 <h2 class="text-2xl font-medium text-gray-950"><?php echo isset($_COOKIE['vendor_id']) ? $row['username'] : 'username' ?></h2>
                                 <span class="text-base font-medium text-gray-400 mt-2 mb-7">Seller</span>

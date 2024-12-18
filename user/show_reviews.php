@@ -1,11 +1,11 @@
 <?php
     if(isset($_COOKIE['vendor_id'])){
-        header("Location: /shopnest/vendor/vendor_dashboard.php");
+        header("Location: /vendor/vendor_dashboard.php");
         exit;
     }
 
     if(isset($_COOKIE['adminEmail'])){
-        header("Location: /shopnest/admin/dashboard.php");
+        header("Location: /admin/dashboard.php");
         exit;
     }
 ?>
@@ -58,14 +58,14 @@
         <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity h-screen bg-black opacity-50 lg:hidden"></div>
             <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
                 <div class="flex items-center justify-center mt-8 mr-2">
-                    <a class="flex w-fit" href="/shopnest/index.php">
+                    <a class="flex w-fit" href="/index.php">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-9 sm:w-14 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-7 sm:w-14 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-28 sm:w-36" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-16 sm:w-36" src="/src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>    
@@ -109,7 +109,7 @@
 
             <div class="flex flex-col flex-1">
                 <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
-                    <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center justify-between">
                         <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
                             <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

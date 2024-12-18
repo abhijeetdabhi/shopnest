@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 ?>
@@ -65,11 +65,11 @@ if (isset($_COOKIE['vendor_id'])) {
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-7 sm:w-14 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-7 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-16 sm:w-36" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-16 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -193,7 +193,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                         <div class="bg-white rounded-tl-xl rounded-br-xl shadow-sm overflow-hidden max-w-xs w-full h-[33.5rem] relative">
                                             <div class="relative flex justify-center p-2">
                                                 <a href="../src/product_image/"></a>
-                                                <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-64 w-64 object-fill rounded-tl-xl rounded-br-xl">
+                                                <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl">
                                                 <?php
                                                 $conditionClass = isset($_COOKIE['adminEmail']) ? ($res['Item_Condition'] === 'Old Condition' ? 'bg-orange-500' : 'bg-green-500'): 'bg-green-500';
                                                 ?>

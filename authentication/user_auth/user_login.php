@@ -1,31 +1,18 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../../admin/dashboard.php");
     exit;
 }
-
-session_start();
-
-unset(
-    $_SESSION['fname'],
-    $_SESSION['lname'],
-    $_SESSION['user_email'],
-    $_SESSION['user_address'],
-    $_SESSION['user_mobileno'],
-    $_SESSION['user_state'],
-    $_SESSION['user_city'],
-    $_SESSION['user_pincode']
-);
 ?>
 
 <!DOCTYPE html>
@@ -40,13 +27,16 @@ unset(
     <!-- alpinejs CDN -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js" defer></script>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="../../src/logo/favicon.svg">
+    <link rel="shortcut icon" href="../../src/logo/favIcon.svg">
 
     <!-- title -->
     <title>User Login</title>
@@ -64,203 +54,34 @@ unset(
         }
     </style>
 </head>
-
 <body class="flex justify-center items-center h-[100vh] py-2 px-6" style="font-family: 'Outfit', sans-serif;">
-    <!-- Successfully message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div id="Successfully"></div>
-        </div>
-    </div>
-
-    <!-- Error message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="popUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div id="errorMessage"></div>
-        </div>
-    </div>
-
-    <!-- JavaScript function -->
-    <script>
-        function displayErrorMessage(message) {
-            let popUp = document.getElementById('popUp');
-            let errorMessage = document.getElementById('errorMessage');
-
-            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            popUp.style.display = 'flex';
-            popUp.style.opacity = '100';
-
-            setTimeout(() => {
-                popUp.style.display = 'none';
-                popUp.style.opacity = '0';
-            }, 1500);
-        }
-
-        function displaySuccessMessage(message) {
-            let SpopUp = document.getElementById('SpopUp');
-            let Successfully = document.getElementById('Successfully');
-
-            Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
-            SpopUp.style.display = 'flex';
-            SpopUp.style.opacity = '100';
-
-            setTimeout(() => {
-                SpopUp.style.display = 'none';
-                SpopUp.style.opacity = '0';
-                window.location.href = "/shopnest/index.php";
-            }, 1800);
-        }
-    </script>
-
-    <?php
-
-    include "../../include/connect.php";
-
-    if (isset($_POST['loginBtn'])) {
-        $email = trim($_POST['email']);
-        $password = trim($_POST['password']);
-
-        $_SESSION['userEmail'] = $email;
-
-        if (empty($email) || empty($password)) {
-            // error Message for empty fields
-            echo '<script>displayErrorMessage("Email and password are required.");</script>';
-        } else {
-
-            $admin_email = $_POST['email'];
-            $admin_pass = $_POST['password'];
-
-            if ($admin_email === 'vishvjit+admin@gmail.com' && $admin_pass === 'vishvjit+2608') {
-                setcookie('adminEmail', $admin_email, time() + (365 * 24 * 60 * 60), "/");
-                setcookie('adminPass', $admin_pass, time() + (365 * 24 * 60 * 60), "/");
-
-    ?>
-                <!-- Successfully -->
-                <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="ApopUp" style="display: none;">
-                    <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">Admin login successful.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    let ApopUp = document.getElementById('ApopUp');
-
-                    ApopUp.style.display = 'flex';
-                    ApopUp.style.opacity = '100';
-
-                    setTimeout(() => {
-                        ApopUp.style.display = 'none';
-                        ApopUp.style.opacity = '0';
-                        window.location.href = "/shopnest/admin/dashboard.php";
-                    }, 1500);
-                </script>
-            <?php
-            }
-
-            if ($admin_email === 'abhijeet+admin@gmail.com' && $admin_pass === 'abhijeet+3904') {
-                setcookie('adminEmail', $admin_email, time() + (365 * 24 * 60 * 60), "/");
-                setcookie('adminPass', $admin_pass, time() + (365 * 24 * 60 * 60), "/");
-            ?>
-                <!-- Successfully -->
-                <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="ApopUp" style="display: none;">
-                    <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">Admin login successful.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    let ApopUp = document.getElementById('ApopUp');
-
-                    ApopUp.style.display = 'flex';
-                    ApopUp.style.opacity = '100';
-
-                    setTimeout(() => {
-                        ApopUp.style.display = 'none';
-                        ApopUp.style.opacity = '0';
-                        window.location.href = "/shopnest/admin/dashboard.php";
-                    }, 1500);
-                </script>
-    <?php
-            }
-
-            $email_search = "SELECT * FROM user_registration WHERE email = '$email'";
-            $search_query = mysqli_query($con, $email_search);
-
-            if ($search_query && mysqli_num_rows($search_query) > 0) {
-                $email_pass = mysqli_fetch_assoc($search_query);
-                $dbpass = $email_pass['password'];
-                $id = $email_pass['user_id'];
-                $fname = $email_pass['first_name'];
-
-                if (password_verify($password, $dbpass)) {
-                    // Successfully logged in
-                    setcookie('user_id', $id, time() + (365 * 24 * 60 * 60), "/");
-                    setcookie('fname', $fname, time() + (365 * 24 * 60 * 60), "/");
-
-                    unset($_SESSION['userEmail']);
-
-                    echo '<script>displaySuccessMessage("Login successful.");</script>';
-                } else {
-                    // Invalid password
-                    echo '<script>displayErrorMessage("Enter Valid Password.");</script>';
-                }
-            } else {
-                // Invalid email
-                echo '<script>displayErrorMessage("Enter Valid Email or Password.");</script>';
-            }
-        }
-    }
-    ?>
-
     <div class="w-96">
         <!-- header -->
         <div class="p-2 flex items-center justify-center">
-            <a class="flex items-center mb-2" href="/shopnest/index.php">
+            <a class="flex items-center mb-2" href="../../index.php">
                 <!-- icon logo div -->
                 <div>
-                    <img class="w-9 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                    <img class="w-9 sm:w-12 mt-0.5" src="../../src/logo/black_cart_logo.svg" alt="">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-28 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                    <img class="w-28 sm:w-32" src="../../src/logo/black_text_logo.svg" alt="">
                 </div>
             </a>
         </div>
 
         <div class="border-2 rounded-md">
             <h1 class="border-b-2 p-2 text-2xl font-semibold">User Login</h1>
-            <form action="" method="post">
+            <form action="" method="post" id="userLogin">
                 <div class="space-y-4 p-4">
                     <div class="flex flex-col gap-1">
                         <label for="email" class="require font-semibold">Email :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" value="<?php echo isset($_SESSION['userEmail']) ? $_SESSION['userEmail'] : '' ?>" name="email" id="email">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" value="" name="email" id="email">
                     </div>
                     <div class="flex flex-col gap-1 relative" x-data="{ showPassword: false }">
                         <label for="password" class="require font-semibold">Password :</label>
                         <input class="h-12 rounded-md pr-10 border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="showPassword ? 'text' : 'password'" name="password" id="password">
-                        <!-- Toggle Icon Button -->
                         <span class="absolute top-[2.50rem] right-2.5 cursor-pointer" @click="showPassword = !showPassword">
-                            <!-- Show Icon (when password is hidden) -->
                             <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                 <g>
                                     <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -274,7 +95,7 @@ unset(
                         </span>
                     </div>
                     <div class="flex justify-end w-full">
-                        <a href="/shopnest/authentication/forgot_password_user/forgotPass_email_user.php" class="text-sm font-semibold tracking-wide underline">Forgot password?</a>
+                        <a href="../../authentication/forgot_password_user/forgotPass_email_user.php" class="text-sm font-semibold tracking-wide underline">Forgot password?</a>
                     </div>
                     <div class="text-center">
                         <input type="submit" class="bg-gray-700 hover:bg-gray-800 hover:transition py-1 h-10 w-full text-lg rounded-tl-xl rounded-br-xl text-white cursor-pointer" name="loginBtn" value="Login">
@@ -294,8 +115,136 @@ unset(
         </div>
     </div>
 
+
+
+    <!-- for the admin -->
+    <div class="validInfo fixed top-0 mt-2 w-max border-t-4 rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="ApopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="adminSuccess"></div>
+        </div>
+    </div>
+
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-0 mt-2 w-max border-t-4 rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully"></div>
+        </div>
+    </div>
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-0 mt-2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript function -->
+    <script>
+
+        function loader(){
+            let loader =document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function adminLogin(message) {
+            let ApopUp = document.getElementById('ApopUp');
+            let adminSuccess = document.getElementById('adminSuccess');
+            
+            setTimeout(() => {
+                adminSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
+                ApopUp.style.display = 'flex';
+                ApopUp.style.opacity = '100';
+                window.location.href = "../../admin/dashboard.php";
+            }, 2000);
+        }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+            
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = "../../index.php";
+            }, 2000);
+        }
+    </script>
+
+    <!-- user login ajax -->
+    <script>
+        $(document).ready(function () {
+            $("#userLogin").on('submit', function(e){
+                e.preventDefault();
+
+                let userEmail = $('#email').val().trim();
+                let userPass = $('#password').val().trim();
+
+                if(!userEmail === "" || !userPass === ""){
+                    displayErrorMessage("Please Enter Your Email Or Password");
+                    return
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "user_login_ajax.php",
+                    data: {
+                        userEmail: userEmail,
+                        userPass: userPass
+                    },
+                    success: function (response) {
+                        if (response === 'success') {
+                            loader();
+                            displaySuccessMessage("Login Successfully!");
+                        } else if(response === 'pass_not_matching'){
+                            displayErrorMessage("Please Enter Valid Email Or password.");
+                        }else if(response === 'admin_success'){
+                            loader();
+                            adminLogin("Admin Login Successfully!");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
-
 </html>

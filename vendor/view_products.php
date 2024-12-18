@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -79,11 +79,11 @@ if (isset($_COOKIE['vendor_id'])) {
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-9 sm:w-14 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-9 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-28 sm:w-36" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-28 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -192,7 +192,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                                 <div class="bg-white border rounded-tl-xl rounded-br-xl transition transform hover:shadow-lg overflow-hidden h-[28rem] w-[17rem]">
                                                     <div class="p-3">
                                                         <div>
-                                                            <img src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" class="h-56 w-full object-fill mix-blend-multiply" alt="">
+                                                            <img src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" class="h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" alt="">
                                                         </div>
                                                         <div class="mt-2">
                                                             <div class="space-y-1">

@@ -63,12 +63,94 @@
     </div>
 
     <!-- partner -->
-    <div class="w-full flex flex-col items-center mt-12 mb-8">
-        <h1 class="text-2xl mt-3">Trending brands</h1>
-        <?php
-            include "../src/company_partner/_company.php";
-        ?>
-    </div>
+        <div class="w-full flex flex-col items-center mt-12 mb-8">
+            <h1 class="text-2xl mt-3">Trending brands</h1>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-20 gap-y-10 px-10">
+                <!-- asus -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Asus">
+                        <img src="/src/company_partner/asus.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- sony -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Sony">
+                        <img src="/src/company_partner/sony.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- canon -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Canon">
+                        <img src="/src/company_partner/canon.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- casio -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Casio">
+                        <img src="/src/company_partner/casio.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- Bose -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Bose">
+                        <img src="/src/company_partner/bose.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- hyperX -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=HyperX">
+                        <img class="pt-2" src="/src/company_partner/hyperx.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- citizen -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=citizen">
+                        <img class="pt-1" src="/src/company_partner/citizen.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- puma -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Puma">
+                        <img src="/src/company_partner/puma.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- msi -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Msi">
+                        <img class="pt-1" src="/src/company_partner/msi.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- louis philippe -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Louis Philippe">
+                        <img src="/src/company_partner/louisphilippe.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- lenovo -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=Lenovo">
+                        <img src="/src/company_partner/lenovo.svg" alt="">
+                    </a>
+                </div>
+
+                <!-- nvidia -->
+                <div class="cursor-pointer">
+                    <a href="/pages/brands_products.php?brandName=nvidia">
+                        <img src="/src/company_partner/nvidia.svg" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
 
     <!-- footer -->
     <?php

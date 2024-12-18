@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: /index.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: /admin/dashboard.php");
     exit;
 }
 ?>
@@ -90,11 +90,11 @@ if (isset($_GET['product_id'])) {
             <a class="flex items-center" href="view_products.php">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-9 sm:w-14" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-7 sm:w-14" src="/src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-28 sm:w-36" src="/shopnest/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-20 sm:w-36" src="/src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>
@@ -142,7 +142,7 @@ if (isset($_GET['product_id'])) {
                                 </div>
 
                                 <div class="md:col-span-3">
-                                    <label for="MRP" class="require">MRP:</label>
+                                    <label for="MRP" class="require">Sell Price:</label>
                                     <div class="relative">
                                         <input type="text" name="MyMRP" id="MRP" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:border-gray-600 focus:ring-gray-600 z-10" value="<?php echo isset($_GET['product_id']) ? $MRP : 'MRP' ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
@@ -150,7 +150,7 @@ if (isset($_GET['product_id'])) {
                                 </div>
 
                                 <div class="md:col-span-2">
-                                    <label for="your_price" class="require">Your price:</label>
+                                    <label for="your_price" class="require">MRP:</label>
                                     <div class="relative">
                                         <input type="text" name="My_your_price" id="your_price" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:border-gray-600 focus:ring-gray-600 z-10" value="<?php echo isset($_GET['product_id']) ? $Your_Price : 'Your_Price' ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
@@ -177,7 +177,7 @@ if (isset($_GET['product_id'])) {
 
                                 <div class="md:col-span-5 mt-5">
                                     <label for="keyword" class="require">Keywords:</label>
-                                    <div id="keyword-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-2 gap-3">
+                                    <div id="keyword-container" class="grid grid-cols-1 md:grid-cols-3 mt-2 gap-3">
 
                                     </div>
                                     <?php
@@ -453,7 +453,8 @@ if (isset($_POST['updateBtn'])) {
     }
 
     // Escape user inputs
-    $full_name = mysqli_real_escape_string($con, $_POST['full_name']);
+    $products_name = $_POST['full_name'];
+    $full_name = str_replace(['"', ',', "'"], '`', $products_name);
     $Company_name = mysqli_real_escape_string($con, $_POST['Company_name']);
     $Category = mysqli_real_escape_string($con, $_GET['name']);
     $type = mysqli_real_escape_string($con, $_POST['type']);
@@ -505,7 +506,8 @@ if (isset($_POST['updateBtn'])) {
     $keyword = isset($_POST['keyword']) && is_array($_POST['keyword']) ? $_POST['keyword'] : [];
     $size = isset($_POST['size']) && is_array($_POST['size']) ? $_POST['size'] : [];
 
-    $key_value = implode(',', $keyword);
+    $myKwrd = str_replace("'", "`", $keyword);
+    $key_value = implode(',', $myKwrd);
     $size_value = !empty($size) ? implode(', ', $size) : '-';
 
     if (isset($_POST['size']) && !empty($_POST['size'])) {

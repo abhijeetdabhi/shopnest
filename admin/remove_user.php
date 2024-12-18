@@ -1,16 +1,16 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: /index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: /vendor/vendor_dashboard.php");
     exit;
 }
 
 if (!isset($_GET['id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: /vendor/vendor_dashboard.php");
     exit;
 }
 ?>
@@ -50,40 +50,6 @@ if (!isset($_GET['id'])) {
     $get_user = "SELECT * FROM user_registration WHERE user_id = '$user_id'";
     $get_query = mysqli_query($con, $get_user);
     $res = mysqli_fetch_assoc($get_query);
-
-    $user_email = $res['email'];
-
-    include '../pages/mail.php';
-    $mail->addAddress($user_email);
-    $mail->isHTML(true);
-
-
-    if($get_query){
-        $username = $res['first_name'];
-        $removal_date = date('d-m-Y');
-
-        $mail->Subject = "Account Removal Notification";
-        $mail->Body = "<html>
-        <head>
-        <title>Account Removal Notification</title>
-        </head>
-        <body>
-        <p>Dear $username,</p>
-        <p>We regret to inform you that your account with us has been removed by our admin team.</p>
-        <p><strong>Account Username:</strong> $username<br>
-        <strong>Removal Date:</strong> $removal_date</p>
-        <p>If you believe this action was taken in error or if you have any questions, please do not hesitate to contact our support team.</p>
-        <p>We appreciate your understanding in this matter.</p>
-        <p>Thank you for being a part of shopNest.</p>
-        <p>Best regards,<br>
-        shopNest Support Team<br>
-        shopnest2603@gmail.com</p>
-        </body>
-        </html>";
-    
-        $mail->send();
-    }
-
 
     // remove user
     $remove_user = "DELETE FROM user_registration WHERE user_id = '$user_id'";

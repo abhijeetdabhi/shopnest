@@ -14,17 +14,17 @@ unset(
     $_SESSION['user_pincode']
 );
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../../admin/dashboard.php");
     exit;
 }
 
@@ -47,7 +47,7 @@ if (isset($_COOKIE['adminEmail'])) {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="../../src/logo/favicon.svg">
+    <link rel="shortcut icon" href="../../src/logo/favIcon.svg">
 
     <!-- alpinejs CDN -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js" defer></script>
@@ -67,14 +67,14 @@ if (isset($_COOKIE['adminEmail'])) {
     <div class="w-full md:w-[85%] lg:w-[70%] 2xl:w-[50%]">
         <!-- header -->
         <div class="p-2 flex items-center justify-center">
-            <a class="flex items-center mb-2 focus:outline-none" href="/shopnest/index.php">
+            <a class="flex items-center mb-2 focus:outline-none" href="../../index.php">
                 <!-- icon logo div -->
                 <div>
-                    <img class="w-9 sm:w-12 mt-0.5" src="/shopnest/src/logo/black_cart_logo.svg" alt="">
+                    <img class="w-9 sm:w-12 mt-0.5" src="../../src/logo/black_cart_logo.svg" alt="">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-28 sm:w-32" src="/shopnest/src/logo/black_text_logo.svg" alt="">
+                    <img class="w-28 sm:w-32" src="../../src/logo/black_text_logo.svg" alt="">
                 </div>
             </a>
         </div>
@@ -366,7 +366,7 @@ if (isset($_POST['submitBtn'])) {
     $username_pattern = "/^[a-zA-Z0-9_]{3,20}$/";
     $phone_pattern = "/^[6-9]\d{9}$/";
     $gst_pattern = "/^[a-zA-Z0-9]{1,15}$/";
-    $bio_pattern = "/^[\w\s.,!?'()-]{1,500}$/";
+    $bio_pattern = "/^.{10,1500}$/";
 
     // Validate each field using preg_match
     if (!preg_match($name_pattern, $name)) {

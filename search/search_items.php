@@ -1,16 +1,16 @@
 <?php
 if (!isset($_GET['searchName'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -51,7 +51,7 @@ $_SESSION['searchWord'] = $keywords;
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="/shopnest/src/logo/favicon.svg">
+    <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <style>
         .outfit {
@@ -218,7 +218,7 @@ $_SESSION['searchWord'] = $keywords;
             <p class="text-xs font-semibold"> -INR</p>
         </div>
         <div class="flex items-center">
-            <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/track_order.php">
+            <a class="flex items-center text-xs gap-2 px-2 h-10" href="../pages/track_order.php">
                 <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                     <g>
                         <path d="M492.522 118.3 266.433 3.743l-.094-.047c-10.067-5.012-22.029-4.9-32.002.3L137.368 55.46c-.788.334-1.545.739-2.27 1.205L18.896 118.337C7.24 124.44 0 136.398 0 149.559V362.44c0 13.161 7.24 25.118 18.896 31.221l215.345 114.292.097.051a35.255 35.255 0 0 0 16.297 3.981 35.232 35.232 0 0 0 15.704-3.682l226.183-114.604C504.538 387.69 512 375.618 512 362.18V149.82c0-13.439-7.462-25.512-19.478-31.52zM248.237 30.569a5.26 5.26 0 0 1 4.705-.042l211.629 107.23-82.364 41.005L175.308 69.275l72.929-38.706zM235.424 474.63 32.91 367.147l-.097-.051a5.237 5.237 0 0 1-2.824-4.656V163.091l205.435 107.124V474.63zm15.153-230.335L46.272 137.76l97.024-51.493L349.171 195.21l-98.594 49.085zm231.432 117.883a5.22 5.22 0 0 1-2.911 4.703L265.414 475.152V270.408l98.386-48.982v51.355c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-66.286l88.219-43.92v199.603z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -226,7 +226,7 @@ $_SESSION['searchWord'] = $keywords;
                 </svg>Track Order
             </a>
 
-            <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/help_center.php">
+            <a class="flex items-center text-xs gap-2 px-2 h-10" href="../pages/help_center.php">
                 <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                     <g>
                         <path d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm0 476.279c-121.462 0-220.279-98.816-220.279-220.279S134.538 35.721 256 35.721c121.463 0 220.279 98.816 220.279 220.279S377.463 476.279 256 476.279z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -517,7 +517,7 @@ $_SESSION['searchWord'] = $keywords;
                 $sort_order = 'ASC';
 
                 if ($filter_query) {
-                    $products = "SELECT * FROM products WHERE (keywords LIKE '%$keywords%' OR Category LIKE '%$keywords%' OR Type LIKE '%$keywords%' OR company_name LIKE '%$keywords%') AND $filter_query";
+                    $products = "SELECT * FROM products WHERE (keywords LIKE '%$keywords%' OR Category LIKE '%$keywords%' OR Type LIKE '%$keywords%' OR company_name LIKE '%$keywords%') AND $filter_query ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
                 } elseif ($selected === 'Newest') {
                     $products = "SELECT * FROM products WHERE (keywords LIKE '%$keywords%' OR Category LIKE '%$keywords%' OR Type LIKE '%$keywords%' OR company_name LIKE '%$keywords%')";
                 } elseif ($selected === 'All') {
@@ -588,7 +588,7 @@ $_SESSION['searchWord'] = $keywords;
                         ?>
                             <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                                 <div class="p-2" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-64 object-fill rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
                                 </div>
                                 <div class="mt-2 space-y-3" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>

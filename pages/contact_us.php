@@ -83,7 +83,7 @@ include "../include/connect.php";
                     <span class="text-sm font-normal">Surat, Gujarat</span>
                     <p class="text-sm font-medium">India</p>
                 </div>
-                <div class="grid grid-cols-2 gap-4 mt-5">
+                <div class="flex flex-wrap items-center justify-evenly gap-2 md:gap-4 mt-5">
                     <div class="grid grid-cols-1 gap-2">
                         <span class="font-medium text-xs uppercase">Phone</span>
                         <a href="tel:7863843776" class="font-medium text-sm">+91 7863843776</a>
@@ -91,8 +91,8 @@ include "../include/connect.php";
                     </div>
                     <div class="grid grid-cols-1 gap-2">
                         <span class="font-medium text-xs uppercase">Email</span>
-                        <a href="mailto:abhijeetdabhi9304@gmail.com" class="font-medium text-sm underline">abhijeetdabhi9304@gmail.com</a>
-                        <a href="mailto:vishvjitchauhan2284@gmail.com" class="font-medium text-sm underline">vishvjitchauhan2284@gmail.com</a>
+                        <a href="mailto:abhijeetdabhi9304@gmail.com" class="font-medium text-xs md:text-sm underline">abhijeetdabhi9304@gmail.com</a>
+                        <a href="mailto:vishvjitchauhan2284@gmail.com" class="font-medium text-xs md:text-sm underline">vishvjitchauhan2284@gmail.com</a>
                     </div>
                 </div>
             </div>
@@ -107,26 +107,22 @@ include "../include/connect.php";
                     <div class="flex flex-col gap-1 mt-4">
                         <label for="username" class="text-sm font-medium require">Name:</label>
                         <input type="text" name="name" id="username" class="border-none w-full focus:border-0 focus:ring-0 rounded-md h-12" placeholder="What's you name?">
-                        <small class="text-red-500 translate-x-1">Name must be require</small>
                     </div>
                     <div class="flex flex-col gap-1 mt-4">
                         <label for="useremail" class="text-sm font-medium require">Email:</label>
                         <input type="email" name="user_email" id="useremail" class="border-none w-full focus:border-0 focus:ring-0 rounded-md h-12" placeholder="What's you E-mail?">
-                        <small class="text-red-500 translate-x-1">Email must be require</small>
                     </div>
                 </div>
                 <div>
                     <div class="flex flex-col gap-1 mt-4">
                         <label for="subject" class="text-sm font-medium require">Subject:</label>
                         <input type="text" name="subject" id="subject" class="border-none w-full focus:border-0 focus:ring-0 rounded-md h-12" placeholder="What's you Subject?">
-                        <small class="text-red-500 translate-x-1">Subject must be require</small>
                     </div>
                 </div>
                 <div>
                     <div class="flex flex-col gap-1 mt-4">
                         <label for="message" class="text-sm font-medium require">Message:</label>
                         <textarea name="message" id="message" rows="5" class="border-none w-full focus:border-0 focus:ring-0 rounded-md resize-none" placeholder="Can You Provide Some More Details?"></textarea>
-                        <small class="text-red-500 translate-x-1">Message must be require</small>
                     </div>
                 </div>
                 <input type="submit" name="contact" value="Get in touch" class=" font-medium text-center rounded-tl-xl rounded-br-xl w-full bg-gray-700 text-white mt-5 py-4 cursor-pointer hover:bg-gray-800">
@@ -188,7 +184,7 @@ include "../include/connect.php";
             setTimeout(() => {
                 SpopUp.style.display = 'none';
                 SpopUp.style.opacity = '0';
-                window.location.href = "/shopnest/index.php";
+                window.location.href = "/index.php";
             }, 1500);
         }
     </script>

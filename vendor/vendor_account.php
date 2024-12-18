@@ -1,16 +1,14 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /shopnest/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
-?>
 
-<?php
 include "../include/connect.php";
 if (isset($_COOKIE['vendor_id'])) {
     $vendor_id = $_COOKIE['vendor_id'];
@@ -19,70 +17,6 @@ if (isset($_COOKIE['vendor_id'])) {
     $retrieve_query = mysqli_query($con, $retrieve_data);
 
     $row = mysqli_fetch_assoc($retrieve_query);
-
-    if (isset($_POST['updateBtn'])) {
-        $CoverImage = $_FILES['CoverImage']['name'];
-        $tempname = $_FILES['CoverImage']['tmp_name'];
-        $folder = '../src/vendor_images/vendor_cover_image/' . $CoverImage;
-
-
-        $ProfileImage = $_FILES['ProfileImage']['name'];
-        $tempname2 = $_FILES['ProfileImage']['tmp_name'];
-        $folder2 = '../src/vendor_images/vendor_profile_image/' . $ProfileImage;
-
-        $full_name = $_POST['full_name'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $userName = $_POST['userName'];
-        $gst = $_POST['gst'];
-        $bio = $_POST['bio'];
-
-        $updateVenodr = "UPDATE vendor_registration SET name='$full_name', email='$email', username='$userName', phone='$phone', Bio='$bio', GST='$gst' WHERE vendor_id = '$vendor_id'";
-        $update_query = mysqli_query($con, $updateVenodr);
-
-        if ($update_query) {
-            // Check for Cover file upload
-            if (move_uploaded_file($tempname, $folder)) {
-                $vendor_id = $_COOKIE['vendor_id'];
-                $update_cover = "UPDATE vendor_registration SET cover_image='$CoverImage' WHERE vendor_id = '$vendor_id'";
-                $updatedcover_query = mysqli_query($con, $update_cover);
-
-                if ($updatedcover_query) {
-                    echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
-                } else {
-                    echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
-                }
-            }
-            // Check for profile file upload
-            else if (move_uploaded_file($tempname2, $folder2)) {
-                $vendor_id = $_COOKIE['vendor_id'];
-                $update_dp = "UPDATE vendor_registration SET dp_image='$ProfileImage' WHERE vendor_id = '$vendor_id'";
-                $updatedp_query = mysqli_query($con, $update_dp);
-
-                if ($updatedp_query) {
-                    echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
-                } else {
-                    echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
-                }
-            }
-            // Check for Cover and profile file upload
-            else if (move_uploaded_file($tempname, $folder) && move_uploaded_file($tempname2, $folder2)) {
-                $vendor_id = $_COOKIE['vendor_id'];
-                $update_img = "UPDATE vendor_registration SET cover_image='$CoverImage', dp_image='$ProfileImage' WHERE vendor_id = '$vendor_id'";
-                $update_img_query = mysqli_query($con, $update_img);
-
-                if ($update_img_query) {
-                    echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
-                } else {
-                    echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
-                }
-            } else {
-                echo '<script>displaySuccessMessage("Data Updated Properly.");</script>';
-            }
-        } else {
-            echo '<script>displayErrorMessage("Data Not Updated Properly.");</script>';
-        }
-    }
 }
 ?>
 <!DOCTYPE html>
@@ -149,11 +83,11 @@ if (isset($_COOKIE['vendor_id'])) {
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-9 sm:w-14 mt-0.5" src="/shopnest/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-7 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-28 sm:w-36" src="/shopnest/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-16 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -252,7 +186,7 @@ if (isset($_COOKIE['vendor_id'])) {
                             <h1 class="bg-gray-100 text-2xl font-bold mb-6">Settings page</h1>
                             <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                                 <div class="lg:col-span-2">
-                                    <form action="" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" class="space-y-3">
+                                    <form method="POST" enctype="multipart/form-data" class="space-y-3">
                                         <div class="col-span-4 flex flex-col items-center relative mt-3">
                                             <div class="w-full p-5">
                                                 <div class="w-full relative bg-blue-500">
@@ -381,7 +315,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                         </div>
 
                                         <div class="w-full">
-                                            <label for="userName" class="require">Username:</label>
+                                            <label for="userName" class="require">Store Name:</label>
                                             <input type="text" name="userName" id="userName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_COOKIE['vendor_id']) ? $row['username'] : '' ?>" placeholder="" />
                                             <small class="hidden text-red-500">Username is require</small>
                                         </div>
@@ -400,10 +334,11 @@ if (isset($_COOKIE['vendor_id'])) {
 
                                         <div class="col-span-4 text-right mt-7">
                                             <div class="inline-flex items-end">
-                                                <input type="submit" value="Update" name="updateBtn" class="bg-gray-600 hover:bg-gray-700 text-white w-28 py-2 px-4 rounded-tl-lg rounded-br-lg cursor-pointer">
+                                                <button type="submit" value="Update" name="updateBtn" class="bg-gray-600 hover:bg-gray-700 text-white w-28 py-2 px-4 rounded-tl-lg rounded-br-lg cursor-pointer">update</button>
                                             </div>
                                         </div>
                                     </form>
+
                                     <script>
                                         function validateForm() {
                                             // Get input fields and error messages
@@ -467,8 +402,7 @@ if (isset($_COOKIE['vendor_id'])) {
         </div>
     </div>
 
-
-    <!-- success Message -->
+      <!-- success Message -->
     <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
         <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -503,7 +437,7 @@ if (isset($_COOKIE['vendor_id'])) {
                 EpopUp.style.display = 'none';
                 EpopUp.style.opacity = '0';
                 window.location.href = "vendor_account.php";
-            }, 700);
+            }, 1500);
         }
 
         function displaySuccessMessage(message) {
@@ -518,12 +452,78 @@ if (isset($_COOKIE['vendor_id'])) {
                 SpopUp.style.display = 'none';
                 SpopUp.style.opacity = '0';
                 window.location.href = "vendor_account.php";
-            }, 700);
+            }, 1500);
         }
     </script>
+
+
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
-
 </html>
+
+<?php
+    if (isset($_POST['updateBtn'])) {
+        $CoverImage = $_FILES['CoverImage']['name'];
+        $tempname = $_FILES['CoverImage']['tmp_name'];
+        $folder = '../src/vendor_images/vendor_cover_image/' . $CoverImage;
+
+        $ProfileImage = $_FILES['ProfileImage']['name'];
+        $tempname2 = $_FILES['ProfileImage']['tmp_name'];
+        $folder2 = '../src/vendor_images/vendor_profile_image/' . $ProfileImage;
+
+        $full_name = $_POST['full_name'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $userName = $_POST['userName'];
+        $gst = $_POST['gst'];
+        $bio = $_POST['bio'];
+
+        $updateVenodr = "UPDATE vendor_registration SET name='$full_name', email='$email', username='$userName', phone='$phone', Bio='$bio', GST='$gst' WHERE vendor_id = '$vendor_id'";
+        $update_query = mysqli_query($con, $updateVenodr);
+
+        if ($update_query) {
+            // Check for Cover file upload
+            if (move_uploaded_file($tempname, $folder)) {
+                $vendor_id = $_COOKIE['vendor_id'];
+                $update_cover = "UPDATE vendor_registration SET cover_image='$CoverImage' WHERE vendor_id = '$vendor_id'";
+                $updatedcover_query = mysqli_query($con, $update_cover);
+
+                if ($updatedcover_query) {
+                    echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
+                } else {
+                    echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
+                }
+            }
+            // Check for profile file upload
+            else if (move_uploaded_file($tempname2, $folder2)) {
+                $vendor_id = $_COOKIE['vendor_id'];
+                $update_dp = "UPDATE vendor_registration SET dp_image='$ProfileImage' WHERE vendor_id = '$vendor_id'";
+                $updatedp_query = mysqli_query($con, $update_dp);
+
+                if ($updatedp_query) {
+                    echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
+                } else {
+                    echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
+                }
+            }
+            // Check for Cover and profile file upload
+            else if (move_uploaded_file($tempname, $folder) && move_uploaded_file($tempname2, $folder2)) {
+                $vendor_id = $_COOKIE['vendor_id'];
+                $update_img = "UPDATE vendor_registration SET cover_image='$CoverImage', dp_image='$ProfileImage' WHERE vendor_id = '$vendor_id'";
+                $update_img_query = mysqli_query($con, $update_img);
+
+                if ($update_img_query) {
+                    echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
+                } else {
+                    echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
+                }
+            } else {
+                echo '<script>displaySuccessMessage("Data Updated Properly.");</script>';
+            }
+        } else {
+            echo '<script>displayErrorMessage("Data Not Updated Properly.");</script>';
+        }
+    }
+?>

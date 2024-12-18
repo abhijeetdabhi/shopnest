@@ -1,12 +1,12 @@
 <?php
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /shopnest/admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 
@@ -73,7 +73,7 @@ if (isset($_POST["query"])) {
                     $encodedKey = urlencode($keyword);
                     $output .= '
                         <li id="suggestion" class="cursor-pointer hover:bg-gray-200 p-2 transition duration-150 ease-in-out">
-                            <a href="/shopnest/search/search_items.php?searchName=' . $encodedKey . '" class="block text-gray-800">' . htmlspecialchars($keyword) . '</a>
+                            <a href="../search/search_items.php?searchName=' . $encodedKey . '" class="block text-gray-800">' . htmlspecialchars($keyword) . '</a>
                         </li>';
                 }
             }

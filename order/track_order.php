@@ -1,17 +1,17 @@
 <?php
 
     if(!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])){
-        header("Location: /shopnest/index.php");
+        header("Location: /index.php");
         exit;
     }
 
     if(isset($_COOKIE['vendor_id'])){
-        header("Location: /shopnest/vendor/vendor_dashboard.php");
+        header("Location: /vendor/vendor_dashboard.php");
         exit;
     }
 
     if(isset($_COOKIE['adminEmail'])){
-        header("Location: /shopnest/admin/dashboard.php");
+        header("Location: /admin/dashboard.php");
         exit;
     }
 ?>
@@ -223,7 +223,7 @@ if (isset($_COOKIE['user_id'])) {
                                         </span>
                                         <div class="ml-2">
                                             <h4 class="mb-0.5 text-base font-semibold <?php echo $fourday <= date('Y-m-d') ? htmlspecialchars('text-indigo-600') : htmlspecialchars('text-gray-900') ?>"><?php echo isset($fourday) ? date('d-m-Y', strtotime($fourday)) : 'Products being delivered Date'?></h4>
-                                            <p class="text-sm font-normal <?php echo $fourday <= date('Y-m-d') ? htmlspecialchars('text-indigo-600') : htmlspecialchars('text-gray-500')?>">Products being delivered</p>
+                                            <p class="text-sm font-normal <?php echo $fourday <= date('Y-m-d') ? htmlspecialchars('text-indigo-600') : htmlspecialchars('text-gray-500')?>">Out For Delivery</p>
                                         </div>
                                     </li>
 
