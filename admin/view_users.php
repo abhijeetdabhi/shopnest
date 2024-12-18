@@ -206,6 +206,11 @@ if (isset($_COOKIE['vendor_id'])) {
                                                         <span>Remove</span>
                                                     </a>
                                                 </div>
+                                                <div class="flex justify-between divide-x-2 border-t-2 w-full">
+                                                    <a href="userPurchaseProduct.php?user_id=<?php echo $res['user_id'] ?>" class="w-full py-2 space-x-1 text-red-600">
+                                                        <span>User's Details</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         <?php
                                         }

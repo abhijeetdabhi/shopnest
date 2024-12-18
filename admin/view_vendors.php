@@ -214,6 +214,11 @@ if (isset($_COOKIE['vendor_id'])) {
                                                         <span>Remove</span>
                                                     </a>
                                                 </div>
+                                                <div class="flex justify-between items-center divide-x-2 border-t-2">
+                                                    <a href="vendor_products.php?vendor_id=<?php echo isset($_COOKIE['adminEmail']) ? $row['vendor_id'] : '' ?>" class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
+                                                        <h1>Vendor's Products</h1>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     <?php
