@@ -57,10 +57,20 @@ if (isset($_COOKIE['user_id'])) {
             color: red;
             margin-left: 3px;
         }
+
+        #logoutPopUp {
+            display: none;
+        }
     </style>
 </head>
 
 <body style="font-family: 'Outfit', sans-serif;">
+
+    <div>
+        <?php
+        include "user_logout.php";
+        ?>
+    </div>
 
     <div>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
@@ -139,7 +149,7 @@ if (isset($_COOKIE['user_id'])) {
                         <span class="mx-3">Your address</span>
                     </a>
 
-                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="user_logout.php">
+                    <a id="logoutButton1" class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="#">
                         <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path>
                             <path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"></path>
@@ -150,7 +160,7 @@ if (isset($_COOKIE['user_id'])) {
             </div>
 
             <div class="flex flex-col flex-1">
-                <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
+            <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
                     <div class="flex items-center justify-between">
                         <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
                             <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -173,7 +183,7 @@ if (isset($_COOKIE['user_id'])) {
                     </div>
                     <div class="flex items-center">
                         <div x-data="{ dropdownOpen: false }" class="relative">
-                            <button @click="dropdownOpen = ! dropdownOpen" class="relative block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none">
+                            <button @click="dropdownOpen = ! dropdownOpen" class="relative block w-9 h-9 overflow-hidden rounded-full shadow border ring-0">
                                 <img class="object-cover w-full h-full" src="<?php
                                                                                 if (isset($_COOKIE['user_id'])) {
                                                                                     echo '../src/user_dp/' . $row['profile_image'];
@@ -186,10 +196,44 @@ if (isset($_COOKIE['user_id'])) {
                             <div x-show="dropdownOpen" class="absolute right-0 z-10 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl ring-2 ring-gray-300 divide-y-2 divide-gray-300" style="display: none;">
                                 <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Profile</a>
                                 <a href="show_orders.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Orders</a>
-                                <a href="user_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
+                                <a id="logoutButton2" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
                             </div>
                         </div>
                     </div>
+                    <script>
+                        // Select elements
+                        const logoutPopUp = document.getElementById('logoutPopUp');
+                        const logoutButton1 = document.getElementById('logoutButton1');
+                        const logoutButton2 = document.getElementById('logoutButton2');
+
+                        // Function to show the logout popup
+                        function showLogoutPopup() {
+                            logoutPopUp.style.display = 'flex'; // Show the popup
+                        }
+
+                        // Function to hide the logout popup
+                        function closePopup() {
+                            logoutPopUp.style.display = 'none'; // Hide the popup
+                        }
+
+                        // Add click event listeners to logout buttons
+                        logoutButton1.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            showLogoutPopup();
+                        });
+
+                        logoutButton2.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            showLogoutPopup();
+                        });
+
+                        // Add a global event listener to the Cancel button
+                        document.addEventListener('click', (event) => {
+                            if (event.target.matches('.cancel-button')) {
+                                closePopup();
+                            }
+                        });
+                    </script>
                 </header>
                 <form action="" method="post" class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200" onsubmit="return validateForm()">
                     <div class="container px-6 py-8 mx-auto">
