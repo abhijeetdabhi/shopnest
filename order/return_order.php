@@ -70,14 +70,6 @@ if (isset($_COOKIE['user_id'])) {
 </head>
 <body style="font-family: 'Outfit', sans-serif;">
 
-    <!-- Full screen overlay -->
-    <div id="overlay" class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 text-white flex items-center justify-center text-xl font-semibold z-50 hidden">
-        <div>
-            <div class="text-gray-200 w-12 h-12 border-4 border-white border-opacity-30 border-t-4 border-t-black rounded-full animate-spin mx-auto"></div>
-            <p class="mt-4">Order Returning...</p>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
@@ -213,62 +205,72 @@ if (isset($_COOKIE['user_id'])) {
         </form>
     </div>
 
-    <!-- success Message -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div id="successMessage"></div>
+            <div class="capitalize font-medium" id="Successfully"></div>
         </div>
     </div>
 
+
     <!-- Error message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div id="errorMessage"></div>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
         </div>
     </div>
 
     <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
 
-        // displaly error msg
-        function displayErrorMessage(message) {
-            let EpopUp = document.getElementById('EpopUp');
-            let errorMessage = document.getElementById('errorMessage');
-        
-            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            EpopUp.style.display = 'flex';
-            EpopUp.style.opacity = '100';
-        
-            setTimeout(() => {
-                EpopUp.style.display = 'none';
-                EpopUp.style.opacity = '0';
-            }, 2000);
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
         }
 
-        // displaly success msg
-        function displaySuccessMessage(message) {
-            let SpopUp = document.getElementById('SpopUp');
-            let successMessage = document.getElementById('successMessage');
-        
-            successMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            SpopUp.style.display = 'flex';
-            SpopUp.style.opacity = '100';
-        
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
             setTimeout(() => {
-                SpopUp.style.display = 'none';
-                SpopUp.style.opacity = '0';
-                window.location.href = "../user/show_return_order.php";
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
             }, 1800);
         }
-    </script>
 
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = "../user/show_return_order.php";
+            }, 2000);
+        }
+    </script>
+    
     <script>
         $(document).ready(function () {
             $('#returnForm').on('submit', function(e){
@@ -289,8 +291,6 @@ if (isset($_COOKIE['user_id'])) {
                 }else if (!OrderReturn) {
                     displayErrorMessage('Please Select Why are you Retrun the order?')
                     return;
-                }else{
-                    document.getElementById('overlay').style.display = 'flex';
                 }
 
                 $.ajax({
@@ -317,6 +317,7 @@ if (isset($_COOKIE['user_id'])) {
                         return_order_size: "<?php echo $res['order_size']?>",
                     },
                     success: function (response) {
+                        loader();
                         $('input[name="Preceive"]:checked').prop('checked', false);
                         $('input[name="OrderReturn"]:checked').prop('checked', false);
                         displaySuccessMessage("Your order has been successfully Return.")
@@ -382,104 +383,6 @@ if (isset($_COOKIE['user_id'])) {
  
         $update_qty = "UPDATE products SET Quantity='$update_qty' WHERE product_id = '$product_id'";
         $update_qty_quary = mysqli_query($con, $update_qty);
-
-        if($update_qty_quary){
-            echo "<script>document.getElementById('overlay').style.display = 'flex';</script>";
-
-            // Include PHPMailer
-            include '../pages/mail.php';
-
-            // Add recipient and other email properties
-            // $mail->addAddress($user_email);
-            $mail->addAddress('abhijeetdabhi9304@gmail.com');
-            $mail->isHTML(true);
-
-            if(isset($_GET['order_id']))
-            {
-                $order_id = $_GET['order_id'];
-        
-                $retrieve_return_order = "SELECT * FROM return_orders WHERE order_id = '$order_id'";
-                $retrieve_return_order_query = mysqli_query($con, $retrieve_return_order);
-                $cnsl = mysqli_fetch_assoc($retrieve_return_order_query);
-    
-                $username = $cnsl['user_name'];
-                $return_order_id = $cnsl['order_id'];
-                $return_order_date = date('d-m-Y');
-                $return_order_title = $cnsl['return_order_title'];
-                $return_order_image = '../src/product_image/product_profile/' . $cnsl['return_order_image'];
-                $return_order_price = $cnsl['return_order_price'];
-                $return_order_qty = $cnsl['return_order_qty'];
-                $return_order_color = $cnsl['return_order_color'];
-                $return_order_size = $cnsl['return_order_size'];
-                $user_mobile = $cnsl['user_phone'];
-                $user_mail = $cnsl['user_email'];
-                $reason	 = $cnsl['reason'];
-                $total_price = $cnsl['return_order_price'];
-            }
-            
-            $mail->Subject = "Order Return Confirmation - #$return_order_id";
-            $mail->Body = "<html>
-                <head>
-                    <title>Order Return Confirmation</title>
-                </head>
-                <body>
-                    <p>Dear $username,</p>
-                    <p>Thank you for reaching out. We have successfully processed your return request. Below are the details of your returned order:</p>
-                    <p><strong>Order Number:</strong> $return_order_id<br>
-                    <strong>Return Order Date:</strong> $return_order_date</p>
-
-                    <h3>Returned Items:</h3>
-                    <table border='1' cellpadding='10'>
-                        <tr>
-                            <td><strong>Product Name:</strong></td>
-                            <td>$return_order_title</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Image:</strong></td>
-                            <td><img src='$return_order_image' alt='Product Image' width='100'></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Price:</strong></td>
-                            <td>$return_order_price</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Quantity:</strong></td>
-                            <td>$return_order_qty</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Color:</strong></td>
-                            <td>$return_order_color</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Size:</strong></td>
-                            <td>$return_order_size</td>
-                        </tr>
-                    </table>
-
-                    <p><strong>Mobile Number:</strong> $user_mobile</p>
-                    <p><strong>Billing E-mail:</strong> $user_mail</p>
-                    <p><strong>Return Reason:</strong> $reason</p>
-                    <p><strong>Order Total Price:</strong> $total_price</p>
-
-                    <p>Your return has been successfully processed, and the refund has been initiated.</p>
-                    <p>If you have any further questions or need assistance, feel free to contact us.</p>
-                    <p>Thank you for choosing shopNest. We look forward to serving you again in the future!</p>
-
-                    <p>Best regards,<br>
-                    shopNest<br>
-                    shopnest2603@gmail.com</p>
-                </body>
-            </html>";
-
-            // Send the email
-            if ($mail->send()) {
-                echo "<script>
-                    document.getElementById('overlay').style.display = 'none';
-                </script>";
-            } else {
-                echo "<p class='text-red-500'>There was an error sending the email. Please try again later.</p>";
-            }
-        }
     }
 
 ?>

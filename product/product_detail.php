@@ -632,7 +632,7 @@ if (isset($_GET['product_id'])) {
                         <?php
                         }
                         ?>
-                        <div class="mt-7 flex flex-col gap-8 overflow-y-scroll py-4 h-[60vh] md:px-4 scrollBar">
+                        <div class="mt-7 flex flex-col gap-8 overflow-y-scroll py-4 h-max md:px-4 scrollBar">
                             <?php
                             $retrive_reivew = "SELECT * FROM user_review WHERE product_id = '$product_id'";
                             $retrive_reivew_query = mysqli_query($con, $retrive_reivew);

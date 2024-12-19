@@ -51,95 +51,65 @@ document.querySelectorAll('form').forEach(form => {
 
 // upload images
 function productImagePreview(event, previewImageId, imageTextId) {
-        const file = event.target.files[0];
-        const previewImage = document.getElementById(previewImageId);
-        const imageText = document.getElementById(imageTextId);
-        const errorMessage = document.getElementById('error-message' + previewImageId.charAt(previewImageId.length - 1));
+    const file = event.target.files[0];
+    const previewImage = document.getElementById(previewImageId);
+    const imageText = document.getElementById(imageTextId);
+    const errorMessage = document.getElementById('error-message' + previewImageId.charAt(previewImageId.length - 1));
 
-        if (file) {
-            const fileType = file.type;
-            if (fileType === "image/png" || fileType === "image/jpeg" || fileType === "image/jpg") {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImage.src = e.target.result; // Set the preview image source
-                    previewImage.classList.remove('hidden'); // Show the preview
-                    imageText.classList.add('hidden'); // Hide the placeholder text
-                    errorMessage.classList.add('hidden'); // Hide the error message
-                };
-                reader.readAsDataURL(file);
-            } else {
-                errorMessage.classList.remove('hidden'); // Show error message
-                previewImage.src = ''; // Clear the image source
-                previewImage.classList.add('hidden'); // Hide the preview image
-                imageText.classList.remove('hidden'); // Show the placeholder text
-            }
+    if (file) {
+        const fileType = file.type;
+        if (fileType === "image/png" || fileType === "image/jpeg" || fileType === "image/jpg") {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result; // Set the preview image source
+                previewImage.classList.remove('hidden'); // Show the preview
+                imageText.classList.add('hidden'); // Hide the placeholder text
+                errorMessage.classList.add('hidden'); // Hide the error message
+            };
+            reader.readAsDataURL(file);
         } else {
+            errorMessage.classList.remove('hidden'); // Show error message
             previewImage.src = ''; // Clear the image source
             previewImage.classList.add('hidden'); // Hide the preview image
             imageText.classList.remove('hidden'); // Show the placeholder text
         }
+    } else {
+        previewImage.src = ''; // Clear the image source
+        previewImage.classList.add('hidden'); // Hide the preview image
+        imageText.classList.remove('hidden'); // Show the placeholder text
     }
+}
 
-// Cover image js
-// function productImagePreview(event, previewImageId, imageTextId) {
-//     const file = event.target.files[0];
-//     const previewImage = document.getElementById(previewImageId);
-//     const imageText = document.getElementById(imageTextId);
-//     const errorMessage = document.getElementById('coverImage-error-message' + previewImageId.charAt(previewImageId.length - 1));
+function loader() {
+    let loader = document.getElementById('loader');
+    let body = document.body;
 
-//     if (file) {
-//         const fileType = file.type;
-//         // Check for valid image file types
-//         if (fileType === "image/png" || fileType === "image/jpeg" || fileType === "image/jpg") {
-//             const reader = new FileReader();
-//             reader.onload = function(e) {
-//                 previewImage.src = e.target.result; // Set the preview image source
-//                 previewImage.classList.remove('hidden'); // Show the preview image
-//                 imageText.classList.add('hidden'); // Hide the placeholder text
-//                 errorMessage.classList.add('hidden'); // Hide the error message
-//             };
-//             reader.readAsDataURL(file);
-//         } else {
-//             errorMessage.classList.remove('hidden'); // Show error message
-//             previewImage.src = ''; // Clear the image source
-//             previewImage.classList.add('hidden'); // Hide the preview image
-//             imageText.classList.remove('hidden'); // Show the placeholder text
-//         }
-//     } else {
-//         previewImage.src = ''; // Clear the image source
-//         previewImage.classList.add('hidden'); // Hide the preview image
-//         imageText.classList.remove('hidden'); // Show the placeholder text
-//     }
-// }
+    loader.style.display = 'flex';
+    body.style.overflow = 'hidden';
+}
 
-
-// displaly error msg
 function displayErrorMessage(message) {
-    let EpopUp = document.getElementById('EpopUp');
+    let popUp = document.getElementById('popUp');
     let errorMessage = document.getElementById('errorMessage');
 
     errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-    EpopUp.style.display = 'flex';
-    EpopUp.style.opacity = '100';
+    popUp.style.display = 'flex';
+    popUp.style.opacity = '100';
 
     setTimeout(() => {
-        EpopUp.style.display = 'none';
-        EpopUp.style.opacity = '0';
-    }, 1500);
+        popUp.style.display = 'none';
+        popUp.style.opacity = '0';
+    }, 1800);
 }
 
-// displaly success msg
 function displaySuccessMessage(message) {
     let SpopUp = document.getElementById('SpopUp');
-    let successMessage = document.getElementById('successMessage');
-
-    successMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-    SpopUp.style.display = 'flex';
-    SpopUp.style.opacity = '100';
+    let Successfully = document.getElementById('Successfully');
 
     setTimeout(() => {
-        SpopUp.style.display = 'none';
-        SpopUp.style.opacity = '0';
+        Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+        SpopUp.style.display = 'flex';
+        SpopUp.style.opacity = '100';
         window.location.href = "choose_product.php";
-    }, 700);
-}
+    }, 2000);
+}  

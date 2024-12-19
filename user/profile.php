@@ -11,112 +11,18 @@ if (isset($_COOKIE['adminEmail'])) {
 ?>
 
 <?php
-include "../include/connect.php";
+    include "../include/connect.php";
 
-if (isset($_COOKIE['user_id'])) {
+    if (isset($_COOKIE['user_id'])) {
+        $user_id = $_COOKIE['user_id'];
+        $user_name = $_COOKIE['fname'];
 
-    $user_id = $_COOKIE['user_id'];
-    $user_name = $_COOKIE['fname'];
+        $retrieve_data = "SELECT * FROM user_registration WHERE user_id = '$user_id'";
+        $retrieve_query = mysqli_query($con, $retrieve_data);
 
-    $retrieve_data = "SELECT * FROM user_registration WHERE user_id = '$user_id'";
-    $retrieve_query = mysqli_query($con, $retrieve_data);
+        $row = mysqli_fetch_assoc($retrieve_query);
 
-    $row = mysqli_fetch_assoc($retrieve_query);
-
-    // update Password
-    if (isset($_POST['changePass'])) {
-
-        $dpass = $row['password'];
-
-        $current_pass = $_POST['current_pass'];
-        $new_pass = $_POST['new_pass'];
-        $re_pass = $_POST['re_pass'];
-
-        $decod_pass = password_verify($current_pass, $dpass);
-
-        if ($decod_pass) {
-            if ($new_pass === $re_pass) {
-                $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
-
-                $up_pass = "UPDATE user_registration SET password = '$new_dpass' WHERE user_id = '$user_id'";
-                $up_query = mysqli_query($con, $up_pass);
-
-                if ($up_query) {
-?>
-                    <script>
-                        alert("Password Updated Successfully.")
-                    </script>
-                <?php
-                } else {
-                ?>
-                    <script>
-                        alert("Password Not Update.")
-                    </script>
-                <?php
-                }
-            } else {
-                ?>
-                <script>
-                    alert("The new password and the re-typed password do not match. Please try again.")
-                </script>
-            <?php
-            }
-        } else {
-            ?>
-            <script>
-                alert("Current password not match with new password or re-type password. Please try again.")
-            </script>
-        <?php
-        }
     }
-
-    if (isset($_POST['updateBtn'])) {
-
-        $first_name = $_POST['first_name'];
-        $last_name = $_POST['last_name'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-
-        $file_name = $_FILES['updateImage']['name'];
-        $tempname = $_FILES['updateImage']['tmp_name'];
-        $folder = '../src/user_dp/' . $file_name;
-
-        // Update user data in the database
-        $update_data = "UPDATE user_registration SET first_name='$first_name',last_name='$last_name',phone='$phone',email='$email' WHERE user_id = '$user_id'";
-        $updateQuery = mysqli_query($con, $update_data);
-
-        if ($updateQuery) {
-        ?>
-            <?php
-            if (move_uploaded_file($tempname, $folder)) {
-                $update_dp = "UPDATE user_registration SET profile_image='$file_name' WHERE user_id = '$user_id'";
-                $update_query = mysqli_query($con, $update_dp);
-                if ($update_dp) {
-            ?>
-                    <script>
-                        alert("Data Updated Properly.")
-                        window.location.href = "";
-                    </script>
-                <?php
-                } else {
-                ?>
-                    <script>
-                        alert("Enter Valid Data.")
-                    </script>
-            <?php
-                }
-            }
-        } else {
-            ?>
-            <script>
-                alert("Data Not Updated Properly.")
-            </script>
-<?php
-        }
-    }
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -404,6 +310,72 @@ if (isset($_COOKIE['user_id'])) {
         </div>
     </div>
 
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully"></div>
+        </div>
+    </div>
+
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
+        </div>
+    </div>
+
+    <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = '';
+            }, 2000);
+        }
+    </script>
+
     <!-- display image -->
     <script>
         const profile_picture = document.getElementById('profile_picture');
@@ -429,3 +401,72 @@ if (isset($_COOKIE['user_id'])) {
 </body>
 
 </html>
+
+<?php
+
+// update Password
+if (isset($_POST['changePass'])) {
+
+    $dpass = $row['password'];
+
+    $current_pass = $_POST['current_pass'];
+    $new_pass = $_POST['new_pass'];
+    $re_pass = $_POST['re_pass'];
+
+    $decod_pass = password_verify($current_pass, $dpass);
+
+    if ($decod_pass) {
+        if ($new_pass === $re_pass) {
+            $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
+
+            $up_pass = "UPDATE user_registration SET password = '$new_dpass' WHERE user_id = '$user_id'";
+            $up_query = mysqli_query($con, $up_pass);
+
+            if ($up_query) {
+                echo "<script>loader()</script>";
+                echo '<script>displaySuccessMessage("Password Updated Successfully.");</script>';
+            } else {
+                echo '<script>displayErrorMessage("Password Not Update.");</script>';
+            }
+        } else {
+            echo '<script>displayErrorMessage("The new password and the re-typed password do not match. Please try again.");</script>';
+        }
+    } else {
+        echo '<script>displayErrorMessage("Current password not match with new password or re-type password. Please try again.");</script>';
+    }
+}
+
+if (isset($_POST['updateBtn'])) {
+
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+
+    $file_name = $_FILES['updateImage']['name'];
+    $tempname = $_FILES['updateImage']['tmp_name'];
+    $folder = '../src/user_dp/' . $file_name;
+
+    // Update user data in the database
+    $update_data = "UPDATE user_registration SET first_name='$first_name',last_name='$last_name',phone='$phone',email='$email' WHERE user_id = '$user_id'";
+    $updateQuery = mysqli_query($con, $update_data);
+
+    if ($updateQuery) {
+    ?>
+        <?php
+        if (move_uploaded_file($tempname, $folder)) {
+            $update_dp = "UPDATE user_registration SET profile_image='$file_name' WHERE user_id = '$user_id'";
+            $update_query = mysqli_query($con, $update_dp);
+            if ($update_dp) {
+                echo "<script>loader()</script>";
+                echo '<script>displaySuccessMessage("Data Updated Properly.");</script>';
+            } else {
+                echo '<script>displayErrorMessage("Please Enter Valid Details.");</script>';
+            }
+        }
+    } else {
+        echo '<script>displayErrorMessage("Data Not Updated Properly.");</script>';
+    }
+}
+
+?>

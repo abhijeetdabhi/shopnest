@@ -203,59 +203,69 @@ if (isset($_COOKIE['user_id'])) {
         </form>
     </div>
 
-    <!-- success Message -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div id="successMessage"></div>
+            <div class="capitalize font-medium" id="Successfully"></div>
         </div>
     </div>
 
+
     <!-- Error message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div id="errorMessage"></div>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
         </div>
     </div>
 
     <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
 
-        // displaly error msg
-        function displayErrorMessage(message) {
-            let EpopUp = document.getElementById('EpopUp');
-            let errorMessage = document.getElementById('errorMessage');
-        
-            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            EpopUp.style.display = 'flex';
-            EpopUp.style.opacity = '100';
-        
-            setTimeout(() => {
-                EpopUp.style.display = 'none';
-                EpopUp.style.opacity = '0';
-            }, 2000);
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
         }
 
-        // displaly success msg
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
-            let successMessage = document.getElementById('successMessage');
-        
-            successMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            SpopUp.style.display = 'flex';
-            SpopUp.style.opacity = '100';
-        
+            let Successfully = document.getElementById('Successfully');
+
             setTimeout(() => {
-                SpopUp.style.display = 'none';
-                SpopUp.style.opacity = '0';
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
                 window.location.href = "../user/cancled_product.php";
-            }, 1500);
+            }, 2000);
         }
     </script>
 
@@ -274,8 +284,6 @@ if (isset($_COOKIE['user_id'])) {
                 }else if (!OrderCancle) {
                     displayErrorMessage('Please Select Why are you cancelling the order?')
                     return;
-                }else{
-                    document.getElementById('overlay').style.display = 'flex';
                 }
 
                 $.ajax({
@@ -301,6 +309,7 @@ if (isset($_COOKIE['user_id'])) {
                         cancle_order_size: "<?php echo $res['order_size']?>",
                     },
                     success: function (response) {
+                        loader();
                         $('input[name="OrderCancle"]:checked').prop('checked', false);
                         displaySuccessMessage("Your order has been successfully canceled.")
                     }
@@ -360,101 +369,5 @@ if (isset($_COOKIE['user_id'])) {
 
         $update_qty = "UPDATE products SET Quantity='$update_qty' WHERE product_id = '$product_id'";
         $update_qty_quary = mysqli_query($con, $update_qty);
-
-        if($update_qty_quary){
-            echo "<script>document.getElementById('overlay').style.display = 'flex';</script>";
-
-            // Include PHPMailer
-            include '../pages/mail.php';
-
-            // Add recipient and other email properties
-            $mail->addAddress($user_email);
-            $mail->isHTML(true);
-
-            if(isset($_GET['order_id']))
-            {
-                $order_id = $_GET['order_id'];
-        
-                $retrieve_cancle_order = "SELECT * FROM cancel_orders WHERE order_id = '$order_id'";
-                $retrieve_cancle_order_query = mysqli_query($con, $retrieve_cancle_order);
-                $cnsl = mysqli_fetch_assoc($retrieve_cancle_order_query);
-    
-                $username = $cnsl['user_name'];
-                $cancle_order_id = $cnsl['order_id'];
-                $cancle_order_date = date('d-m-Y');
-                $cancle_order_title = $cnsl['cancle_order_title'];
-                $cancle_order_image = '../src/product_image/product_profile/' . $cnsl['cancle_order_image'];
-                $cancle_order_price = $cnsl['cancle_order_price'];
-                $cancle_order_qty = $cnsl['cancle_order_qty'];
-                $cancle_order_color = $cnsl['cancle_order_color'];
-                $cancle_order_size = $cnsl['cancle_order_size'];
-                $user_mobile = $cnsl['user_phone'];
-                $user_mail = $cnsl['user_email'];
-                $reason	 = $cnsl['reason'];
-                $total_price = $cnsl['cancle_order_price'];
-            }
-            
-            $mail->Subject = "Order Cancellation Confirmation - #$cancle_order_id";
-            $mail->Body = "<html>
-                <head>
-                    <title>Order Cancellation Confirmation</title>
-                </head>
-                <body>
-                    <p>Dear $username,</p>
-                    <p>We regret to inform you that your order has been successfully cancelled. Below are the details of your cancelled order:</p>
-                    <p><strong>Order Number:</strong> $cancle_order_id<br>
-                    <strong>Cancle Order Date:</strong> $cancle_order_date</p>
-
-                    <h3>Cancelled Items:</h3>
-                    <table border='1' cellpadding='10'>
-                        <tr>
-                            <td><strong>Product Name:</strong></td>
-                            <td>$cancle_order_title</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Image:</strong></td>
-                            <td><img src='$cancle_order_image' alt='Product Image' width='100'></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Price:</strong></td>
-                            <td>$cancle_order_price</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Quantity:</strong></td>
-                            <td>$cancle_order_qty</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Color:</strong></td>
-                            <td>$cancle_order_color</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Size:</strong></td>
-                            <td>$cancle_order_size</td>
-                        </tr>
-                    </table>
-
-                    <p><strong>Mobile Number:</strong> $user_mobile</p>
-                    <p><strong>Billing E-mail:</strong> $user_mail</p>
-                    <p><strong>Reason:</strong> $reason</p>
-                    <p><strong>Order Total Price:</strong> $total_price</p>
-
-                    <p>Your payment has been refunded, and the cancellation has been processed successfully.</p>
-                    <p>Thank you for choosing shopNest. We hope to serve you again in the future!</p>
-
-                    <p>Best regards,<br>
-                    shopNest<br>
-                    shopnest2603@gmail.com</p>
-                </body>
-            </html>";
-
-            // Send the email
-            if ($mail->send()) {
-                echo "<script>
-                    document.getElementById('overlay').style.display = 'none';
-                </script>";
-            } else {
-                echo "<p class='text-red-500'>There was an error sending the email. Please try again later.</p>";
-            }
-        }
     }
 ?>
