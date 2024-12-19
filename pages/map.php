@@ -30,10 +30,10 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
-    
+
     <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" />
-    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css"/>
-    
+    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css" />
+
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.1.2-public-preview.15/services/services-web.min.js"></script>
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js"></script>
     <style>
@@ -43,13 +43,13 @@ if (isset($_COOKIE['adminEmail'])) {
             display: none;
         }
 
-         /* Custom style for the search box input */
-         .tt-search-box{
+        /* Custom style for the search box input */
+        .tt-search-box {
             width: 100%;
             margin: auto;
             padding: 12px;
         }
-        
+
         .tt-search-box input {
             font-size: 16px;
             width: 100%;
@@ -60,8 +60,8 @@ if (isset($_COOKIE['adminEmail'])) {
             outline: none;
             box-shadow: none;
         }
-        
-        .tt-search-box-input-container{
+
+        .tt-search-box-input-container {
             width: 100%;
             max-width: 512px;
             height: 50px;
@@ -79,20 +79,20 @@ if (isset($_COOKIE['adminEmail'])) {
             overflow-y: auto;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
         }
-        
+
         .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion {
             padding: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.2s;
         }
-        
+
         /* Highlight suggestion on hover */
         .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion.tt-cursor {
             background-color: #007bff;
             color: white;
         }
-        
+
         /* Custom style for the "no results" message */
         .tt-search-box .tt-dataset.tt-dataset-results .tt-no-results {
             padding: 10px;
@@ -101,16 +101,16 @@ if (isset($_COOKIE['adminEmail'])) {
             height: 100%;
         }
 
-        .tt-search-box-result-list-container{
+        .tt-search-box-result-list-container {
             position: absolute;
             left: 0;
             top: 100px;
             width: 100%;
-            background-color: #e5e7eb;
+            background-color: #c5cad3;
             border-radius: 8px;
         }
 
-        .tt-search-box-result-list{
+        .tt-search-box-result-list {
             margin: 7px;
             border-radius: 8px;
             padding: 20px 12px;
@@ -118,7 +118,7 @@ if (isset($_COOKIE['adminEmail'])) {
     </style>
 </head>
 
-<body>
+<body style="font-family: 'Outfit', sans-serif;">
 
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
         <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
@@ -142,16 +142,15 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
     <script>
-
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
-            
+
             loader.style.display = 'flex';
 
             setTimeout(() => {
                 body.style.overflow = 'hidden';
-                window.location.href="../index.php";
+                window.location.href = "../index.php";
             }, 2000);
         }
 
@@ -178,7 +177,10 @@ if (isset($_COOKIE['adminEmail'])) {
         document.body.append(searchBoxHTML);
 
         // Predefined location coordinates
-        var predefinedLocation = { lat: 21.23639167790857, lng: 72.82233304180576 }; 
+        var predefinedLocation = {
+            lat: 21.23639167790857,
+            lng: 72.82233304180576
+        };
 
         var currentMarker = null;
 
@@ -195,8 +197,8 @@ if (isset($_COOKIE['adminEmail'])) {
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             const distance = R * c;
             return distance;
@@ -215,19 +217,19 @@ if (isset($_COOKIE['adminEmail'])) {
                 .addTo(map);
 
             var distance = haversine(predefinedLocation.lat, predefinedLocation.lng, coordinates.lat, coordinates.lng);
-            
+
             fetch('set_location.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'latitude=' + coordinates.lat + '&longitude=' + coordinates.lng
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data); // This is the PHP response
-            })
-            .catch(error => console.error('Error:', error));
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'latitude=' + coordinates.lat + '&longitude=' + coordinates.lng
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // This is the PHP response
+                })
+                .catch(error => console.error('Error:', error));
 
 
             var distanceDisplay = document.getElementById('distance');
