@@ -10,6 +10,18 @@ if (isset($_COOKIE['adminEmail'])) {
 }
 ?>
 
+
+
+<?php
+    $userLogout = false;
+
+    if (isset($_POST['userLogout'])) {
+        setcookie('vendor_id', '', time() - 3600, '/');
+
+        $userLogout = true;
+    }
+?>
+
 <!-- Tailwind Script  -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
@@ -35,13 +47,13 @@ if (isset($_COOKIE['adminEmail'])) {
 </form>
 
 <!-- Successfully message container -->
-<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="LpopUp" style="display: none;">
     <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
         </svg>
         <span class="sr-only">Info</span>
-        <div class="capitalize font-medium" id="Successfully"></div>
+        <div class="capitalize font-medium" id="loginSuccess"></div>
     </div>
 </div>
 
@@ -62,14 +74,14 @@ if (isset($_COOKIE['adminEmail'])) {
         body.style.overflow = 'hidden';
     }
 
-    function displaySuccessMessage(message) {
-        let SpopUp = document.getElementById('SpopUp');
-        let Successfully = document.getElementById('Successfully');
+    function loginPopUp(message) {
+        let LpopUp = document.getElementById('LpopUp');
+        let loginSuccess = document.getElementById('loginSuccess');
 
         setTimeout(() => {
-            Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
-            SpopUp.style.display = 'flex';
-            SpopUp.style.opacity = '100';
+            loginSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
+            LpopUp.style.display = 'flex';
+            LpopUp.style.opacity = '100';
             window.location.href = "../index.php";
         }, 2000);
     }
@@ -82,17 +94,15 @@ if (isset($_COOKIE['adminEmail'])) {
 
 <?php
 
-if (isset($_POST['userLogout'])) {
-?>
-    <script>
-        let logoutPopUp = document.getElementById('logoutPopUp');
-        logoutPopUp.style.display = 'none';
-    </script>
-<?php
-    echo '<script>loader()</script>';
-    echo '<script>displaySuccessMessage("Logout Successfully.");</script>';
-
-    setcookie('vendor_id', '', time() - 3600, '/');
-}
+    if($userLogout === true){
+    ?>
+        <script>
+            let logoutPopUp = document.getElementById('logoutPopUp');
+            logoutPopUp.style.display = 'none';
+        </script>
+    <?php
+        echo '<script>loader()</script>';
+        echo '<script>loginPopUp("Logout Successfully.");</script>';
+    }
 
 ?>
