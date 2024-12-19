@@ -1,3 +1,21 @@
+<?php
+if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
+    header("Location: ../index.php");
+    exit;
+}
+
+
+if (isset($_COOKIE['user_id'])) {
+    header("Location: ../user/profile.php");
+    exit;
+}
+
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: ../admin/dashboard.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html class="use-all-space">
 
@@ -6,6 +24,12 @@
     <meta charset="UTF-8" />
     <title>My Map</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <!-- Tailwind Script  -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../src/logo/favIcon.svg">
     
     <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" />
     <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css"/>
@@ -23,21 +47,26 @@
          .tt-search-box{
             width: 100%;
             margin: auto;
+            padding: 12px;
         }
         
         .tt-search-box input {
             font-size: 16px;
             width: 100%;
-            height: 48px;
-            margin: auto;
+            height: 50px;
+        }
+
+        .tt-search-box input:focus {
+            outline: none;
+            box-shadow: none;
         }
         
         .tt-search-box-input-container{
-            border: none;
             width: 100%;
             max-width: 512px;
-            border: 1px solid black;
-            border-radius: 5px;
+            height: 50px;
+            border: 3px solid gray;
+            border-radius: 8px;
             margin: auto;
         }
 
@@ -69,13 +98,13 @@
             padding: 10px;
             font-size: 14px;
             color: #888;
+            height: 100%;
         }
 
         .tt-search-box-result-list-container{
             position: absolute;
             left: 0;
-            top: 70px;
-            margin-top: 20px;
+            top: 100px;
             width: 100%;
             background-color: #e5e7eb;
             border-radius: 8px;
@@ -90,11 +119,42 @@
 </head>
 
 <body>
+
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-50" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="flex items-center bg-white p-2 h-14 shadow-md border-b-2 border-gray-400 mb-6">
+        <a href="../index.php" class="p-2">
+            <!-- Left Arrow Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492" class="w-5 h-5">
+                <path d="M198.608 246.104 382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor"></path>
+            </svg>
+        </a>
+        <h1 class="flex-grow text-center text-lg font-semibold">Your Location</h1>
+    </header>
+
     <div id="map" class="map"></div>
-    <div id="distance">Click to select the first point.</div>
+    <div id="distance" class="hidden">Click to select the first point.</div>
 
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
     <script>
+
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+            
+            loader.style.display = 'flex';
+
+            setTimeout(() => {
+                body.style.overflow = 'hidden';
+                window.location.href="../index.php";
+            }, 2000);
+        }
+
         tt.setProductInfo("hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw", "6.25.0");
         let map = tt.map({
             key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
@@ -142,30 +202,6 @@
             return distance;
         }
 
-        // Handle click events on the map
-        map.on('click', function (event) {
-            var coordinates = event.lngLat;
-
-            removeCurrentMarker();
-
-            // Add a marker at the clicked location
-            currentMarker = new tt.Marker()
-                .setLngLat(coordinates)
-                .addTo(map);
-
-            var distance = haversine(predefinedLocation.lat, predefinedLocation.lng, coordinates.lat, coordinates.lng);
-            var distanceDisplay = document.getElementById('distance');
-            
-            if (distance > 15) {
-                distanceDisplay.innerHTML = "We cannot go there, the location is more than 15 km away.";
-            } else {
-                distanceDisplay.innerHTML = "Distance: " + distance.toFixed(2) + " km";
-            }
-
-            map.setZoom(14);
-            map.setCenter(coordinates);
-        });
-
         // Handle search result selection
         ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
             const selectedResult = event.data.result;
@@ -179,6 +215,20 @@
                 .addTo(map);
 
             var distance = haversine(predefinedLocation.lat, predefinedLocation.lng, coordinates.lat, coordinates.lng);
+            
+            fetch('set_location.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'latitude=' + coordinates.lat + '&longitude=' + coordinates.lng
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // This is the PHP response
+            })
+            .catch(error => console.error('Error:', error));
+
 
             var distanceDisplay = document.getElementById('distance');
             if (distance > 15) {
@@ -187,8 +237,7 @@
                 distanceDisplay.innerHTML = "Distance: " + distance.toFixed(2) + " km";
             }
 
-            map.setCenter(coordinates);
-            map.setZoom(14);
+            loader();
         });
     </script>
 </body>

@@ -141,6 +141,7 @@ function displayRandomProducts($con, $limit)
     <!-- alpinejs CDN -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js" defer></script>
 
+
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,6 +159,85 @@ function displayRandomProducts($con, $limit)
 
 
     <style>
+        #map {
+            width: 60vw;
+            height: 60vh;
+            display: none;
+        }
+
+         /* Custom style for the search box input */
+         .tt-search-box{
+            width: 100%;
+            margin: auto;
+            padding: 12px;
+        }
+        
+        .tt-search-box input {
+            font-size: 16px;
+            width: 100%;
+            height: 50px;
+        }
+
+        .tt-search-box input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        
+        .tt-search-box-input-container{
+            width: 100%;
+            max-width: 512px;
+            height: 50px;
+            border: 3px solid gray;
+            border-radius: 8px;
+            margin: auto;
+        }
+
+        /* Custom style for the search box suggestions */
+        .tt-search-box .tt-dataset.tt-dataset-results {
+            background-color: #ffffff;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        /* Highlight suggestion on hover */
+        .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion.tt-cursor {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        /* Custom style for the "no results" message */
+        .tt-search-box .tt-dataset.tt-dataset-results .tt-no-results {
+            padding: 10px;
+            font-size: 14px;
+            color: #888;
+            height: 100%;
+        }
+
+        .tt-search-box-result-list-container{
+            position: absolute;
+            left: 0;
+            top: 100px;
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .tt-search-box-result-list{
+            margin: 7px;
+            border-radius: 8px;
+            padding: 20px 12px;
+        }
+        
         .outfit {
             font-family: "Outfit", sans-serif;
             font-optical-sizing: auto;
@@ -250,7 +330,7 @@ function displayRandomProducts($con, $limit)
 
 </head>
 
-<body class="overflow-hidden">
+<body class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? '' : 'overflow-hidden' ?>">
 
     <!-- navbar -->
     <?php
@@ -959,7 +1039,7 @@ function displayRandomProducts($con, $limit)
     </div>
 
 
-    <div x-data="{ showLocation: false }">
+    <div x-data="{ showLocation: false }" class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? 'hidden' : '' ?>">
         <div id="locationPopup" class="absolute top-0 bg-black/30 backdrop-blur-md h-full w-full z-30">
             <div class="fixed top-7 left-7 bg-white rounded-lg p-3 w-72 space-y-5 z-50">
                 <div class="flex items-center gap-3">
@@ -974,67 +1054,13 @@ function displayRandomProducts($con, $limit)
                     <span class="text-sm">To deliver as quickly as possible, we would like your current location</span>
                 </div>
                 <div class="w-full flex justify-start">
-                    <button id="manualLocationBtn" @click="showLocation = true" class="rounded-tl-lg rounded-br-lg h-10 bg-gray-300 text-gray-700 px-3 cursor-pointer">
-                        Enter location manually
-                    </button>
+                    <div>
+                        <a href="pages/map.php" id="manualLocationBtn" @click="showLocation = true" class="rounded-tl-lg rounded-br-lg py-1.5 bg-gray-300 text-gray-700 px-3 cursor-pointer">
+                            Enter location manually
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div x-show="showLocation" @keydown.escape.window="showLocation = false" id="locationContainer" class="absolute top-0 left-0 z-50 w-full h-screen bg-white overflow-auto" x-cloak>
-            <!-- Header -->
-            <header class="flex items-center bg-white p-2 h-14 shadow-md border-b-2 border-gray-400">
-                <button @click="showLocation = false" class="p-2">
-                    <!-- Left Arrow Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492" class="w-5 h-5">
-                        <path d="M198.608 246.104 382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor"></path>
-                    </svg>
-                </button>
-                <h1 class="flex-grow text-center text-lg font-semibold">Your Location</h1>
-            </header>
-
-            <!-- Search Section -->
-            <section class="p-4">
-                <div class="max-w-lg mx-auto">
-                    <input
-                        type="search"
-                        name="locationSearch"
-                        id="locationSearch"
-                        placeholder="Search a new address"
-                        class="w-full h-12 rounded-lg border-0 ring-2 ring-gray-500 focus:ring-2 focus:ring-gray-700 focus:outline-none text-base sm:text-lg px-4" />
-                </div>
-            </section>
-
-            <!-- Location Suggestion List -->
-            <section class="p-4 bg-gray-200 overflow-y-auto max-h-[calc(100vh-7rem)] sm:max-h-[70vh]">
-                <div id="locationSuggestion" class="space-y-4">
-                    <!-- Location Item 1 -->
-                    <div class="flex items-center gap-3 p-2 bg-white rounded-lg shadow">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-7 h-7">
-                                <path d="M256 0C166.035 0 91 72.47 91 165c0 35.202 10.578 66.592 30.879 96.006l121.494 189.58c5.894 9.216 19.372 9.198 25.254 0l122.021-190.225C410.512 232.28 421 199.307 421 165 421 74.019 346.981 0 256 0zm0 240c-41.353 0-75-33.647-75-75s33.647-75 75-75 75 33.647 75 75-33.647 75-75 75z" fill="currentColor"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-semibold">Vesu</h4>
-                            <p class="text-gray-600 text-sm">Vesu, Surat, Gujarat, India</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 p-2 bg-white rounded-lg shadow">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-7 h-7">
-                                <path d="M256 0C166.035 0 91 72.47 91 165c0 35.202 10.578 66.592 30.879 96.006l121.494 189.58c5.894 9.216 19.372 9.198 25.254 0l122.021-190.225C410.512 232.28 421 199.307 421 165 421 74.019 346.981 0 256 0zm0 240c-41.353 0-75-33.647-75-75s33.647-75 75-75 75 33.647 75 75-33.647 75-75 75z" fill="currentColor"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-semibold">Adajan</h4>
-                            <p class="text-gray-600 text-sm">Adajan, Surat, Gujarat, India</p>
-                        </div>
-                    </div>
-                    <!-- Repeatable Location Items -->
-                </div>
-            </section>
         </div>
     </div>
 
