@@ -51,6 +51,10 @@ if (isset($_COOKIE['vendor_id'])) {
             border-radius: 10px;
             background-color: #bfbfbf;
         }
+
+        [x-cloak] {
+            display: none;
+        }
     </style>
 </head>
 
@@ -60,16 +64,16 @@ if (isset($_COOKIE['vendor_id'])) {
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
-            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0" x-cloak>
                 <div class="flex items-center justify-center mt-8 mr-2">
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-7 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-12 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-16 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
+                            <img class="w-28 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -181,65 +185,65 @@ if (isset($_COOKIE['vendor_id'])) {
                     ?>
                         <div class="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 min-[1258px]:grid-cols-4 gap-y-8 gap-x-8 text-[#1d2128] mt-4">
                             <?php
-                            if(mysqli_num_rows($product_query) > 0){
+                            if (mysqli_num_rows($product_query) > 0) {
                                 while ($res = mysqli_fetch_assoc($product_query)) {
                                     $vendor_id = $res['vendor_id'];
-                                    
+
                                     $get_vendor = "SELECT * FROM `vendor_registration` WHERE vendor_id = '$vendor_id'";
                                     $vendor_query = mysqli_query($con, $get_vendor);
                                     $row = mysqli_fetch_assoc($vendor_query);
-    
-                                    ?>
-                                        <div class="bg-white rounded-tl-xl rounded-br-xl shadow-sm overflow-hidden max-w-xs w-full h-[33.5rem] relative">
-                                            <div class="relative flex justify-center p-2">
-                                                <a href="../src/product_image/"></a>
-                                                <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl">
-                                                <?php
-                                                $conditionClass = isset($_COOKIE['adminEmail']) ? ($res['Item_Condition'] === 'Old Condition' ? 'bg-orange-500' : 'bg-green-500'): 'bg-green-500';
-                                                ?>
-                                                <span class="absolute top-2 right-2 <?php echo $conditionClass; ?> px-2 pt-0.5 pb-1 text-white text-xs font-semibold tracking-wide rounded-tl-lg rounded-br-lg">
-                                                    <?php echo isset($_COOKIE['adminEmail']) ? $res['Item_Condition'] : 'Item_Condition'; ?>
-                                                </span>
-                                                <!-- php for change background color for item condition -->
+
+                            ?>
+                                    <div class="bg-white rounded-tl-xl rounded-br-xl shadow-sm overflow-hidden max-w-xs w-full h-[33.5rem] relative">
+                                        <div class="relative flex justify-center p-2">
+                                            <a href="../src/product_image/"></a>
+                                            <img src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl">
+                                            <?php
+                                            $conditionClass = isset($_COOKIE['adminEmail']) ? ($res['Item_Condition'] === 'Old Condition' ? 'bg-orange-500' : 'bg-green-500') : 'bg-green-500';
+                                            ?>
+                                            <span class="absolute top-2 right-2 <?php echo $conditionClass; ?> px-2 pt-0.5 pb-1 text-white text-xs font-semibold tracking-wide rounded-tl-lg rounded-br-lg">
+                                                <?php echo isset($_COOKIE['adminEmail']) ? $res['Item_Condition'] : 'Item_Condition'; ?>
+                                            </span>
+                                            <!-- php for change background color for item condition -->
+                                        </div>
+                                        <div class="px-4 pt-2">
+                                            <h2 class="text-lg font-semibold text-gray-800 mb-1 line-clamp-2"><?php echo isset($_COOKIE['adminEmail']) ? $res['title'] : 'title' ?></h2>
+                                            <a href="../vendor/vendor_store.php?vendor_id=<?php echo $res['vendor_id'] ?>" class="text-sm text-gray-600 mb-3">By: <span class="font-bold text-base text-gray-600"><?php echo isset($_COOKIE['adminEmail']) ? $row['username'] : 'username' ?></span></a>
+                                            <div class="text-gray-600 text-sm mb-2 space-y-1">
+                                                <p>Company: <span class="font-medium"><?php echo isset($_COOKIE['adminEmail']) ? $res['company_name'] : 'company_name' ?></span></p>
+                                                <p>Category: <span class="font-medium"><?php echo isset($_COOKIE['adminEmail']) ? $res['Category'] : 'Category' ?></span></p>
+                                                <p>Date: <span class="font-medium"><?php echo isset($_COOKIE['adminEmail']) ? $res['date'] : 'date' ?></span></p>
                                             </div>
-                                            <div class="px-4 pt-2">
-                                                <h2 class="text-lg font-semibold text-gray-800 mb-1 line-clamp-2"><?php echo isset($_COOKIE['adminEmail']) ? $res['title'] : 'title' ?></h2>
-                                                <a href="../vendor/vendor_store.php?vendor_id=<?php echo $res['vendor_id'] ?>" class="text-sm text-gray-600 mb-3">By: <span class="font-bold text-base text-gray-600"><?php echo isset($_COOKIE['adminEmail']) ? $row['username'] : 'username' ?></span></a>
-                                                <div class="text-gray-600 text-sm mb-2 space-y-1">
-                                                    <p>Company: <span class="font-medium"><?php echo isset($_COOKIE['adminEmail']) ? $res['company_name'] : 'company_name' ?></span></p>
-                                                    <p>Category: <span class="font-medium"><?php echo isset($_COOKIE['adminEmail']) ? $res['Category'] : 'Category' ?></span></p>
-                                                    <p>Date: <span class="font-medium"><?php echo isset($_COOKIE['adminEmail']) ? $res['date'] : 'date' ?></span></p>
-                                                </div>
-                                                <div>
-                                                    <p class="text-md font-semibold text-gray-900">₹<?php echo isset($_COOKIE['adminEmail']) ? $res['vendor_mrp'] : 'MRP' ?></p>
-                                                    <p class="text-sm font-medium text-gray-500 line-through">₹<?php echo isset($_COOKIE['adminEmail']) ? $res['vendor_price'] : 'Delete Price' ?></p>
-                                                </div>
-                                            </div>
-                                            <div class="w-full flex justify-between h-10 divide-x-2 border-t-2 mt-2 absolute bottom-0">
-                                                <a href="edit_vendor_products.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
-                                                    <span>Edit</span>
-                                                </a>
-                                                <a href="remove_product.php?product_id=<?php echo $res['product_id'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer">
-                                                    <i class="fa-solid fa-trash text-base"></i>
-                                                    <span>Remove</span>
-                                                </a>
+                                            <div>
+                                                <p class="text-md font-semibold text-gray-900">₹<?php echo isset($_COOKIE['adminEmail']) ? $res['vendor_mrp'] : 'MRP' ?></p>
+                                                <p class="text-sm font-medium text-gray-500 line-through">₹<?php echo isset($_COOKIE['adminEmail']) ? $res['vendor_price'] : 'Delete Price' ?></p>
                                             </div>
                                         </div>
-                                    <?php
-                                }
-                            }else{
-                                ?>
-                                    <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Product Found for this period.</div>
+                                        <div class="w-full flex justify-between h-10 divide-x-2 border-t-2 mt-2 absolute bottom-0">
+                                            <a href="edit_vendor_products.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                                <span>Edit</span>
+                                            </a>
+                                            <a href="remove_product.php?product_id=<?php echo $res['product_id'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer">
+                                                <i class="fa-solid fa-trash text-base"></i>
+                                                <span>Remove</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 <?php
+                                }
+                            } else {
+                                ?>
+                                <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Product Found for this period.</div>
+                            <?php
                             }
                             ?>
                         </div>
                     <?php
-                    } else{
-                        ?>
-                            <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Product Found for this period.</div>
-                        <?php
+                    } else {
+                    ?>
+                        <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Product Found for this period.</div>
+                    <?php
                     }
                     ?>
                 </main>

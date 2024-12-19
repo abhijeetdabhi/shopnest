@@ -63,6 +63,10 @@ if (isset($_COOKIE['vendor_id'])) {
                 ;
             }
         }
+
+        [x-cloak] {
+            display: none;
+        }
     </style>
 </head>
 
@@ -72,16 +76,16 @@ if (isset($_COOKIE['vendor_id'])) {
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
-            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0" x-cloak>
                 <div class="flex items-center justify-center mt-8 mr-2">
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-12 sm:w-14 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-12 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-28 sm:w-36" src="/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-28 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -195,54 +199,54 @@ if (isset($_COOKIE['vendor_id'])) {
                                 $get_contacts = "SELECT * FROM contact_us";
                                 $contact_query = mysqli_query($con, $get_contacts);
 
-                                if(mysqli_num_rows($contact_query) > 0){
+                                if (mysqli_num_rows($contact_query) > 0) {
                                     while ($res = mysqli_fetch_assoc($contact_query)) {
-                                        ?>
-                                            <div class="bg-white shadow-lg rounded-tl-xl rounded-br-xl p-4 sm:p-6">
-                                                <div id="custInqContainer" class=" flex flex-col gap-y-4 text-sm sm:text-base">
-                                                    <div class="flex gap-1 sm:gap-2">
-                                                        <p class="font-bold">Name:</p>
-                                                        <p class="font-medium text-gray-800"><?php echo $res['name'] ?></p>
-                                                    </div>
-        
-                                                    <div class="flex gap-1 sm:gap-2">
-                                                        <p class="font-bold">Email:</p>
-                                                        <p class="font-medium text-gray-800"><?php echo $res['user_email'] ?></p>
-                                                    </div>
-        
-                                                    <div class="flex gap-1 sm:gap-2">
-                                                        <p class="font-bold">Subject:</p>
-                                                        <p class="font-medium text-gray-800"><?php echo $res['subject'] ?></p>
-                                                    </div>
-        
-                                                    <div class="flex gap-1 sm:gap-2">
-                                                        <p class="font-bold">Message:</p>
-                                                        <p class="font-medium text-gray-800"><?php echo $res['message'] ?></p>
-                                                    </div>
-        
-                                                    <div class="flex gap-1 sm:gap-2">
-                                                        <p class="font-bold">Date:</p>
-                                                        <p class="font-medium text-gray-500"><?php echo $res['date'] ?></p>
-                                                    </div>
+                                ?>
+                                        <div class="bg-white shadow-lg rounded-tl-xl rounded-br-xl p-4 sm:p-6">
+                                            <div id="custInqContainer" class=" flex flex-col gap-y-4 text-sm sm:text-base">
+                                                <div class="flex gap-1 sm:gap-2">
+                                                    <p class="font-bold">Name:</p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['name'] ?></p>
                                                 </div>
-                                                <div class="text-right">
-                                                    <a href="mailto:abc@gmail.com" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Contact</a>
+
+                                                <div class="flex gap-1 sm:gap-2">
+                                                    <p class="font-bold">Email:</p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['user_email'] ?></p>
+                                                </div>
+
+                                                <div class="flex gap-1 sm:gap-2">
+                                                    <p class="font-bold">Subject:</p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['subject'] ?></p>
+                                                </div>
+
+                                                <div class="flex gap-1 sm:gap-2">
+                                                    <p class="font-bold">Message:</p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['message'] ?></p>
+                                                </div>
+
+                                                <div class="flex gap-1 sm:gap-2">
+                                                    <p class="font-bold">Date:</p>
+                                                    <p class="font-medium text-gray-500"><?php echo $res['date'] ?></p>
                                                 </div>
                                             </div>
-                                        <?php
-                                    }
-                                }else{
-                                    ?>
-                                        <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
+                                            <div class="text-right">
+                                                <a href="mailto:abc@gmail.com" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Contact</a>
+                                            </div>
+                                        </div>
                                     <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
+                                <?php
                                 }
                                 ?>
                             </div>
                         <?php
-                        }else{
-                            ?>
-                                <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
-                            <?php
+                        } else {
+                        ?>
+                            <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
+                        <?php
                         }
                         ?>
                     </div>
