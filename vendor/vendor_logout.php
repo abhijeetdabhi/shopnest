@@ -1,15 +1,17 @@
 <?php
-    if(isset($_COOKIE['user_id'])){
-        header("Location: /index.php");
-        exit;
-    }
+if (isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
 ?>
 
+<!-- Tailwind Script  -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
 <!-- logout -->
 <form method="post" class="fixed w-full h-full bg-black/30 backdrop-blur-md z-50 m-auto flex items-center justify-center overflow-hidden" id="logoutPopUp">
@@ -63,7 +65,7 @@
     function displaySuccessMessage(message) {
         let SpopUp = document.getElementById('SpopUp');
         let Successfully = document.getElementById('Successfully');
-        
+
         setTimeout(() => {
             Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
             SpopUp.style.display = 'flex';
@@ -72,7 +74,7 @@
         }, 2000);
     }
 
-    function closePopup(){
+    function closePopup() {
         let logoutPopUp = document.getElementById('logoutPopUp');
         logoutPopUp.style.display = 'none';
     }
@@ -80,17 +82,17 @@
 
 <?php
 
-    if(isset($_POST['userLogout'])){
-        ?>
-            <script>
-                let logoutPopUp = document.getElementById('logoutPopUp');
-                logoutPopUp.style.display = 'none';
-            </script>
-        <?php
-        echo '<script>loader()</script>';
-        echo '<script>displaySuccessMessage("Logout Successfully.");</script>';
+if (isset($_POST['userLogout'])) {
+?>
+    <script>
+        let logoutPopUp = document.getElementById('logoutPopUp');
+        logoutPopUp.style.display = 'none';
+    </script>
+<?php
+    echo '<script>loader()</script>';
+    echo '<script>displaySuccessMessage("Logout Successfully.");</script>';
 
-        setcookie('vendor_id', '', time() - 3600, '/');
-    }
+    setcookie('vendor_id', '', time() - 3600, '/');
+}
 
 ?>

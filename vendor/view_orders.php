@@ -47,25 +47,40 @@ if (isset($_COOKIE['vendor_id'])) {
 
     <!-- title -->
     <title>Add Products</title>
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+
+        #logoutPopUp {
+            display: none;
+        }
+    </style>
 </head>
 
 <body style="font-family: 'Outfit', sans-serif;">
+
+    <div>
+        <?php
+        include "vendor_logout.php";
+        ?>
+    </div>
 
     <div>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
-            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0" x-cloak>
                 <div class="flex items-center justify-center mt-8 mr-2">
                     <a class="flex w-fit" href="">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-7 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-12 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-16 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
+                            <img class="w-28 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>
@@ -129,7 +144,7 @@ if (isset($_COOKIE['vendor_id'])) {
                         <span class="mx-3">Products</span>
                     </a>
 
-                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="vendor_logout.php">
+                    <a id="logoutButton1" class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="#">
                         <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path>
                             <path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"></path>
@@ -163,11 +178,46 @@ if (isset($_COOKIE['vendor_id'])) {
                             <div x-show="dropdownOpen" class="absolute right-0 z-10 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl ring-2 ring-gray-300 divide-y-2 divide-gray-300" style="display: none;">
                                 <a href="vendor_profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Profile</a>
                                 <a href="view_products.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Products</a>
-                                <a href="vendor_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
+                                <a id="logoutButton2" href="vendor_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
                             </div>
                         </div>
                     </div>
                 </header>
+                <!-- script for logout popup -->
+                <script>
+                    // Select elements
+                    const logoutPopUp = document.getElementById('logoutPopUp');
+                    const logoutButton1 = document.getElementById('logoutButton1');
+                    const logoutButton2 = document.getElementById('logoutButton2');
+
+                    // Function to show the logout popup
+                    function showLogoutPopup() {
+                        logoutPopUp.style.display = 'flex'; // Show the popup
+                    }
+
+                    // Function to hide the logout popup
+                    function closePopup() {
+                        logoutPopUp.style.display = 'none'; // Hide the popup
+                    }
+
+                    // Add click event listeners to logout buttons
+                    logoutButton1.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        showLogoutPopup();
+                    });
+
+                    logoutButton2.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        showLogoutPopup();
+                    });
+
+                    // Add a global event listener to the Cancel button
+                    document.addEventListener('click', (event) => {
+                        if (event.target.matches('.cancel-button')) {
+                            closePopup();
+                        }
+                    });
+                </script>
                 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <!-- place orders -->
                     <section class="container mx-auto p-6">
