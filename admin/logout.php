@@ -10,44 +10,99 @@
     }
 ?>
 
+
+
 <?php
-    ?>
-    <!-- Tailwind Script  -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-        
-    <!-- Successfully -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="popUp" style="display: none;">
-            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+    $adminLogout = false;
+
+    if (isset($_POST['adminLogout'])) {
+        setcookie('adminEmail', '', time() - 3600, '/');
+        setcookie('adminPass', '', time() - 3600, '/');
+        $adminLogout = true;
+    }
+?>
+
+<!-- Tailwind Script  -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+
+<!-- logout -->
+<form method="post" class="fixed w-full h-full bg-black/30 backdrop-blur-md z-50 m-auto flex items-center justify-center overflow-hidden" id="logoutPopUp">
+    <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto fz-50">
+        <div class="p-4">
+            <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
+                <svg class="text-red-500 w-6 h-6" aria-hidden="true" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" stroke-linejoin="round" stroke-linecap="round"></path>
                 </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">Logout successful.</span>
-                </div>
+            </div>
+            <div class="mt-3 text-center">
+                <span class="text-gray-900 text-base font-semibold leading-6">Desactivate account</span>
+                <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+            </div>
+            <div class="mx-4 my-3">
+                <input type="submit" name="adminLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-500 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
+                <div onClick="closePopup()" class="inline-flex mt-3 px-4 py-2 bg-white text-gray-500 text-base leading-6 font-medium justify-center w-full rounded-md border border-gray-400 shadow-sm cursor-pointer">Cancel</div>
             </div>
         </div>
+    </div>
+</form>
 
-        <script>
-            let popUp = document.getElementById('popUp');
+<!-- Successfully message container -->
+<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="LpopUp" style="display: none;">
+    <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">Info</span>
+        <div class="capitalize font-medium" id="loginSuccess"></div>
+    </div>
+</div>
 
-            popUp.style.display = 'flex';
-            popUp.style.opacity = '100';
+<!-- loader  -->
+<div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+    <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+        <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
+    </div>
+</div>
 
-            setTimeout(() => {
-                popUp.style.display = 'none';
-                popUp.style.opacity = '0';
-            }, 1500);
-        </script>
-    <?php
 
-    setcookie('adminEmail', '', time() - 3600, '/');
-    setcookie('adminPass', '', time() - 3600, '/');
+<script>
+    function loader() {
+        let loader = document.getElementById('loader');
+        let body = document.body;
 
+        loader.style.display = 'flex';
+        body.style.overflow = 'hidden';
+    }
+
+    function loginPopUp(message) {
+        let LpopUp = document.getElementById('LpopUp');
+        let loginSuccess = document.getElementById('loginSuccess');
+
+        setTimeout(() => {
+            loginSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
+            LpopUp.style.display = 'flex';
+            LpopUp.style.opacity = '100';
+            window.location.href = '../index.php';
+        }, 2000);
+    }
+
+    function closePopup() {
+        let logoutPopUp = document.getElementById('logoutPopUp');
+        logoutPopUp.style.display = 'none';
+    }
+</script>
+
+<?php
+
+    if($adminLogout === true){
     ?>
         <script>
-            window.location.href = '../index.php';
+            let logoutPopUp = document.getElementById('logoutPopUp');
+            logoutPopUp.style.display = 'none';
         </script>
     <?php
+        echo '<script>loader()</script>';
+        echo '<script>loginPopUp("Logout Successfully.");</script>';
+    }
 
 ?>

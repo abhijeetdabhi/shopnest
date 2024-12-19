@@ -115,7 +115,11 @@ if (isset($_COOKIE['adminEmail'])) {
             background-color: #bfbfbf;
         }
 
-        [x-cloak]{
+        #logoutPopUp {
+            display: none;
+        }
+
+        [x-cloak] {
             display: none;
         }
     </style>
@@ -123,6 +127,11 @@ if (isset($_COOKIE['adminEmail'])) {
 
 <body style="font-family: 'Outfit', sans-serif;">
 
+    <div>
+        <?php
+        include "logout.php";
+        ?>
+    </div>
     <div>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
@@ -197,7 +206,7 @@ if (isset($_COOKIE['adminEmail'])) {
                         <span class="mx-3">Contacts</span>
                     </a>
 
-                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="logout.php">
+                    <a id="logoutButton1" class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="#">
                         <svg class="w-5 h-5 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                             <g>
                                 <g data-name="ARROW 48">
@@ -233,11 +242,45 @@ if (isset($_COOKIE['adminEmail'])) {
                             <div x-show="dropdownOpen" class="absolute right-0 z-10 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl divide-y-2 divide-gray-300 ring-2 ring-gray-400" style="display: none;">
                                 <a href="dashboard.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Dashboard</a>
                                 <a href="view_product.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Products</a>
-                                <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
+                                <a id="logoutButton2" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white">Logout</a>
                             </div>
                         </div>
                     </div>
                 </header>
+                <script>
+                    // Select elements
+                    const logoutPopUp = document.getElementById('logoutPopUp');
+                    const logoutButton1 = document.getElementById('logoutButton1');
+                    const logoutButton2 = document.getElementById('logoutButton2');
+
+                    // Function to show the logout popup
+                    function showLogoutPopup() {
+                        logoutPopUp.style.display = 'flex'; // Show the popup
+                    }
+
+                    // Function to hide the logout popup
+                    function closePopup() {
+                        logoutPopUp.style.display = 'none'; // Hide the popup
+                    }
+
+                    // Add click event listeners to logout buttons
+                    logoutButton1.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        showLogoutPopup();
+                    });
+
+                    logoutButton2.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        showLogoutPopup();
+                    });
+
+                    // Add a global event listener to the Cancel button
+                    document.addEventListener('click', (event) => {
+                        if (event.target.matches('.cancel-button')) {
+                            closePopup();
+                        }
+                    });
+                </script>
                 <main id="main" class="px-4 md:px-12 py-12 overflow-y-scroll scrollBar overflow-hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
                         <div class="flex items-center gap-4 bg-white shadow-xl rounded-md px-4 py-3">

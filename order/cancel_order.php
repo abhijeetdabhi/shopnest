@@ -67,14 +67,6 @@ if (isset($_COOKIE['user_id'])) {
 </head>
 <body style="font-family: 'Outfit', sans-serif;">
 
-    <!-- Full screen overlay -->
-    <div id="overlay" class="overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 text-white flex items-center justify-center text-xl font-semibold z-50 hidden">
-        <div>
-            <div class="text-gray-200 w-12 h-12 border-4 border-white border-opacity-30 border-t-4 border-t-black rounded-full animate-spin mx-auto"></div>
-            <p class="mt-4">Order Canceling...</p>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
