@@ -218,16 +218,6 @@ if (isset($_GET['name'])) {
                                 </div>
 
                                 <div class="md:col-span-5 mt-5">
-                                    <label for="keyword" class="require">Keywords:</label>
-                                    <div id="keyword-container" class="grid grid-cols-2 md:grid-cols-3 mt-2 gap-3">
-                                        <div class="flex items-center relative">
-                                            <input type="text" name="keyword[]" placeholder="Enter keyword" class="relative h-10 border rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600">
-                                        </div>
-                                    </div>
-                                    <button id="add-keyword" class="px-4 py-2 bg-gray-600 text-white rounded-tl-lg rounded-br-lg mt-2">Add more keyword</button>
-                                </div>
-
-                                <div class="md:col-span-5 mt-5">
                                     <label for="size" class="require">Size:</label>
                                     <div id="size-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-2 gap-3">
 
@@ -427,6 +417,42 @@ if (isset($_GET['name'])) {
             <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
         </div>
     </div>
+
+    <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = "choose_product.php";
+            }, 2000);
+        } 
+    </script>
 
     <script src="product.js"></script>
 
@@ -700,14 +726,642 @@ if (isset($_POST['submitBtn'])) {
         }
     }
 
-    $keyword = $_POST['keyword'];
-
-    $kwrd = [];
-    foreach ($keyword as $kwrd) {
-        $kwrd = $_POST['keyword'];
-        $myKwrd = str_replace("'", "`", $kwrd);
+    function generateProductKeywords($product) {
+        $category = $_GET['name'];
+        $keywords = [];
+    
+        // Title & Brand Keywords
+        $keywords[] = $product['title'];
+        $keywords[] = $product['company_name'] . ' ' . strtolower($product['Type']);
+        $keywords[] = 'best ' . $product['company_name'] . ' ' . strtolower($product['Type']);
+        $keywords[] = $product['title'] . ' for sale';
+    
+    
+        if ($category === 'Phones') {
+            // Keywords for phones
+            $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " phone under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " smartphone";
+            $keywords[] = $product['Type'] . " with best features";
+            $keywords[] = "Best " . $product['company_name'] . " phone for " . $product['MRP'];
+            $keywords[] = "Affordable " . $product['company_name'] . " phone";
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for sale";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for men";
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " online";
+            $keywords[] = "Buy " . $product['company_name'] . " phone under " . $product['MRP'];
+            $keywords[] = "Latest " . $product['company_name'] . " smartphone for " . $product['Item_Condition'];
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'];
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = "Best " . $product['company_name'] . " smartphone in " . $product['color'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+        } 
+        elseif ($category === 'Tabs/Ipad') {
+            // Keywords for tablets
+            $keywords[] = "Best tablet under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " tablet for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " tablet online";
+            $keywords[] = "Affordable " . $product['company_name'] . " tablet";
+            $keywords[] = $product['company_name'] . " tablet under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " tablet for " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " tablet with features";
+            $keywords[] = $product['company_name'] . " tablet for kids";
+            $keywords[] = "Buy " . $product['company_name'] . " tablet for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " tablet for online classes";
+            $keywords[] = $product['company_name'] . " tablet for students";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['Type'] . ' in ' . $product['color'];
+                $keywords[] = "New " . $product['company_name'] . " tablet in " . $product['color'];
+                $keywords[] = "Latest " . $product['company_name'] . " tablet in " . $product['color'];
+                $keywords[] = "Stylish " . $product['company_name'] . " tablet in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['size'] . " Tablet";
+                $keywords[] = "Best tablet in " . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Laptops/MacBook') {
+            // Keywords for laptops
+            $keywords[] = "Best laptop under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " laptop with best features";
+            $keywords[] = $product['company_name'] . " laptop sale";
+            $keywords[] = "Buy " . $product['company_name'] . " laptop online";
+            $keywords[] = "Best " . $product['company_name'] . " laptop for work";
+            $keywords[] = $product['company_name'] . " laptop for students";
+            $keywords[] = "Affordable " . $product['company_name'] . " laptop";
+            $keywords[] = "Latest " . $product['company_name'] . " laptop for " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " laptop for gaming";
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " laptop under " . $product['MRP'];
+            $keywords[] = "Best " . $product['company_name'] . " laptop for office work";
+            $keywords[] = "New " . $product['company_name'] . " laptop with features";
+            $keywords[] = $product['company_name'] . " laptop for professional use";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['Type'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " laptop in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . " laptop with " . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'TV') {
+            // Keywords for TV
+            $keywords[] = "Best TV under " . $product['MRP'];
+            $keywords[] = "4K " . $product['Type'] . " TV for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " TV online";
+            $keywords[] = "Latest " . $product['company_name'] . " TV";
+            $keywords[] = "Affordable " . $product['company_name'] . " TV";
+            $keywords[] = $product['company_name'] . " TV under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " smart TV for sale";
+            $keywords[] = "Best smart TV under " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " smart TV online";
+            $keywords[] = $product['company_name'] . " LED TV under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " TV for home theater";
+            $keywords[] = "Latest " . $product['company_name'] . " 4K TV for " . $product['MRP'];
+            $keywords[] = "Best TV for watching movies";
+            $keywords[] = "Stylish " . $product['company_name'] . " TV for your living room";
+    
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " TV in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Headphone') {
+            // Keywords for Headphones
+            $keywords[] = "Best " . $product['Type'] . " headphones under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " headphones for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " headphones online";
+            $keywords[] = "Comfortable " . $product['company_name'] . " headphones";
+            $keywords[] = "Best quality " . $product['company_name'] . " headphones";
+            $keywords[] = "New " . $product['company_name'] . " headphones with features";
+            $keywords[] = $product['company_name'] . " noise-cancelling headphones";
+            $keywords[] = "Affordable " . $product['company_name'] . " headphones";
+            $keywords[] = $product['company_name'] . " sports headphones";
+            $keywords[] = $product['company_name'] . " Bluetooth headphones under " . $product['MRP'];
+            $keywords[] = "Stylish " . $product['company_name'] . " headphones for men";
+            $keywords[] = "Latest " . $product['company_name'] . " headphones for " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " headphones for gaming";
+            
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['type'] . " headphones in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Earphone') {
+            // Keywords for Earphones
+            $keywords[] = "Best " . $product['Type'] . " earphones under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " earphones for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " earphones online";
+            $keywords[] = "Affordable " . $product['company_name'] . " earphones";
+            $keywords[] = $product['company_name'] . " Bluetooth earphones";
+            $keywords[] = "New " . $product['company_name'] . " earphones with features";
+            $keywords[] = $product['company_name'] . " wireless earphones under " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " earphones for " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " earphones for workouts";
+            $keywords[] = "Best " . $product['company_name'] . " earphones for music";
+            $keywords[] = "Comfortable " . $product['company_name'] . " earphones for men";
+            $keywords[] = "Latest " . $product['company_name'] . " earphones for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " earphones for kids";
+            $keywords[] = $product['company_name'] . " noise-cancelling earphones";
+    
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = "Stylish " . $product['company_name'] . " earphones in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Shoes') {
+            // Keywords for Shoes
+            $keywords[] = $product['company_name'] . " shoes under " . $product['MRP'];
+            $keywords[] = "Best " . $product['company_name'] . " shoes";
+            $keywords[] = "Buy " . $product['company_name'] . " shoes online";
+            $keywords[] = "Stylish " . $product['company_name'] . " shoes";
+            $keywords[] = "Comfortable " . $product['company_name'] . " shoes";
+            $keywords[] = "Buy " . $product['company_name'] . " shoes for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " shoes for casual wear";
+            $keywords[] = "Trendy " . $product['company_name'] . " shoes for men";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " shoes under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " shoes for everyday use";
+            $keywords[] = "Best " . $product['company_name'] . " shoes for running";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " shoes in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+                $keywords[] = "Affordable " . $product['company_name'] . " shoes in " . $product['size'];
+                $keywords[] = "Latest " . $product['company_name'] . " shoes for " . $product['size'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " shoes for " . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Watch') {
+            // Keywords for Watch
+            $keywords[] = "Best " . $product['company_name'] . " watch under " . $product['MRP'];
+            $keywords[] = "Stylish " . $product['company_name'] . " watch for men";
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " watch online";
+            $keywords[] = $product['company_name'] . " wristwatch for sale";
+            $keywords[] = "New " . $product['company_name'] . " watch with features";
+            $keywords[] = "Affordable " . $product['company_name'] . " watch";
+            $keywords[] = $product['company_name'] . " luxury watch under " . $product['MRP'];
+            $keywords[] = "Best watch for " . $product['size'] . " wrists";
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " watch online";
+            $keywords[] = $product['company_name'] . " men's watch for casual wear";
+            $keywords[] = $product['company_name'] . " smartwatch for fitness";
+            $keywords[] = "Latest " . $product['company_name'] . " watch for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " watch with best features";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " watch in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Electronics Item') {
+           // Keywords for Electronics Items
+            $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for electronics";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for electronics under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " electronics";
+            $keywords[] = "Affordable " . $product['company_name'] . " " . $product['Type'] . " for electronics";
+            $keywords[] = "Best " . $product['company_name'] . " electronics for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " online";
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for sale";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " with best features";
+            $keywords[] = "Latest " . $product['company_name'] . " " . $product['Type'] . " for " . $product['Item_Condition'];
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'];
+    
+            // Color Keywords for Electronics Items
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for electronics';
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'] . ' electronics';
+                $keywords[] = "Best " . $product['company_name'] . " electronics in " . $product['color'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " electronics";
+            }
+    
+            // Size Keywords for Electronics Items (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for electronics';
+                $keywords[] = $product['title'] . ' ' . $product['size'] . ' electronics';
+            }
+        } 
+        elseif ($category === 'Tech Accessories') {
+            // Keywords for Tech accessories
+            $keywords[] = "Best " . $product['company_name'] . " tech accessories under " . $product['MRP'];
+            $keywords[] = "Affordable " . $product['company_name'] . " tech accessories";
+            $keywords[] = "Buy " . $product['company_name'] . " tech accessories online";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " tech accessories";
+            $keywords[] = "Latest " . $product['company_name'] . " tech gadgets";
+            $keywords[] = $product['company_name'] . " accessories";
+            $keywords[] = "Best " . $product['company_name'] . " accessories";
+            $keywords[] = "New " . $product['company_name'] . " tech accessories";
+            $keywords[] = $product['company_name'] . " headphones and accessories";
+            $keywords[] = $product['company_name'] . " laptop accessories for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " tech accessories for " . $product['Item_Condition'];
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " tech accessories in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+            
+            
+        } 
+        elseif ($category === 'Cameras') {
+            // Keywords for Cameras
+            $keywords[] = $product['company_name'] . " camera under " . $product['MRP'];
+            $keywords[] = "Best " . $product['Type'] . " camera for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " camera online";
+            $keywords[] = "Latest " . $product['company_name'] . " camera for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " DSLR camera for sale";
+            $keywords[] = $product['company_name'] . " camera with best features";
+            $keywords[] = $product['company_name'] . " mirrorless camera under " . $product['MRP'];
+            $keywords[] = "Affordable " . $product['company_name'] . " camera";
+            $keywords[] = "New " . $product['company_name'] . " camera with features";
+            $keywords[] = "Best " . $product['company_name'] . " camera for travel";
+            $keywords[] = $product['company_name'] . " camera for photography";
+            $keywords[] = "Buy " . $product['company_name'] . " camera for video recording";
+            $keywords[] = $product['company_name'] . " camera with wide-angle lens";
+            $keywords[] = $product['company_name'] . " camera for professional use";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " camera in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+        } 
+        elseif ($category === 'Game Item') {
+            // Keywords for Game item
+            $keywords[] = "Best game items under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " gaming accessories for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " game item online";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " game item for " . $product['MRP'];
+            $keywords[] = "Latest " . $product['company_name'] . " gaming gear";
+            $keywords[] = "Affordable " . $product['company_name'] . " game accessories";
+            $keywords[] = "New " . $product['company_name'] . " game item for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " game controllers for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " gaming headset for " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " game items for PS5";
+            $keywords[] = "Best gaming console for " . $product['MRP'];
+            $keywords[] = "Latest " . $product['company_name'] . " game items for " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " gaming items for competitive gaming";
+            $keywords[] = "Best " . $product['company_name'] . " game accessories for streamers";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+        } 
+        elseif ($category === 'Kitchen') {
+            // Keywords for Kitchen
+            $keywords[] = "Best kitchen items under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " kitchen appliances for sale";
+            $keywords[] = "Buy " . $product['company_name'] . " kitchen items online";
+            $keywords[] = "New " . $product['company_name'] . " kitchen gadgets";
+            $keywords[] = $product['company_name'] . " kitchen utensils for " . $product['MRP'];
+            $keywords[] = "Affordable " . $product['company_name'] . " kitchen accessories";
+            $keywords[] = "Latest " . $product['company_name'] . " kitchen products";
+            $keywords[] = $product['company_name'] . " kitchen tools for " . $product['Item_Condition'];
+            $keywords[] = $product['company_name'] . " cooking gadgets for sale";
+            $keywords[] = "Best " . $product['company_name'] . " kitchen tools";
+            $keywords[] = $product['company_name'] . " kitchen appliances for home use";
+            $keywords[] = $product['company_name'] . " kitchen accessories for professionals";
+            $keywords[] = "Best " . $product['company_name'] . " cooking items for gifting";
+            $keywords[] = $product['company_name'] . " smart kitchen appliances";
+            $keywords[] = $product['company_name'] . " kitchen products under " . $product['MRP'];
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+        } 
+        elseif ($category === 'Clothes') {
+            // Keywords for clothes    
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = "Best " . $product['Type'] . " for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " online";
+            $keywords[] = "Affordable " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " latest collection";
+            $keywords[] = "Top " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = "Buy " . $product['Type'] . " online with discounts";
+            $keywords[] = "Trendy " . $product['Type'] . " from " . $product['company_name'];
+            $keywords[] = "Shop for " . $product['Type'] . " online now";
+            $keywords[] = $product['Type'] . " from " . $product['company_name'] . " at best price";
+            $keywords[] = "Stylish " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = "New arrivals in " . $product['Type'];
+            $keywords[] = "Buy " . $product['Type'] . " online in India";
+            $keywords[] = "Exclusive deals on " . $product['company_name'] . " " . $product['Type'];
+            
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'];
+                $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " online";
+                $keywords[] = "Latest " . $product['Type'] . " from " . $product['company_name'] . " in " . $product['color'];
+                $keywords[] = $product['Type'] . " in " . $product['color'] . " from " . $product['company_name'];
+                $keywords[] = "Stylish " . $product['Type'] . " in " . $product['color'] . " under " . $product['MRP'];
+                $keywords[] = "Buy " . $product['Type'] . " online in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+                $keywords[] = "Best " . $product['Type'] . " in " . $product['size'] . " size for " . $product['MRP'];
+                $keywords[] = "Affordable " . $product['Type'] . " in " . $product['size'] . " size under " . $product['MRP'];
+                $keywords[] = "Trendy " . $product['Type'] . " for " . $product['MRP'] . " in " . $product['size'];
+                $keywords[] = "Shop " . $product['size'] . " size " . $product['Type'] . " online";
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['size'] . " for " . $product['MRP'];
+                $keywords[] = "Exclusive " . $product['Type'] . " in " . $product['size'] . " size online";
+                $keywords[] = "Top " . $product['Type'] . " in " . $product['size'] . " size under " . $product['MRP'];
+                $keywords[] = "Fashionable " . $product['Type'] . " in " . $product['color'] . " and " . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Toys') {
+            // Keywords for Toys
+            $keywords[] = "Best electronics under " . $product['MRP'];
+            $keywords[] = "Affordable " . $product['company_name'] . " electronics";
+            $keywords[] = "Buy " . $product['company_name'] . " electronics online";
+            $keywords[] = "Latest " . $product['company_name'] . " electronics for sale";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " electronics for " . $product['MRP'];
+            $keywords[] = "Best quality electronics under " . $product['MRP'];
+            $keywords[] = "New " . $product['company_name'] . " electronics with features";
+            $keywords[] = $product['company_name'] . " electronics for home use";
+            $keywords[] = $product['company_name'] . " electronics for office";
+            $keywords[] = "Buy " . $product['company_name'] . " electronics for " . $product['Item_Condition'];
+            $keywords[] = "Latest " . $product['company_name'] . " gadgets for sale";
+            $keywords[] = "Affordable " . $product['company_name'] . " gadgets online";
+            $keywords[] = $product['company_name'] . " tech gadgets for home";
+            $keywords[] = "Best " . $product['company_name'] . " electronics";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+                $keywords[] = $product['company_name'] . " electronics in " . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+            
+        } 
+        elseif ($category === 'Stationary') {
+            // Keywords for Stationery Items
+            $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for stationery";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for stationery under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " stationery";
+            $keywords[] = "Affordable " . $product['company_name'] . " " . $product['Type'] . " for stationery";
+            $keywords[] = "Best " . $product['company_name'] . " stationery for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " online";
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for stationery";
+            $keywords[] = "Latest " . $product['company_name'] . " " . $product['Type'] . " for " . $product['Item_Condition'];
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'];
+    
+            // Color Keywords for Stationery Items
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for stationery';
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'] . ' stationery';
+                $keywords[] = "Best " . $product['company_name'] . " stationery in " . $product['color'];
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " stationery";
+            }
+    
+            // Size Keywords for Stationery Items (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for stationery';
+                $keywords[] = $product['title'] . ' ' . $product['size'] . ' stationery';
+            }
+    
+        } 
+        elseif ($category === 'Sports') {
+            // Keywords for Sports Items
+            $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for sports";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for sports under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " sports gear";
+            $keywords[] = "Affordable " . $product['company_name'] . " " . $product['Type'] . " for sports";
+            $keywords[] = "Best " . $product['company_name'] . " sports equipment for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " for sports online";
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for sale";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " with best features for sports";
+            $keywords[] = "Latest " . $product['company_name'] . " " . $product['Type'] . " for " . $product['Item_Condition'];
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'] . " in sports";
+    
+            // Color Keywords for Sports Items
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for sports';
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'] . ' for sports';
+                $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " for sports";
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " for sports in " . $product['color'];
+            }
+    
+            // Size Keywords for Sports Items (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for sports';
+                $keywords[] = $product['title'] . ' ' . $product['size'] . ' for sports';
+            }
+    
+        } 
+        elseif ($category === 'Men accessories') {
+            // Keywords for Men's Accessories
+            $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for men";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for men under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for men";
+            $keywords[] = "Affordable " . $product['company_name'] . " " . $product['Type'] . " for men";
+            $keywords[] = "Best " . $product['company_name'] . " accessories for men";
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " for men online";
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for men";
+            $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " for men under " . $product['MRP'];
+            $keywords[] = "Latest " . $product['company_name'] . " accessories for men";
+            $keywords[] = "Men's " . $product['Type'] . " for " . $product['MRP'];
+    
+            // Color Keywords for Men's Accessories
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for men';
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'] . ' for men';
+                $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " for men";
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " for men in " . $product['color'];
+            }
+    
+            // Size Keywords for Men's Accessories (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for men';
+                $keywords[] = $product['title'] . ' ' . $product['size'] . ' for men';
+            }
+    
+        } 
+        elseif ($category === 'Women accessories') {
+            // Keywords for Women's Accessories
+            $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for women";
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for women under " . $product['MRP'];
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " for women";
+            $keywords[] = "Affordable " . $product['company_name'] . " " . $product['Type'] . " for women";
+            $keywords[] = "Best " . $product['company_name'] . " accessories for women";
+            $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " for women online";
+            $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for women";
+            $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " for women under " . $product['MRP'];
+            $keywords[] = "Latest " . $product['company_name'] . " accessories for women";
+            $keywords[] = "Women's " . $product['Type'] . " for " . $product['MRP'];
+    
+            // Color Keywords for Women's Accessories
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for women';
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'] . ' for women';
+                $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " for women";
+                $keywords[] = $product['company_name'] . " " . $product['Type'] . " for women in " . $product['color'];
+            }
+    
+            // Size Keywords for Women's Accessories (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for women';
+                $keywords[] = $product['title'] . ' ' . $product['size'] . ' for women';
+            }
+    
+        } 
+        elseif($category === 'Furniture'){
+            // Keywords for Furniture
+            $keywords[] = $product['company_name'] . " " . $product['Type'] . " furniture under " . $product['MRP'];
+            $keywords[] = "Best " . $product['Type'] . " furniture for " . $product['MRP'];
+            $keywords[] = "Buy " . $product['company_name'] . " furniture online";
+            $keywords[] = "Top " . $product['Type'] . " furniture at best prices";
+            $keywords[] = "Affordable " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = "Modern " . $product['Type'] . " furniture for your home";
+            $keywords[] = "Latest " . $product['Type'] . " furniture from " . $product['company_name'];
+            $keywords[] = "Premium " . $product['Type'] . " furniture online";
+            $keywords[] = $product['Type'] . " for " . $product['MRP'] . " by " . $product['company_name'];
+            $keywords[] = "Best deals on " . $product['company_name'] . " " . $product['Type'];
+            $keywords[] = "Stylish " . $product['Type'] . " under " . $product['MRP'];
+            $keywords[] = "Shop for " . $product['Type'] . " furniture now";
+            $keywords[] = "Buy " . $product['Type'] . " furniture online in India";
+            $keywords[] = "Exclusive offers on " . $product['company_name'] . " furniture";
+    
+            // Color Keywords
+            if (isset($product['color'])) {
+                $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
+            }
+    
+            // Size Keywords (if applicable)
+            if (isset($product['size'])) {
+                $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
+                $keywords[] = $product['title'] . ' ' . $product['size'];
+            }
+        }
+    
+    
+        return array_unique($keywords);
     }
-    $keywords_value = implode(', ', $myKwrd);
+
+
+    $product = [
+        'title' => $products_name,
+        'company_name' => $Company_name,
+        'Category' => $Category,
+        'Type' => $type,
+        'MRP' => $MRP,
+        'Item_Condition' => $condition,
+        'color' => $pcolor,
+        'size' => $size[0]
+    ];
+    
+    // Generate keywords
+    $keywords = generateProductKeywords($product);
+    $keywords_value = implode(', ', $keywords);
 
 
     // main images 
