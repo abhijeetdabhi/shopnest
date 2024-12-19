@@ -40,7 +40,7 @@ if (isset($_COOKIE['vendor_id'])) {
     $cover_image_2 = $res['cover_image_2'];
     $cover_image_3 = $res['cover_image_3'];
     $cover_image_4 = $res['cover_image_4'];
-    
+
 
     $retrieve_data = "SELECT * FROM vendor_registration WHERE vendor_id = '$vendor_id'";
     $retrieve_query = mysqli_query($con, $retrieve_data);
@@ -86,10 +86,20 @@ if (isset($_COOKIE['vendor_id'])) {
             margin-left: 3px;
             font-size: medium;
         }
+
+        #logoutPopUp {
+            display: none;
+        }
     </style>
 </head>
 
 <body style="font-family: 'Outfit', sans-serif;">
+
+    <div>
+        <?php
+        include "vendor_logout.php";
+        ?>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
@@ -111,14 +121,43 @@ if (isset($_COOKIE['vendor_id'])) {
                 <button @click="dropdownOpen = !dropdownOpen" class="relative block w-8 h-8 md:w-10 md:h-10 overflow-hidden rounded-full shadow-lg focus:outline-none transition-transform transform hover:scale-105">
                     <img class="object-cover w-full h-full" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png'; ?>" alt="Your avatar">
                 </button>
-                <div x-show="dropdownOpen" @click.away="dropdownOpen = false" class="absolute right-0 z-10 w-48 mt-2 bg-white rounded-md shadow-xl ring-1 ring-gray-300 divide-y-2 divide-gray-200" style="display: none;">
+                <div x-show="dropdownOpen" @click.away="dropdownOpen = false" class="absolute right-0 z-10 w-48 mt-2 bg-white rounded-md shadow-xl ring-1 ring-gray-300 divide-y-2 divide-gray-200 overflow-hidden" style="display: none;">
                     <a href="vendor_profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white transition-colors">Profile</a>
                     <a href="view_products.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white transition-colors">Products</a>
-                    <a href="vendor_logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white transition-colors">Logout</a>
+                    <a id="logoutButton1" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 hover:text-white transition-colors">Logout</a>
                 </div>
             </div>
         </div>
     </header>
+    <!-- script for logout popup -->
+    <script>
+        // Select elements
+        const logoutPopUp = document.getElementById('logoutPopUp');
+        const logoutButton1 = document.getElementById('logoutButton1');
+
+        // Function to show the logout popup
+        function showLogoutPopup() {
+            logoutPopUp.style.display = 'flex'; // Show the popup
+        }
+
+        // Function to hide the logout popup
+        function closePopup() {
+            logoutPopUp.style.display = 'none'; // Hide the popup
+        }
+
+        // Add click event listeners to logout buttons
+        logoutButton1.addEventListener('click', (event) => {
+            event.preventDefault();
+            showLogoutPopup();
+        });
+
+        // Add a global event listener to the Cancel button
+        document.addEventListener('click', (event) => {
+            if (event.target.matches('.cancel-button')) {
+                closePopup();
+            }
+        });
+    </script>
 
     <!-- component -->
     <div class="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
@@ -309,11 +348,11 @@ if (isset($_COOKIE['vendor_id'])) {
         function displayErrorMessage(message) {
             let popUp = document.getElementById('popUp');
             let errorMessage = document.getElementById('errorMessage');
-        
+
             errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
             popUp.style.display = 'flex';
             popUp.style.opacity = '100';
-        
+
             setTimeout(() => {
                 popUp.style.display = 'none';
                 popUp.style.opacity = '0';
@@ -323,14 +362,14 @@ if (isset($_COOKIE['vendor_id'])) {
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
-        
+
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
                 window.location.href = "view_products.php";
             }, 2000);
-        }  
+        }
     </script>
 
     <script src="product.js"></script>
