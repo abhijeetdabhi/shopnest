@@ -45,13 +45,100 @@ $view_date = date('d-m-y');
 $view_count = "INSERT INTO page_count(view_count, view_date) VALUES ('$page_view','$view_date')";
 $view_query = mysqli_query($con, $view_count);
 
+$get_lat_lng = "SELECT * FROM vendor_registration";
+    $lat_lng_query = mysqli_query($con, $get_lat_lng);
+
+    $latitude = [];
+    $longitude = [];
+
+    while($fatchLatLng = mysqli_fetch_assoc($lat_lng_query)){
+        if($fatchLatLng['latitude'] === "" && $fatchLatLng['longitude'] === ""){
+            continue;
+        }
+
+        $vendor_latitude = $fatchLatLng['latitude'];
+        $vendor_longitude = $fatchLatLng['longitude'];
+
+        $latitude[] = $vendor_latitude;
+        $longitude[] = $vendor_longitude;
+    }
+
+    function haversine($lat1, $lon1, $lat2, $lon2) {
+        $R = 6371;
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $distance = $R * $c;
+        return $distance;
+    }
+
+    $current_lat = $_COOKIE['latitude'] ?? 0; 
+    $current_lon = $_COOKIE['longitude'] ?? 0;
+
+    $nearbyLocation = [];
+
+    for($i = 0; $i < count($latitude); $i++){
+        $distance = haversine($latitude[$i], $longitude[$i], $current_lat, $current_lon);
+
+        if($distance <= 15){
+            $nearbyLocation[] = ['lat' => $latitude[$i], 'lng' => $longitude[$i], 'distance' => $distance];
+        }
+
+    }
+
+    if(count($nearbyLocation) > 0){
+        $i = 1;
+        foreach($nearbyLocation as $locations){
+            $distance = number_format($locations['distance'], 2); 
+
+            $vendorLatitude = $locations['lat'];
+            $vendorLongitude = $locations['lng'];
+
+            setcookie("vendorLat".$i, $vendorLatitude, time() + (10 * 24 * 60 * 60), "/");
+            setcookie("vendorLng".$i, $vendorLongitude, time() + (10 * 24 * 60 * 60), "/");
+
+            $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$vendorLatitude' AND longitude = '$vendorLongitude'";
+            $query = mysqli_query($con, $get_vendor);
+
+            $vendorCount = mysqli_fetch_assoc($query);
+
+
+            $i++;
+        }
+    }
+
 function displayRandomProducts($con, $limit)
 {
-    $product_find = "SELECT * FROM products ORDER BY RAND() LIMIT $limit";
-    $product_query = mysqli_query($con, $product_find);
+    $vendorLatitudes = [];
+    $vendorLongitudes = [];
+    
+    foreach ($_COOKIE as $cookieName => $cookieValue) {
+    
+        if (strpos($cookieName, 'vendorLat') === 0) {
+            $index = substr($cookieName, 9);
+            $vendorLatitudes[$index] = $cookieValue;
+        }
+    
+        if (strpos($cookieName, 'vendorLng') === 0) {
+            $index = substr($cookieName, 9);
+            $vendorLongitudes[$index] = $cookieValue;
+        }
+    }
+    
+    foreach ($vendorLatitudes as $index => $lat) {
+        $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A'; // Get longitude for the same index
+        
+        $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
+        $query = mysqli_query($con, $get_vendor);
 
-    if ($product_query) {
+        $vendorCount = mysqli_fetch_assoc($query);
+        $vendorId = $vendorCount['vendor_id'];
 
+        
+        $product_find = "SELECT * FROM products WHERE vendor_id = '$vendorId' ORDER BY RAND() LIMIT $limit";
+        $product_query = mysqli_query($con, $product_find);
+        
         while ($res = mysqli_fetch_assoc($product_query)) {
             $product_id = $res['product_id'];
 
@@ -71,51 +158,50 @@ function displayRandomProducts($con, $limit)
                 $product_size;
                 break;
             }
-?>
-            <div class="swiper-slide">
-                <div class=" flex justify-center">
-                    <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
-                        <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
-                        </div>
-                        <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
-                            <div class="flex justify-between px-2">
-                                <p class="space-x-1">
-                                    <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
-                                    <del class="text-xs font-medium">₹<?php echo number_format($res['vendor_price']) ?></del>
-                                </p>
-                                <div class="flex items-center">
-                                    <span class="bg-gray-900 rounded-tl-md rounded-br-md px-2 py-0.5 flex items-center gap-1">
-                                        <h1 class="font-semibold text-xs text-white"><?php echo isset($res['avg_rating']) ? $res['avg_rating'] : '0.0' ?></h1>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-2.5 h-2.5 m-auto fill-current text-white">
-                                            <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
-                                        </svg>
-                                    </span>
-                                    <span class="text-sm ml-2 text-gray-900 tracking-wide">(<?php echo $res['total_reviews'] ?>)</span>
+            ?>
+
+                <div class="swiper-slide">
+                    <div class=" flex justify-center">
+                        <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
+                            <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                            </div>
+                            <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
+                                <div class="flex justify-between px-2">
+                                    <p class="space-x-1">
+                                        <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
+                                        <del class="text-xs font-medium">₹<?php echo number_format($res['vendor_price']) ?></del>
+                                    </p>
+                                    <div class="flex items-center">
+                                        <span class="bg-gray-900 rounded-tl-md rounded-br-md px-2 py-0.5 flex items-center gap-1">
+                                            <h1 class="font-semibold text-xs text-white"><?php echo isset($res['avg_rating']) ? $res['avg_rating'] : '0.0' ?></h1>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-2.5 h-2.5 m-auto fill-current text-white">
+                                                <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
+                                            </svg>
+                                        </span>
+                                        <span class="text-sm ml-2 text-gray-900 tracking-wide">(<?php echo $res['total_reviews'] ?>)</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
-                            <?php
-                            if ($qty > 0) {
-                            ?>
-                                <a href="<?php echo $qty > 0 ? 'shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                            <?php
-                            } else {
-                            ?>
-                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-not-allowed select-none">Out of stock</h1>
-                            <?php
-                            }
-                            ?>
+                            <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
+                                <?php
+                                if ($qty > 0) {
+                                ?>
+                                    <a href="<?php echo $qty > 0 ? 'shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                <?php
+                                } else {
+                                ?>
+                                    <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-not-allowed select-none">Out of stock</h1>
+                                <?php
+                                }
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-<?php
+            <?php
         }
-    } else {
-        echo "Error " . mysqli_errno($con);
     }
 }
 ?>
