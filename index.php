@@ -1023,7 +1023,7 @@ function displayRandomProducts($con, $limit)
 
     <div x-data="{ showLocation: false }" class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? 'hidden' : '' ?>">
         <div id="locationPopup" class="absolute top-0 bg-black/30 backdrop-blur-md h-full w-full z-30">
-            <div class="fixed top-7 left-7 bg-white rounded-lg p-3 w-72 space-y-5 z-50">
+            <div class="fixed top-7 left-5 bg-white rounded-lg p-3 w-72 space-y-5 z-50">
                 <div class="flex items-center gap-3">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-7">
@@ -1035,15 +1035,31 @@ function displayRandomProducts($con, $limit)
                     </span>
                     <span class="text-sm">To deliver as quickly as possible, we would like your current location</span>
                 </div>
-                <div class="w-full flex flex-col items-center gap-y-2">
-                    <div>
-                        <a href="pages/map.php" id="manualLocationBtn" @click="showLocation = true" class="rounded-tl-lg rounded-br-lg py-1.5 bg-gray-300 text-gray-700 px-3 cursor-pointer">
-                            Enter location manually
-                        </a>
-                    </div>
-                    <div>
-                        <a id="currentLocation" class="rounded-tl-lg rounded-br-lg py-1.5 bg-pink-300 text-pink-700 px-3 cursor-pointer" href="#">Current Location</a>
-                    </div>
+                <div class="w-full flex flex-col space-y-3">
+                    <a href="pages/map.php" id="manualLocationBtn" @click="showLocation = true" class=" flex items-center justify-center gap-2 rounded-tl-lg rounded-br-lg py-1.5 bg-gray-300 text-gray-700 px-3 cursor-pointer">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-6 mt-0.5">
+                                <g>
+                                    <path d="M28 7H4c-2.201 0-3 1.794-3 3v12c0 2.201 1.794 3 3 3h24c2.201 0 3-1.794 3-3V10c0-2.201-1.794-3-3-3zm1 14.988c-.012.462-.194 1.012-1 1.012H4.012C3.55 22.988 3 22.806 3 22V10.012C3.012 9.55 3.195 9 4 9h23.988c.462.012 1.012.195 1.012 1zM9 19h14v2H9zm16 0h2v2h-2zm0-4h2v2h-2zm-4 0h2v2h-2zm-2 2h-2v-2h2zm-4 0h-2v-2h2zm-4 0H9v-2h2zm-6-2h2v2H5zm0 4h2v2H5zm20-8h2v2h-2zm-4 0h2v2h-2zm-2 2h-2v-2h2zm-4 0h-2v-2h2zm-4 0H9v-2h2zm-6-2h2v2H5z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span>
+                            Type Manually
+                        </span>
+                    </a>
+                    <a id="currentLocation" class="flex items-center justify-center gap-2 rounded-tl-lg rounded-br-lg py-1.5 bg-pink-300 text-pink-700 px-3 cursor-pointer" href="#">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 469.333 469.333" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                <g>
+                                    <path d="M234.667 149.333c-47.147 0-85.333 38.187-85.333 85.333S187.52 320 234.667 320 320 281.813 320 234.667s-38.187-85.334-85.333-85.334zm190.72 64C415.573 124.373 344.96 53.76 256 43.947V0h-42.667v43.947C124.373 53.76 53.76 124.373 43.947 213.333H0V256h43.947c9.813 88.96 80.427 159.573 169.387 169.387v43.947H256v-43.947C344.96 415.573 415.573 344.96 425.387 256h43.947v-42.667h-43.947zM234.667 384c-82.453 0-149.333-66.88-149.333-149.333s66.88-149.333 149.333-149.333S384 152.213 384 234.667 317.12 384 234.667 384z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span>
+                            Current Location
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1057,23 +1073,23 @@ function displayRandomProducts($con, $limit)
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                
+
                     console.log("lat: ", lat);
                     console.log("lng: ", lng);
-                
+
                     fetch('pages/set_location.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'latitude=' + lat + '&longitude=' + lng,
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        console.log(data);
-                        location.reload();
-                    })
-                    .catch(error => console.error('Error:', error));
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: 'latitude=' + lat + '&longitude=' + lng,
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data);
+                            location.reload();
+                        })
+                        .catch(error => console.error('Error:', error));
 
                 }, function(error) {
                     alert('Could not get location. Please allow location access in your browser settings.');
@@ -1082,7 +1098,6 @@ function displayRandomProducts($con, $limit)
                 alert('Geolocation is not supported by this browser.');
             }
         });
-
     </script>
 
     <!-- footer -->
