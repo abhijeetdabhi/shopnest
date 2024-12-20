@@ -303,7 +303,7 @@ function displayRandomProducts($con, $limit)
         .style-2::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background-color: #bfbfbf;
-        }        
+        }
 
         .cursor-not-allowed {
             cursor: not-allowed;
@@ -1035,11 +1035,14 @@ function displayRandomProducts($con, $limit)
                     </span>
                     <span class="text-sm">To deliver as quickly as possible, we would like your current location</span>
                 </div>
-                <div class="w-full flex justify-start">
+                <div class="w-full flex flex-col items-center gap-y-2">
                     <div>
                         <a href="pages/map.php" id="manualLocationBtn" @click="showLocation = true" class="rounded-tl-lg rounded-br-lg py-1.5 bg-gray-300 text-gray-700 px-3 cursor-pointer">
                             Enter location manually
                         </a>
+                    </div>
+                    <div>
+                        <a class="rounded-tl-lg rounded-br-lg py-1.5 bg-pink-300 text-pink-700 px-3 cursor-pointer" href="">Current Location</a>
                     </div>
                 </div>
             </div>
