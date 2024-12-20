@@ -384,11 +384,14 @@ if (isset($_GET['product_id'])) {
                 // Trigger confetti from both the left and right bottom corners
 
 
+                fireExplosiveConfettiFromLeft();
+                fireExplosiveConfettiFromRight();
                 // Redirect after 2 seconds
-                window.location.href = "../user/show_orders.php";
+                setInterval(() => {
+                    window.location.href = "../user/show_orders.php";
+                    
+                }, 1500);
             }, 2000);
-            fireExplosiveConfettiFromLeft();
-            fireExplosiveConfettiFromRight();
         }
 
         // Explosive Confetti from the left bottom corner

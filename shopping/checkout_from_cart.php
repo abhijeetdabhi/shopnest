@@ -99,6 +99,10 @@ if (isset($_COOKIE['user_id'])) {
     <!-- favicon -->
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
+    <!-- confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+
     <!-- title -->
     <title>Check Out Page</title>
     <style>
@@ -173,57 +177,57 @@ if (isset($_COOKIE['user_id'])) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
 
-            // Trigger confetti from both corners
-            // fireExplosiveConfettiFromLeft();
-            // fireExplosiveConfettiFromRight();
-
+            // Show the success message
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
-                window.location.href = '../user/show_orders.php';
+
+                // Fire confetti effects from both sides
+                fireExplosiveConfettiFromLeft();
+                fireExplosiveConfettiFromRight();
+
+                // Delay the redirect to allow confetti animation to play
+                setTimeout(() => {
+                    window.location.href = '../user/show_orders.php'; // Redirect after the confetti animation
+                }, 2000); // Adjust time as needed
             }, 2000);
         }
 
         // Explosive Confetti from the left bottom corner
         function fireExplosiveConfettiFromLeft() {
             confetti({
-                particleCount: 1200,
-                spread: 180,
+                particleCount: 1200, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
                 origin: {
-                    x: 0,
+                    x: 0, // Confetti starts from the left bottom corner
                     y: 1
                 },
-                scalar: 1,
+                scalar: 1, // Larger particles for explosive effect
                 colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
-                gravity: 0.8,
-                drift: 1,
+                gravity: 0.8, // Gravity for explosive effect
+                drift: 1, // Drift direction
             });
         }
 
         // Explosive Confetti from the right bottom corner
         function fireExplosiveConfettiFromRight() {
             confetti({
-                particleCount: 1200,
-                spread: 180,
+                particleCount: 1200, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
                 origin: {
-                    x: 1,
+                    x: 1, // Confetti starts from the right bottom corner
                     y: 1
                 },
-                scalar: 1,
+                scalar: 1, // Larger particles for explosive effect
                 colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
-                gravity: 0.8,
-                drift: -1,
+                gravity: 0.8, // Gravity for explosive effect
+                drift: -1, // Drift direction
             });
         }
-
-        // Handle form submission for "Place Order"
-        document.querySelector('input[name="placeOrder"]').addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default form submission
-            // Simulate a success message after clicking the button
-            displaySuccessMessage("Your order has been placed successfully!");
-        });
     </script>
+
+
 
 
     <?php
@@ -299,7 +303,7 @@ if (isset($_COOKIE['user_id'])) {
 
                         $url = 'http://localhost/shopnest/shopping/checkout_from_cart.php';
                         $_SESSION['cartUrl'] = $url;
-                        
+
                         echo '<script>loader()</script>';
                         echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
                     } else {
