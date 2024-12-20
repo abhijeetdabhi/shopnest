@@ -8,6 +8,8 @@
         header("Location: /admin/dashboard.php");
         exit;
     }
+
+    session_start();
 ?>
 
 <?php
@@ -22,6 +24,14 @@
 
         $row = mysqli_fetch_assoc($retrieve_query);
     }
+
+    if (isset($_SESSION['cartUrl'])) {
+        if (isset($_COOKIE['Cart_products'])) {
+            setcookie('Cart_products', '', time() - 3600, "/");
+            unset($_COOKIE['Cart_products']);
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>

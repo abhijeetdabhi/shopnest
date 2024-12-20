@@ -19,6 +19,8 @@ if (isset($_COOKIE['adminEmail'])) {
     header("Location: ../admin/dashboard.php");
     exit;
 }
+
+session_start();
 ?>
 
 <?php
@@ -172,8 +174,8 @@ if (isset($_COOKIE['user_id'])) {
             let Successfully = document.getElementById('Successfully');
 
             // Trigger confetti from both corners
-            fireExplosiveConfettiFromLeft();
-            fireExplosiveConfettiFromRight();
+            // fireExplosiveConfettiFromLeft();
+            // fireExplosiveConfettiFromRight();
 
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
@@ -295,14 +297,9 @@ if (isset($_COOKIE['user_id'])) {
                         $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
                         $update_qty_quary = mysqli_query($con, $update_qty);
 
-                        ob_start();
-
-                        if (isset($_COOKIE['Cart_products'])) {
-                            setcookie('Cart_products', '', time() - 3600, "/");
-                            unset($_COOKIE['Cart_products']);
-                        }
-
-                        ob_end_flush();
+                        $url = 'http://localhost/shopnest/shopping/checkout_from_cart.php';
+                        $_SESSION['cartUrl'] = $url;
+                        
                         echo '<script>loader()</script>';
                         echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
                     } else {
