@@ -52,6 +52,11 @@ if (isset($_COOKIE['adminEmail'])) {
     <!-- alpinejs CDN -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js" defer></script>
 
+    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" />
+    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css" />
+
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.1.2-public-preview.15/services/services-web.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js"></script>
 
     <style>
         .require:after {
@@ -60,10 +65,42 @@ if (isset($_COOKIE['adminEmail'])) {
             color: red;
             margin-left: 3px;
         }
+
+        #map {
+            width: 60vw;
+            height: 60vh;
+            display: none;
+        }
+
+        .tt-search-box {
+            width: 100%;
+            margin: auto;
+        }
+
+        .tt-search-box input {
+            font-size: 16px;
+            width: 100%;
+            height: 50px;
+        }
+
+        .tt-search-box input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .tt-search-box-input-container {
+            width: 100%;
+            height: 50px;
+            border: 2px solid #d1d5db ;
+            border-radius: 8px;
+            margin: auto;
+        }
     </style>
 </head>
 
+
 <body class="flex justify-center outfit h-[100%] py-2 px-6">
+
     <div class="w-full md:w-[85%] lg:w-[70%] 2xl:w-[50%]">
         <!-- header -->
         <div class="p-2 flex items-center justify-center">
@@ -257,6 +294,55 @@ if (isset($_COOKIE['adminEmail'])) {
                         </div>
                     </div>
                     <div class="col-span-4">
+                        <div class="flex flex-col gap-1">
+                            <label for="gst" class="require font-semibold">Enter Location :</label>
+                            <div id="map" class="map"></div>
+                            <div id="searchBox"></div>
+                            <input type="text" name="lat" id="lat" class="hidden">
+                            <input type="text" name="lng" id="lng" class="hidden">
+                        </div>
+                        <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
+                        <script>
+                            tt.setProductInfo("hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw", "6.25.0");
+                            let map = tt.map({
+                                key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                                container: "map",
+                            });
+                        
+                            var options = {
+                                searchOptions: {
+                                    key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                                    language: "en-GB",
+                                    limit: 5,
+                                },
+                                autocompleteOptions: {
+                                    key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                                    language: "en-GB",
+                                },
+                            };
+                        
+                            let searchBox = document.getElementById('searchBox');
+                            var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
+                            var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
+                            searchBox.append(searchBoxHTML);
+                        
+                            // // Handle search result selection
+                            ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
+                                const selectedResult = event.data.result;
+                                const coordinates = selectedResult.position;
+                            
+                                let clat = coordinates.lat;
+                                let clng = coordinates.lng;
+
+                                console.log(clat);
+                                console.log(clng);
+
+                                document.getElementById('lat').value = clat;
+                                document.getElementById('lng').value = clng;
+                            });
+                        </script>
+                    </div>
+                    <div class="col-span-4">
                         <div class="flex flex-col gap-1 ">
                             <label for="bio" class="require font-semibold">Bio :</label>
                             <textarea class="h-16 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition resize-none" name="bio" id="bio"><?php echo isset($_SESSION['vendor_bio']) ? $_SESSION['vendor_bio'] : '' ?></textarea>
@@ -264,7 +350,7 @@ if (isset($_COOKIE['adminEmail'])) {
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-center mb-5">
+                <div class="flex justify-center w-full mb-5">
                     <input type="submit" name="submitBtn" value="Register" class="bg-gray-700 hover:bg-gray-800 hover:transition h-10 w-72 text-lg rounded-tl-xl rounded-br-xl text-white cursor-pointer">
                 </div>
             </div>
@@ -283,28 +369,43 @@ if (isset($_COOKIE['adminEmail'])) {
     </div>
 
     <!-- Successfully message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="SpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-[100]" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div id="Successfully"></div>
+            <div class="capitalize font-medium" id="Successfully"></div>
         </div>
     </div>
 
     <!-- Error message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="popUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div id="errorMessage"></div>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
         </div>
     </div>
 
     <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
         function displayErrorMessage(message) {
             let popUp = document.getElementById('popUp');
             let errorMessage = document.getElementById('errorMessage');
@@ -314,9 +415,9 @@ if (isset($_COOKIE['adminEmail'])) {
             popUp.style.opacity = '100';
 
             setTimeout(() => {
-                window.location.href = "";
                 popUp.style.display = 'none';
                 popUp.style.opacity = '0';
+                window.location.href = '';
             }, 1800);
         }
 
@@ -324,17 +425,15 @@ if (isset($_COOKIE['adminEmail'])) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
 
-            Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
-            SpopUp.style.display = 'flex';
-            SpopUp.style.opacity = '100';
-
             setTimeout(() => {
-                SpopUp.style.display = 'none';
-                SpopUp.style.opacity = '0';
-                window.location.href = "vendor_login.php";
-            }, 1500);
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = 'vendor_login.php';
+            }, 2000);
         }
     </script>
+
 
     <!-- script -->
     <script src="vendor_validation.js"></script>
@@ -357,13 +456,15 @@ if (isset($_POST['submitBtn'])) {
     $phone = $_POST['phone'];
     $gst = $_POST['gst'];
     $bio = $_POST['bio'];
+    $lat = $_POST['lat'];
+    $lng = $_POST['lng'];
     $Vendor_reg_date = date('d-m-Y');
 
     // Validate other inputs (same as before)
     $name_pattern = "/^[a-zA-Z]([0-9a-zA-Z\s]){1,14}$/";
     $email_pattern = "/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
     $password_pattern = "/^.{8,}$/";
-    $username_pattern = "/^[a-zA-Z0-9_]{3,20}$/";
+    $username_pattern = "/^[a-zA-Z0-9_-]{3,20}$/";
     $phone_pattern = "/^[6-9]\d{9}$/";
     $gst_pattern = "/^[a-zA-Z0-9]{1,15}$/";
     $bio_pattern = "/^.{10,1500}$/";
@@ -406,6 +507,10 @@ if (isset($_POST['submitBtn'])) {
         echo '<script>displayErrorMessage("Enter Valid Bio");</script>';
     } else {
         $_SESSION['vendor_bio'] = $bio;
+    }
+
+    if($lat === "" || $lat === ""){
+        echo '<script>displayErrorMessage("Please Enter Your Location");</script>';
     }
 
     // Validate images
@@ -463,14 +568,58 @@ if (isset($_POST['submitBtn'])) {
     $check_query = mysqli_query($con, $email_check);
     $emailCount = mysqli_num_rows($check_query);
 
+
+    // Check if phone Number already exists
+    $phone_check = "SELECT * FROM vendor_registration WHERE phone = '$phone'";
+    $phone_check_query = mysqli_query($con, $phone_check);
+    $phoneCount = mysqli_num_rows($phone_check_query);
+
+    // Check if userName already exists
+    $username_check = "SELECT * FROM vendor_registration WHERE username = '$username'";
+    $username_check_query = mysqli_query($con, $username_check);
+    $usernameCount = mysqli_num_rows($username_check_query);
+
+    // Check if GST already exists
+    $gst_check = "SELECT * FROM vendor_registration WHERE GST = '$gst'";
+    $gst_check_query = mysqli_query($con, $gst_check);
+    $gstCount = mysqli_num_rows($gst_check_query);
+
     if ($emailCount > 0) {
         echo '<script>displayErrorMessage("Email already Exists.");</script>';
         exit();
     }
 
+    if ($phoneCount > 0) {
+        echo '<script>displayErrorMessage("Phone Number already Exists.");</script>';
+        exit();
+    }
+
+    if ($usernameCount > 0) {
+        echo '<script>displayErrorMessage("Username already Exists.");</script>';
+        exit();
+    }
+
+    if ($gstCount > 0) {
+        echo '<script>displayErrorMessage("GST already Exists.");</script>';
+        exit();
+    }
+
     // Move uploaded files
-    if (move_uploaded_file($tempname, $folder) && move_uploaded_file($tempname2, $folder2)) {
-        $insert_data = "INSERT INTO vendor_registration(name, email, password, username, phone, Bio, GST, cover_image, dp_image, date) VALUES ('$name','$email','$pass','$username','$phone','$bio','$gst','$CoverImage','$ProfileImage','$Vendor_reg_date')";
+    if (move_uploaded_file($tempname, $folder) && move_uploaded_file($tempname2, $folder2) && $lat != "" || $lat != "" && !preg_match($name_pattern, $name) || !preg_match($email_pattern, $email) || !preg_match($password_pattern, $password) || !preg_match($username_pattern, $username) || !preg_match($phone_pattern, $phone) || !preg_match($gst_pattern, $gst) || !preg_match($bio_pattern, $bio)) {
+        $vendorName = $name;
+        $vendorEmail = $email;
+        $vendorPassword = $pass;
+        $vendorUsername = $username;
+        $vendorPhone = $phone;
+        $vendorBio = $bio;
+        $vendorGST = $gst;
+        $vendorCover_image = $CoverImage;
+        $vendorDp_image = $ProfileImage;
+        $vendorLatitude = $lat;
+        $vendorLongitude = $lng;
+        $vendorRegiDate = $Vendor_reg_date;
+        
+        $insert_data = "INSERT INTO vendor_registration(name, email, password, username, phone, Bio, GST, cover_image, dp_image, latitude, longitude, date) VALUES ('$vendorName','$vendorEmail','$vendorPassword','$vendorUsername','$vendorPhone','$vendorBio','$vendorGST','$vendorCover_image','$vendorDp_image','$vendorLatitude','$vendorLongitude','$vendorRegiDate')";
         $insert_sql = mysqli_query($con, $insert_data);
 
         unset(
@@ -483,6 +632,7 @@ if (isset($_POST['submitBtn'])) {
         );
 
         if ($insert_sql) {
+            echo '<script>loader()</script>';
             echo '<script>displaySuccessMessage("Register successful.");</script>';
         } else {
             echo '<script>displayErrorMessage("Register Failed.");</script>';

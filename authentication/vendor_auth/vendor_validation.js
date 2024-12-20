@@ -59,7 +59,7 @@ function VendorFormValidation(){
 
     // username
     username.addEventListener('blur',()=>{
-        let regx = /^[a-zA-Z0-9_]{3,20}$/;
+        let regx = /^[a-zA-Z0-9_-]{3,20}$/;
         let str = username.value;
 
         if(regx.test(str)){

@@ -15,6 +15,16 @@ if (isset($_COOKIE['adminEmail'])) {
     exit;
 }
 
+session_start();
+unset(
+    $_SESSION['vendor_name'],
+    $_SESSION['vendor_email'],
+    $_SESSION['username'],
+    $_SESSION['vendor_phone'],
+    $_SESSION['vendor_gst'],
+    $_SESSION['vendor_bio']
+);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
