@@ -1042,12 +1042,48 @@ function displayRandomProducts($con, $limit)
                         </a>
                     </div>
                     <div>
-                        <a class="rounded-tl-lg rounded-br-lg py-1.5 bg-pink-300 text-pink-700 px-3 cursor-pointer" href="">Current Location</a>
+                        <a id="currentLocation" class="rounded-tl-lg rounded-br-lg py-1.5 bg-pink-300 text-pink-700 px-3 cursor-pointer" href="#">Current Location</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        let currentLocation = document.getElementById('currentLocation');
+
+        currentLocation.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                
+                    console.log("lat: ", lat);
+                    console.log("lng: ", lng);
+                
+                    fetch('pages/set_location.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'latitude=' + lat + '&longitude=' + lng,
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data);
+                        location.reload();
+                    })
+                    .catch(error => console.error('Error:', error));
+
+                }, function(error) {
+                    alert('Could not get location. Please allow location access in your browser settings.');
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+
+    </script>
 
     <!-- footer -->
     <?php
