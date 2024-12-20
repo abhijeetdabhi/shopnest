@@ -92,6 +92,10 @@ if (isset($_GET['product_id'])) {
     <!-- favicon -->
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
+    <!-- confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+
     <!-- title -->
     <title>Check Out Page</title>
     <style>
@@ -246,21 +250,21 @@ if (isset($_GET['product_id'])) {
                         <div class="flex items-center justify-between">
                             <p class="text-sm font-medium text-gray-900">Shipping</p>
                             <p class="font-semibold text-gray-900">₹<?php
-                                if (isset($product_id)) {
-                                    $totalPriceWithQty = str_replace(',', '', $totalPriceWithQty);
-                                    $totalPriceWithQty = (int) $totalPriceWithQty;
-                                    if ($totalPriceWithQty <= 599) {
-                                        $shipping = 40;
-                                    } else {
-                                        $shipping = 0;
-                                    }
-                                } else {
-                                    $shipping = 0;
-                                }
+                                                                    if (isset($product_id)) {
+                                                                        $totalPriceWithQty = str_replace(',', '', $totalPriceWithQty);
+                                                                        $totalPriceWithQty = (int) $totalPriceWithQty;
+                                                                        if ($totalPriceWithQty <= 599) {
+                                                                            $shipping = 40;
+                                                                        } else {
+                                                                            $shipping = 0;
+                                                                        }
+                                                                    } else {
+                                                                        $shipping = 0;
+                                                                    }
 
-                                // Output the shipping value
-                                echo $shipping;
-                                ?></p>
+                                                                    // Output the shipping value
+                                                                    echo $shipping;
+                                                                    ?></p>
                         </div>
                     </div>
                     <div class="mt-6 flex items-center justify-between">
@@ -287,26 +291,26 @@ if (isset($_GET['product_id'])) {
                             </h1>
                         </label>
                         <input type="text" id="totalPrice" class="hidden float-right bg-transparent border-none text-2xl font-semibold text-gray-900" name="totalProductPrice" value="₹<?php
-                            if (isset($product_id)) {
-                                $productPrice = (float)$productPrice;
-                                $qty = (int)$qty;
+                                                                                                                                                                                        if (isset($product_id)) {
+                                                                                                                                                                                            $productPrice = (float)$productPrice;
+                                                                                                                                                                                            $qty = (int)$qty;
 
-                                $totalPriceWithQty = $productPrice * $qty;
+                                                                                                                                                                                            $totalPriceWithQty = $productPrice * $qty;
 
-                                $total = $totalPriceWithQty + $shipping;
+                                                                                                                                                                                            $total = $totalPriceWithQty + $shipping;
 
-                                $formattedTotalPriceWithQty = number_format($totalPriceWithQty, 0);
-                                $formattedTotal = number_format($total, 0);
+                                                                                                                                                                                            $formattedTotalPriceWithQty = number_format($totalPriceWithQty, 0);
+                                                                                                                                                                                            $formattedTotal = number_format($total, 0);
 
-                                echo $formattedTotal;
-                            } else {
-                                echo 'Total Amount';
-                            }
-                            ?>" dir="rtl">
+                                                                                                                                                                                            echo $formattedTotal;
+                                                                                                                                                                                        } else {
+                                                                                                                                                                                            echo 'Total Amount';
+                                                                                                                                                                                        }
+                                                                                                                                                                                        ?>" dir="rtl">
                     </div>
                 </div>
                 <div>
-                    <button id="checkOutBtn" type="submit" name="placeOrder" class="mt-4 mb-8 w-full rounded-tl-xl rounded-br-xl bg-gray-700 px-6 py-3 font-medium text-white transition duration-200 cursor-pointer hover:bg-gray-800">Place Order</button>                    
+                    <button id="checkOutBtn" type="submit" name="placeOrder" class="mt-4 mb-8 w-full rounded-tl-xl rounded-br-xl bg-gray-700 px-6 py-3 font-medium text-white transition duration-200 cursor-pointer hover:bg-gray-800">Place Order</button>
                 </div>
             </div>
         </div>
@@ -348,6 +352,7 @@ if (isset($_GET['product_id'])) {
             let loader = document.getElementById('loader');
             let body = document.body;
 
+            // Display the loader
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
         }
@@ -370,20 +375,61 @@ if (isset($_GET['product_id'])) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
 
+            // Display success message
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
+
+                // Trigger confetti from both the left and right bottom corners
+
+
+                // Redirect after 2 seconds
                 window.location.href = "../user/show_orders.php";
             }, 2000);
+            fireExplosiveConfettiFromLeft();
+            fireExplosiveConfettiFromRight();
+        }
+
+        // Explosive Confetti from the left bottom corner
+        function fireExplosiveConfettiFromLeft() {
+            confetti({
+                particleCount: 1200, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
+                origin: {
+                    x: 0, // Confetti starts from the left bottom corner
+                    y: 1
+                },
+                scalar: 1, // Larger particles for explosive effect
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8, // Gravity for explosive effect
+                drift: 1, // Drift direction
+            });
+        }
+
+        // Explosive Confetti from the right bottom corner
+        function fireExplosiveConfettiFromRight() {
+            confetti({
+                particleCount: 1200, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
+                origin: {
+                    x: 1, // Confetti starts from the right bottom corner
+                    y: 1
+                },
+                scalar: 1, // Larger particles for explosive effect
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8, // Gravity for explosive effect
+                drift: -1, // Drift direction
+            });
         }
     </script>
+
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#dataForm').on('submit', function(e) {
 
                 e.preventDefault();
-    
+
                 let FirstName = $('#FirstName').val().trim();
                 let lastName = $('#lastName').val().trim();
                 let Phone_number = $('#Phone_number').val().trim();
@@ -393,15 +439,15 @@ if (isset($_GET['product_id'])) {
                 let city = $('#city').val().trim();
                 let pin = $('#pin').val().trim();
                 let paymentType = $('input[name="payment"]:checked').val();
-    
+
                 if (FirstName === '' || lastName === '' || Phone_number === '' || user_email === '' || Address === '' || state === '' || city === '' || pin === '') {
                     displayErrorMessage('Please fill out all fields.')
                     return
-                }else if(!paymentType){
+                } else if (!paymentType) {
                     displayErrorMessage('Please select payment method.')
                     return
                 }
-    
+
                 $.ajax({
                     type: "POST",
                     url: "checkoutAjax.php",
@@ -412,14 +458,14 @@ if (isset($_GET['product_id'])) {
                         color: "<?php echo $color ?>",
                         size: "<?php echo $size ?>",
                         qty: "<?php echo $qty ?>",
-    
-                        product_id: "<?php echo $product_id?>",
-                        vendor_id: "<?php echo $vendor_id?>",
-                        user_id: "<?php echo $user_id?>",
-    
+
+                        product_id: "<?php echo $product_id ?>",
+                        vendor_id: "<?php echo $vendor_id ?>",
+                        user_id: "<?php echo $user_id ?>",
+
                         shipping: "<?php echo $shipping ?>",
                         formattedTotal: "<?php echo $formattedTotal ?>",
-    
+
                         FirstName: FirstName,
                         lastName: lastName,
                         Phone_number: Phone_number,
@@ -430,7 +476,7 @@ if (isset($_GET['product_id'])) {
                         pin: pin,
                         paymentType: paymentType
                     },
-                    success: function (response) {
+                    success: function(response) {
                         loader();
                         $('input[name="payment"]:checked').prop('checked', false);
                         displaySuccessMessage("Order Place Successfully")
@@ -449,4 +495,5 @@ if (isset($_GET['product_id'])) {
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
+
 </html>

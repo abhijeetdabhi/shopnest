@@ -5,7 +5,7 @@ if (!isset($_GET['totalPrice']) || !isset($_COOKIE['user_id'])) {
     exit;
 }
 
-if(!isset($_COOKIE['Cart_products'])){
+if (!isset($_COOKIE['Cart_products'])) {
     header("Location: ../index.php");
     exit;
 }
@@ -142,6 +142,7 @@ if (isset($_COOKIE['user_id'])) {
     </div>
 
     <script>
+        // Loader function
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
@@ -150,6 +151,7 @@ if (isset($_COOKIE['user_id'])) {
             body.style.overflow = 'hidden';
         }
 
+        // Display error message
         function displayErrorMessage(message) {
             let popUp = document.getElementById('popUp');
             let errorMessage = document.getElementById('errorMessage');
@@ -164,9 +166,14 @@ if (isset($_COOKIE['user_id'])) {
             }, 1800);
         }
 
+        // Display success message with confetti effects
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
+
+            // Trigger confetti from both corners
+            fireExplosiveConfettiFromLeft();
+            fireExplosiveConfettiFromRight();
 
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
@@ -175,100 +182,139 @@ if (isset($_COOKIE['user_id'])) {
                 window.location.href = '../user/show_orders.php';
             }, 2000);
         }
+
+        // Explosive Confetti from the left bottom corner
+        function fireExplosiveConfettiFromLeft() {
+            confetti({
+                particleCount: 1200,
+                spread: 180,
+                origin: {
+                    x: 0,
+                    y: 1
+                },
+                scalar: 1,
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8,
+                drift: 1,
+            });
+        }
+
+        // Explosive Confetti from the right bottom corner
+        function fireExplosiveConfettiFromRight() {
+            confetti({
+                particleCount: 1200,
+                spread: 180,
+                origin: {
+                    x: 1,
+                    y: 1
+                },
+                scalar: 1,
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8,
+                drift: -1,
+            });
+        }
+
+        // Handle form submission for "Place Order"
+        document.querySelector('input[name="placeOrder"]').addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            // Simulate a success message after clicking the button
+            displaySuccessMessage("Your order has been placed successfully!");
+        });
     </script>
 
-<?php
 
-if (isset($_POST['placeOrder'])) {
-    if (isset($_COOKIE['Cart_products'])) {
-        $cookie_value = $_COOKIE['Cart_products'];
-        $cart_products = json_decode($cookie_value, true);
-        if (!empty($cart_products) && is_array($cart_products)) {
-            foreach ($cart_products as $index => $Cproducts) {
-                // Escape special characters
-                $order_image = mysqli_real_escape_string($con, $Cproducts['cart_image']);
-                $order_title = mysqli_real_escape_string($con, $Cproducts['cart_title']);
-                $order_price = mysqli_real_escape_string($con, $Cproducts['cart_price']);
-                $order_color = mysqli_real_escape_string($con, $Cproducts['cart_color']);
-                $order_size = mysqli_real_escape_string($con, $Cproducts['cart_size']);
+    <?php
+
+    if (isset($_POST['placeOrder'])) {
+        if (isset($_COOKIE['Cart_products'])) {
+            $cookie_value = $_COOKIE['Cart_products'];
+            $cart_products = json_decode($cookie_value, true);
+            if (!empty($cart_products) && is_array($cart_products)) {
+                foreach ($cart_products as $index => $Cproducts) {
+                    // Escape special characters
+                    $order_image = mysqli_real_escape_string($con, $Cproducts['cart_image']);
+                    $order_title = mysqli_real_escape_string($con, $Cproducts['cart_title']);
+                    $order_price = mysqli_real_escape_string($con, $Cproducts['cart_price']);
+                    $order_color = mysqli_real_escape_string($con, $Cproducts['cart_color']);
+                    $order_size = mysqli_real_escape_string($con, $Cproducts['cart_size']);
 
 
-                $user_id = mysqli_real_escape_string($con, $_COOKIE['user_id']);
-                $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
-                $vendor_id = mysqli_real_escape_string($con, $row['vendor_id']);
-
-                $FirstName = mysqli_real_escape_string($con, $_POST['FirstName']);
-                $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
-                $Phone_number = mysqli_real_escape_string($con, $_POST['Phone_number']);
-                $user_email = mysqli_real_escape_string($con, $_POST['user_email']);
-                $Address = mysqli_real_escape_string($con, $_POST['Address']);
-                $state = mysqli_real_escape_string($con, $_POST['state']);
-                $city = mysqli_real_escape_string($con, $_POST['city']);
-                $pin = mysqli_real_escape_string($con, $_POST['pin']);
-
-                if (isset($_POST['payment'])) {
-                    $paymentType = mysqli_real_escape_string($con, $_POST['payment']);
-                }
-
-                $bac = str_replace(",", "", $order_price);
-                $bac = (int)$bac;
-
-                if ($bac <= 599) {
-                    $shipping = 40;
-                } else {
-                    $shipping = 0;
-                }
-
-                $totalProductPrice = number_format($bac + $shipping);
-
-                $orders_prices = str_replace(",", "", $Cproducts['cart_price']);
-
-                $admin_profit = 20 + $shipping;
-                $vendor_profit = number_format($orders_prices - $admin_profit);
-
-                $review_insert_Date = date('d-m-Y');
-
-                if (!empty($FirstName) && !empty($lastName) && !empty($Phone_number) && !empty($user_email) && !empty($Address) && !empty($state) && !empty($city) && !empty($pin) && !empty($paymentType)) {
-                    // remove quantity of products
+                    $user_id = mysqli_real_escape_string($con, $_COOKIE['user_id']);
                     $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
+                    $vendor_id = mysqli_real_escape_string($con, $row['vendor_id']);
 
-                    $product_qty = $product_quantity = isset($quantityMap[$index]) ? $quantityMap[$index] : 'N/A';
+                    $FirstName = mysqli_real_escape_string($con, $_POST['FirstName']);
+                    $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
+                    $Phone_number = mysqli_real_escape_string($con, $_POST['Phone_number']);
+                    $user_email = mysqli_real_escape_string($con, $_POST['user_email']);
+                    $Address = mysqli_real_escape_string($con, $_POST['Address']);
+                    $state = mysqli_real_escape_string($con, $_POST['state']);
+                    $city = mysqli_real_escape_string($con, $_POST['city']);
+                    $pin = mysqli_real_escape_string($con, $_POST['pin']);
 
-                    $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
-                    $get_qty_query = mysqli_query($con, $get_qty);
+                    if (isset($_POST['payment'])) {
+                        $paymentType = mysqli_real_escape_string($con, $_POST['payment']);
+                    }
 
-                    $qty = mysqli_fetch_assoc($get_qty_query);
-                    $product_quty = $qty['Quantity'];
-                    $qty_replace = str_replace(",", "", $product_quty);
-                    $remove_quty = $qty_replace - $product_qty;
+                    $bac = str_replace(",", "", $order_price);
+                    $bac = (int)$bac;
 
-                    $order_insert_sql = "INSERT INTO orders (order_title, order_image, order_price, order_color, order_size, qty, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$order_title', '$order_image', '$order_price', '$order_color', '$order_size', '$product_qty', '$user_id', '$product_id', '$vendor_id', '$FirstName', '$lastName', '$user_email', '$Phone_number', '$Address', '$state', '$city', '$pin', '$paymentType', '$totalProductPrice', '$vendor_profit', '$admin_profit', '$review_insert_Date')";
-                    $order_insert_query = mysqli_query($con, $order_insert_sql);
+                    if ($bac <= 599) {
+                        $shipping = 40;
+                    } else {
+                        $shipping = 0;
+                    }
 
-                    $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
-                    $update_qty_quary = mysqli_query($con, $update_qty);
+                    $totalProductPrice = number_format($bac + $shipping);
 
-                    ob_start();
+                    $orders_prices = str_replace(",", "", $Cproducts['cart_price']);
+
+                    $admin_profit = 20 + $shipping;
+                    $vendor_profit = number_format($orders_prices - $admin_profit);
+
+                    $review_insert_Date = date('d-m-Y');
+
+                    if (!empty($FirstName) && !empty($lastName) && !empty($Phone_number) && !empty($user_email) && !empty($Address) && !empty($state) && !empty($city) && !empty($pin) && !empty($paymentType)) {
+                        // remove quantity of products
+                        $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
+
+                        $product_qty = $product_quantity = isset($quantityMap[$index]) ? $quantityMap[$index] : 'N/A';
+
+                        $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
+                        $get_qty_query = mysqli_query($con, $get_qty);
+
+                        $qty = mysqli_fetch_assoc($get_qty_query);
+                        $product_quty = $qty['Quantity'];
+                        $qty_replace = str_replace(",", "", $product_quty);
+                        $remove_quty = $qty_replace - $product_qty;
+
+                        $order_insert_sql = "INSERT INTO orders (order_title, order_image, order_price, order_color, order_size, qty, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$order_title', '$order_image', '$order_price', '$order_color', '$order_size', '$product_qty', '$user_id', '$product_id', '$vendor_id', '$FirstName', '$lastName', '$user_email', '$Phone_number', '$Address', '$state', '$city', '$pin', '$paymentType', '$totalProductPrice', '$vendor_profit', '$admin_profit', '$review_insert_Date')";
+                        $order_insert_query = mysqli_query($con, $order_insert_sql);
+
+                        $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
+                        $update_qty_quary = mysqli_query($con, $update_qty);
+
+                        ob_start();
 
                         if (isset($_COOKIE['Cart_products'])) {
                             setcookie('Cart_products', '', time() - 3600, "/");
                             unset($_COOKIE['Cart_products']);
                         }
 
-                    ob_end_flush();
-                    echo '<script>loader()</script>';
-                    echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
-
-                } else {
-                    echo '<script>displayErrorMessage("Missing fields in the order data.");</script>';
+                        ob_end_flush();
+                        echo '<script>loader()</script>';
+                        echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
+                    } else {
+                        echo '<script>displayErrorMessage("Missing fields in the order data.");</script>';
+                    }
                 }
             }
         }
     }
-}
 
-?>
-    
+    ?>
+
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
@@ -454,22 +500,22 @@ if (isset($_POST['placeOrder'])) {
                             </h1>
                         </label>
                         <input type="text" id="totalPrice" class="hidden float-right bg-transparent border-none text-2xl font-semibold text-gray-900" name="totalProductPrice" value="₹<?php
-                        if (isset($myCookie)) {
-                            $product_mrp = $totalPrice;
-                            $products_price = explode(",", $product_mrp);
+                                                                                                                                                                                        if (isset($myCookie)) {
+                                                                                                                                                                                            $product_mrp = $totalPrice;
+                                                                                                                                                                                            $products_price = explode(",", $product_mrp);
 
-                            $productPrice = implode("", $products_price);
+                                                                                                                                                                                            $productPrice = implode("", $products_price);
 
-                            $total = $totalPrice + $shipping;
+                                                                                                                                                                                            $total = $totalPrice + $shipping;
 
-                            $formattedTotalPriceWithQty = number_format($totalPrice, 0);
-                            $formattedTotal = number_format($total, 0);
+                                                                                                                                                                                            $formattedTotalPriceWithQty = number_format($totalPrice, 0);
+                                                                                                                                                                                            $formattedTotal = number_format($total, 0);
 
-                            echo $formattedTotal;
-                        } else {
-                            echo 'Total Amount';
-                        }
-                        ?>" dir="rtl">
+                                                                                                                                                                                            echo $formattedTotal;
+                                                                                                                                                                                        } else {
+                                                                                                                                                                                            echo 'Total Amount';
+                                                                                                                                                                                        }
+                                                                                                                                                                                        ?>" dir="rtl">
                     </div>
                 </div>
                 <div>

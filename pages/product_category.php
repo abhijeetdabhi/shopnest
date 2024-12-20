@@ -697,7 +697,7 @@ $Category = $_GET['Category'];
                 }
             }
 
-            function showPage(page) {
+            function showPage(page, triggerScroll = true) {
                 var cardsPerRow = getCardsPerRow();
                 var itemsPerPage = cardsPerRow * rowsPerPage;
                 var $productCards = $('.product-card');
@@ -727,11 +727,13 @@ $Category = $_GET['Category'];
                 // Update pagination buttons and arrow states
                 updatePagination();
 
-                // Scroll the page to the top (smooth scroll)
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth' // Smooth scroll effect
-                });
+                // Smooth scroll to the top only if triggered by a button click
+                if (triggerScroll) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth' // Smooth scroll effect
+                    });
+                }
             }
 
             function updatePagination() {
@@ -744,8 +746,8 @@ $Category = $_GET['Category'];
                 if (totalPages > 1) {
                     // Always show the first page
                     $paginationButtons.append(`
-                <button class="pagination-btn ${currentPage === 1 ? 'active' : ''}" data-page="1">1</button>
-            `);
+                    <button class="pagination-btn ${currentPage === 1 ? 'active' : ''}" data-page="1">1</button>
+                `);
 
                     // Add dots after the first page if the current page is greater than 2
                     if (currentPage > 2) {
@@ -755,10 +757,10 @@ $Category = $_GET['Category'];
                     // Show the current page
                     if (currentPage !== 1 && currentPage !== totalPages) {
                         $paginationButtons.append(`
-                    <button class="pagination-btn active" data-page="${currentPage}">
-                        ${currentPage}
-                    </button>
-                `);
+                        <button class="pagination-btn active" data-page="${currentPage}">
+                            ${currentPage}
+                        </button>
+                    `);
                     }
 
                     // Add dots before the last page if the current page is less than the last page minus 1
@@ -768,10 +770,10 @@ $Category = $_GET['Category'];
 
                     // Always show the last page
                     $paginationButtons.append(`
-                <button class="pagination-btn ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">
-                    ${totalPages}
-                </button>
-            `);
+                    <button class="pagination-btn ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">
+                        ${totalPages}
+                    </button>
+                `);
 
                     // Update arrow button states
                     $('#prev-page').prop('disabled', currentPage === 1);
@@ -806,13 +808,14 @@ $Category = $_GET['Category'];
 
             // Recalculate pagination on window resize
             $(window).resize(function() {
-                showPage(currentPage);
+                showPage(currentPage, false); // Disable smooth scroll on resize
             });
 
             // Initialize
             showPage(currentPage);
         });
     </script>
+
 
     <!-- sidebar -->
     <!-- add hidden in container -->
