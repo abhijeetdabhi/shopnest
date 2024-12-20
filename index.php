@@ -165,13 +165,13 @@ function displayRandomProducts($con, $limit)
             display: none;
         }
 
-         /* Custom style for the search box input */
-         .tt-search-box{
+        /* Custom style for the search box input */
+        .tt-search-box {
             width: 100%;
             margin: auto;
             padding: 12px;
         }
-        
+
         .tt-search-box input {
             font-size: 16px;
             width: 100%;
@@ -182,8 +182,8 @@ function displayRandomProducts($con, $limit)
             outline: none;
             box-shadow: none;
         }
-        
-        .tt-search-box-input-container{
+
+        .tt-search-box-input-container {
             width: 100%;
             max-width: 512px;
             height: 50px;
@@ -201,20 +201,20 @@ function displayRandomProducts($con, $limit)
             overflow-y: auto;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
         }
-        
+
         .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion {
             padding: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.2s;
         }
-        
+
         /* Highlight suggestion on hover */
         .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion.tt-cursor {
             background-color: #007bff;
             color: white;
         }
-        
+
         /* Custom style for the "no results" message */
         .tt-search-box .tt-dataset.tt-dataset-results .tt-no-results {
             padding: 10px;
@@ -223,7 +223,7 @@ function displayRandomProducts($con, $limit)
             height: 100%;
         }
 
-        .tt-search-box-result-list-container{
+        .tt-search-box-result-list-container {
             position: absolute;
             left: 0;
             top: 100px;
@@ -232,12 +232,12 @@ function displayRandomProducts($con, $limit)
             border-radius: 8px;
         }
 
-        .tt-search-box-result-list{
+        .tt-search-box-result-list {
             margin: 7px;
             border-radius: 8px;
             padding: 20px 12px;
         }
-        
+
         .outfit {
             font-family: "Outfit", sans-serif;
             font-optical-sizing: auto;
@@ -303,25 +303,7 @@ function displayRandomProducts($con, $limit)
         .style-2::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background-color: #bfbfbf;
-        }
-
-        .rings:hover {
-            /* Ring Styles */
-            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-
-            /* Box Shadow with Ring */
-            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-
-            /* Ring Color and Opacity */
-            --tw-ring-color: #374151;
-            /* Tailwind Gray-700 (#374151) */
-
-            /* Ring Transition */
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms;
-        }
+        }        
 
         .cursor-not-allowed {
             cursor: not-allowed;
@@ -339,52 +321,52 @@ function displayRandomProducts($con, $limit)
     <div id="main-content" class="p-4 flex flex-col max-w-screen-xl m-auto outfit">
         <div class="flex justify-center">
             <div class="style-2 flex overflow-x-auto xl:justify-center gap-9 text-sm py-5 px-6">
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Furniture">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev3-homegarden.jpg?resize=150%2C150&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Furniture</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev3-homegarden.jpg?resize=150%2C150&ssl=1" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Furniture</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Electronics Item">
-                        <img class="rounded-full object-cover object-center border rings transition h-24" src="https://media.istockphoto.com/id/1174598609/photo/set-of-contemporary-house-appliances-isolated-on-white.jpg?s=612x612&w=0&k=20&c=bBMILbCpLkhIxbL7sAAXaFOaFaSXFCt80ccHgl7iiWM=" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Electronics</span>
+                        <img class="rounded-full object-cover object-center transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://media.istockphoto.com/id/1174598609/photo/set-of-contemporary-house-appliances-isolated-on-white.jpg?s=612x612&w=0&k=20&c=bBMILbCpLkhIxbL7sAAXaFOaFaSXFCt80ccHgl7iiWM=" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Electronics</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Headphone">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/electronic/wp-content/uploads/sites/6/2023/02/homev9-15off-Headphones.jpg?w=300&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">15% Off headphone</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/electronic/wp-content/uploads/sites/6/2023/02/homev9-15off-Headphones.jpg?w=300&ssl=1" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">15% Off headphone</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Stationery">
-                        <img class="rounded-full rings" src="https://img.freepik.com/premium-photo/photo-school-stationary-items-books-table_763111-41995.jpg" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Stationery</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://img.freepik.com/premium-photo/photo-school-stationary-items-books-table_763111-41995.jpg" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Stationery</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Toys">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/07/homev1-toys.jpg?w=400&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ... ">Toys</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/07/homev1-toys.jpg?w=400&ssl=1" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Toys</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Sports">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev3-sports.jpg?resize=150%2C150&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Sports</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev3-sports.jpg?resize=150%2C150&ssl=1" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Sports</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Phones">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/electronic/wp-content/uploads/sites/6/2023/02/homev9-New-From-Apple.jpg?w=300&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Phones</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/electronic/wp-content/uploads/sites/6/2023/02/homev9-New-From-Apple.jpg?w=300&ssl=1" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Phones</span>
                     </a>
                 </div>
-                <div>
+                <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Women accessories">
-                        <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev3-beauty.jpg?resize=150%2C150&ssl=1" alt="">
-                        <span class="text-center text-ellipsis overflow-hidden truncate ...">Beauty & Heathy</span>
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev3-beauty.jpg?resize=150%2C150&ssl=1" alt="">
+                        <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Beauty & Heathy</span>
                     </a>
                 </div>
             </div>
@@ -804,46 +786,46 @@ function displayRandomProducts($con, $limit)
             <h1 class="text-2xl">Explore more categories</h1>
             <div class="flex justify-center w-full">
                 <div class="style-2 flex overflow-x-auto gap-10 py-5 px-2">
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Men accessories">
-                            <img class="w-32 h-32 object-cover object-top rounded-full rings" src="https://amourfragrances.com/cdn/shop/files/Cashmeran.jpg?v=1704756785&width=720" alt="">
-                            <p>Men accessories</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://amourfragrances.com/cdn/shop/files/Cashmeran.jpg?v=1704756785&width=720" alt="Men Accessories">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">Men accessories</p>
                         </a>
                     </div>
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Tabs/Ipad">
-                            <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-ipadtablets.jpg?w=640&ssl=1" alt="">
-                            <p>iPads & Tablets</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-ipadtablets.jpg?w=640&ssl=1" alt="">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">iPads & Tablets</p>
                         </a>
                     </div>
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Laptops/MacBook">
-                            <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-laptops.jpg?w=640&ssl=1" alt="">
-                            <p>Laptops</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-laptops.jpg?w=640&ssl=1" alt="">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">Laptops</p>
                         </a>
                     </div>
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Cameras">
-                            <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-cameras.jpg?w=640&ssl=1" alt="">
-                            <p>Cameras</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-cameras.jpg?w=640&ssl=1" alt="">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">Cameras</p>
                         </a>
                     </div>
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Watch">
-                            <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/07/homev2-watches.jpg?w=340&ssl=1" alt="">
-                            <p>Wearable tech</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/07/homev2-watches.jpg?w=340&ssl=1" alt="">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">Wearable tech</p>
                         </a>
                     </div>
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Shoes">
-                            <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/07/homev1-shoes.jpg?w=400&ssl=1" alt="">
-                            <p>Shoes</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/07/homev1-shoes.jpg?w=400&ssl=1" alt="">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">Shoes</p>
                         </a>
                     </div>
-                    <div>
+                    <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Tech Accessories">
-                            <img class="rounded-full rings" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-accessories.jpg?w=640&ssl=1" alt="">
-                            <p>Accessories</p>
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/homev9-accessories.jpg?w=640&ssl=1" alt="">
+                            <p class="text-center group-hover:text-gray-600 transition-colors">Accessories</p>
                         </a>
                     </div>
                 </div>
