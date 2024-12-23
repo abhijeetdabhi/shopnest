@@ -247,32 +247,54 @@
                                                                 <div class="flex gap-3 text-center lg:block">
                                                                     <p class="font-medium text-sm leading-7 text-black">Status</p>
                                                                     <?php
-                                                                        $today = date('Y-m-d', strtotime($res['date']));
-                                                                        $oneday = date('Y-m-d', strtotime('+1 days', strtotime($today)));
-                                                                        $secondday = date('Y-m-d', strtotime('+2 days', strtotime($today)));
-                                                                        $thirdday = date('Y-m-d', strtotime('+3 days', strtotime($today)));
-                                                                        $fourday = date('Y-m-d', strtotime('+4 days', strtotime($today)));
-                                                                        $fifth = date('Y-m-d', strtotime('+5 days', strtotime($today)));
+                                                                        date_default_timezone_set('Asia/Kolkata');
+                            
+                                                                        $dateTime = $res['date'];
+                                                                        $newDate = new DateTime($dateTime);
+                                                                        $onlyTime = $newDate->format("h:i:s A");
+                                                                        $orderPlacedTime = $onlyTime;
                                                                         
-                                                                        $todays_date = date('Y-m-d', strtotime('today'));
+                                                                        $travelTime = $res['travelTime'];
+                                                                    
+                                                                        $currentTime = date('h:i:s A');
+                                                                    
+                                                                        $date = new DateTime($orderPlacedTime);
+                                                                        $date2 = new DateTime($orderPlacedTime);
+                                                                        $date3 = new DateTime($orderPlacedTime);
+                                                                        $date4 = new DateTime($orderPlacedTime);
+                                                                    
+                                                                        $remainTime = $travelTime;
+                                                                        $time1 = $date->getTimestamp();
+                                                                        $time1Formatted = $date->format("h:i:s A");
+                                                                    
+                                                                        $remainTime2 = floor($travelTime / 3);
+                                                                        $date2->modify("+$remainTime2 minutes");
+                                                                        $time2 = $date2->getTimestamp();
+                                                                        $time2Formatted = $date2->format("h:i:s A");
+                                                                                                
+                                                                        $remainTime3 = floor($travelTime / 2);
+                                                                        $date3->modify("+$remainTime3 minutes");
+                                                                        $time3 = $date3->getTimestamp();
+                                                                        $time3Formatted = $date3->format("h:i:s A");
+                                                                               
+                                                                        $remainTime4 = floor($travelTime / 1);
+                                                                        $date4->modify("+$remainTime4 minutes");
+                                                                        $time4 = $date4->getTimestamp();
+                                                                        $time4Formatted = $date4->format("h:i:s A");
 
-                                                                        if($todays_date <= $today){
+                                                                        if($time1Formatted <= $currentTime && $time2Formatted >= $currentTime){
                                                                             ?>
                                                                                 <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-emerald-100 text-emerald-600">Order confirmed</p>
                                                                             <?php
-                                                                        }elseif($todays_date <= $thirdday){
+                                                                        }elseif($time2Formatted <= $currentTime && $time3Formatted >= $currentTime){
                                                                             ?>
-                                                                                <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-emerald-100 text-emerald-600">Shipping your order</p>
+                                                                                <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-emerald-100 text-emerald-600">Order Packed</p>
                                                                             <?php
-                                                                        }elseif($todays_date <= $fourday){
+                                                                        }elseif($time3Formatted <= $currentTime && $time4Formatted >= $currentTime){
                                                                             ?>
-                                                                                <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-emerald-100 text-emerald-600">Out for delivery</p>
+                                                                                <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-emerald-100 text-emerald-600">On the Way</p>
                                                                             <?php
-                                                                        }elseif($todays_date <= $fifth){
-                                                                            ?>
-                                                                                <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-emerald-100 text-emerald-600">Ready for delivery</p>
-                                                                            <?php
-                                                                        }else{
+                                                                        }elseif($time4Formatted <= $currentTime){
                                                                             ?>
                                                                                 <p class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 m-auto text-center rounded-tl-lg rounded-br-lg lg:mt-3 bg-indigo-100 text-indigo-600">Delivered</p>
                                                                             <?php
@@ -281,24 +303,20 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
-                                                                <div class="flex flex-col items-center gap-2">
-                                                                    <?php
-                                                                        $today = date('Y-m-d', strtotime($res['date']));
-                                                                        $fifth = date('Y-m-d', strtotime('+5 days', strtotime($today)));
-                                                                        
-                                                                        $todays_date = date('Y-m-d', strtotime('today'));
-                                                                        if($todays_date <= $fifth){
-                                                                            ?>
-                                                                                <p class="font-medium text-sm whitespace-nowrap leading-6 text-black">Delivery Expected by</p>
-                                                                                <p class="font-medium text-base whitespace-nowrap leading-7 text-blue-500"><?php echo isset($_COOKIE['user_id']) ? date('d-m-Y', strtotime($future_date)) : 'Delivery Date' ?></p>
-                                                                            <?php
-                                                                        }else{
-                                                                           ?>
-                                                                                <p class="font-medium text-base whitespace-nowrap leading-7 text-emerald-500">Your order is delivered</p>
-                                                                           <?php
-                                                                        }
+                                                            <?php
+                                                                if($time4Formatted >= $currentTime){
                                                                     ?>
-                                                                </div>
+                                                                        <div class="flex flex-col items-center gap-1 m-auto">
+                                                                            <p class="font-medium text-sm whitespace-nowrap leading-1 text-black">Product Delivered Under</p>
+                                                                            <p class="font-medium text-base whitespace-nowrap leading-2 text-blue-500"><?php echo isset($_COOKIE['user_id']) ? $res['travelTime'] . " minutes" : 'Delivery Date' ?></p>
+                                                                        </div>
+                                                                    <?php
+                                                                }else{
+                                                                    ?>
+                                                                        <p class="text-center m-auto font-medium text-base leading-7 text-blue-500">Your Order Has Been Delivered</p>
+                                                                    <?php
+                                                                }
+                                                            ?>
                                                             </div>
                                                         </div>
                                                     </div>

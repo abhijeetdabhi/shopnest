@@ -46,6 +46,8 @@ if (isset($_COOKIE['user_id'])) {
         }
     }
 
+    $travelTime = $_GET['travelTime'];
+
     $product_find = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
     $product_query = mysqli_query($con, $product_find);
 
@@ -388,9 +390,15 @@ if (isset($_COOKIE['user_id'])) {
                                                 <p class="my-auto"><?php echo isset($myCookie) ? $cart_products_size : 'product Size' ?></p>
                                             </div>
                                         </div>
-                                        <div class="flex item-center gap-1">
-                                            <span class="text-lg font-semibold">QTY:</span>
-                                            <p class="my-auto"><?php echo isset($myCookie) ? $product_quantity : 'product Quantity'; ?></p>
+                                        <div class="flex item-center justify-between flex-wrap">
+                                            <div class="flex item-center gap-1">
+                                                <span class="text-lg font-semibold">Deliverd In Just:</span>
+                                                <p class="my-auto text-green-500"><?php echo isset($product_id) ? $travelTime . " minutes" : 'product Quantity'; ?></p>
+                                            </div>
+                                            <div class="flex item-center gap-1">
+                                                <span class="text-lg font-semibold">QTY:</span>
+                                                <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

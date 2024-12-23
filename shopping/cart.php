@@ -69,6 +69,40 @@ if(isset($_SESSION['selectedSize'])){
                         if (isset($_COOKIE['Cart_products'])) {
                             $cookie_value = $_COOKIE['Cart_products'];
 
+                            function getDistance($startLat, $startLng, $endLat, $endLng, $apiKey){
+                                $url = "https://api.tomtom.com/routing/1/calculateRoute/{$startLat},{$startLng}:{$endLat},{$endLng}/json?key={$apiKey}";
+                            
+                                $ch = curl_init();
+                            
+                                curl_setopt($ch, CURLOPT_URL, $url);
+                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                            
+                                $response = curl_exec($ch);
+                            
+                                if(curl_errno($ch)) {
+                                    echo 'Error:' . curl_error($ch);
+                                }
+                            
+                                curl_close($ch);
+                            
+                                $data = json_decode($response, true);
+                            
+                                if(isset($data['routes'][0]['summary'])) {
+                                    $travelTimeInSeconds = $data['routes'][0]['summary']['travelTimeInSeconds'];
+                                
+                                    // Convert travel time from seconds to minutes
+                                    $travelTimeInMinutes = $travelTimeInSeconds / 60;
+                                
+                                    return [
+                                        'travelTime' => $travelTimeInMinutes
+                                    ];
+                                } else {
+                                    echo "Error: No route found or invalid response.";
+                                    return null;
+                                }
+                            }
+                            $totalTime = 0;
                             $cart_products = json_decode($cookie_value, true);
                             if (!empty($cart_products) && is_array($cart_products)) {
                                 foreach ($cart_products as $Cproducts) {
@@ -160,6 +194,28 @@ if(isset($_SESSION['selectedSize'])){
                                         </div>
                                     </div>
                                 <?php
+                                $vendor_find = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
+                                $vendor_query = mysqli_query($con, $vendor_find);
+                                $findVndr = mysqli_fetch_assoc($vendor_query);
+
+                                $vendor_id = $findVndr['vendor_id'];
+                                $vendor_find = "SELECT * FROM vendor_registration WHERE vendor_id  = '$vendor_id'";
+                                $vendor_query = mysqli_query($con, $vendor_find);
+                                $ven = mysqli_fetch_assoc($vendor_query);
+                                        
+                                // find distance
+                                
+                            
+                                $startLat = $_COOKIE['latitude'];
+                                $startLon = $_COOKIE['longitude'];
+                                $endLat = $ven['latitude'];
+                                $endLon = $ven['longitude'];
+                                $apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+                            
+                                $result = getDistance($startLat, $startLon, $endLat, $endLon, $apiKey);
+                            
+                                $TravelTime = number_format($result['travelTime']) + 25;
+                                $totalTime += $TravelTime;
                                 }
                             } else {
                                 ?>
@@ -183,6 +239,7 @@ if(isset($_SESSION['selectedSize'])){
                             </div>
                         <?php
                         }
+
                         ?>
 
                     </div>
@@ -205,7 +262,7 @@ if(isset($_SESSION['selectedSize'])){
                         if (isset($_COOKIE['user_id'])) {
                             $color = 'color';
                             $size = 'size';
-                            $url = 'checkout_from_cart.php?totalPrice=' . urlencode($totalCartPrice) . '&qty=' . urlencode($encode_josn);
+                            $url = 'checkout_from_cart.php?totalPrice=' . urlencode($totalCartPrice) . '&qty=' . urlencode($encode_josn) . '&travelTime=' . $totalTime;
                         } else {
                             $url = '/authentication/user_auth/user_login.php';
                         }
