@@ -87,6 +87,8 @@ for ($i = 0; $i < count($latitude); $i++) {
     }
 }
 
+$nearLocation = false;
+
 if (count($nearbyLocation) > 0) {
     $i = 1;
     foreach ($nearbyLocation as $locations) {
@@ -106,6 +108,10 @@ if (count($nearbyLocation) > 0) {
 
         $i++;
     }
+}else{
+    $nearLocation = true;
+    setcookie('latitude', '', time() - 3600, "/");  
+    setcookie('longitude', '', time() - 3600, "/");
 }
 
 function displayRandomProducts($con, $limit)
@@ -1186,7 +1192,7 @@ function displayRandomProducts($con, $limit)
         });
     </script>
 
-    <div class="w-full h-[100vh] fixed top-0 bg-white z-50 flex flex-col items-center justify-center px-5 gap-y-4">
+    <div style="display: none;" class="w-full h-[100vh] fixed top-0 bg-white z-50 flex flex-col items-center justify-center px-5 gap-y-4" id="chooseLocation">
         <span>
             <img class="w-96" src="src/logo/longDistance.svg" alt="">
         </span>
@@ -1204,10 +1210,29 @@ function displayRandomProducts($con, $limit)
                         </g>
                     </svg>
                 </span>
-                <span>
+                <span onclick="hideLocaionPopup()">
                     Choose Other Location
                 </span>
             </button>
+
+            <script>
+                let chooseLocation = document.getElementById('chooseLocation');
+
+                function hideLocaionPopup(){
+                    chooseLocation.style.display = 'none';
+                }
+            </script>
+            <?php
+                if($nearLocation == true){
+                    ?>
+                        <script>
+                            chooseLocation = document.getElementById('chooseLocation');
+                            chooseLocation.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                            </script>
+                    <?php
+                }
+            ?>
         </span>
     </div>
 

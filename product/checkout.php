@@ -35,6 +35,8 @@ if (isset($_GET['product_id'])) {
         $size = $_GET['size'];
     }
 
+    $travelTime = $_GET['TravelTime'];
+
     $qty = $_GET['qty'];
 
     if (isset($product_id)) {
@@ -169,9 +171,15 @@ if (isset($_GET['product_id'])) {
                                     ?>
                                 </div>
                             </div>
-                            <div class="flex item-center gap-1">
-                                <span class="text-lg font-semibold">QTY:</span>
-                                <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
+                            <div class="flex item-center justify-between flex-wrap">
+                                <div class="flex item-center gap-1">
+                                    <span class="text-lg font-semibold">Deliverd In Just:</span>
+                                    <p class="my-auto text-green-500"><?php echo isset($product_id) ? $travelTime . " minutes" : 'product Quantity'; ?></p>
+                                </div>
+                                <div class="flex item-center gap-1">
+                                    <span class="text-lg font-semibold">QTY:</span>
+                                    <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -460,6 +468,7 @@ if (isset($_GET['product_id'])) {
                         totalPriceWithQty: "<?php echo $totalPriceWithQty ?>",
                         color: "<?php echo $color ?>",
                         size: "<?php echo $size ?>",
+                        travelTime: <?php echo $travelTime?>,
                         qty: "<?php echo $qty ?>",
 
                         product_id: "<?php echo $product_id ?>",
@@ -481,7 +490,6 @@ if (isset($_GET['product_id'])) {
                     },
                     success: function(response) {
                         loader();
-                        $('input[name="payment"]:checked').prop('checked', false);
                         displaySuccessMessage("Order Place Successfully")
                     }
                 });

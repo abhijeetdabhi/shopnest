@@ -82,6 +82,52 @@ if (isset($_GET['product_id'])) {
     $vendor_query = mysqli_query($con, $vendor_find);
     $ven = mysqli_fetch_assoc($vendor_query);
 
+    // find distance
+    function getDistance($startLat, $startLng, $endLat, $endLng, $apiKey){
+        $url = "https://api.tomtom.com/routing/1/calculateRoute/{$startLat},{$startLng}:{$endLat},{$endLng}/json?key={$apiKey}";
+    
+        $ch = curl_init();
+    
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    
+        $response = curl_exec($ch);
+    
+        if(curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        
+        curl_close($ch);
+    
+        $data = json_decode($response, true);
+    
+        if(isset($data['routes'][0]['summary'])) {
+            $travelTimeInSeconds = $data['routes'][0]['summary']['travelTimeInSeconds'];
+        
+            // Convert travel time from seconds to minutes
+            $travelTimeInMinutes = $travelTimeInSeconds / 60;
+        
+            return [
+                'travelTime' => $travelTimeInMinutes
+            ];
+        } else {
+            echo "Error: No route found or invalid response.";
+            return null;
+        }
+    }
+    
+    $startLat = $_COOKIE['latitude'];
+    $startLon = $_COOKIE['longitude'];
+    $endLat = $ven['latitude'];
+    $endLon = $ven['longitude'];
+    $apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+    
+    $result = getDistance($startLat, $startLon, $endLat, $endLon, $apiKey);
+    
+    $TravelTime = number_format($result['travelTime']) + 25;
+
+
     $get_reviews = "SELECT * FROM user_review WHERE product_id = '$product_id'";
     $review_query = mysqli_query($con, $get_reviews);
 
@@ -97,7 +143,7 @@ if (isset($_GET['product_id'])) {
             $encoded_qty = urlencode($qty);
             ?>
                 <script>
-                    window.location.href = 'checkout.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>'
+                    window.location.href = 'checkout.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>&TravelTime=<?php echo $TravelTime?>'
                 </script>
             <?php
             unset($_SESSION['selectedSize'][$product_id]);
@@ -336,13 +382,13 @@ if (isset($_GET['product_id'])) {
                     <h1 class="text-xl font-medium text-[#1d2128] leading-6 md:leading-10 md:font-medium md:text-[28px]"><?php echo isset($_GET['product_id']) ? $title : 'Product title' ?></h1>
                 </div>
                 <!-- vendor Store -->
-                <a href="../vendor/vendor_store.php?vendor_id=<?php echo $ven['vendor_id']; ?>" class="text-base text-gray-600 font-bold hover:underline cursor-pointer max-w-max">Visit a <span><?php echo isset($product_id) ? $ven['username'] : 'vendor store Name'; ?></span> Store</a>
+                <div class="flex items-center justify-between flex-wrap">
+                    <a href="../vendor/vendor_store.php?vendor_id=<?php echo $ven['vendor_id']; ?>" class="text-base text-gray-600 font-bold hover:underline cursor-pointer max-w-max">Visit a <span><?php echo isset($product_id) ? $ven['username'] : 'vendor store Name'; ?></span> Store</a>
+                    <span class="text-sm text-green-500 font-medium pr-1">Devlivery in Just <?php echo isset($TravelTime) ? $TravelTime . " minutes" : ''?></span>
+                </div>
                 <!-- price -->
                 <div class="flex items-center justify-between flex-wrap gap-y-3 mt-3">
                     <div class="flex items-baseline gap-2">
-                        <?php
-
-                        ?>
                         <span class="text-2xl font-medium">₹<?php echo isset($_GET['product_id']) ? number_format($MRP) : 'MRP' ?></span>
                         <del class="text-sm font-normal">₹<?php echo isset($_GET['product_id']) ? number_format($Your_Price) : 'Product price' ?></del>
                     </div>
@@ -352,7 +398,7 @@ if (isset($_GET['product_id'])) {
 
                     if ($product_qty > 10) {
                     ?>
-                        <p class="text-[#13bc96] text-sm font-medium">Available in stock</p>
+                        <p class="text-green-500 text-sm font-medium">Available in stock</p>
                     <?php
                     } elseif ($product_qty == 0) {
                     ?>
