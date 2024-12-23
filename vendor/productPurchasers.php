@@ -233,45 +233,56 @@ if (isset($_COOKIE['vendor_id'])) {
                 </script>
                 <main class="flex-1 overflow-x-hidden overflow-y-auto scrollBar bg-gray-200 px-5 mt-5">
                     <section class="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-5 xl:gap-8">
-                        <!-- user 1 -->
-                        <div class="bg-white rounded-tl-2xl rounded-br-2xl shadow-lg text-center grid place-items-center overflow-hidden">
-                            <div class="flex justify-center mt-4">
-                                <img class="w-24 h-24 rounded-full object-cover" src="../src/user_dp/null-20241130-WA0054.jpg" alt="Profile Picture">
-                            </div>
-                            <div class="py-4">
-                                <h2 class=" text-xl font-semibold">vishvjitchauhan</h2>
-                                <a href="mailto:vishvjitchauhan2284@gmail.com" class="text-sm text-gray-500">vishvjitchauhan2284@gmail.com</a>
-                            </div>
-                            <div class="border-t-2 w-full">
-                                <div class="flex justify-between divide-x-2">
-                                    <a href="tel:8141391797" class="flex items-center justify-center space-x-1 w-full py-2 text-green-600">
-                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 480.56 480.56" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                            <g>
-                                                <path d="M365.354 317.9c-15.7-15.5-35.3-15.5-50.9 0-11.9 11.8-23.8 23.6-35.5 35.6-3.2 3.3-5.9 4-9.8 1.8-7.7-4.2-15.9-7.6-23.3-12.2-34.5-21.7-63.4-49.6-89-81-12.7-15.6-24-32.3-31.9-51.1-1.6-3.8-1.3-6.3 1.8-9.4 11.9-11.5 23.5-23.3 35.2-35.1 16.3-16.4 16.3-35.6-.1-52.1-9.3-9.4-18.6-18.6-27.9-28-9.6-9.6-19.1-19.3-28.8-28.8-15.7-15.3-35.3-15.3-50.9.1-12 11.8-23.5 23.9-35.7 35.5-11.3 10.7-17 23.8-18.2 39.1-1.9 24.9 4.2 48.4 12.8 71.3 17.6 47.4 44.4 89.5 76.9 128.1 43.9 52.2 96.3 93.5 157.6 123.3 27.6 13.4 56.2 23.7 87.3 25.4 21.4 1.2 40-4.2 54.9-20.9 10.2-11.4 21.7-21.8 32.5-32.7 16-16.2 16.1-35.8.2-51.8-19-19.1-38.1-38.1-57.2-57.1zM346.254 238.2l36.9-6.3c-5.8-33.9-21.8-64.6-46.1-89-25.7-25.7-58.2-41.9-94-46.9l-5.2 37.1c27.7 3.9 52.9 16.4 72.8 36.3 18.8 18.8 31.1 42.6 35.6 68.8zM403.954 77.8c-42.6-42.6-96.5-69.5-156-77.8l-5.2 37.1c51.4 7.2 98 30.5 134.8 67.2 34.9 34.9 57.8 79 66.1 127.5l36.9-6.3c-9.7-56.2-36.2-107.2-76.6-147.7z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                            </g>
-                                        </svg>
-                                        <h1>8141391797</h1>
-                                    </a>
-                                    <a href="remove_user.php?id=26" class="w-full py-2 space-x-1 text-red-600">
-                                        <i class="fa-solid fa-trash text-base"></i>
-                                        <span>Remove</span>
-                                    </a>
-                                </div>
-                                <div class="border-t-2 py-2">
-                                    <a href="userPurchaseProduct.php" class="flex justify-center items-center gap-2 text-blue-600">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
-                                                <g>
-                                                    <path d="m458.737 422.218-22.865-288.116c-1.425-18.562-17.123-33.103-35.739-33.103H354.97v-2.03C354.97 44.397 310.573 0 256.001 0s-98.969 44.397-98.969 98.969v2.03H111.87c-18.617 0-34.316 14.54-35.736 33.064L53.262 422.257c-1.77 23.075 6.235 46.048 21.961 63.026C90.949 502.261 113.242 512 136.385 512h239.231c23.142 0 45.436-9.738 61.163-26.717 15.726-16.979 23.73-39.951 21.958-63.065zM187.022 98.969c0-38.035 30.945-68.979 68.979-68.979s68.979 30.945 68.979 68.979v2.03H187.022v-2.03zm227.754 365.936c-10.218 11.03-24.124 17.105-39.16 17.105h-239.23c-15.036 0-28.942-6.075-39.16-17.105-10.217-11.031-15.211-25.363-14.063-40.315l22.87-288.195c.232-3.032 2.796-5.406 5.837-5.406h45.162v36.935c0 8.281 6.714 14.995 14.995 14.995 8.281 0 14.995-6.714 14.995-14.995v-36.935H324.98v36.935c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-36.935h45.163c3.04 0 5.604 2.375 5.84 5.446l22.865 288.115c1.15 14.992-3.845 29.323-14.062 40.355z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                    <path d="M323.556 254.285c-5.854-5.856-15.349-5.856-21.204 0l-66.956 66.956-25.746-25.746c-5.855-5.856-15.35-5.856-21.206 0s-5.856 15.35 0 21.206l36.349 36.349c2.928 2.928 6.766 4.393 10.602 4.393s7.675-1.464 10.602-4.393l77.558-77.558c5.857-5.857 5.857-15.351.001-21.207z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                </g>
-                                            </svg>
-                                        </span>
-                                        <span>View Orders</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                            $get_userInfo = "SELECT * FROM orders WHERE vendor_id = '$vendor_id'";
+                            $get_userInfo_query = mysqli_query($con, $get_userInfo);
+
+                            while($usr = mysqli_fetch_assoc($get_userInfo_query)){
+                                $user_id = $usr['user_id'];
+                                $get_userDetails = "SELECT * FROM user_registration WHERE user_id = '$user_id'";
+                                $userDetails_query = mysqli_query($con, $get_userDetails);
+
+                                $usrInfo = mysqli_fetch_assoc($userDetails_query);
+
+                                ?>
+                                    <div class="bg-white rounded-tl-2xl rounded-br-2xl shadow-lg text-center grid place-items-center overflow-hidden">
+                                        <div class="flex justify-center mt-4">
+                                            <img class="w-24 h-24 rounded-full object-cover" src="../src/user_dp/<?php echo $usrInfo['profile_image']?>" alt="Profile Picture">
+                                        </div>
+                                        <div class="py-4">
+                                            <h2 class="text-xl font-semibold"><?php echo $usrInfo['first_name'] . ' ' . $usrInfo['last_name']?></h2>
+                                            <a href="mailto:<?php echo $usrInfo['email']?>" class="text-sm text-gray-500"><?php echo $usrInfo['email']?></a>
+                                        </div>
+                                        <div class="border-t-2 w-full">
+                                            <div class="flex justify-between divide-x-2">
+                                                <a href="tel:<?php echo $usrInfo['phone']?>" class="flex items-center justify-center space-x-1 w-full py-2 text-green-600">
+                                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 480.56 480.56" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                                        <g>
+                                                            <path d="M365.354 317.9c-15.7-15.5-35.3-15.5-50.9 0-11.9 11.8-23.8 23.6-35.5 35.6-3.2 3.3-5.9 4-9.8 1.8-7.7-4.2-15.9-7.6-23.3-12.2-34.5-21.7-63.4-49.6-89-81-12.7-15.6-24-32.3-31.9-51.1-1.6-3.8-1.3-6.3 1.8-9.4 11.9-11.5 23.5-23.3 35.2-35.1 16.3-16.4 16.3-35.6-.1-52.1-9.3-9.4-18.6-18.6-27.9-28-9.6-9.6-19.1-19.3-28.8-28.8-15.7-15.3-35.3-15.3-50.9.1-12 11.8-23.5 23.9-35.7 35.5-11.3 10.7-17 23.8-18.2 39.1-1.9 24.9 4.2 48.4 12.8 71.3 17.6 47.4 44.4 89.5 76.9 128.1 43.9 52.2 96.3 93.5 157.6 123.3 27.6 13.4 56.2 23.7 87.3 25.4 21.4 1.2 40-4.2 54.9-20.9 10.2-11.4 21.7-21.8 32.5-32.7 16-16.2 16.1-35.8.2-51.8-19-19.1-38.1-38.1-57.2-57.1zM346.254 238.2l36.9-6.3c-5.8-33.9-21.8-64.6-46.1-89-25.7-25.7-58.2-41.9-94-46.9l-5.2 37.1c27.7 3.9 52.9 16.4 72.8 36.3 18.8 18.8 31.1 42.6 35.6 68.8zM403.954 77.8c-42.6-42.6-96.5-69.5-156-77.8l-5.2 37.1c51.4 7.2 98 30.5 134.8 67.2 34.9 34.9 57.8 79 66.1 127.5l36.9-6.3c-9.7-56.2-36.2-107.2-76.6-147.7z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                        </g>
+                                                    </svg>
+                                                    <h1><?php echo $usrInfo['phone']?></h1>
+                                                </a>
+                                            </div>
+                                            <div class="border-t-2 py-2">
+                                                <a href="userPurchaseProduct.php?user_id=<?php echo $usrInfo['user_id']?>" class="flex justify-center items-center gap-2 text-blue-600">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                                            <g>
+                                                                <path d="m458.737 422.218-22.865-288.116c-1.425-18.562-17.123-33.103-35.739-33.103H354.97v-2.03C354.97 44.397 310.573 0 256.001 0s-98.969 44.397-98.969 98.969v2.03H111.87c-18.617 0-34.316 14.54-35.736 33.064L53.262 422.257c-1.77 23.075 6.235 46.048 21.961 63.026C90.949 502.261 113.242 512 136.385 512h239.231c23.142 0 45.436-9.738 61.163-26.717 15.726-16.979 23.73-39.951 21.958-63.065zM187.022 98.969c0-38.035 30.945-68.979 68.979-68.979s68.979 30.945 68.979 68.979v2.03H187.022v-2.03zm227.754 365.936c-10.218 11.03-24.124 17.105-39.16 17.105h-239.23c-15.036 0-28.942-6.075-39.16-17.105-10.217-11.031-15.211-25.363-14.063-40.315l22.87-288.195c.232-3.032 2.796-5.406 5.837-5.406h45.162v36.935c0 8.281 6.714 14.995 14.995 14.995 8.281 0 14.995-6.714 14.995-14.995v-36.935H324.98v36.935c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-36.935h45.163c3.04 0 5.604 2.375 5.84 5.446l22.865 288.115c1.15 14.992-3.845 29.323-14.062 40.355z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                                <path d="M323.556 254.285c-5.854-5.856-15.349-5.856-21.204 0l-66.956 66.956-25.746-25.746c-5.855-5.856-15.35-5.856-21.206 0s-5.856 15.35 0 21.206l36.349 36.349c2.928 2.928 6.766 4.393 10.602 4.393s7.675-1.464 10.602-4.393l77.558-77.558c5.857-5.857 5.857-15.351.001-21.207z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </span>
+                                                    <span>View Orders</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+
+                            }
+                        ?>
 
                     </section>
                 </main>
