@@ -281,7 +281,8 @@ if (isset($_COOKIE['user_id'])) {
                     $admin_profit = 20 + $shipping;
                     $vendor_profit = number_format($orders_prices - $admin_profit);
 
-                    $review_insert_Date = date('d-m-Y');
+                    date_default_timezone_set('Asia/Kolkata');
+                    $order_place_date = date('d-m-Y h:i:s');
 
                     if (!empty($FirstName) && !empty($lastName) && !empty($Phone_number) && !empty($user_email) && !empty($Address) && !empty($state) && !empty($city) && !empty($pin) && !empty($paymentType)) {
                         // remove quantity of products
@@ -297,7 +298,34 @@ if (isset($_COOKIE['user_id'])) {
                         $qty_replace = str_replace(",", "", $product_quty);
                         $remove_quty = $qty_replace - $product_qty;
 
-                        $order_insert_sql = "INSERT INTO orders (order_title, order_image, order_price, order_color, order_size, qty, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$order_title', '$order_image', '$order_price', '$order_color', '$order_size', '$product_qty', '$user_id', '$product_id', '$vendor_id', '$FirstName', '$lastName', '$user_email', '$Phone_number', '$Address', '$state', '$city', '$pin', '$paymentType', '$totalProductPrice', '$vendor_profit', '$admin_profit', '$review_insert_Date')";
+                        $user_order_title = $order_title;
+                        $user_order_image = $order_image;
+                        $user_order_price = $order_price;
+                        $user_order_color = $order_color;
+                        $user_order_size = $order_size;
+                        $user_order_qty = $product_qty;
+                        $user_order_travelTime = $travelTime;
+
+                        $user_order_user_id = $user_id;
+                        $user_order_product_id = $product_id ;
+                        $user_order_vendor_id = $vendor_id;
+
+                        $order_user_first_name = $FirstName;
+                        $order_user_last_name = $lastName;
+                        $order_user_email = $user_email;
+                        $order_user_mobile = $Phone_number;
+                        $order_user_address = $Address;
+                        $order_user_state = $state;
+                        $order_user_city = $city;
+                        $order_user_pin = $pin;
+                        $order_payment_type = $paymentType;
+
+                        $order_total_price = $totalProductPrice;
+                        $order_vendor_profit = $vendor_profit;
+                        $order_admin_profit = $admin_profit;
+                        $order_date = $order_place_date;
+
+                        $order_insert_sql = "INSERT INTO orders(order_title, order_image, order_price, order_color, order_size, qty, travelTime, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$user_order_title','$user_order_image','$user_order_price','$user_order_color','$user_order_size','$user_order_qty','$user_order_travelTime','$user_order_user_id','$user_order_product_id','$user_order_vendor_id','$order_user_first_name','$order_user_last_name','$order_user_email','$order_user_mobile','$order_user_address','$order_user_state','$order_user_city','$order_user_pin','$order_payment_type','$order_total_price','$order_vendor_profit','$order_admin_profit','$order_date')";
                         $order_insert_query = mysqli_query($con, $order_insert_sql);
 
                         $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
@@ -392,12 +420,8 @@ if (isset($_COOKIE['user_id'])) {
                                         </div>
                                         <div class="flex item-center justify-between flex-wrap">
                                             <div class="flex item-center gap-1">
-                                                <span class="text-lg font-semibold">Deliverd In Just:</span>
-                                                <p class="my-auto text-green-500"><?php echo isset($product_id) ? $travelTime . " minutes" : 'product Quantity'; ?></p>
-                                            </div>
-                                            <div class="flex item-center gap-1">
                                                 <span class="text-lg font-semibold">QTY:</span>
-                                                <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
+                                                <p class="my-auto"><?php echo isset($myCookie) ? $product_quantity : 'product Qty'; ?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -408,6 +432,11 @@ if (isset($_COOKIE['user_id'])) {
                     }
                 }
                 ?>
+
+                <div class="flex item-center gap-1 mt-8">
+                    <span class="text-lg font-semibold">Deliverd In Just:</span>
+                    <p class="my-auto text-green-500 font-bold"><?php echo isset($myCookie) ? $travelTime . " minutes" : 'Time'; ?></p>
+                </div>
 
                 <p class="mt-8 text-xl font-medium">Payment methods</p>
                 <p class="text-gray-400">Complete your order by providing your payment details.</p>

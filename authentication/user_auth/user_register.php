@@ -14,6 +14,58 @@ if (isset($_COOKIE['adminEmail'])) {
     exit;
 }
 ?>
+<?php
+function getAddressFromLatLng($lat, $lng, $apiKey) {
+    $url = "https://api.tomtom.com/search/2/reverseGeocode/{$lat},{$lng}.json?key={$apiKey}";
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        echo "cURL Error: " . curl_error($ch);
+        return null;
+    }
+
+    $data = json_decode($response, true);
+
+    curl_close($ch);
+
+    if (isset($data['addresses'][0]['address'])) {
+        $address = $data['addresses'][0]['address'];
+        $city = isset($address['municipality']) ? $address['municipality'] : 'Not available';
+        $state = isset($address['countrySubdivision']) ? $address['countrySubdivision'] : 'Not available';
+        $postalCode = isset($address['postalCode']) ? $address['postalCode'] : 'Not available';
+
+        return [
+            'city' => $city,
+            'state' => $state,
+            'postalCode' => $postalCode
+        ];
+    }
+
+    return null;
+}
+$lat = $_COOKIE['latitude'];
+$lng = $_COOKIE['longitude'];
+$apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw'; 
+
+$address = getAddressFromLatLng($lat, $lng, $apiKey);
+
+if ($address) {
+    $usercity = $address['city'];
+    $userstate = $address['state'];
+    $userpostalCode = $address['postalCode'];
+} else {
+    $usercity = "";
+    $userstate = "";
+    $userpostalCode = "";
+}
+?>
+
 
 
 <!DOCTYPE html>
@@ -124,17 +176,17 @@ if (isset($_COOKIE['adminEmail'])) {
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="state" class="require font-semibold">State :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="state" value="<?php echo isset($_SESSION['user_state']) ? $_SESSION['user_state'] : '' ?>" id="state">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="state" value="<?php echo isset($address) ? $userstate: '' ?>" id="state" readonly>
                         <small id="stateValid" class="text-red-500 hidden translate-x-1">Enter Valid State</small>
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="city" class="require font-semibold">City :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="city" value="<?php echo isset($_SESSION['user_city']) ? $_SESSION['user_city'] : '' ?>" id="city">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="city" value="<?php echo isset($address) ? $usercity: '' ?>" id="city" readonly>
                         <small id="cityValid" class="text-red-500 hidden translate-x-1">Enter Valid City</small>
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="pincode" class="require font-semibold">Pincode :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="tel" name="pincode" value="<?php echo isset($_SESSION['user_pincode']) ? $_SESSION['user_pincode'] : '' ?>" id="pincode" maxlength="6">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="tel" name="pincode" value="<?php echo isset($address) ? $userpostalCode: '' ?>" id="pincode" maxlength="6" readonly>
                         <small id="pincodeValid" class="text-red-500 hidden translate-x-1">Enter Valid Pincode</small>
                     </div>
                 </div>
