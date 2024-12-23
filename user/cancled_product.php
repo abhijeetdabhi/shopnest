@@ -54,6 +54,9 @@
         #logoutPopUp {
             display: none;
         }
+        [x-cloak]{
+            display: none;
+        }
     </style>
 </head>
 
@@ -69,8 +72,8 @@
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-white">
-            <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity h-screen bg-black opacity-50 lg:hidden"></div>
-            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+            <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity h-screen bg-black opacity-50 lg:hidden" x-cloak></div>
+            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0" x-cloak>
                 <div class="flex items-center justify-center mt-8 mr-2">
                     <a class="flex w-fit" href="/index.php">
                         <!-- icon logo div -->
@@ -132,8 +135,8 @@
                                 <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
                         </button>
-                        <div class="flex flex-col">
-                            <h1 class="font-semibold text-xl md:text-2xl">Hello
+                        <div class="flex flex-col mx-4 lg:mx-0">
+                            <h1 class="font-semibold text-2xl">Hello
                                 <span id="usersName">
                                     <?php
                                     if (isset($_COOKIE['user_id'])) {
