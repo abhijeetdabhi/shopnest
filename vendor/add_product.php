@@ -676,8 +676,7 @@ if (isset($_POST['submitBtn'])) {
     $Product_insert_Date = date('d-m-Y');
 
     $same_id = $_POST['same_id'];
-    $products_name = $_POST['full_name'];
-    $full_name = str_replace(['"', ',', "'"], '`', $products_name);
+    $full_name = mysqli_real_escape_string($con, $_POST['full_name']);
     $Company_name = mysqli_real_escape_string($con, $_POST['Company_name']);
     $Category = mysqli_real_escape_string($con, $_GET['name']);
     $type = mysqli_real_escape_string($con, $_POST['type']);
@@ -1349,7 +1348,7 @@ if (isset($_POST['submitBtn'])) {
 
 
     $product = [
-        'title' => $products_name,
+        'title' => $full_name,
         'company_name' => $Company_name,
         'Category' => $Category,
         'Type' => $type,

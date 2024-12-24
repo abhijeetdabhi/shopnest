@@ -594,8 +594,7 @@ if (isset($_POST['submitBtn'])) {
     $Product_insert_Date = date('d-m-Y');
 
     $sameId = $same_id;
-    $products_name = $_POST['full_name'];
-    $full_name = str_replace(['"', ',', "'"], '`', $products_name);
+    $full_name = mysqli_real_escape_string($con, $_POST['full_name']);
     $Company_name = $company_name;
     $Categorys = $Category;
     $type = $Type;

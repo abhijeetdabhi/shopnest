@@ -503,8 +503,7 @@ if (isset($_POST['updateBtn'])) {
     }
 
     // Escape user inputs
-    $products_name = $_POST['full_name'];
-    $full_name = str_replace(['"', ',', "'"], '`', $products_name);
+    $full_name = mysqli_real_escape_string($con, $_POST['full_name']);
     $Company_name = mysqli_real_escape_string($con, $_POST['Company_name']);
     $Category = mysqli_real_escape_string($con, $_GET['name']);
     $type = mysqli_real_escape_string($con, $_POST['type']);
