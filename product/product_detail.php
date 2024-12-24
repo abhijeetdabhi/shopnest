@@ -391,10 +391,15 @@ if (isset($_GET['product_id'])) {
                     </div>
                 </div>
                 <!-- price -->
-                <div class="flex items-center justify-between flex-wrap gap-y-3 mt-3">
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-medium">₹<?php echo isset($_GET['product_id']) ? number_format($MRP) : 'MRP' ?></span>
-                        <del class="text-sm font-normal">₹<?php echo isset($_GET['product_id']) ? number_format($Your_Price) : 'Product price' ?></del>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl text-red-700 font-light">-77%</span>
+                            <span class="text-2xl font-medium flex gap-0.5"><span class="text-sm block text-start">₹</span><?php echo isset($_GET['product_id']) ? number_format($MRP) : 'MRP' ?></span>
+                        </div>
+                        <span class="text-sm">M.R.P.:
+                            <del class="text-sm font-normal">₹<?php echo isset($_GET['product_id']) ? number_format($Your_Price) : 'Product price' ?></del>
+                        </span>
                     </div>
                     <?php
 
@@ -432,7 +437,7 @@ if (isset($_GET['product_id'])) {
                     <?php
                     } elseif ($product_qty > 0 && $product_qty <= 10) {
                     ?>
-                        <p class="text-yellow-700 flex items-center gap-1 text-xs md:text-sm font-medium bg-yellow-200 px-3 py-2 rounded-2xl">
+                        <p class="text-yellow-700 flex items-center gap-1 text-xs md:text-sm font-medium bg-yellow-200 px-3 py-2 rounded-2xl h-fit">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 31.955 31.955" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-2">
                                     <g>
