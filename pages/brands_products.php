@@ -17,8 +17,17 @@ if (isset($_COOKIE['adminEmail'])) {
 ?>
 
 <?php
-include "../include/connect.php";
 session_start();
+
+if (isset($_GET['sort'])) {
+    $_SESSION['sort'] = $_GET['sort'];
+}
+
+$selected = isset($_SESSION['sort']) ? $_SESSION['sort'] : 'All';
+?>
+
+<?php
+include "../include/connect.php";
 
 if (isset($_SESSION['searchWord'])) {
     unset($_SESSION['searchWord']);
@@ -242,20 +251,10 @@ $company_name = $_GET['brandName'];
                 <h1 class="text-lg sm:text-3xl text-gray-800"><?php echo isset($company_name) ? $company_name : 'Product company_names' ?></h1>
             </div>
             <div class="flex gap-2 relative">
-                <div x-data="{ open: false, selected: 'Sort' }" class="relative inline-block text-sm text-gray-800">
-                    <?php
-                    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                        if (isset($_POST['selected'])) {
-                            $_SESSION['selected'] = $_POST['selected'];
-                        }
-                    }
-
-                    $selected = isset($_SESSION['selected']) ? $_SESSION['selected'] : 'Sort';
-
-                    ?>
+                <div x-data="{ open: false, selected: '<?php echo $selected; ?>' }" class="relative inline-block text-sm text-gray-800">
                     <!-- Dropdown Button -->
                     <button @click="open = !open" class="w-fit focus:outline-none cursor-pointer">
-                        <span><?php echo $selected ?></span>
+                        <span x-text="selected"></span>
                         <svg class="inline w-5 h-5 ml-2" fill="none" stroke="#808080" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -263,18 +262,14 @@ $company_name = $_GET['brandName'];
 
                     <!-- Dropdown Menu -->
                     <div x-show="open" @keydown.escape.window="open = false" @click.outside="open = false" class="transition absolute right-0 mt-2 w-40 bg-white border-2 border-gray-300 text-gray-700 rounded-xl shadow-lg z-10 overflow-hidden text-sm divide-y-2 divide-gray-300" x-cloak>
-                        <a @click="selected = 'All'; $refs.form.submit()" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">All</a>
-                        <a @click="selected = 'Most Popular'; $refs.form.submit()" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Most popular</a>
-                        <a @click="selected = 'Best Rating'; $refs.form.submit()" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Best rating</a>
-                        <a @click="selected = 'Newest'; $refs.form.submit()" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Newest</a>
-                        <a @click="selected = 'Low to High'; $refs.form.submit()" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Price: Low to High</a>
-                        <a @click="selected = 'High to Low'; $refs.form.submit()" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Price: High to Low</a>
+                        <!-- Loop through options and render each one -->
+                        <a @click="selected = 'All'; open = false; window.location.href = `?brandName=<?php echo $company_name; ?>&sort=All`" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">All</a>
+                        <a @click="selected = 'Most Popular'; open = false; window.location.href = `?brandName=<?php echo $company_name; ?>&sort=Most Popular`" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Most Popular</a>
+                        <a @click="selected = 'Best Rating'; open = false; window.location.href = `?brandName=<?php echo $company_name; ?>&sort=Best Rating`" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Best Rating</a>
+                        <a @click="selected = 'Newest'; open = false; window.location.href = `?brandName=<?php echo $company_name; ?>&sort=Newest`" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Newest</a>
+                        <a @click="selected = 'Low to High'; open = false; window.location.href = `?brandName=<?php echo $company_name; ?>&sort=Low to High`" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">Low to High</a>
+                        <a @click="selected = 'High to Low'; open = false; window.location.href = `?brandName=<?php echo $company_name; ?>&sort=High to Low`" class="block px-4 py-2 hover:bg-gray-200 cursor-pointer">High to Low</a>
                     </div>
-
-                    <!-- Hidden Form -->
-                    <form x-ref="form" method="POST" action="" class="hidden">
-                        <input type="hidden" name="selected" :value="selected">
-                    </form>
                 </div>
 
                 <!-- sidebar button -->
@@ -290,7 +285,7 @@ $company_name = $_GET['brandName'];
 
         <div class="flex jutify-center">
             <div class="mt-7 w-64 hidden lg:block">
-                <form method="post">
+                <form method="post" action="brands_products.php?brandName=<?php echo $company_name?>">
                     <!-- Price -->
                     <div class="border-b-2 border-gray-300 pb-4">
                         <h1 class="text-gray-800 font-medium text-sm">Price:</h1>
@@ -513,17 +508,54 @@ $company_name = $_GET['brandName'];
                 $sort_column = 'vendor_mrp'; // Column to sort by
                 $sort_order = 'ASC';
 
+                $vendorLatitudes = [];
+                $vendorLongitudes = [];
+                            
+                foreach ($_COOKIE as $cookieName => $cookieValue) {
+                
+                    if (strpos($cookieName, 'vendorLat') === 0) {
+                        $index = substr($cookieName, 9);
+                        $vendorLatitudes[$index] = $cookieValue;
+                    }
+                
+                    if (strpos($cookieName, 'vendorLng') === 0) {
+                        $index = substr($cookieName, 9);
+                        $vendorLongitudes[$index] = $cookieValue;
+                    }
+                }
+
+                $vendorIds = [];
+                foreach ($vendorLatitudes as $index => $lat) {
+                    $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A';
+            
+                    $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
+                    $query = mysqli_query($con, $get_vendor);
+            
+                    if (mysqli_num_rows($query) > 0) {
+                        while ($vendorCount = mysqli_fetch_assoc($query)) {
+                            $vendorIds[] = $vendorCount['vendor_id']; // Store vendor IDs
+                        }
+                    }
+                    
+                }
+
                 if ($filter_query) {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name' AND $filter_query ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' AND $filter_query ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
                 } elseif ($selected === 'Newest') {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name'";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
                 } elseif ($selected === 'All') {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name'";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
                 } elseif ($selected === 'Low to High') {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
                 } elseif ($selected === 'High to Low') {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) DESC";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) DESC";
                 } elseif ($selected === 'Most Popular') {
+                    $vendorIdList = implode(',', $vendorIds);
                     $products = "SELECT
                             pr.product_id,
                             pr.profile_image_1,
@@ -536,16 +568,18 @@ $company_name = $_GET['brandName'];
                             pr.Quantity,
                             pr.avg_rating,
                             pr.total_reviews,
-                            COUNT(o.product_id) AS order_count
+                            COUNT(v.vendor_id) AS order_count
                         FROM products pr
-                        LEFT JOIN orders o ON pr.product_id = o.product_id
-                        WHERE pr.company_name = '$company_name'
-                        GROUP BY pr.product_id, pr.profile_image_1, pr.title, pr.MRP, pr.vendor_mrp, pr.vendor_price, pr.size, pr.color, pr.Quantity, pr.avg_rating, pr.total_reviews
+                        LEFT JOIN vendor_registration v ON pr.vendor_id = v.vendor_id
+                        WHERE v.vendor_id IN ($vendorIdList) AND pr.company_name = '$company_name'
+                        GROUP BY pr.product_id, pr.profile_image_1, pr.title, pr.MRP, pr.vendor_mrp, pr.vendor_price, pr.size, pr.color, pr.Quantity, pr.avg_rating, pr.total_reviews, v.vendor_id
                         ORDER BY order_count DESC";
                 } elseif ($selected === 'Best Rating') {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name' ORDER BY avg_rating DESC";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY avg_rating DESC";
                 } else {
-                    $products = "SELECT * FROM products WHERE company_name = '$company_name'";
+                    $vendorIdList = implode(',', $vendorIds);
+                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
                 }
 
                 $Product_query = mysqli_query($con, $products);

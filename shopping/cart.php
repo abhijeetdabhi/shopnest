@@ -102,7 +102,7 @@ if(isset($_SESSION['selectedSize'])){
                                     return null;
                                 }
                             }
-                            $totalTime = 0;
+                            $halfTime    = 0;
                             $cart_products = json_decode($cookie_value, true);
                             if (!empty($cart_products) && is_array($cart_products)) {
                                 foreach ($cart_products as $Cproducts) {
@@ -215,7 +215,8 @@ if(isset($_SESSION['selectedSize'])){
                                 $result = getDistance($startLat, $startLon, $endLat, $endLon, $apiKey);
                             
                                 $TravelTime = number_format($result['travelTime']) + 25;
-                                $totalTime += $TravelTime;
+                                $halfTime += $TravelTime;
+                                $totalTime = $halfTime / 2;
                                 }
                             } else {
                                 ?>
@@ -308,7 +309,38 @@ if(isset($_SESSION['selectedSize'])){
         <span class="text-2xl font-medium">People also search</span>
         <div class="product-container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4">
             <?php
-            $product_find = "SELECT * FROM products ORDER BY RAND() LIMIT 4";
+            $vendorLatitudes = [];
+            $vendorLongitudes = [];
+                        
+            foreach ($_COOKIE as $cookieName => $cookieValue) {
+            
+                if (strpos($cookieName, 'vendorLat') === 0) {
+                    $index = substr($cookieName, 9);
+                    $vendorLatitudes[$index] = $cookieValue;
+                }
+            
+                if (strpos($cookieName, 'vendorLng') === 0) {
+                    $index = substr($cookieName, 9);
+                    $vendorLongitudes[$index] = $cookieValue;
+                }
+            }
+
+            $vendorIds = [];
+            foreach ($vendorLatitudes as $index => $lat) {
+                $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A';
+        
+                $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
+                $query = mysqli_query($con, $get_vendor);
+        
+                if (mysqli_num_rows($query) > 0) {
+                    while ($vendorCount = mysqli_fetch_assoc($query)) {
+                        $vendorIds[] = $vendorCount['vendor_id']; // Store vendor IDs
+                    }
+                }
+                
+            }
+            $vendorIdList = implode(',', $vendorIds);
+            $product_find = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) ORDER BY RAND() LIMIT 4";
             $product_query = mysqli_query($con, $product_find);
         
             if ($product_query) {

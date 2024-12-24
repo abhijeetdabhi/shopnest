@@ -21,16 +21,12 @@ if (isset($_SESSION['searchWord'])) {
     unset($_SESSION['searchWord']);
 }
 
+if (isset($_SESSION['sort'])) {
+    unset($_SESSION['sort']);
+}
+
 if (isset($_SESSION['selectedSize'])) {
     unset($_SESSION['selectedSize']);
-}
-
-if (isset($_SESSION['userEmail'])) {
-    unset($_SESSION['userEmail']);
-}
-
-if (isset($_SESSION['vendorEmail'])) {
-    unset($_SESSION['vendorEmail']);
 }
 
 if (isset($_SESSION['views'])) {
@@ -117,8 +113,6 @@ if (count($nearbyLocation) > 0) {
         $vendorCount = mysqli_fetch_assoc($query);
         $i++;
     }
-}else{
-    
 }
 
 function displayRandomProducts($con, $limit)
