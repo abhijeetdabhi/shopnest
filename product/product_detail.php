@@ -83,31 +83,32 @@ if (isset($_GET['product_id'])) {
     $ven = mysqli_fetch_assoc($vendor_query);
 
     // find distance
-    function getDistance($startLat, $startLng, $endLat, $endLng, $apiKey){
+    function getDistance($startLat, $startLng, $endLat, $endLng, $apiKey)
+    {
         $url = "https://api.tomtom.com/routing/1/calculateRoute/{$startLat},{$startLng}:{$endLat},{$endLng}/json?key={$apiKey}";
-    
+
         $ch = curl_init();
-    
+
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    
+
         $response = curl_exec($ch);
-    
-        if(curl_errno($ch)) {
+
+        if (curl_errno($ch)) {
             echo 'Error:' . curl_error($ch);
         }
-        
+
         curl_close($ch);
-    
+
         $data = json_decode($response, true);
-    
-        if(isset($data['routes'][0]['summary'])) {
+
+        if (isset($data['routes'][0]['summary'])) {
             $travelTimeInSeconds = $data['routes'][0]['summary']['travelTimeInSeconds'];
-        
+
             // Convert travel time from seconds to minutes
             $travelTimeInMinutes = $travelTimeInSeconds / 60;
-        
+
             return [
                 'travelTime' => $travelTimeInMinutes
             ];
@@ -116,15 +117,15 @@ if (isset($_GET['product_id'])) {
             return null;
         }
     }
-    
+
     $startLat = $_COOKIE['latitude'];
     $startLon = $_COOKIE['longitude'];
     $endLat = $ven['latitude'];
     $endLon = $ven['longitude'];
     $apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
-    
+
     $result = getDistance($startLat, $startLon, $endLat, $endLon, $apiKey);
-    
+
     $TravelTime = number_format($result['travelTime']) + 25;
 
 
@@ -141,21 +142,21 @@ if (isset($_GET['product_id'])) {
 
         if (isset($_COOKIE['user_id'])) {
             $encoded_qty = urlencode($qty);
-            ?>
-                <script>
-                    window.location.href = 'checkout.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>&TravelTime=<?php echo $TravelTime?>'
-                </script>
-            <?php
+?>
+            <script>
+                window.location.href = 'checkout.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>&TravelTime=<?php echo $TravelTime ?>'
+            </script>
+        <?php
             unset($_SESSION['selectedSize'][$product_id]);
-        }else{
-            ?>
-                <script>
-                    window.location.href = '../authentication/user_auth/user_login.php'
-                </script>
-            <?php
+        } else {
+        ?>
+            <script>
+                window.location.href = '../authentication/user_auth/user_login.php'
+            </script>
+        <?php
             unset($_SESSION['selectedSize']);
         }
-    } 
+    }
 
 
     // for add to cart Button
@@ -166,10 +167,10 @@ if (isset($_GET['product_id'])) {
         $encoded_product_id = urlencode($product_id);
         $encoded_qty = urlencode($qty);
         ?>
-            <script>
-                window.location.href = '../shopping/add_to_cart.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>'
-            </script>
-        <?php
+        <script>
+            window.location.href = '../shopping/add_to_cart.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>'
+        </script>
+<?php
         unset($_SESSION['selectedSize'][$product_id]);
     }
 }
@@ -271,42 +272,42 @@ if (isset($_GET['product_id'])) {
     ?>
 
     <!-- product -->
-    <div class="max-w-screen-xl m-auto grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-5 mt-12 px-8 lg:px-0">
+    <div class="max-w-screen-xl m-auto grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-5 mt-12 px-2 md:px-8">
         <div class="">
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2 w-auto h-auto md:h-96">
                 <div class="swiper-wrapper h-52 md:h-full">
                     <?php
-                        if(!empty($first_img1)){
-                            ?>
-                                <div class="swiper-slide w-auto h-auto zoom-container">
-                                    <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img1 : '../src/sample_images/product_1.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img1)) {
+                    ?>
+                        <div class="swiper-slide w-auto h-auto zoom-container">
+                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img1 : '../src/sample_images/product_1.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
 
-                        if(!empty($first_img2)){
-                            ?>
-                                <div class="swiper-slide h-auto zoom-container">
-                                    <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img2 : '../src/sample_images/product_2.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img2)) {
+                    ?>
+                        <div class="swiper-slide h-auto zoom-container">
+                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img2 : '../src/sample_images/product_2.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
 
-                        if(!empty($first_img3)){
-                            ?>
-                                <div class="swiper-slide h-auto zoom-container">
-                                    <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img3 : '../src/sample_images/product_3.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img3)) {
+                    ?>
+                        <div class="swiper-slide h-auto zoom-container">
+                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img3 : '../src/sample_images/product_3.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
 
-                        if(!empty($first_img4)){
-                            ?>
-                                <div class="swiper-slide h-auto zoom-container">
-                                    <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img4 : '../src/sample_images/product_4.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img4)) {
+                    ?>
+                        <div class="swiper-slide h-auto zoom-container">
+                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img4 : '../src/sample_images/product_4.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
                     ?>
                 </div>
             </div>
@@ -341,37 +342,37 @@ if (isset($_GET['product_id'])) {
             <div thumbsSlider="" class="swiper mySwiper md:w-80 h-auto mt-6 px-2">
                 <div class="swiper-wrapper flex item-center justify-center">
                     <?php
-                        if(!empty($first_img1)){
-                            ?>
-                                <div class="swiper-slide border border-black p-1 cursor-pointer">
-                                    <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img1 : '../src/sample_images/product_1.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img1)) {
+                    ?>
+                        <div class="swiper-slide border border-black p-1 cursor-pointer">
+                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img1 : '../src/sample_images/product_1.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
 
-                        if(!empty($first_img2)){
-                            ?>
-                                <div class="swiper-slide border border-black p-1 cursor-pointer">
-                                    <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img2 : '../src/sample_images/product_1.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img2)) {
+                    ?>
+                        <div class="swiper-slide border border-black p-1 cursor-pointer">
+                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img2 : '../src/sample_images/product_1.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
 
-                        if(!empty($first_img3)){
-                            ?>
-                                <div class="swiper-slide border border-black p-1 cursor-pointer">
-                                    <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img3 : '../src/sample_images/product_1.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img3)) {
+                    ?>
+                        <div class="swiper-slide border border-black p-1 cursor-pointer">
+                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img3 : '../src/sample_images/product_1.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
 
-                        if(!empty($first_img4)){
-                            ?>
-                                <div class="swiper-slide border border-black p-1 cursor-pointer">
-                                    <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img4 : '../src/sample_images/product_1.jpg' ?>" />
-                                </div>
-                            <?php
-                        }
+                    if (!empty($first_img4)) {
+                    ?>
+                        <div class="swiper-slide border border-black p-1 cursor-pointer">
+                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img4 : '../src/sample_images/product_1.jpg' ?>" />
+                        </div>
+                    <?php
+                    }
                     ?>
                 </div>
             </div>
@@ -382,9 +383,12 @@ if (isset($_GET['product_id'])) {
                     <h1 class="text-xl font-medium text-[#1d2128] leading-6 md:leading-10 md:font-medium md:text-[28px]"><?php echo isset($_GET['product_id']) ? $title : 'Product title' ?></h1>
                 </div>
                 <!-- vendor Store -->
-                <div class="flex items-center justify-between flex-wrap">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
                     <a href="../vendor/vendor_store.php?vendor_id=<?php echo $ven['vendor_id']; ?>" class="text-base text-gray-600 font-bold hover:underline cursor-pointer max-w-max">Visit a <span><?php echo isset($product_id) ? $ven['username'] : 'vendor store Name'; ?></span> Store</a>
-                    <span class="text-sm text-green-500 font-medium pr-1">Devlivery in Just <?php echo isset($TravelTime) ? $TravelTime . " minutes" : ''?></span>
+                    <div class="text-green-500 flex items-center gap-2">
+                        <img class="w-8" src="../src/logo/fastTruck.svg" alt="">
+                        <span class="text-sm font-medium mt-0.5">Delivered in Just <?php echo isset($TravelTime) ? $TravelTime . " minutes" : '' ?></span>
+                    </div>
                 </div>
                 <!-- price -->
                 <div class="flex items-center justify-between flex-wrap gap-y-3 mt-3">
@@ -398,15 +402,49 @@ if (isset($_GET['product_id'])) {
 
                     if ($product_qty > 10) {
                     ?>
-                        <p class="text-green-500 text-sm font-medium">Available in stock</p>
+                        <p class="text-green-700 flex items-center gap-1 text-xs md:text-sm font-medium bg-green-200 px-3 py-2 rounded-2xl">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 31.955 31.955" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-2">
+                                    <g>
+                                        <path d="M27.25 4.655c-6.254-6.226-16.37-6.201-22.594.051-6.227 6.254-6.204 16.37.049 22.594 6.256 6.226 16.374 6.203 22.597-.051 6.224-6.254 6.203-16.371-.052-22.594z" fill="currentColor" data-original="currentColor" class=""></path>
+                                        <path d="m13.288 23.896-1.768 5.207c2.567.829 5.331.886 7.926.17l-.665-5.416a8.382 8.382 0 0 1-5.493.039zM8.12 13.122l-5.645-.859a13.856 13.856 0 0 0 .225 8.143l5.491-1.375a8.391 8.391 0 0 1-.071-5.909zm20.643-1.789-4.965 1.675a8.39 8.39 0 0 1-.247 6.522l5.351.672a13.868 13.868 0 0 0-.139-8.869zm-17.369-8.45 1.018 5.528a8.395 8.395 0 0 1 6.442-.288l1.583-5.137a13.855 13.855 0 0 0-9.043-.103z" fill="currentColor" data-original="currentColor" class=""></path>
+                                        <circle cx="15.979" cy="15.977" r="6.117" fill="currentColor" data-original="currentColor" class=""></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>Available</span>
+                        </p>
                     <?php
                     } elseif ($product_qty == 0) {
                     ?>
-                        <p class="text-red-500 text-sm font-medium">Out of stock</p>
+                        <p class="text-red-700 flex items-center gap-1 text-xs md:text-sm font-medium bg-red-200 px-3 py-2 rounded-2xl">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 31.955 31.955" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-2">
+                                    <g>
+                                        <path d="M27.25 4.655c-6.254-6.226-16.37-6.201-22.594.051-6.227 6.254-6.204 16.37.049 22.594 6.256 6.226 16.374 6.203 22.597-.051 6.224-6.254 6.203-16.371-.052-22.594z" fill="currentColor" data-original="currentColor" class=""></path>
+                                        <path d="m13.288 23.896-1.768 5.207c2.567.829 5.331.886 7.926.17l-.665-5.416a8.382 8.382 0 0 1-5.493.039zM8.12 13.122l-5.645-.859a13.856 13.856 0 0 0 .225 8.143l5.491-1.375a8.391 8.391 0 0 1-.071-5.909zm20.643-1.789-4.965 1.675a8.39 8.39 0 0 1-.247 6.522l5.351.672a13.868 13.868 0 0 0-.139-8.869zm-17.369-8.45 1.018 5.528a8.395 8.395 0 0 1 6.442-.288l1.583-5.137a13.855 13.855 0 0 0-9.043-.103z" fill="currentColor" data-original="currentColor" class=""></path>
+                                        <circle cx="15.979" cy="15.977" r="6.117" fill="currentColor" data-original="currentColor" class=""></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>Sold out</span>
+                        </p>
                     <?php
                     } elseif ($product_qty > 0 && $product_qty <= 10) {
                     ?>
-                        <p class="text-red-500 text-sm font-medium">Only a few products in stock (<?php echo $product_qty; ?> remaining)</p>
+                        <p class="text-yellow-700 flex items-center gap-1 text-xs md:text-sm font-medium bg-yellow-200 px-3 py-2 rounded-2xl">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 31.955 31.955" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-2">
+                                    <g>
+                                        <path d="M27.25 4.655c-6.254-6.226-16.37-6.201-22.594.051-6.227 6.254-6.204 16.37.049 22.594 6.256 6.226 16.374 6.203 22.597-.051 6.224-6.254 6.203-16.371-.052-22.594z" fill="currentColor" data-original="currentColor" class=""></path>
+                                        <path d="m13.288 23.896-1.768 5.207c2.567.829 5.331.886 7.926.17l-.665-5.416a8.382 8.382 0 0 1-5.493.039zM8.12 13.122l-5.645-.859a13.856 13.856 0 0 0 .225 8.143l5.491-1.375a8.391 8.391 0 0 1-.071-5.909zm20.643-1.789-4.965 1.675a8.39 8.39 0 0 1-.247 6.522l5.351.672a13.868 13.868 0 0 0-.139-8.869zm-17.369-8.45 1.018 5.528a8.395 8.395 0 0 1 6.442-.288l1.583-5.137a13.855 13.855 0 0 0-9.043-.103z" fill="currentColor" data-original="currentColor" class=""></path>
+                                        <circle cx="15.979" cy="15.977" r="6.117" fill="currentColor" data-original="currentColor" class=""></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>Only <?php echo $product_qty; ?> products left</span>
+
+                        </p>
                     <?php
                     }
 
@@ -417,22 +455,22 @@ if (isset($_GET['product_id'])) {
                 <div class="flex items-center gap-5">
 
                     <?php
-                        $sameId = $res['same_id'];
-                        $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
-                        $color_product_query = mysqli_query($con, $color_product_find);
+                    $sameId = $res['same_id'];
+                    $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
+                    $color_product_query = mysqli_query($con, $color_product_find);
 
-                        while($clr = mysqli_fetch_assoc($color_product_query)){
-                            if ($clr['color'] == '-') {
-                                echo '';
-                            } else{
-                                ?>
-                                    <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
-                                        <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
-                                    </a>
-                                <?php
-                            }
+                    while ($clr = mysqli_fetch_assoc($color_product_query)) {
+                        if ($clr['color'] == '-') {
+                            echo '';
+                        } else {
+                    ?>
+                            <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
+                                <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
+                            </a>
+                    <?php
                         }
-                    
+                    }
+
                     ?>
                 </div>
                 <!-- size -->
@@ -514,8 +552,8 @@ if (isset($_GET['product_id'])) {
                 </div>
                 <hr>
                 <div class="mt-4 flex flex-col gap-5 md:flex-row">
-                    <input type="submit" name="AddtoCart" value="Add To Cart" class="w-40 text-center text-sm font-medium text-white bg-gray-700 py-4 rounded-tl-xl rounded-br-xl transition duration-200 <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-800'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
-                    <input type="submit" name="buyBtn" value="Buy Now" class="w-40 text-sm font-medium text-gray-700 border-2 border-gray-700 py-4 rounded-tl-xl rounded-br-xl text-center <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
+                    <input type="submit" name="AddtoCart" value="Add To Cart" class="md:w-40 text-center text-sm font-medium text-white bg-gray-700 py-4 rounded-tl-xl rounded-br-xl transition duration-200 <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-800'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
+                    <input type="submit" name="buyBtn" value="Buy Now" class="md:w-40 text-sm font-medium text-gray-700 border-2 border-gray-700 py-4 rounded-tl-xl rounded-br-xl text-center <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
                 </div>
             </div>
         </form>
@@ -534,29 +572,29 @@ if (isset($_GET['product_id'])) {
                 </div>
                 <div class="grid grid-cols-1 mt-8 gap-2 md:grid-cols-1 m-auto">
                     <?php
-                        if(!empty($res['cover_image_1'])){
-                            ?>
-                                <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_1'] : '../src/sample_images/cover_1.jpg' ?>" alt="">
-                            <?php
-                        }
+                    if (!empty($res['cover_image_1'])) {
+                    ?>
+                        <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_1'] : '../src/sample_images/cover_1.jpg' ?>" alt="">
+                    <?php
+                    }
 
-                        if(!empty($res['cover_image_2'])){
-                            ?>
-                                <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_2'] : '../src/sample_images/cover_2.jpg' ?>" alt="">
-                            <?php
-                        }
-                    
-                        if(!empty($res['cover_image_3'])){
-                            ?>
-                                <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_3'] : '../src/sample_images/cover_3.jpg' ?>" alt="">
-                            <?php
-                        }
-                
-                        if(!empty($res['cover_image_4'])){
-                            ?>
-                                <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_4'] : '../src/sample_images/cover_4.jpg' ?>" alt="">
-                            <?php
-                        }
+                    if (!empty($res['cover_image_2'])) {
+                    ?>
+                        <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_2'] : '../src/sample_images/cover_2.jpg' ?>" alt="">
+                    <?php
+                    }
+
+                    if (!empty($res['cover_image_3'])) {
+                    ?>
+                        <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_3'] : '../src/sample_images/cover_3.jpg' ?>" alt="">
+                    <?php
+                    }
+
+                    if (!empty($res['cover_image_4'])) {
+                    ?>
+                        <img class="border w-full h-full object-cover m-auto" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_cover/' . $res['cover_image_4'] : '../src/sample_images/cover_4.jpg' ?>" alt="">
+                    <?php
+                    }
                     ?>
 
                 </div>
@@ -652,13 +690,13 @@ if (isset($_GET['product_id'])) {
 
                             <?php
                             if (isset($_COOKIE['user_id'])) {
-                                ?>
-                                    <a href="add_review.php?product_id=<?php echo $product_id; ?>" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
-                                <?php
+                            ?>
+                                <a href="add_review.php?product_id=<?php echo $product_id; ?>" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
+                            <?php
                             } else {
-                                ?>
-                                    <a href="../authentication/user_auth/user_login.php" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
-                                <?php
+                            ?>
+                                <a href="../authentication/user_auth/user_login.php" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
+                            <?php
                             }
                             ?>
                         </div>
