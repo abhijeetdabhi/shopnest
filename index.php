@@ -78,16 +78,27 @@ $current_lat = $_COOKIE['latitude'] ?? 0;
 $current_lon = $_COOKIE['longitude'] ?? 0;
 
 $nearbyLocation = [];
+$nearLocation = false;
+
 
 for ($i = 0; $i < count($latitude); $i++) {
     $distance = haversine($latitude[$i], $longitude[$i], $current_lat, $current_lon);
-
+    
     if ($distance <= 15) {
         $nearbyLocation[] = ['lat' => $latitude[$i], 'lng' => $longitude[$i], 'distance' => $distance];
+    }else{
+        if($current_lat != 0 && $current_lon != 0){
+            $nearLocation = true;
+            break;
+        }
     }
+        
 }
 
-$nearLocation = false;
+if($nearLocation === true){
+    setcookie('latitude', '', time() - 3600, "/");  
+    setcookie('longitude', '', time() - 3600, "/");
+}
 
 if (count($nearbyLocation) > 0) {
     $i = 1;
@@ -104,14 +115,10 @@ if (count($nearbyLocation) > 0) {
         $query = mysqli_query($con, $get_vendor);
 
         $vendorCount = mysqli_fetch_assoc($query);
-
-
         $i++;
     }
 }else{
-    $nearLocation = true;
-    setcookie('latitude', '', time() - 3600, "/");  
-    setcookie('longitude', '', time() - 3600, "/");
+    
 }
 
 function displayRandomProducts($con, $limit)
@@ -251,85 +258,6 @@ function displayRandomProducts($con, $limit)
 
 
     <style>
-        #map {
-            width: 60vw;
-            height: 60vh;
-            display: none;
-        }
-
-        /* Custom style for the search box input */
-        .tt-search-box {
-            width: 100%;
-            margin: auto;
-            padding: 12px;
-        }
-
-        .tt-search-box input {
-            font-size: 16px;
-            width: 100%;
-            height: 50px;
-        }
-
-        .tt-search-box input:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        .tt-search-box-input-container {
-            width: 100%;
-            max-width: 512px;
-            height: 50px;
-            border: 3px solid gray;
-            border-radius: 8px;
-            margin: auto;
-        }
-
-        /* Custom style for the search box suggestions */
-        .tt-search-box .tt-dataset.tt-dataset-results {
-            background-color: #ffffff;
-            border: 2px solid #007bff;
-            border-radius: 5px;
-            max-height: 200px;
-            overflow-y: auto;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion {
-            padding: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-
-        /* Highlight suggestion on hover */
-        .tt-search-box .tt-dataset.tt-dataset-results .tt-suggestion.tt-cursor {
-            background-color: #007bff;
-            color: white;
-        }
-
-        /* Custom style for the "no results" message */
-        .tt-search-box .tt-dataset.tt-dataset-results .tt-no-results {
-            padding: 10px;
-            font-size: 14px;
-            color: #888;
-            height: 100%;
-        }
-
-        .tt-search-box-result-list-container {
-            position: absolute;
-            left: 0;
-            top: 100px;
-            width: 100%;
-            background-color: #e5e7eb;
-            border-radius: 8px;
-        }
-
-        .tt-search-box-result-list {
-            margin: 7px;
-            border-radius: 8px;
-            padding: 20px 12px;
-        }
-
         .outfit {
             font-family: "Outfit", sans-serif;
             font-optical-sizing: auto;
@@ -1114,7 +1042,7 @@ function displayRandomProducts($con, $limit)
 
 
     <div x-data="{ showLocation: false }" class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? 'hidden' : '' ?>">
-        <div id="locationPopup" class="absolute top-0 bg-black/30 backdrop-blur-md h-full w-full z-30">
+        <div id="locationPopup" class="fixed top-0 bg-black/30 backdrop-blur-md h-full w-full z-50">
             <div class="fixed top-7 left-5 bg-white rounded-lg p-3 w-72 space-y-5 z-50">
                 <div class="flex items-center gap-3">
                     <span>
@@ -1214,11 +1142,11 @@ function displayRandomProducts($con, $limit)
                     Choose Other Location
                 </span>
             </button>
-
             <script>
                 let chooseLocation = document.getElementById('chooseLocation');
 
                 function hideLocaionPopup(){
+                    window.location.href = "";
                     chooseLocation.style.display = 'none';
                 }
             </script>
@@ -1229,7 +1157,7 @@ function displayRandomProducts($con, $limit)
                             chooseLocation = document.getElementById('chooseLocation');
                             chooseLocation.style.display = 'flex';
                             document.body.style.overflow = 'hidden';
-                            </script>
+                        </script>
                     <?php
                 }
             ?>
