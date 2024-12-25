@@ -1,19 +1,19 @@
 <?php
 
-    if(!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])){
-        header("Location: /index.php");
-        exit;
-    }
+if (!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
 
-    if(isset($_COOKIE['vendor_id'])){
-        header("Location: /vendor/vendor_dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /vendor/vendor_dashboard.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
 ?>
 
 
@@ -36,12 +36,12 @@ if (isset($_COOKIE['user_id'])) {
     $user_info_query = mysqli_query($con, $user_info);
 
     $row = mysqli_fetch_assoc($user_info_query);
-
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,6 +68,7 @@ if (isset($_COOKIE['user_id'])) {
     <!-- title -->
     <title>Return Order</title>
 </head>
+
 <body style="font-family: 'Outfit', sans-serif;">
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
@@ -99,9 +100,9 @@ if (isset($_COOKIE['user_id'])) {
             </div>
         </div>
     </header>
-    
 
-    <div class="max-w-screen-lg m-auto px-4 py-12">
+
+    <div id="dataForm" class="max-w-screen-lg m-auto px-4 py-12">
         <div class="grid grid-col-1 gap-y-4">
             <h2 class="font-bold text-2xl text-black">Return Order</h2>
             <div class="flex flex-col items-center gap-5 md:flex-row">
@@ -112,7 +113,7 @@ if (isset($_COOKIE['user_id'])) {
                     <h2 class="text-xl font-semibold mb-7 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title' ?></h2>
                     <div>
                         <div class="flex items-center">
-                            <p class="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200"> Qty: <span class="text-gray-500"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'qty' ?></span></p> 
+                            <p class="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200"> Qty: <span class="text-gray-500"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'qty' ?></span></p>
                             <p class="font-medium text-base leading-7 text-black">Price: <span class="text-gray-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></span></p>
                         </div>
                     </div>
@@ -239,9 +240,12 @@ if (isset($_COOKIE['user_id'])) {
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
+            let dataForm = document.getElementById('dataForm');
 
+            // Display the loader
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
+            dataForm.style.opacity = '0.4';
         }
 
         function displayErrorMessage(message) {
@@ -270,14 +274,14 @@ if (isset($_COOKIE['user_id'])) {
             }, 2000);
         }
     </script>
-    
+
     <script>
-        $(document).ready(function () {
-            $('#returnForm').on('submit', function(e){
+        $(document).ready(function() {
+            $('#returnForm').on('submit', function(e) {
                 e.preventDefault();
 
                 let billingEmail = $('#billingEmail').val().trim()
-                            
+
                 let Preceive = $('input[name="Preceive"]:checked').val();
                 let OrderReturn = $('input[name="OrderReturn"]:checked').val();
 
@@ -285,10 +289,10 @@ if (isset($_COOKIE['user_id'])) {
                 if (!billingEmail) {
                     displayErrorMessage('Please Enter Your Billing Email.')
                     return;
-                }else if (!Preceive) {
+                } else if (!Preceive) {
                     displayErrorMessage('Please Select Receive Payment Method.')
                     return;
-                }else if (!OrderReturn) {
+                } else if (!OrderReturn) {
                     displayErrorMessage('Please Select Why are you Retrun the order?')
                     return;
                 }
@@ -297,26 +301,26 @@ if (isset($_COOKIE['user_id'])) {
                     url: "",
                     type: "POST",
                     data: {
-                        order_id: "<?php echo $order_id?>",
-                        product_id: "<?php echo $product_id?>",
-                        user_id: "<?php echo $user_id?>",
-                        vendor_id: "<?php echo $vendor_id?>",
+                        order_id: "<?php echo $order_id ?>",
+                        product_id: "<?php echo $product_id ?>",
+                        user_id: "<?php echo $user_id ?>",
+                        vendor_id: "<?php echo $vendor_id ?>",
 
                         billingEmail: billingEmail,
                         Preceive: Preceive,
                         OrderReturn: OrderReturn,
-                        
-                        user_name: "<?php echo $res['user_first_name']?>",
-                        user_phone: "<?php echo $res['user_mobile']?>",
 
-                        return_order_title: "<?php echo $res['order_title']?>",
-                        return_order_image: "<?php echo $res['order_image']?>",
-                        return_order_price: "<?php echo $res['total_price']?>",
-                        return_order_qty: "<?php echo $res['qty']?>",
-                        return_order_color: "<?php echo $res['order_color']?>",
-                        return_order_size: "<?php echo $res['order_size']?>",
+                        user_name: "<?php echo $res['user_first_name'] ?>",
+                        user_phone: "<?php echo $res['user_mobile'] ?>",
+
+                        return_order_title: "<?php echo $res['order_title'] ?>",
+                        return_order_image: "<?php echo $res['order_image'] ?>",
+                        return_order_price: "<?php echo $res['total_price'] ?>",
+                        return_order_qty: "<?php echo $res['qty'] ?>",
+                        return_order_color: "<?php echo $res['order_color'] ?>",
+                        return_order_size: "<?php echo $res['order_size'] ?>",
                     },
-                    success: function (response) {
+                    success: function(response) {
                         loader();
                         $('input[name="Preceive"]:checked').prop('checked', false);
                         $('input[name="OrderReturn"]:checked').prop('checked', false);
@@ -325,64 +329,64 @@ if (isset($_COOKIE['user_id'])) {
                 });
             });
         });
-        
     </script>
-            
+
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
+
 </html>
 
-<?php 
+<?php
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $order_id = $_POST['order_id'];
-        $product_id  = $_POST['product_id'];
-        $user_id = $_POST['user_id'];
-        $vendor_id = $_POST['vendor_id'];
-            
-        $user_name = $_POST['user_name'];
-        $user_phone = $_POST['user_phone'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $order_id = $_POST['order_id'];
+    $product_id  = $_POST['product_id'];
+    $user_id = $_POST['user_id'];
+    $vendor_id = $_POST['vendor_id'];
 
-        $user_email = $_POST['billingEmail'];
-        $receive_payment = $_POST['Preceive'];
-        $reason = $_POST['OrderReturn'];
-    
-        $return_order_title = $_POST['return_order_title'];
-        $return_order_image = $_POST['return_order_image'];
-        $return_order_price = $_POST['return_order_price'];
-        $return_order_qty = $_POST['return_order_qty'];
-        $return_order_color = $_POST['return_order_color'];
-        $return_order_size = $_POST['return_order_size'];
-    
-        $date = date('d-m-Y');
+    $user_name = $_POST['user_name'];
+    $user_phone = $_POST['user_phone'];
 
-        $insert_return_order = "INSERT INTO return_orders(order_id, product_id, user_id, vendor_id, user_name, user_email, user_phone, return_order_image, return_order_title, return_order_price, return_order_color, return_order_size, return_order_qty, payment_type, reason, date) VALUES ('$order_id','$product_id','$user_id','$vendor_id','$user_name','$user_email','$user_phone','$return_order_image','$return_order_title','$return_order_price','$return_order_color','$return_order_size','$return_order_qty','$receive_payment','$reason','$date')";
-        $return_order_query = mysqli_query($con, $insert_return_order);
+    $user_email = $_POST['billingEmail'];
+    $receive_payment = $_POST['Preceive'];
+    $reason = $_POST['OrderReturn'];
 
-        $delete_order = "DELETE FROM orders WHERE order_id = '$order_id'";
-        $delete_query = mysqli_query($con, $delete_order);
+    $return_order_title = $_POST['return_order_title'];
+    $return_order_image = $_POST['return_order_image'];
+    $return_order_price = $_POST['return_order_price'];
+    $return_order_qty = $_POST['return_order_qty'];
+    $return_order_color = $_POST['return_order_color'];
+    $return_order_size = $_POST['return_order_size'];
 
-        // insert quantity of items
-        $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
-        $get_qty_query = mysqli_query($con, $get_qty);
-        
-        // Check if the query was successful
-        if ($get_qty_query) {
-            // Fetch the result
-            $qty = mysqli_fetch_assoc($get_qty_query);
-        
-            // Check if the result is not null
-            if ($qty) {
-                $product_qty = (int)$qty['Quantity'];
-                $qty_replace = (int)str_replace(",", "", $return_order_qty);
-                $update_qty = number_format($product_qty + $qty_replace);
-            }
+    $date = date('d-m-Y');
+
+    $insert_return_order = "INSERT INTO return_orders(order_id, product_id, user_id, vendor_id, user_name, user_email, user_phone, return_order_image, return_order_title, return_order_price, return_order_color, return_order_size, return_order_qty, payment_type, reason, date) VALUES ('$order_id','$product_id','$user_id','$vendor_id','$user_name','$user_email','$user_phone','$return_order_image','$return_order_title','$return_order_price','$return_order_color','$return_order_size','$return_order_qty','$receive_payment','$reason','$date')";
+    $return_order_query = mysqli_query($con, $insert_return_order);
+
+    $delete_order = "DELETE FROM orders WHERE order_id = '$order_id'";
+    $delete_query = mysqli_query($con, $delete_order);
+
+    // insert quantity of items
+    $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
+    $get_qty_query = mysqli_query($con, $get_qty);
+
+    // Check if the query was successful
+    if ($get_qty_query) {
+        // Fetch the result
+        $qty = mysqli_fetch_assoc($get_qty_query);
+
+        // Check if the result is not null
+        if ($qty) {
+            $product_qty = (int)$qty['Quantity'];
+            $qty_replace = (int)str_replace(",", "", $return_order_qty);
+            $update_qty = number_format($product_qty + $qty_replace);
         }
- 
-        $update_qty = "UPDATE products SET Quantity='$update_qty' WHERE product_id = '$product_id'";
-        $update_qty_quary = mysqli_query($con, $update_qty);
     }
+
+    $update_qty = "UPDATE products SET Quantity='$update_qty' WHERE product_id = '$product_id'";
+    $update_qty_quary = mysqli_query($con, $update_qty);
+}
 
 ?>

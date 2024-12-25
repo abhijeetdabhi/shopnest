@@ -142,7 +142,7 @@ if (isset($_GET['product_id'])) {
     </header>
 
 
-    <form class="max-w-screen-xl m-auto" id="dataForm" action="" method="post">
+    <form id="dataForm" class="max-w-screen-xl m-auto" action="" method="post">
         <div class="grid lg:grid-cols-2">
             <div class="px-4 pt-8">
                 <p class="text-xl font-medium">Order summary</p>
@@ -223,19 +223,19 @@ if (isset($_GET['product_id'])) {
                     </div>
                     <label for="state" class="mt-4 mb-2 block text-sm font-medium require">State:</label>
                     <div class="relative">
-                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['state'] : 'User state' ?>" readonly/>
+                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['state'] : 'User state' ?>" readonly />
                     </div>
                     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                         <div>
                             <label for="city" class="mt-4 mb-2 block text-sm font-medium require">City:</label>
                             <div class="relative">
-                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['city'] : 'User city' ?>" readonly/>
+                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['city'] : 'User city' ?>" readonly />
                             </div>
                         </div>
                         <div>
                             <label for="pin" class="mt-4 mb-2 block text-sm font-medium require">Pincode:</label>
                             <div class="relative">
-                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($product_id) ? $us['pin'] : 'User Pin' ?>" readonly/>
+                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($product_id) ? $us['pin'] : 'User Pin' ?>" readonly />
                             </div>
                         </div>
                     </div>
@@ -348,7 +348,7 @@ if (isset($_GET['product_id'])) {
     </div>
 
     <!-- loader  -->
-    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/40 fixed top-0 left-0 right-0 bottom-0 z-40 backdrop-blur-sm" style="display: none;">
         <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
             <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
         </div>
@@ -358,10 +358,12 @@ if (isset($_GET['product_id'])) {
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
+            let dataForm = document.getElementById('dataForm');
 
             // Display the loader
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
+            dataForm.style.opacity = '0.4';
         }
 
         function displayErrorMessage(message) {
@@ -404,7 +406,7 @@ if (isset($_GET['product_id'])) {
         // Explosive Confetti from the left bottom corner
         function fireExplosiveConfettiFromLeft() {
             confetti({
-                particleCount: 1200, // Number of confetti particles
+                particleCount: 900, // Number of confetti particles
                 spread: 180, // Spread angle of confetti
                 origin: {
                     x: 0, // Confetti starts from the left bottom corner
@@ -420,7 +422,7 @@ if (isset($_GET['product_id'])) {
         // Explosive Confetti from the right bottom corner
         function fireExplosiveConfettiFromRight() {
             confetti({
-                particleCount: 1200, // Number of confetti particles
+                particleCount: 900, // Number of confetti particles
                 spread: 180, // Spread angle of confetti
                 origin: {
                     x: 1, // Confetti starts from the right bottom corner

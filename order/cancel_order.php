@@ -99,7 +99,7 @@ if (isset($_COOKIE['user_id'])) {
         </div>
     </header>
 
-    <div class="max-w-screen-lg m-auto px-4 py-12">
+    <div id="dataForm" class="max-w-screen-lg m-auto px-4 py-12">
         <div class="grid grid-col-1 gap-y-4">
             <h2 class="font-bold text-2xl text-black">Cancel Order</h2>
             <div class="flex flex-col items-center gap-5 min-[530px]:flex-row bg-gray-100 shadow-lg rounded-lg p-2">
@@ -197,6 +197,8 @@ if (isset($_COOKIE['user_id'])) {
         </form>
     </div>
 
+    
+
     <!-- Successfully message container -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
         <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
@@ -226,14 +228,16 @@ if (isset($_COOKIE['user_id'])) {
             <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
         </div>
     </div>
-
     <script>
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
+            let dataForm = document.getElementById('dataForm');
 
+            // Display the loader
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
+            dataForm.style.opacity = '0.4';
         }
 
         function displayErrorMessage(message) {

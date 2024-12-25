@@ -25,7 +25,7 @@ if (isset($_GET['product_id'])) {
 
     $product_find = "SELECT * FROM products WHERE product_id = '$product_id'";
     $product_query = mysqli_query($con, $product_find);
-    
+
     $row = mysqli_fetch_assoc($product_query);
 
     $title = $row['title'];
@@ -91,6 +91,10 @@ if (isset($_GET['product_id'])) {
     <!-- favicon -->
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
+    <!-- confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+
     <!-- title -->
     <title>Check Out Page</title>
     <style>
@@ -136,39 +140,37 @@ if (isset($_GET['product_id'])) {
     </header>
 
 
-    <form class="max-w-screen-xl m-auto" id="dataForm" action="" method="post">
+    <form id="dataForm" class="max-w-screen-xl m-auto" action="" method="post">
         <div class="grid lg:grid-cols-2">
             <div class="px-4 pt-8">
                 <p class="text-xl font-medium">Order summary</p>
                 <p class="text-gray-400">Check your items. And select a suitable payment method.</p>
-                <div class="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-                    <div class="flex flex-col rounded-lg bg-white sm:flex-row">
-                        <img class="m-2 h-full md:h-32 rounded-md object-cover object-center" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $product_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
-                        <div class="flex w-full flex-col px-4 py-4 gap-y-3">
-                            <span class="font-semibold line-clamp-2"><?php echo isset($product_id) ? $title : 'product title' ?></span>
-                            <p class="text-lg font-semibold text-green-500">₹<?php echo isset($product_id) ? $MRP : 'MRP' ?></p>
-                            <div class="flex item-center justify-between">
-                                <div class="flex item-center gap-1">
-                                    <h1 class="text-lg font-semibold">Color:</h1>
-                                    <span class="my-auto"><?php echo isset($product_id) ? $color : 'product color' ?></span>
-                                </div>
-                                <div class="flex item-center gap-1">
-                                    <?php
-                                    if (isset($size) == null) {
-                                        echo "";
-                                    } else {
-                                    ?>
-                                        <span class="text-lg font-semibold">Size:</span>
-                                        <p class="my-auto"><?php echo isset($product_id) ? $size : 'product Size' ?></p>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
+                <div class="flex flex-col min-[540px]:flex-row items-center mt-8 space-y-3 rounded-lg bg-gray-100 px-2 py-4 sm:px-6 shadow-lg">
+                    <img class="m-2 w-52 md:w-40 rounded-md object-cover object-center mix-blend-multiply" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $product_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
+                    <div class="flex w-full flex-col px-4 py-4 gap-y-3">
+                        <span class="font-semibold line-clamp-2"><?php echo isset($product_id) ? $title : 'product title' ?></span>
+                        <p class="text-lg font-semibold text-green-500">₹<?php echo isset($product_id) ? $MRP : 'MRP' ?></p>
+                        <div class="flex item-center justify-between">
+                            <div class="flex item-center gap-1">
+                                <h1 class="text-lg font-semibold">Color:</h1>
+                                <span class="my-auto"><?php echo isset($product_id) ? $color : 'product color' ?></span>
                             </div>
                             <div class="flex item-center gap-1">
-                                <span class="text-lg font-semibold">QTY:</span>
-                                <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
+                                <?php
+                                if (isset($size) == null) {
+                                    echo "";
+                                } else {
+                                ?>
+                                    <span class="text-lg font-semibold">Size:</span>
+                                    <p class="my-auto"><?php echo isset($product_id) ? $size : 'product Size' ?></p>
+                                <?php
+                                }
+                                ?>
                             </div>
+                        </div>
+                        <div class="flex item-center gap-1">
+                            <span class="text-lg font-semibold">QTY:</span>
+                            <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
                         </div>
                     </div>
                 </div>
@@ -213,19 +215,19 @@ if (isset($_GET['product_id'])) {
                     </div>
                     <label for="state" class="mt-4 mb-2 block text-sm font-medium require">State:</label>
                     <div class="relative">
-                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['state'] : 'User state' ?>" readonly/>
+                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['state'] : 'User state' ?>" readonly />
                     </div>
                     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                         <div>
                             <label for="city" class="mt-4 mb-2 block text-sm font-medium require">City:</label>
                             <div class="relative">
-                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['city'] : 'User city' ?>" readonly/>
+                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['city'] : 'User city' ?>" readonly />
                             </div>
                         </div>
                         <div>
                             <label for="pin" class="mt-4 mb-2 block text-sm font-medium require">Pincode:</label>
                             <div class="relative">
-                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($product_id) ? $us['pin'] : 'User Pin' ?>" readonly/>
+                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($product_id) ? $us['pin'] : 'User Pin' ?>" readonly />
                             </div>
                         </div>
                     </div>
@@ -247,21 +249,21 @@ if (isset($_GET['product_id'])) {
                         <div class="flex items-center justify-between">
                             <p class="text-sm font-medium text-gray-900">Shipping</p>
                             <p class="font-semibold text-gray-900">₹<?php
-                                if (isset($product_id)) {
-                                    $totalPriceWithQty = str_replace(',', '', $totalPriceWithQty);
-                                    $totalPriceWithQty = (int) $totalPriceWithQty;
-                                    if ($totalPriceWithQty <= 599) {
-                                        $shipping = 40;
-                                    } else {
-                                        $shipping = 0;
-                                    }
-                                } else {
-                                    $shipping = 0;
-                                }
+                                                                    if (isset($product_id)) {
+                                                                        $totalPriceWithQty = str_replace(',', '', $totalPriceWithQty);
+                                                                        $totalPriceWithQty = (int) $totalPriceWithQty;
+                                                                        if ($totalPriceWithQty <= 599) {
+                                                                            $shipping = 40;
+                                                                        } else {
+                                                                            $shipping = 0;
+                                                                        }
+                                                                    } else {
+                                                                        $shipping = 0;
+                                                                    }
 
-                                // Output the shipping value
-                                echo $shipping;
-                                ?></p>
+                                                                    // Output the shipping value
+                                                                    echo $shipping;
+                                                                    ?></p>
                         </div>
                     </div>
                     <div class="mt-6 flex items-center justify-between">
@@ -288,26 +290,26 @@ if (isset($_GET['product_id'])) {
                             </h1>
                         </label>
                         <input type="text" id="totalPrice" class="hidden float-right bg-transparent border-none text-2xl font-semibold text-gray-900" name="totalProductPrice" value="₹<?php
-                            if (isset($product_id)) {
-                                $productPrice = (float)$productPrice;
-                                $qty = (int)$qty;
+                                                                                                                                                                                        if (isset($product_id)) {
+                                                                                                                                                                                            $productPrice = (float)$productPrice;
+                                                                                                                                                                                            $qty = (int)$qty;
 
-                                $totalPriceWithQty = $productPrice * $qty;
+                                                                                                                                                                                            $totalPriceWithQty = $productPrice * $qty;
 
-                                $total = $totalPriceWithQty + $shipping;
+                                                                                                                                                                                            $total = $totalPriceWithQty + $shipping;
 
-                                $formattedTotalPriceWithQty = number_format($totalPriceWithQty, 0);
-                                $formattedTotal = number_format($total, 0);
+                                                                                                                                                                                            $formattedTotalPriceWithQty = number_format($totalPriceWithQty, 0);
+                                                                                                                                                                                            $formattedTotal = number_format($total, 0);
 
-                                echo $formattedTotal;
-                            } else {
-                                echo 'Total Amount';
-                            }
-                            ?>" dir="rtl">
+                                                                                                                                                                                            echo $formattedTotal;
+                                                                                                                                                                                        } else {
+                                                                                                                                                                                            echo 'Total Amount';
+                                                                                                                                                                                        }
+                                                                                                                                                                                        ?>" dir="rtl">
                     </div>
                 </div>
                 <div>
-                    <button id="checkOutBtn" type="submit" name="placeOrder" class="mt-4 mb-8 w-full rounded-tl-xl rounded-br-xl bg-gray-700 px-6 py-3 font-medium text-white transition duration-200 cursor-pointer hover:bg-gray-800">Place Order</button>                    
+                    <button id="checkOutBtn" type="submit" name="placeOrder" class="mt-4 mb-8 w-full rounded-tl-xl rounded-br-xl bg-gray-700 px-6 py-3 font-medium text-white transition duration-200 cursor-pointer hover:bg-gray-800">Place Order</button>
                 </div>
             </div>
         </div>
@@ -348,9 +350,12 @@ if (isset($_GET['product_id'])) {
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
+            let dataForm = document.getElementById('dataForm');
 
+            // Display the loader
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
+            dataForm.style.opacity = '0.4';
         }
 
         function displayErrorMessage(message) {
@@ -371,21 +376,64 @@ if (isset($_GET['product_id'])) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
 
+            // Display success message
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
-                window.location.href = "show_orders.php";
+
+                // Trigger confetti from both the left and right bottom corners
+
+
+                fireExplosiveConfettiFromLeft();
+                fireExplosiveConfettiFromRight();
+                // Redirect after 2 seconds
+                setInterval(() => {
+                    window.location.href = "show_orders.php";
+
+                }, 1500);
             }, 2000);
+        }
+
+        // Explosive Confetti from the left bottom corner
+        function fireExplosiveConfettiFromLeft() {
+            confetti({
+                particleCount: 900, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
+                origin: {
+                    x: 0, // Confetti starts from the left bottom corner
+                    y: 1
+                },
+                scalar: 1, // Larger particles for explosive effect
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8, // Gravity for explosive effect
+                drift: 1, // Drift direction
+            });
+        }
+
+        // Explosive Confetti from the right bottom corner
+        function fireExplosiveConfettiFromRight() {
+            confetti({
+                particleCount: 900, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
+                origin: {
+                    x: 1, // Confetti starts from the right bottom corner
+                    y: 1
+                },
+                scalar: 1, // Larger particles for explosive effect
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8, // Gravity for explosive effect
+                drift: -1, // Drift direction
+            });
         }
     </script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#dataForm').on('submit', function(e) {
 
                 e.preventDefault();
-    
+
                 let FirstName = $('#FirstName').val().trim();
                 let lastName = $('#lastName').val().trim();
                 let Phone_number = $('#Phone_number').val().trim();
@@ -395,15 +443,15 @@ if (isset($_GET['product_id'])) {
                 let city = $('#city').val().trim();
                 let pin = $('#pin').val().trim();
                 let paymentType = $('input[name="payment"]:checked').val();
-    
+
                 if (FirstName === '' || lastName === '' || Phone_number === '' || user_email === '' || Address === '' || state === '' || city === '' || pin === '') {
                     displayErrorMessage('Please fill out all fields.')
                     return
-                }else if(!paymentType){
+                } else if (!paymentType) {
                     displayErrorMessage('Please select payment method.')
                     return
                 }
-    
+
                 $.ajax({
                     type: "POST",
                     url: "",
@@ -413,16 +461,16 @@ if (isset($_GET['product_id'])) {
                         totalPriceWithQty: "<?php echo $totalPriceWithQty ?>",
                         color: "<?php echo $color ?>",
                         size: "<?php echo $size ?>",
-                        travelTime: <?php echo $travelTime?>,
+                        travelTime: <?php echo $travelTime ?>,
                         qty: "<?php echo $qty ?>",
-    
-                        product_id: "<?php echo $product_id?>",
-                        vendor_id: "<?php echo $vendor_id?>",
-                        user_id: "<?php echo $user_id?>",
-    
+
+                        product_id: "<?php echo $product_id ?>",
+                        vendor_id: "<?php echo $vendor_id ?>",
+                        user_id: "<?php echo $user_id ?>",
+
                         shipping: "<?php echo $shipping ?>",
                         formattedTotal: "<?php echo $formattedTotal ?>",
-    
+
                         FirstName: FirstName,
                         lastName: lastName,
                         Phone_number: Phone_number,
@@ -433,7 +481,7 @@ if (isset($_GET['product_id'])) {
                         pin: pin,
                         paymentType: paymentType
                     },
-                    success: function (response) {
+                    success: function(response) {
                         loader();
                         displaySuccessMessage("Order Place Successfully")
                     }
@@ -451,97 +499,97 @@ if (isset($_GET['product_id'])) {
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
+
 </html>
 
 <?php
 
 include "../include/connect.php";
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $order_title = $_POST['title'];
-        $order_image = $_POST['pimg'];
-        $order_price = $_POST['totalPriceWithQty'];
-        $order_color = $_POST['color'];
-        $order_size = $_POST['size'];
-        $order_travelTime = $_POST['travelTime'];
-        $product_qty = $_POST['qty'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $order_title = $_POST['title'];
+    $order_image = $_POST['pimg'];
+    $order_price = $_POST['totalPriceWithQty'];
+    $order_color = $_POST['color'];
+    $order_size = $_POST['size'];
+    $order_travelTime = $_POST['travelTime'];
+    $product_qty = $_POST['qty'];
 
-        $shipping = $_POST['shipping'];
-        $formattedTotal = $_POST['formattedTotal'];
+    $shipping = $_POST['shipping'];
+    $formattedTotal = $_POST['formattedTotal'];
 
-        $product_id = $_POST['product_id'];
-        $vendor_id = $_POST['vendor_id'];
-        $user_id = $_POST['user_id'];
+    $product_id = $_POST['product_id'];
+    $vendor_id = $_POST['vendor_id'];
+    $user_id = $_POST['user_id'];
 
-        $FirstName = $_POST['FirstName'];
-        $lastName = $_POST['lastName'];
-        $Phone_number = $_POST['Phone_number'];
-        $user_email = $_POST['user_email'];
-        $Address = $_POST['Address'];
-        $state = $_POST['state'];
-        $city = $_POST['city'];
-        $pin = $_POST['pin'];
-        $paymentType = $_POST['paymentType'];
+    $FirstName = $_POST['FirstName'];
+    $lastName = $_POST['lastName'];
+    $Phone_number = $_POST['Phone_number'];
+    $user_email = $_POST['user_email'];
+    $Address = $_POST['Address'];
+    $state = $_POST['state'];
+    $city = $_POST['city'];
+    $pin = $_POST['pin'];
+    $paymentType = $_POST['paymentType'];
 
 
-        $bac = str_replace(",", "", $order_price);
-        $bac = (int)$bac;
+    $bac = str_replace(",", "", $order_price);
+    $bac = (int)$bac;
 
-        $totalProductPrice = number_format($bac + $shipping);
+    $totalProductPrice = number_format($bac + $shipping);
 
-        $orders_prices = str_replace(",", "", $order_price);
+    $orders_prices = str_replace(",", "", $order_price);
 
-        $admin_profit = 20 + $shipping;
-        $vendor_profit = number_format($orders_prices - $admin_profit);
+    $admin_profit = 20 + $shipping;
+    $vendor_profit = number_format($orders_prices - $admin_profit);
 
-        date_default_timezone_set('Asia/Kolkata');
-        $order_place_date = date('d-m-Y h:i:s A');
+    date_default_timezone_set('Asia/Kolkata');
+    $order_place_date = date('d-m-Y h:i:s A');
 
-        $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
-        $get_qty_query = mysqli_query($con, $get_qty);
+    $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
+    $get_qty_query = mysqli_query($con, $get_qty);
 
-        $qty = mysqli_fetch_assoc($get_qty_query);
-        $product_quty = $qty['Quantity'];
+    $qty = mysqli_fetch_assoc($get_qty_query);
+    $product_quty = $qty['Quantity'];
 
-        $qty_replace = str_replace(",", "", $product_quty);
+    $qty_replace = str_replace(",", "", $product_quty);
 
-        $remove_quty = $qty_replace - $product_qty;
+    $remove_quty = $qty_replace - $product_qty;
 
-        $user_order_title = $order_title;
-        $user_order_image = $order_image;
-        $user_order_price = $order_price;
-        $user_order_color = $order_color;
-        $user_order_size = $order_size;
-        $user_order_qty = $product_qty;
-        $user_order_travelTime = $order_travelTime;
+    $user_order_title = $order_title;
+    $user_order_image = $order_image;
+    $user_order_price = $order_price;
+    $user_order_color = $order_color;
+    $user_order_size = $order_size;
+    $user_order_qty = $product_qty;
+    $user_order_travelTime = $order_travelTime;
 
-        $user_order_user_id = $user_id;
-        $user_order_product_id = $product_id ;
-        $user_order_vendor_id = $vendor_id;
-        
-        $order_user_first_name = $FirstName;
-        $order_user_last_name = $lastName;
-        $order_user_email = $user_email;
-        $order_user_mobile = $Phone_number;
-        $order_user_address = $Address;
-        $order_user_state = $state;
-        $order_user_city = $city;
-        $order_user_pin = $pin;
-        $order_payment_type = $paymentType;
-        
-        $order_total_price = $totalProductPrice;
-        $order_vendor_profit = $vendor_profit;
-        $order_admin_profit = $admin_profit;
-        $order_date = $order_place_date;
+    $user_order_user_id = $user_id;
+    $user_order_product_id = $product_id;
+    $user_order_vendor_id = $vendor_id;
 
-        $order_insert_sql = "INSERT INTO orders(order_title, order_image, order_price, order_color, order_size, qty, travelTime, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$user_order_title','$user_order_image','$user_order_price','$user_order_color','$user_order_size','$user_order_qty','$user_order_travelTime','$user_order_user_id','$user_order_product_id','$user_order_vendor_id','$order_user_first_name','$order_user_last_name','$order_user_email','$order_user_mobile','$order_user_address','$order_user_state','$order_user_city','$order_user_pin','$order_payment_type','$order_total_price','$order_vendor_profit','$order_admin_profit','$order_date')";
-        $order_insert_query = mysqli_query($con, $order_insert_sql);
+    $order_user_first_name = $FirstName;
+    $order_user_last_name = $lastName;
+    $order_user_email = $user_email;
+    $order_user_mobile = $Phone_number;
+    $order_user_address = $Address;
+    $order_user_state = $state;
+    $order_user_city = $city;
+    $order_user_pin = $pin;
+    $order_payment_type = $paymentType;
 
-        $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
-        $update_qty_quary = mysqli_query($con, $update_qty);
+    $order_total_price = $totalProductPrice;
+    $order_vendor_profit = $vendor_profit;
+    $order_admin_profit = $admin_profit;
+    $order_date = $order_place_date;
 
-    }
-    ?>
-    
-    <?php
+    $order_insert_sql = "INSERT INTO orders(order_title, order_image, order_price, order_color, order_size, qty, travelTime, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$user_order_title','$user_order_image','$user_order_price','$user_order_color','$user_order_size','$user_order_qty','$user_order_travelTime','$user_order_user_id','$user_order_product_id','$user_order_vendor_id','$order_user_first_name','$order_user_last_name','$order_user_email','$order_user_mobile','$order_user_address','$order_user_state','$order_user_city','$order_user_pin','$order_payment_type','$order_total_price','$order_vendor_profit','$order_admin_profit','$order_date')";
+    $order_insert_query = mysqli_query($con, $order_insert_sql);
+
+    $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
+    $update_qty_quary = mysqli_query($con, $update_qty);
+}
+?>
+
+<?php
 ?>

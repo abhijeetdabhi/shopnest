@@ -119,232 +119,12 @@ if (isset($_COOKIE['user_id'])) {
 
 <body style="font-family: 'Outfit', sans-serif;">
 
-    <!-- Successfully message container -->
-    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-[100]" id="SpopUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div class="capitalize font-medium" id="Successfully"></div>
-        </div>
-    </div>
-
-
-    <!-- Error message container -->
-    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center text-sm text-red-400">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div class="capitalize font-medium" id="errorMessage"></div>
-        </div>
-    </div>
-
-    <!-- loader  -->
-    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
-    </div>
-
-    <script>
-        // Loader function
-        function loader() {
-            let loader = document.getElementById('loader');
-            let body = document.body;
-
-            loader.style.display = 'flex';
-            body.style.overflow = 'hidden';
-        }
-
-        // Display error message
-        function displayErrorMessage(message) {
-            let popUp = document.getElementById('popUp');
-            let errorMessage = document.getElementById('errorMessage');
-
-            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
-            popUp.style.display = 'flex';
-            popUp.style.opacity = '100';
-
-            setTimeout(() => {
-                popUp.style.display = 'none';
-                popUp.style.opacity = '0';
-            }, 1800);
-        }
-
-        // Display success message with confetti effects
-        function displaySuccessMessage(message) {
-            let SpopUp = document.getElementById('SpopUp');
-            let Successfully = document.getElementById('Successfully');
-
-            // Show the success message
-            setTimeout(() => {
-                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
-                SpopUp.style.display = 'flex';
-                SpopUp.style.opacity = '100';
-
-                // Fire confetti effects from both sides
-                fireExplosiveConfettiFromLeft();
-                fireExplosiveConfettiFromRight();
-
-                // Delay the redirect to allow confetti animation to play
-                setTimeout(() => {
-                    window.location.href = '../user/show_orders.php'; // Redirect after the confetti animation
-                }, 2000); // Adjust time as needed
-            }, 2000);
-        }
-
-        // Explosive Confetti from the left bottom corner
-        function fireExplosiveConfettiFromLeft() {
-            confetti({
-                particleCount: 1200, // Number of confetti particles
-                spread: 180, // Spread angle of confetti
-                origin: {
-                    x: 0, // Confetti starts from the left bottom corner
-                    y: 1
-                },
-                scalar: 1, // Larger particles for explosive effect
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
-                gravity: 0.8, // Gravity for explosive effect
-                drift: 1, // Drift direction
-            });
-        }
-
-        // Explosive Confetti from the right bottom corner
-        function fireExplosiveConfettiFromRight() {
-            confetti({
-                particleCount: 1200, // Number of confetti particles
-                spread: 180, // Spread angle of confetti
-                origin: {
-                    x: 1, // Confetti starts from the right bottom corner
-                    y: 1
-                },
-                scalar: 1, // Larger particles for explosive effect
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
-                gravity: 0.8, // Gravity for explosive effect
-                drift: -1, // Drift direction
-            });
-        }
-    </script>
 
 
 
 
-    <?php
-
-    if (isset($_POST['placeOrder'])) {
-        if (isset($_COOKIE['Cart_products'])) {
-            $cookie_value = $_COOKIE['Cart_products'];
-            $cart_products = json_decode($cookie_value, true);
-            if (!empty($cart_products) && is_array($cart_products)) {
-                foreach ($cart_products as $index => $Cproducts) {
-                    // Escape special characters
-                    $order_image = mysqli_real_escape_string($con, $Cproducts['cart_image']);
-                    $order_title = mysqli_real_escape_string($con, $Cproducts['cart_title']);
-                    $order_price = mysqli_real_escape_string($con, $Cproducts['cart_price']);
-                    $order_color = mysqli_real_escape_string($con, $Cproducts['cart_color']);
-                    $order_size = mysqli_real_escape_string($con, $Cproducts['cart_size']);
 
 
-                    $user_id = mysqli_real_escape_string($con, $_COOKIE['user_id']);
-                    $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
-                    $vendor_id = mysqli_real_escape_string($con, $row['vendor_id']);
-
-                    $FirstName = mysqli_real_escape_string($con, $_POST['FirstName']);
-                    $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
-                    $Phone_number = mysqli_real_escape_string($con, $_POST['Phone_number']);
-                    $user_email = mysqli_real_escape_string($con, $_POST['user_email']);
-                    $Address = mysqli_real_escape_string($con, $_POST['Address']);
-                    $state = mysqli_real_escape_string($con, $_POST['state']);
-                    $city = mysqli_real_escape_string($con, $_POST['city']);
-                    $pin = mysqli_real_escape_string($con, $_POST['pin']);
-
-                    if (isset($_POST['payment'])) {
-                        $paymentType = mysqli_real_escape_string($con, $_POST['payment']);
-                    }
-
-                    $bac = str_replace(",", "", $order_price);
-                    $bac = (int)$bac;
-
-                    if ($bac <= 599) {
-                        $shipping = 40;
-                    } else {
-                        $shipping = 0;
-                    }
-
-                    $totalProductPrice = number_format($bac + $shipping);
-
-                    $orders_prices = str_replace(",", "", $Cproducts['cart_price']);
-
-                    $admin_profit = 20 + $shipping;
-                    $vendor_profit = number_format($orders_prices - $admin_profit);
-
-                    date_default_timezone_set('Asia/Kolkata');
-                    $order_place_date = date('d-m-Y h:i:s A');
-
-                    if (!empty($FirstName) && !empty($lastName) && !empty($Phone_number) && !empty($user_email) && !empty($Address) && !empty($state) && !empty($city) && !empty($pin) && !empty($paymentType)) {
-                        // remove quantity of products
-                        $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
-
-                        $product_qty = $product_quantity = isset($quantityMap[$index]) ? $quantityMap[$index] : 'N/A';
-
-                        $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
-                        $get_qty_query = mysqli_query($con, $get_qty);
-
-                        $qty = mysqli_fetch_assoc($get_qty_query);
-                        $product_quty = $qty['Quantity'];
-                        $qty_replace = str_replace(",", "", $product_quty);
-                        $remove_quty = $qty_replace - $product_qty;
-
-                        $user_order_title = $order_title;
-                        $user_order_image = $order_image;
-                        $user_order_price = $order_price;
-                        $user_order_color = $order_color;
-                        $user_order_size = $order_size;
-                        $user_order_qty = $product_qty;
-                        $user_order_travelTime = $travelTime;
-
-                        $user_order_user_id = $user_id;
-                        $user_order_product_id = $product_id;
-                        $user_order_vendor_id = $vendor_id;
-
-                        $order_user_first_name = $FirstName;
-                        $order_user_last_name = $lastName;
-                        $order_user_email = $user_email;
-                        $order_user_mobile = $Phone_number;
-                        $order_user_address = $Address;
-                        $order_user_state = $state;
-                        $order_user_city = $city;
-                        $order_user_pin = $pin;
-                        $order_payment_type = $paymentType;
-
-                        $order_total_price = $totalProductPrice;
-                        $order_vendor_profit = $vendor_profit;
-                        $order_admin_profit = $admin_profit;
-                        $order_date = $order_place_date;
-
-                        $order_insert_sql = "INSERT INTO orders(order_title, order_image, order_price, order_color, order_size, qty, travelTime, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$user_order_title','$user_order_image','$user_order_price','$user_order_color','$user_order_size','$user_order_qty','$user_order_travelTime','$user_order_user_id','$user_order_product_id','$user_order_vendor_id','$order_user_first_name','$order_user_last_name','$order_user_email','$order_user_mobile','$order_user_address','$order_user_state','$order_user_city','$order_user_pin','$order_payment_type','$order_total_price','$order_vendor_profit','$order_admin_profit','$order_date')";
-                        $order_insert_query = mysqli_query($con, $order_insert_sql);
-
-                        $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
-                        $update_qty_quary = mysqli_query($con, $update_qty);
-
-                        $url = 'http://localhost/shopnest/shopping/checkout_from_cart.php';
-                        $_SESSION['cartUrl'] = $url;
-
-                        echo '<script>loader()</script>';
-                        echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
-                    } else {
-                        echo '<script>displayErrorMessage("Missing fields in the order data.");</script>';
-                    }
-                }
-            }
-        }
-    }
-
-    ?>
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
@@ -377,7 +157,7 @@ if (isset($_COOKIE['user_id'])) {
     </header>
 
 
-    <form class="max-w-screen-xl m-auto" action="" method="post">
+    <form id="dataForm" class="max-w-screen-xl m-auto" action="" method="post">
         <div class="grid lg:grid-cols-2">
             <div class="px-4 pt-8">
                 <p class="text-xl font-medium">Order summary</p>
@@ -477,19 +257,19 @@ if (isset($_COOKIE['user_id'])) {
                     </div>
                     <label for="state" class="mt-4 mb-2 block text-sm font-medium require">State:</label>
                     <div class="relative">
-                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($myCookie) ? $us['state'] : 'User state' ?>" readonly/>
+                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($myCookie) ? $us['state'] : 'User state' ?>" readonly />
                     </div>
                     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                         <div>
                             <label for="city" class="mt-4 mb-2 block text-sm font-medium require">City:</label>
                             <div class="relative">
-                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($myCookie) ? $us['city'] : 'User city' ?>" readonly/>
+                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($myCookie) ? $us['city'] : 'User city' ?>" readonly />
                             </div>
                         </div>
                         <div>
                             <label for="pin" class="mt-4 mb-2 block text-sm font-medium require">Pincode:</label>
                             <div class="relative">
-                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($myCookie) ? $us['pin'] : 'User Pin' ?>" readonly/>
+                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($myCookie) ? $us['pin'] : 'User Pin' ?>" readonly />
                             </div>
                         </div>
                     </div>
@@ -564,6 +344,119 @@ if (isset($_COOKIE['user_id'])) {
 
     <br><br>
 
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-[100]" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully"></div>
+        </div>
+    </div>
+
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
+            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
+        </div>
+    </div>
+
+    <script>
+        // Loader function
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+            let dataForm = document.getElementById('dataForm');
+
+            // Display the loader
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+            dataForm.style.opacity = '0.4';
+        }
+
+        // Display error message
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        // Display success message with confetti effects
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+
+            // Show the success message
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+
+                // Fire confetti effects from both sides
+                fireExplosiveConfettiFromLeft();
+                fireExplosiveConfettiFromRight();
+
+                // Delay the redirect to allow confetti animation to play
+                setTimeout(() => {
+                    window.location.href = '../user/show_orders.php'; // Redirect after the confetti animation
+                }, 2000); // Adjust time as needed
+            }, 2000);
+        }
+
+        // Explosive Confetti from the left bottom corner
+        function fireExplosiveConfettiFromLeft() {
+            confetti({
+                particleCount: 900, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
+                origin: {
+                    x: 0, // Confetti starts from the left bottom corner
+                    y: 1
+                },
+                scalar: 1, // Larger particles for explosive effect
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8, // Gravity for explosive effect
+                drift: 1, // Drift direction
+            });
+        }
+
+        // Explosive Confetti from the right bottom corner
+        function fireExplosiveConfettiFromRight() {
+            confetti({
+                particleCount: 900, // Number of confetti particles
+                spread: 180, // Spread angle of confetti
+                origin: {
+                    x: 1, // Confetti starts from the right bottom corner
+                    y: 1
+                },
+                scalar: 1, // Larger particles for explosive effect
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'],
+                gravity: 0.8, // Gravity for explosive effect
+                drift: -1, // Drift direction
+            });
+        }
+    </script>
+
     <!-- footer -->
     <?php
     include "../pages/_footer.php";
@@ -574,3 +467,117 @@ if (isset($_COOKIE['user_id'])) {
 </body>
 
 </html>
+
+<?php
+
+if (isset($_POST['placeOrder'])) {
+    if (isset($_COOKIE['Cart_products'])) {
+        $cookie_value = $_COOKIE['Cart_products'];
+        $cart_products = json_decode($cookie_value, true);
+        if (!empty($cart_products) && is_array($cart_products)) {
+            foreach ($cart_products as $index => $Cproducts) {
+                // Escape special characters
+                $order_image = mysqli_real_escape_string($con, $Cproducts['cart_image']);
+                $order_title = mysqli_real_escape_string($con, $Cproducts['cart_title']);
+                $order_price = mysqli_real_escape_string($con, $Cproducts['cart_price']);
+                $order_color = mysqli_real_escape_string($con, $Cproducts['cart_color']);
+                $order_size = mysqli_real_escape_string($con, $Cproducts['cart_size']);
+
+
+                $user_id = mysqli_real_escape_string($con, $_COOKIE['user_id']);
+                $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
+                $vendor_id = mysqli_real_escape_string($con, $row['vendor_id']);
+
+                $FirstName = mysqli_real_escape_string($con, $_POST['FirstName']);
+                $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
+                $Phone_number = mysqli_real_escape_string($con, $_POST['Phone_number']);
+                $user_email = mysqli_real_escape_string($con, $_POST['user_email']);
+                $Address = mysqli_real_escape_string($con, $_POST['Address']);
+                $state = mysqli_real_escape_string($con, $_POST['state']);
+                $city = mysqli_real_escape_string($con, $_POST['city']);
+                $pin = mysqli_real_escape_string($con, $_POST['pin']);
+
+                if (isset($_POST['payment'])) {
+                    $paymentType = mysqli_real_escape_string($con, $_POST['payment']);
+                }
+
+                $bac = str_replace(",", "", $order_price);
+                $bac = (int)$bac;
+
+                if ($bac <= 599) {
+                    $shipping = 40;
+                } else {
+                    $shipping = 0;
+                }
+
+                $totalProductPrice = number_format($bac + $shipping);
+
+                $orders_prices = str_replace(",", "", $Cproducts['cart_price']);
+
+                $admin_profit = 20 + $shipping;
+                $vendor_profit = number_format($orders_prices - $admin_profit);
+
+                date_default_timezone_set('Asia/Kolkata');
+                $order_place_date = date('d-m-Y h:i:s A');
+
+                if (!empty($FirstName) && !empty($lastName) && !empty($Phone_number) && !empty($user_email) && !empty($Address) && !empty($state) && !empty($city) && !empty($pin) && !empty($paymentType)) {
+                    // remove quantity of products
+                    $product_id = mysqli_real_escape_string($con, $Cproducts['cart_id']);
+
+                    $product_qty = $product_quantity = isset($quantityMap[$index]) ? $quantityMap[$index] : 'N/A';
+
+                    $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
+                    $get_qty_query = mysqli_query($con, $get_qty);
+
+                    $qty = mysqli_fetch_assoc($get_qty_query);
+                    $product_quty = $qty['Quantity'];
+                    $qty_replace = str_replace(",", "", $product_quty);
+                    $remove_quty = $qty_replace - $product_qty;
+
+                    $user_order_title = $order_title;
+                    $user_order_image = $order_image;
+                    $user_order_price = $order_price;
+                    $user_order_color = $order_color;
+                    $user_order_size = $order_size;
+                    $user_order_qty = $product_qty;
+                    $user_order_travelTime = $travelTime;
+
+                    $user_order_user_id = $user_id;
+                    $user_order_product_id = $product_id;
+                    $user_order_vendor_id = $vendor_id;
+
+                    $order_user_first_name = $FirstName;
+                    $order_user_last_name = $lastName;
+                    $order_user_email = $user_email;
+                    $order_user_mobile = $Phone_number;
+                    $order_user_address = $Address;
+                    $order_user_state = $state;
+                    $order_user_city = $city;
+                    $order_user_pin = $pin;
+                    $order_payment_type = $paymentType;
+
+                    $order_total_price = $totalProductPrice;
+                    $order_vendor_profit = $vendor_profit;
+                    $order_admin_profit = $admin_profit;
+                    $order_date = $order_place_date;
+
+                    $order_insert_sql = "INSERT INTO orders(order_title, order_image, order_price, order_color, order_size, qty, travelTime, user_id, product_id, vendor_id, user_first_name, user_last_name, user_email, user_mobile, user_address, user_state, user_city, user_pin, payment_type, total_price, vendor_profit, admin_profit, date) VALUES ('$user_order_title','$user_order_image','$user_order_price','$user_order_color','$user_order_size','$user_order_qty','$user_order_travelTime','$user_order_user_id','$user_order_product_id','$user_order_vendor_id','$order_user_first_name','$order_user_last_name','$order_user_email','$order_user_mobile','$order_user_address','$order_user_state','$order_user_city','$order_user_pin','$order_payment_type','$order_total_price','$order_vendor_profit','$order_admin_profit','$order_date')";
+                    $order_insert_query = mysqli_query($con, $order_insert_sql);
+
+                    $update_qty = "UPDATE products SET Quantity='$remove_quty' WHERE product_id = '$product_id'";
+                    $update_qty_quary = mysqli_query($con, $update_qty);
+
+                    $url = 'http://localhost/shopnest/shopping/checkout_from_cart.php';
+                    $_SESSION['cartUrl'] = $url;
+
+                    echo '<script>loader()</script>';
+                    echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
+                } else {
+                    echo '<script>displayErrorMessage("Missing fields in the order data.");</script>';
+                }
+            }
+        }
+    }
+}
+
+?>
