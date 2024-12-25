@@ -1,19 +1,19 @@
 <?php
 
-    if(!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])){
-        header("Location: /index.php");
-        exit;
-    }
+if (!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
 
-    if(isset($_COOKIE['vendor_id'])){
-        header("Location: /vendor/vendor_dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /vendor/vendor_dashboard.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
 ?>
 
 <?php
@@ -39,6 +39,7 @@ if (isset($_COOKIE['user_id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,6 +66,7 @@ if (isset($_COOKIE['user_id'])) {
     <!-- title -->
     <title>Cancel Order</title>
 </head>
+
 <body style="font-family: 'Outfit', sans-serif;">
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
@@ -96,19 +98,19 @@ if (isset($_COOKIE['user_id'])) {
             </div>
         </div>
     </header>
-    
+
     <div class="max-w-screen-lg m-auto px-4 py-12">
         <div class="grid grid-col-1 gap-y-4">
             <h2 class="font-bold text-2xl text-black">Cancel Order</h2>
-            <div class="flex flex-col items-center gap-5 md:flex-row">
+            <div class="flex flex-col items-center gap-5 min-[530px]:flex-row bg-gray-100 shadow-lg rounded-lg p-2">
                 <div>
-                    <img class="w-full h-32 object-contain" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="">
+                    <img class="w-52 md:h-36 object-contain mix-blend-multiply" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="">
                 </div>
                 <div>
-                    <h2 class="text-xl font-semibold mb-7 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title' ?></h2>
+                    <h2 class="text-lg min-[550px]:text-xl font-semibold mb-7 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title' ?></h2>
                     <div>
                         <div class="flex items-center">
-                            <p class="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200"> Qty: <span class="text-gray-500"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'qty' ?></span></p> 
+                            <p class="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200"> Qty: <span class="text-gray-500"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'qty' ?></span></p>
                             <p class="font-medium text-base leading-7 text-black">Price: <span class="text-green-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></span></p>
                         </div>
                     </div>
@@ -262,8 +264,8 @@ if (isset($_COOKIE['user_id'])) {
     </script>
 
     <script>
-        $(document).ready(function () {
-            $("#cancelForm").on('submit', function(e){
+        $(document).ready(function() {
+            $("#cancelForm").on('submit', function(e) {
                 e.preventDefault();
 
                 let billingEmail = $('#billingEmail').val().trim()
@@ -273,7 +275,7 @@ if (isset($_COOKIE['user_id'])) {
                 if (!billingEmail) {
                     displayErrorMessage('Please Enter Your Billing Email.')
                     return;
-                }else if (!OrderCancle) {
+                } else if (!OrderCancle) {
                     displayErrorMessage('Please Select Why are you cancelling the order?')
                     return;
                 }
@@ -282,25 +284,25 @@ if (isset($_COOKIE['user_id'])) {
                     url: "",
                     type: "POST",
                     data: {
-                        order_id: "<?php echo $order_id?>",
-                        product_id: "<?php echo $product_id?>",
-                        user_id: "<?php echo $user_id?>",
-                        vendor_id: "<?php echo $vendor_id?>",
+                        order_id: "<?php echo $order_id ?>",
+                        product_id: "<?php echo $product_id ?>",
+                        user_id: "<?php echo $user_id ?>",
+                        vendor_id: "<?php echo $vendor_id ?>",
 
                         billingEmail: billingEmail,
                         OrderCancle: OrderCancle,
 
-                        user_name: "<?php echo $res['user_first_name']?>",
-                        user_phone: "<?php echo $res['user_mobile']?>",
+                        user_name: "<?php echo $res['user_first_name'] ?>",
+                        user_phone: "<?php echo $res['user_mobile'] ?>",
 
-                        cancle_order_title: "<?php echo $res['order_title']?>",
-                        cancle_order_image: "<?php echo $res['order_image']?>",
-                        cancle_order_price: "<?php echo $res['total_price']?>",
-                        cancle_order_qty: "<?php echo $res['qty']?>",
-                        cancle_order_color: "<?php echo $res['order_color']?>",
-                        cancle_order_size: "<?php echo $res['order_size']?>",
+                        cancle_order_title: "<?php echo $res['order_title'] ?>",
+                        cancle_order_image: "<?php echo $res['order_image'] ?>",
+                        cancle_order_price: "<?php echo $res['total_price'] ?>",
+                        cancle_order_qty: "<?php echo $res['qty'] ?>",
+                        cancle_order_color: "<?php echo $res['order_color'] ?>",
+                        cancle_order_size: "<?php echo $res['order_size'] ?>",
                     },
-                    success: function (response) {
+                    success: function(response) {
                         loader();
                         $('input[name="OrderCancle"]:checked').prop('checked', false);
                         displaySuccessMessage("Your order has been successfully canceled.")
@@ -309,57 +311,58 @@ if (isset($_COOKIE['user_id'])) {
             });
         });
     </script>
-            
+
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
 </body>
+
 </html>
 
-<?php 
+<?php
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $order_id = $_POST['order_id'];
-        $product_id  = $_POST['product_id'];
-        $user_id = $_POST['user_id'];
-        $vendor_id = $_POST['vendor_id'];
-        
-        $user_name = $_POST['user_name'];
-        $user_phone = $_POST['user_phone'];
-        $user_email = $_POST['billingEmail'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $order_id = $_POST['order_id'];
+    $product_id  = $_POST['product_id'];
+    $user_id = $_POST['user_id'];
+    $vendor_id = $_POST['vendor_id'];
 
-        $reason = $_POST['OrderCancle'];
-        
-        $cancle_order_title = $_POST['cancle_order_title'];
-        $cancle_order_image = $_POST['cancle_order_image'];
-        $cancle_order_price = $_POST['cancle_order_price'];
-        $cancle_order_qty = $_POST['cancle_order_qty'];
-        $cancle_order_color = $_POST['cancle_order_color'];
-        $cancle_order_size = $_POST['cancle_order_size'];
-    
+    $user_name = $_POST['user_name'];
+    $user_phone = $_POST['user_phone'];
+    $user_email = $_POST['billingEmail'];
 
-        $date = date('d-m-Y');
+    $reason = $_POST['OrderCancle'];
 
-        $insert_cancle_order = "INSERT INTO cancel_orders(order_id, product_id, user_id, vendor_id, user_name, user_email, user_phone, receive_payment, cancle_order_title, cancle_order_image, cancle_order_price, cancle_order_color, cancle_order_size, cancle_order_qty, reason, date) VALUES ('$order_id','$product_id','$user_id','$vendor_id','$user_name','$user_email','$user_phone','COD','$cancle_order_title','$cancle_order_image','$cancle_order_price','$cancle_order_color','$cancle_order_size', '$cancle_order_qty','$reason','$date')";
-        $cancle_order_query = mysqli_query($con, $insert_cancle_order);
+    $cancle_order_title = $_POST['cancle_order_title'];
+    $cancle_order_image = $_POST['cancle_order_image'];
+    $cancle_order_price = $_POST['cancle_order_price'];
+    $cancle_order_qty = $_POST['cancle_order_qty'];
+    $cancle_order_color = $_POST['cancle_order_color'];
+    $cancle_order_size = $_POST['cancle_order_size'];
 
-        $delete_order = "DELETE FROM orders WHERE order_id = '$order_id'";
-        $delete_query = mysqli_query($con, $delete_order);
 
-        // insert quantity of products
-        $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
-        $get_qty_query = mysqli_query($con, $get_qty);
+    $date = date('d-m-Y');
 
-        $qty = mysqli_fetch_assoc($get_qty_query);
-        $product_quty = $qty['Quantity'];
+    $insert_cancle_order = "INSERT INTO cancel_orders(order_id, product_id, user_id, vendor_id, user_name, user_email, user_phone, receive_payment, cancle_order_title, cancle_order_image, cancle_order_price, cancle_order_color, cancle_order_size, cancle_order_qty, reason, date) VALUES ('$order_id','$product_id','$user_id','$vendor_id','$user_name','$user_email','$user_phone','COD','$cancle_order_title','$cancle_order_image','$cancle_order_price','$cancle_order_color','$cancle_order_size', '$cancle_order_qty','$reason','$date')";
+    $cancle_order_query = mysqli_query($con, $insert_cancle_order);
 
-        $qty_replace = str_replace(",", "", $cancle_order_qty);
-        $qty_replace = (int)$qty_replace;
+    $delete_order = "DELETE FROM orders WHERE order_id = '$order_id'";
+    $delete_query = mysqli_query($con, $delete_order);
 
-        $update_qty = number_format($product_quty + $qty_replace);
+    // insert quantity of products
+    $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
+    $get_qty_query = mysqli_query($con, $get_qty);
 
-        $update_qty = "UPDATE products SET Quantity='$update_qty' WHERE product_id = '$product_id'";
-        $update_qty_quary = mysqli_query($con, $update_qty);
-    }
+    $qty = mysqli_fetch_assoc($get_qty_query);
+    $product_quty = $qty['Quantity'];
+
+    $qty_replace = str_replace(",", "", $cancle_order_qty);
+    $qty_replace = (int)$qty_replace;
+
+    $update_qty = number_format($product_quty + $qty_replace);
+
+    $update_qty = "UPDATE products SET Quantity='$update_qty' WHERE product_id = '$product_id'";
+    $update_qty_quary = mysqli_query($con, $update_qty);
+}
 ?>

@@ -79,20 +79,19 @@ $nearLocation = false;
 
 for ($i = 0; $i < count($latitude); $i++) {
     $distance = haversine($latitude[$i], $longitude[$i], $current_lat, $current_lon);
-    
+
     if ($distance <= 15) {
         $nearbyLocation[] = ['lat' => $latitude[$i], 'lng' => $longitude[$i], 'distance' => $distance];
-    }else{
-        if($current_lat != 0 && $current_lon != 0){
+    } else {
+        if ($current_lat != 0 && $current_lon != 0) {
             $nearLocation = true;
             break;
         }
     }
-        
 }
 
-if($nearLocation === true){
-    setcookie('latitude', '', time() - 3600, "/");  
+if ($nearLocation === true) {
+    setcookie('latitude', '', time() - 3600, "/");
     setcookie('longitude', '', time() - 3600, "/");
 }
 
@@ -171,7 +170,7 @@ function displayRandomProducts($con, $limit)
                 <div class=" flex justify-center">
                     <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                         <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
                         </div>
                         <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                             <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -1139,21 +1138,21 @@ function displayRandomProducts($con, $limit)
             <script>
                 let chooseLocation = document.getElementById('chooseLocation');
 
-                function hideLocaionPopup(){
+                function hideLocaionPopup() {
                     window.location.href = "";
                     chooseLocation.style.display = 'none';
                 }
             </script>
             <?php
-                if($nearLocation == true){
-                    ?>
-                        <script>
-                            chooseLocation = document.getElementById('chooseLocation');
-                            chooseLocation.style.display = 'flex';
-                            document.body.style.overflow = 'hidden';
-                        </script>
-                    <?php
-                }
+            if ($nearLocation == true) {
+            ?>
+                <script>
+                    chooseLocation = document.getElementById('chooseLocation');
+                    chooseLocation.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                </script>
+            <?php
+            }
             ?>
         </span>
     </div>

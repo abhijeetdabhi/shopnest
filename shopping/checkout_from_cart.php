@@ -307,7 +307,7 @@ if (isset($_COOKIE['user_id'])) {
                         $user_order_travelTime = $travelTime;
 
                         $user_order_user_id = $user_id;
-                        $user_order_product_id = $product_id ;
+                        $user_order_product_id = $product_id;
                         $user_order_vendor_id = $vendor_id;
 
                         $order_user_first_name = $FirstName;
@@ -402,27 +402,25 @@ if (isset($_COOKIE['user_id'])) {
 
                             $total_price = (int)$product_quantity * (int)$cart_price;
                 ?>
-                            <div class="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-                                <div class="flex flex-col rounded-lg bg-white sm:flex-row">
-                                    <img class="m-2 h-full md:h-32 rounded-md object-cover object-center" src="<?php echo isset($myCookie) ? '../src/product_image/product_profile/' . $cart_products_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
-                                    <div class="flex w-full flex-col px-4 py-4 gap-y-3">
-                                        <span class="font-semibold line-clamp-2"><?php echo isset($myCookie) ? $cart_products_title : 'product title' ?></span>
-                                        <p class="text-lg font-semibold text-green-500">₹<?php echo isset($myCookie) ? number_format($total_price) : 'MRP' ?></p>
-                                        <div class="flex item-center justify-between">
-                                            <div class="flex item-center gap-1">
-                                                <span class="text-lg font-semibold">Color:</span>
-                                                <div class="my-auto"><?php echo isset($myCookie) ? htmlspecialchars($cart_products_color) : 'product color' ?></div>
-                                            </div>
-                                            <div class="flex item-center gap-1">
-                                                <span class="text-lg font-semibold">Size:</span>
-                                                <p class="my-auto"><?php echo isset($myCookie) ? $cart_products_size : 'product Size' ?></p>
-                                            </div>
+                            <div class="flex flex-col min-[580px]:flex-row items-center justify-center rounded-lg bg-gray-100  mt-8 space-y-3 px-2 py-4 shadow-md">
+                                <img class="m-2 h-52 md:h-36 rounded-md object-cover object-center mix-blend-multiply" src="<?php echo isset($myCookie) ? '../src/product_image/product_profile/' . $cart_products_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
+                                <div class="flex w-full flex-col px-4 py-4 gap-y-3">
+                                    <span class="font-semibold line-clamp-2"><?php echo isset($myCookie) ? $cart_products_title : 'product title' ?></span>
+                                    <p class="text-lg font-semibold text-green-500">₹<?php echo isset($myCookie) ? number_format($total_price) : 'MRP' ?></p>
+                                    <div class="flex item-center justify-between">
+                                        <div class="flex item-center gap-1">
+                                            <span class="text-lg font-semibold text-gray-600">Color:</span>
+                                            <div class="my-auto"><?php echo isset($myCookie) ? htmlspecialchars($cart_products_color) : 'product color' ?></div>
                                         </div>
-                                        <div class="flex item-center justify-between flex-wrap">
-                                            <div class="flex item-center gap-1">
-                                                <span class="text-lg font-semibold">QTY:</span>
-                                                <p class="my-auto"><?php echo isset($myCookie) ? $product_quantity : 'product Qty'; ?></p>
-                                            </div>
+                                        <div class="flex item-center gap-1">
+                                            <span class="text-lg font-semibold text-gray-600">Size:</span>
+                                            <p class="my-auto"><?php echo isset($myCookie) ? $cart_products_size : 'product Size' ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex item-center justify-between flex-wrap">
+                                        <div class="flex item-center gap-1">
+                                            <span class="text-lg font-semibold text-gray-600">QTY:</span>
+                                            <p class="my-auto"><?php echo isset($myCookie) ? $product_quantity : 'product Qty'; ?></p>
                                         </div>
                                     </div>
                                 </div>

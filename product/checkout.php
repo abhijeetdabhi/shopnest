@@ -147,39 +147,37 @@ if (isset($_GET['product_id'])) {
             <div class="px-4 pt-8">
                 <p class="text-xl font-medium">Order summary</p>
                 <p class="text-gray-400">Check your items. And select a suitable payment method.</p>
-                <div class="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-                    <div class="flex flex-col rounded-lg bg-white sm:flex-row">
-                        <img class="m-2 h-full md:h-32 rounded-md object-cover object-center" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $image : '../src/sample_images/product_1.jpg' ?>" alt="" />
-                        <div class="flex w-full flex-col px-4 py-4 gap-y-3">
-                            <span class="font-semibold line-clamp-2"><?php echo isset($product_id) ? $title : 'product title' ?></span>
-                            <p class="text-lg font-semibold text-green-500">₹<?php echo isset($product_id) ? $totalPriceWithQty : 'MRP' ?></p>
-                            <div class="flex item-center justify-between">
-                                <div class="flex item-center gap-1">
-                                    <h1 class="text-lg font-semibold">Color:</h1>
-                                    <span class="my-auto"><?php echo isset($product_id) ? $color : 'product color' ?></span>
-                                </div>
-                                <div class="flex item-center gap-1">
-                                    <?php
-                                    if (isset($size) == null) {
-                                        echo "";
-                                    } else {
-                                    ?>
-                                        <span class="text-lg font-semibold">Size:</span>
-                                        <p class="my-auto"><?php echo isset($product_id) ? $size : 'product Size' ?></p>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center rounded-lg bg-gray-100  mt-8 space-y-3 px-2 py-4 shadow-md">
+                    <img class="m-2 h-52 md:h-36 rounded-md object-cover object-center mix-blend-multiply" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $image : '../src/sample_images/product_1.jpg' ?>" alt="" />
+                    <div class="flex w-full flex-col px-4 py-4 gap-y-3">
+                        <span class="font-semibold line-clamp-2"><?php echo isset($product_id) ? $title : 'product title' ?></span>
+                        <p class="text-lg font-semibold text-green-500">₹<?php echo isset($product_id) ? $totalPriceWithQty : 'MRP' ?></p>
+                        <div class="flex item-center justify-between">
+                            <div class="flex item-center gap-1">
+                                <h1 class="text-lg font-semibold">Color:</h1>
+                                <span class="my-auto"><?php echo isset($product_id) ? $color : 'product color' ?></span>
                             </div>
-                            <div class="flex item-center justify-between flex-wrap">
-                                <div class="flex item-center gap-1">
-                                    <span class="text-lg font-semibold">Deliverd In Just:</span>
-                                    <p class="my-auto text-green-500"><?php echo isset($product_id) ? $travelTime . " minutes" : 'product Quantity'; ?></p>
-                                </div>
-                                <div class="flex item-center gap-1">
-                                    <span class="text-lg font-semibold">QTY:</span>
-                                    <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
-                                </div>
+                            <div class="flex item-center gap-1">
+                                <?php
+                                if (isset($size) == null) {
+                                    echo "";
+                                } else {
+                                ?>
+                                    <span class="text-lg font-semibold">Size:</span>
+                                    <p class="my-auto"><?php echo isset($product_id) ? $size : 'product Size' ?></p>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="flex item-center justify-between flex-wrap">
+                            <div class="flex item-center gap-1">
+                                <span class="text-lg font-semibold">Deliverd In Just:</span>
+                                <p class="my-auto text-green-500"><?php echo isset($product_id) ? $travelTime . " minutes" : 'product Quantity'; ?></p>
+                            </div>
+                            <div class="flex item-center gap-1">
+                                <span class="text-lg font-semibold">QTY:</span>
+                                <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
                             </div>
                         </div>
                     </div>
@@ -397,7 +395,7 @@ if (isset($_GET['product_id'])) {
                 // Redirect after 2 seconds
                 setInterval(() => {
                     window.location.href = "../user/show_orders.php";
-                    
+
                 }, 1500);
             }, 2000);
         }
@@ -468,7 +466,7 @@ if (isset($_GET['product_id'])) {
                         totalPriceWithQty: "<?php echo $totalPriceWithQty ?>",
                         color: "<?php echo $color ?>",
                         size: "<?php echo $size ?>",
-                        travelTime: <?php echo $travelTime?>,
+                        travelTime: <?php echo $travelTime ?>,
                         qty: "<?php echo $qty ?>",
 
                         product_id: "<?php echo $product_id ?>",

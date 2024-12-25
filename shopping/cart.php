@@ -1,24 +1,24 @@
 <?php
-    if(isset($_COOKIE['vendor_id'])){
-        header("Location: /vendor/vendor_dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /vendor/vendor_dashboard.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
 ?>
 
 <?php
 include "../include/connect.php";
 session_start();
 
-if(isset($_SESSION['searchWord'])){
+if (isset($_SESSION['searchWord'])) {
     unset($_SESSION['searchWord']);
 }
 
-if(isset($_SESSION['selectedSize'])){
+if (isset($_SESSION['selectedSize'])) {
     unset($_SESSION['selectedSize']);
 }
 ?>
@@ -69,31 +69,32 @@ if(isset($_SESSION['selectedSize'])){
                         if (isset($_COOKIE['Cart_products'])) {
                             $cookie_value = $_COOKIE['Cart_products'];
 
-                            function getDistance($startLat, $startLng, $endLat, $endLng, $apiKey){
+                            function getDistance($startLat, $startLng, $endLat, $endLng, $apiKey)
+                            {
                                 $url = "https://api.tomtom.com/routing/1/calculateRoute/{$startLat},{$startLng}:{$endLat},{$endLng}/json?key={$apiKey}";
-                            
+
                                 $ch = curl_init();
-                            
+
                                 curl_setopt($ch, CURLOPT_URL, $url);
                                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                            
+
                                 $response = curl_exec($ch);
-                            
-                                if(curl_errno($ch)) {
+
+                                if (curl_errno($ch)) {
                                     echo 'Error:' . curl_error($ch);
                                 }
-                            
+
                                 curl_close($ch);
-                            
+
                                 $data = json_decode($response, true);
-                            
-                                if(isset($data['routes'][0]['summary'])) {
+
+                                if (isset($data['routes'][0]['summary'])) {
                                     $travelTimeInSeconds = $data['routes'][0]['summary']['travelTimeInSeconds'];
-                                
+
                                     // Convert travel time from seconds to minutes
                                     $travelTimeInMinutes = $travelTimeInSeconds / 60;
-                                
+
                                     return [
                                         'travelTime' => $travelTimeInMinutes
                                     ];
@@ -140,18 +141,18 @@ if(isset($_SESSION['selectedSize'])){
                                     $resultNumeric = intval($result);
                                     $totalCartPrice = isset($totalCartPrice) ? $totalCartPrice + $resultNumeric : $resultNumeric;
 
-                                    ?>
+                        ?>
                                     <div class="rounded-lg bg-white p-4 shadow-md md:p-6">
                                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                             <a href="" class="shrink-0 md:order-1">
-                                                <img class="md:h-32 w-full" src="<?php echo isset($_COOKIE['Cart_products']) ? '/src/product_image/product_profile/' . $cart_products_image : '' ?>" alt="imac image" />
+                                                <img class="md:h-32 w-full mix-blend-multiply" src="<?php echo isset($_COOKIE['Cart_products']) ? '/src/product_image/product_profile/' . $cart_products_image : '' ?>" alt="imac image" />
                                             </a>
 
                                             <label for="counter-input" class="sr-only">Choose quantity:</label>
                                             <div class="flex items-center justify-between md:order-3 md:justify-end">
                                                 <form method="post" action="">
                                                     <select name="qty" id="qty_<?php echo $cart_products_id; ?>" class="border mt-1 rounded pr-9 pl-4 bg-gray-50 focus:border-gray-600 focus:ring-gray-600" onchange="this.form.submit()">
-                                                    <?php
+                                                        <?php
                                                         $forQty = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
                                                         $qty_query = mysqli_query($con, $forQty);
 
@@ -176,8 +177,16 @@ if(isset($_SESSION['selectedSize'])){
                                             <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                                                 <div class="flex flex-col gap-y-2">
                                                     <a href="/product/product_detail.php?product_id=<?php echo isset($_COOKIE['Cart_products']) ? $cart_products_id : '' ?>" class="text-base font-medium hover:underline line-clamp-2"><?php echo isset($_COOKIE['Cart_products']) ? $cart_products_title : '' ?></a>
-                                                    <h1>Color: <?php echo isset($_COOKIE['Cart_products']) ? $cart_products_color : '' ?></h1>
-                                                    <h1>Size: <?php echo isset($_COOKIE['Cart_products']) ? $cart_products_size : '' ?></h1>
+                                                    <div class="flex justify-between md:justify-normal gap-5">
+                                                        <h1>
+                                                            <span class="text-gray-600 mr-1">Color:</span>
+                                                            <?php echo isset($_COOKIE['Cart_products']) ? $cart_products_color : '' ?>
+                                                        </h1>
+                                                        <h1>
+                                                            <span class="text-gray-600 mr-1">Size:</span>
+                                                            <?php echo isset($_COOKIE['Cart_products']) ? $cart_products_size : '' ?>
+                                                        </h1>
+                                                    </div>
                                                 </div>
                                                 <div class="flex items-center gap-4">
                                                     <a class="inline-flex items-center gap-1 text-sm font-medium text-red-600 hover:underline dark:text-red-500 cursor-pointer" href="remove_from_cart.php?product_id=<?php echo isset($_COOKIE['Cart_products']) ? $cart_products_id : '' ?>">
@@ -194,29 +203,29 @@ if(isset($_SESSION['selectedSize'])){
                                         </div>
                                     </div>
                                 <?php
-                                $vendor_find = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
-                                $vendor_query = mysqli_query($con, $vendor_find);
-                                $findVndr = mysqli_fetch_assoc($vendor_query);
+                                    $vendor_find = "SELECT * FROM products WHERE product_id = '$cart_products_id'";
+                                    $vendor_query = mysqli_query($con, $vendor_find);
+                                    $findVndr = mysqli_fetch_assoc($vendor_query);
 
-                                $vendor_id = $findVndr['vendor_id'];
-                                $vendor_find = "SELECT * FROM vendor_registration WHERE vendor_id  = '$vendor_id'";
-                                $vendor_query = mysqli_query($con, $vendor_find);
-                                $ven = mysqli_fetch_assoc($vendor_query);
-                                        
-                                // find distance
-                                
-                            
-                                $startLat = $_COOKIE['latitude'];
-                                $startLon = $_COOKIE['longitude'];
-                                $endLat = $ven['latitude'];
-                                $endLon = $ven['longitude'];
-                                $apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
-                            
-                                $result = getDistance($startLat, $startLon, $endLat, $endLon, $apiKey);
-                            
-                                $TravelTime = number_format($result['travelTime']) + 25;
-                                $halfTime += $TravelTime;
-                                $totalTime = $halfTime / 2;
+                                    $vendor_id = $findVndr['vendor_id'];
+                                    $vendor_find = "SELECT * FROM vendor_registration WHERE vendor_id  = '$vendor_id'";
+                                    $vendor_query = mysqli_query($con, $vendor_find);
+                                    $ven = mysqli_fetch_assoc($vendor_query);
+
+                                    // find distance
+
+
+                                    $startLat = $_COOKIE['latitude'];
+                                    $startLon = $_COOKIE['longitude'];
+                                    $endLat = $ven['latitude'];
+                                    $endLon = $ven['longitude'];
+                                    $apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+
+                                    $result = getDistance($startLat, $startLon, $endLat, $endLon, $apiKey);
+
+                                    $TravelTime = number_format($result['travelTime']) + 25;
+                                    $halfTime += $TravelTime;
+                                    $totalTime = $halfTime / 2;
                                 }
                             } else {
                                 ?>
@@ -311,14 +320,14 @@ if(isset($_SESSION['selectedSize'])){
             <?php
             $vendorLatitudes = [];
             $vendorLongitudes = [];
-                        
+
             foreach ($_COOKIE as $cookieName => $cookieValue) {
-            
+
                 if (strpos($cookieName, 'vendorLat') === 0) {
                     $index = substr($cookieName, 9);
                     $vendorLatitudes[$index] = $cookieValue;
                 }
-            
+
                 if (strpos($cookieName, 'vendorLng') === 0) {
                     $index = substr($cookieName, 9);
                     $vendorLongitudes[$index] = $cookieValue;
@@ -328,35 +337,34 @@ if(isset($_SESSION['selectedSize'])){
             $vendorIds = [];
             foreach ($vendorLatitudes as $index => $lat) {
                 $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A';
-        
+
                 $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
                 $query = mysqli_query($con, $get_vendor);
-        
+
                 if (mysqli_num_rows($query) > 0) {
                     while ($vendorCount = mysqli_fetch_assoc($query)) {
                         $vendorIds[] = $vendorCount['vendor_id']; // Store vendor IDs
                     }
                 }
-                
             }
             $vendorIdList = implode(',', $vendorIds);
             $product_find = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) ORDER BY RAND() LIMIT 4";
             $product_query = mysqli_query($con, $product_find);
-        
+
             if ($product_query) {
-        
+
                 while ($res = mysqli_fetch_assoc($product_query)) {
                     $product_id = $res['product_id'];
-                    
+
                     $MRP = $res['vendor_mrp'];
 
                     // for qty
-                    if($res['Quantity'] > 0){
+                    if ($res['Quantity'] > 0) {
                         $qty = 1;
-                    }else{
+                    } else {
                         $qty = 0;
                     }
-        
+
                     // for the size
                     $size = $res['size'];
                     $filter_size = explode(',', $size);
@@ -364,13 +372,13 @@ if(isset($_SESSION['selectedSize'])){
                         $product_size;
                         break;
                     }
-                    ?>
-        
+            ?>
+
                     <div class="swiper-slide">
                         <div class=" flex justify-center">
                             <div class="product-card card flex flex-col items-center ring-2 ring-gray-300 rounded-tl-2xl rounded-br-2xl w-64 hover:ring-none overflow-hidden">
                                 <div class="p-2" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                                    <img src="<?php echo '/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
                                 </div>
                                 <div class="mt-2 space-y-3" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <a href="/product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -392,21 +400,21 @@ if(isset($_SESSION['selectedSize'])){
                                 </div>
                                 <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
                                     <?php
-                                        if($qty > 0){
-                                            ?>
-                                                <a href="<?php echo $qty > 0 ? '/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                            <?php
-                                        }else{
-                                            ?>
-                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                            <?php
-                                        }
+                                    if ($qty > 0) {
+                                    ?>
+                                        <a href="<?php echo $qty > 0 ? '/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                    <?php
+                                    }
                                     ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-        <?php
+            <?php
                 }
             } else {
                 echo "Error " . mysqli_errno($con);

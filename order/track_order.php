@@ -1,19 +1,19 @@
 <?php
 
-    if(!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])){
-        header("Location: /index.php");
-        exit;
-    }
+if (!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
 
-    if(isset($_COOKIE['vendor_id'])){
-        header("Location: /vendor/vendor_dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /vendor/vendor_dashboard.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
 ?>
 
 
@@ -42,12 +42,12 @@ if (isset($_COOKIE['user_id'])) {
     $todays = date('Y-m-d');
 
     date_default_timezone_set('Asia/Kolkata');
-                            
+
     $dateTime = $res['date'];
     $newDate = new DateTime($dateTime);
     $onlyTime = $newDate->format("h:i:s A");
     $orderPlacedTime = $onlyTime;
-    
+
     $travelTime = $res['travelTime'];
 
     $currentTime = date('h:i:s A');
@@ -65,12 +65,12 @@ if (isset($_COOKIE['user_id'])) {
     $date2->modify("+$remainTime2 minutes");
     $time2 = $date2->getTimestamp();
     $time2Formatted = $date2->format("h:i:s A");
-                            
+
     $remainTime3 = floor($travelTime / 2);
     $date3->modify("+$remainTime3 minutes");
     $time3 = $date3->getTimestamp();
     $time3Formatted = $date3->format("h:i:s A");
-           
+
     $remainTime4 = floor($travelTime / 1);
     $date4->modify("+$remainTime4 minutes");
     $time4 = $date4->getTimestamp();
@@ -142,15 +142,15 @@ if (isset($_COOKIE['user_id'])) {
             </div>
             <div class="mt-10">
                 <?php
-                    if(isset($_COOKIE['user_id']) && isset($_GET['order_id'])){
-                        ?>
-                            <a href="../user/re-order.php?product_id=<?php echo urlencode($products_id); ?>&color=<?php echo $product_color; ?>&size=<?php echo $product_size; ?>&qty=<?php echo $product_qty; ?>&MRP=<?php echo $product_MRP ?>&travelTime=<?php echo $travelTime?>" class="bg-gray-600 text-white font-semibold py-2.5 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Re-Order</a>
-                        <?php
-                    }else{
-                        ?>
-                            <h1 class="bg-gray-600 text-white font-semibold py-2.5 px-6 w-max rounded-tl-xl rounded-br-xl cursor-not-allowed">Re-Order</h1>
-                        <?php
-                    }
+                if (isset($_COOKIE['user_id']) && isset($_GET['order_id'])) {
+                ?>
+                    <a href="../user/re-order.php?product_id=<?php echo urlencode($products_id); ?>&color=<?php echo $product_color; ?>&size=<?php echo $product_size; ?>&qty=<?php echo $product_qty; ?>&MRP=<?php echo $product_MRP ?>&travelTime=<?php echo $travelTime ?>" class="bg-gray-600 text-white font-semibold py-2.5 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Re-Order</a>
+                <?php
+                } else {
+                ?>
+                    <h1 class="bg-gray-600 text-white font-semibold py-2.5 px-6 w-max rounded-tl-xl rounded-br-xl cursor-not-allowed">Re-Order</h1>
+                <?php
+                }
                 ?>
             </div>
             <hr class="my-10">
@@ -191,17 +191,16 @@ if (isset($_COOKIE['user_id'])) {
                     </div>
                 </div>
             </div>
-            <div class="bg-white border-2 rounded-lg overflow-hidden w-full flex flex-col md:flex-row mt-10">
-                <!-- Product Image -->
-                <img class="h-full md:h-40 object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image">
-
-                <!-- Product Details -->
+            <div class="bg-gray-100 shadow-lg rounded-lg overflow-hidden w-full flex flex-col min-[580px]:flex-row md:items-center mt-10 px-4">
+                <div class=" flex justify-center items-center">
+                    <img class="w-52 md:w-40 mix-blend-multiply" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image">
+                </div>
                 <div class="p-6 flex-1">
                     <h2 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'Product Title' ?></h2>
                     <p class="font-medium text-base leading-7 text-black pr-4">Quantity: <span class="font-medium"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : '-' ?></span></p>
                     <p class="font-medium text-base leading-7 text-black pr-4">Price: <span class="font-bold text-green-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : '-' ?></span></p>
                     <div class="text-gray-700 flex items-center gap-1 mt-1">
-                        <span class="font-medium text-base leading-7 text-black">Color:</span> 
+                        <span class="font-medium text-base leading-7 text-black">Color:</span>
                         <h1 class="my-auto"><?php echo isset($_COOKIE['user_id']) ? htmlspecialchars($product_color) : '-' ?></h1>
                     </div>
                     <p class="font-medium text-base leading-7 text-black pr-4">Size: <span class="font-medium"><?php echo isset($_COOKIE['user_id']) ? $res['order_size'] : '-' ?></span></p>
@@ -212,15 +211,15 @@ if (isset($_COOKIE['user_id'])) {
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0 mt-12">
             <div>
                 <?php
-                    if($time4Formatted <= $currentTime){
-                        ?>
-                            <h2 class="font-semibold text-2xl mb-4">Your order is delivered</h2>
-                        <?php
-                    }else{
-                        ?>
-                            <h2 class="font-semibold text-2xl mb-4">Shipped on: <span class="text-gray-500"><?php echo isset($time4Formatted ) ? $time4Formatted : 'Shipping Date'; ?></span></h2>
-                        <?php
-                    }
+                if ($time4Formatted <= $currentTime) {
+                ?>
+                    <h2 class="font-semibold text-2xl mb-4">Your order is delivered</h2>
+                <?php
+                } else {
+                ?>
+                    <h2 class="font-semibold text-2xl mb-4">Shipped on: <span class="text-gray-500"><?php echo isset($time4Formatted) ? $time4Formatted : 'Shipping Date'; ?></span></h2>
+                <?php
+                }
                 ?>
             </div>
             <div class="mt-6 grow sm:mt-8 lg:mt-0">
@@ -228,78 +227,78 @@ if (isset($_COOKIE['user_id'])) {
                     <h3 class="text-xl font-semibold text-gray-900">Order traking</h3>
 
                     <?php
-                        if(isset($_COOKIE['user_id'])){
-                            ?>
-                                <ol class="relative ms-3 border-s border-gray-200 ">
-                                    <li class="mb-10 ms-6 <?php echo $time4Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700')?> flex item-center space-x-2">
-                                        <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time4Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100')?> bg-gray-100 ring-8 ring-white">
-                                            <i class="<?php echo $time4Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-truck text-gray-600')?>"></i>
-                                        </span>
-                                        <div class="">
-                                            <h4 class="font-semibold">Delivered</h4>
-                                            <p class="text-sm font-normal">Your product has been successfully delivered!</p>
-                                        </div>
-                                    </li>
+                    if (isset($_COOKIE['user_id'])) {
+                    ?>
+                        <ol class="relative ms-3 border-s border-gray-200 ">
+                            <li class="mb-10 ms-6 <?php echo $time4Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700') ?> flex item-center space-x-2">
+                                <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time4Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100') ?> bg-gray-100 ring-8 ring-white">
+                                    <i class="<?php echo $time4Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-truck text-gray-600') ?>"></i>
+                                </span>
+                                <div class="">
+                                    <h4 class="font-semibold">Delivered</h4>
+                                    <p class="text-sm font-normal">Your product has been successfully delivered!</p>
+                                </div>
+                            </li>
 
-                                    <li class="mb-10 ms-6 <?php echo $time3Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700')?> flex item-center space-x-2">
-                                        <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time3Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100')?> ring-8 ring-white">
-                                            <i class="<?php echo $time3Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-road text-gray-600')?>"></i>
-                                        </span>
-                                        <div class="">
-                                            <h4 class="font-semibold">On the Way</h4>
-                                            <p class="text-sm font-normal">The delivery boy is on the way to deliver your product.</p>
-                                        </div>
-                                    </li>
+                            <li class="mb-10 ms-6 <?php echo $time3Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700') ?> flex item-center space-x-2">
+                                <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time3Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100') ?> ring-8 ring-white">
+                                    <i class="<?php echo $time3Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-road text-gray-600') ?>"></i>
+                                </span>
+                                <div class="">
+                                    <h4 class="font-semibold">On the Way</h4>
+                                    <p class="text-sm font-normal">The delivery boy is on the way to deliver your product.</p>
+                                </div>
+                            </li>
 
-                                    <li class="mb-10 ms-6 <?php echo $time2Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700')?> flex item-center space-x-2">
-                                        <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time2Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100')?> ring-8 ring-white">
-                                            <i class="<?php echo $time2Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-boxes-packing text-gray-600')?>"></i>
-                                        </span>
-                                        <div class="">
-                                            <h4 class="font-semibold">Order Packed</h4>
-                                            <p class="text-sm font-normal">The product is purchased and packed for delivery.</p>
-                                        </div>
-                                    </li>
+                            <li class="mb-10 ms-6 <?php echo $time2Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700') ?> flex item-center space-x-2">
+                                <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time2Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100') ?> ring-8 ring-white">
+                                    <i class="<?php echo $time2Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-boxes-packing text-gray-600') ?>"></i>
+                                </span>
+                                <div class="">
+                                    <h4 class="font-semibold">Order Packed</h4>
+                                    <p class="text-sm font-normal">The product is purchased and packed for delivery.</p>
+                                </div>
+                            </li>
 
-                                    <li class="mb-10 ms-6 <?php echo $time1Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700')?> flex item-center space-x-2">
-                                        <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time1Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100')?> ring-8 ring-white">
-                                            <i class="<?php echo $time1Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-box text-gray-600')?>"></i>
-                                        </span>
-                                        <div class="">
-                                            <h4 class="font-semibold text-indigo-600">Order Placed</h4>
-                                            <p class="text-sm font-normal text-indigo-600">Your Order has been Placed</p>
-                                        </div>
-                                    </li>
-                                </ol>
-                            <?php
-                        }else{
-                            ?>
-                                <h1 class="font-bold text-2xl">Error: No Product Found</h1>
-                                <span class="text-gray-400 mt-2">It seems you haven't selected a product to track. Please go back and select a product to view its tracking information.</span>
-                            <?php
-                        }
+                            <li class="mb-10 ms-6 <?php echo $time1Formatted <= $currentTime ? htmlspecialchars('text-indigo-700') : htmlspecialchars('text-gray-700') ?> flex item-center space-x-2">
+                                <span class="absolute -start-4 flex h-8 w-8 items-center justify-center rounded-full <?php echo $time1Formatted <= $currentTime ? htmlspecialchars('bg-indigo-100') : htmlspecialchars('bg-gray-100') ?> ring-8 ring-white">
+                                    <i class="<?php echo $time1Formatted <= $currentTime ? htmlspecialchars('fa-solid fa-circle-check text-indigo-600') : htmlspecialchars('fa-solid fa-box text-gray-600') ?>"></i>
+                                </span>
+                                <div class="">
+                                    <h4 class="font-semibold text-indigo-600">Order Placed</h4>
+                                    <p class="text-sm font-normal text-indigo-600">Your Order has been Placed</p>
+                                </div>
+                            </li>
+                        </ol>
+                    <?php
+                    } else {
+                    ?>
+                        <h1 class="font-bold text-2xl">Error: No Product Found</h1>
+                        <span class="text-gray-400 mt-2">It seems you haven't selected a product to track. Please go back and select a product to view its tracking information.</span>
+                    <?php
+                    }
                     ?>
 
 
                     <div class="flex flex-col items-center gap-4 gap-y-4 sm:flex-row">
                         <?php
-                            if(isset($_COOKIE['user_id'])){
+                        if (isset($_COOKIE['user_id'])) {
 
-                                if ($time2Formatted > $currentTime) {
-                                    ?>
-                                        <a href="cancel_order.php?order_id=<?php echo isset($_COOKIE['user_id']) ? $res['order_id'] : 'order_id' ?>" class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white">Cancel the order</a>
-                                        <h1 class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white opacity-50 select-none cursor-not-allowed">Return Order</h1>
-                                    <?php
-                                } elseif ($time4Formatted < $currentTime) {
-                                    ?>
-                                        <a href="return_order.php?order_id=<?php echo isset($_COOKIE['user_id']) ? $res['order_id'] : 'order_id' ?>" class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">Return Order</a>
-                                        <h1 class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white opacity-20 cursor-not-allowed">Cancel the order</h1>
-                                    <?php
-                                }
-                                ?>
-                                    <a href="../product/invoice.php?order_id=<?php echo isset($_COOKIE['user_id']) ? $res['order_id'] : 'order_id' ?>" class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-green-600 px-5 py-2.5 text-sm font-semibold text-white">Invoice</a>
-                                <?php
+                            if ($time2Formatted > $currentTime) {
+                        ?>
+                                <a href="cancel_order.php?order_id=<?php echo isset($_COOKIE['user_id']) ? $res['order_id'] : 'order_id' ?>" class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white">Cancel the order</a>
+                                <h1 class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white opacity-50 select-none cursor-not-allowed">Return Order</h1>
+                            <?php
+                            } elseif ($time4Formatted < $currentTime) {
+                            ?>
+                                <a href="return_order.php?order_id=<?php echo isset($_COOKIE['user_id']) ? $res['order_id'] : 'order_id' ?>" class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">Return Order</a>
+                                <h1 class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white opacity-20 cursor-not-allowed">Cancel the order</h1>
+                            <?php
                             }
+                            ?>
+                            <a href="../product/invoice.php?order_id=<?php echo isset($_COOKIE['user_id']) ? $res['order_id'] : 'order_id' ?>" class="w-full flex items-center justify-center rounded-tl-xl rounded-br-xl bg-green-600 px-5 py-2.5 text-sm font-semibold text-white">Invoice</a>
+                        <?php
+                        }
                         ?>
                     </div>
                 </div>
@@ -318,4 +317,5 @@ if (isset($_COOKIE['user_id'])) {
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
 </body>
+
 </html>

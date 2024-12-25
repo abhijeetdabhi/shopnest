@@ -66,9 +66,10 @@ $company_name = $_GET['brandName'];
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <style>
-        [x-cloak]{
+        [x-cloak] {
             display: none;
         }
+
         .outfit {
             font-family: "Outfit", sans-serif;
             font-optical-sizing: auto;
@@ -285,7 +286,7 @@ $company_name = $_GET['brandName'];
 
         <div class="flex jutify-center">
             <div class="mt-7 w-64 hidden lg:block">
-                <form method="post" action="brands_products.php?brandName=<?php echo $company_name?>">
+                <form method="post" action="brands_products.php?brandName=<?php echo $company_name ?>">
                     <!-- Price -->
                     <div class="border-b-2 border-gray-300 pb-4">
                         <h1 class="text-gray-800 font-medium text-sm">Price:</h1>
@@ -510,14 +511,14 @@ $company_name = $_GET['brandName'];
 
                 $vendorLatitudes = [];
                 $vendorLongitudes = [];
-                            
+
                 foreach ($_COOKIE as $cookieName => $cookieValue) {
-                
+
                     if (strpos($cookieName, 'vendorLat') === 0) {
                         $index = substr($cookieName, 9);
                         $vendorLatitudes[$index] = $cookieValue;
                     }
-                
+
                     if (strpos($cookieName, 'vendorLng') === 0) {
                         $index = substr($cookieName, 9);
                         $vendorLongitudes[$index] = $cookieValue;
@@ -527,16 +528,15 @@ $company_name = $_GET['brandName'];
                 $vendorIds = [];
                 foreach ($vendorLatitudes as $index => $lat) {
                     $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A';
-            
+
                     $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
                     $query = mysqli_query($con, $get_vendor);
-            
+
                     if (mysqli_num_rows($query) > 0) {
                         while ($vendorCount = mysqli_fetch_assoc($query)) {
                             $vendorIds[] = $vendorCount['vendor_id']; // Store vendor IDs
                         }
                     }
-                    
                 }
 
                 if ($filter_query) {
@@ -602,12 +602,12 @@ $company_name = $_GET['brandName'];
                             $MRP = $res['vendor_mrp'];
 
                             // for qty
-                            if($res['Quantity'] > 0){
+                            if ($res['Quantity'] > 0) {
                                 $qty = 1;
-                            }else{
+                            } else {
                                 $qty = 0;
                             }
-                            
+
                             // for the size
                             $size = $res['size'];
                             $filter_size = explode(',', $size);
@@ -619,7 +619,7 @@ $company_name = $_GET['brandName'];
                         ?>
                             <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                                 <div class="p-2" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl" loading="lazy" sizes="">
+                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
                                 </div>
                                 <div class="mt-2 space-y-3" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>

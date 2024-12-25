@@ -380,7 +380,7 @@ if (isset($_GET['product_id'])) {
         <form action="" Method="post">
             <div class="flex flex-col gap-3 w-full mt-12 px-2">
                 <div class="flex flex-col gap-2">
-                    <h1 class="text-xl font-medium text-[#1d2128] leading-6 md:leading-10 md:font-medium md:text-[28px]"><?php echo isset($_GET['product_id']) ? $title : 'Product title' ?></h1>
+                    <h1 class="text-lg md:text-[20px] md:font-medium md:leading-8 2xl:text-xl font-medium text-[#1d2128] leading-6"><?php echo isset($_GET['product_id']) ? $title : 'Product title' ?></h1>
                 </div>
                 <!-- vendor Store -->
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
@@ -457,31 +457,48 @@ if (isset($_GET['product_id'])) {
                     ?>
                 </div>
                 <!-- color -->
-                <div class="space-y-2">
-                    <label for="color" class="text-xl font-medium">Color :</label>
-                    <div class="flex items-center gap-5">
-                        <?php
-                        $sameId = $res['same_id'];
-                        $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
-                        $color_product_query = mysqli_query($con, $color_product_find);
+                <?php
+                $sameId = $res['same_id'];
+                $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
+                $color_product_query = mysqli_query($con, $color_product_find);
 
-                        while ($clr = mysqli_fetch_assoc($color_product_query)) {
-                            if ($clr['color'] == '-') {
-                                echo '';
-                            } else {
-                        ?>
-                                <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
-                                    <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
-                                </a>
-                        <?php
+                // Check if there are any valid colors
+                $hasColors = false;
+                while ($clr = mysqli_fetch_assoc($color_product_query)) {
+                    if ($clr['color'] != '-') {
+                        $hasColors = true;
+                        break;
+                    }
+                }
+
+                // If there are valid colors, display the field
+                if ($hasColors) {
+                ?>
+                    <div class="space-y-2">
+                        <label for="color" class="text-xl font-medium">Color :</label>
+                        <div class="flex items-center gap-5">
+                            <?php
+                            // Reset the query to fetch colors again
+                            mysqli_data_seek($color_product_query, 0);
+
+                            while ($clr = mysqli_fetch_assoc($color_product_query)) {
+                                if ($clr['color'] != '-') {
+                            ?>
+                                    <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
+                                        <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
+                                    </a>
+                            <?php
+                                }
                             }
-                        }
-
-                        ?>
+                            ?>
+                        </div>
                     </div>
-                </div>
+                <?php
+                }
+                ?>
+
                 <!-- size -->
-                <div class="space-y-5 lg:space-y-0 lg:flex lg:justify-between lg:gap-x-5">
+                <div class="space-y-5">
                     <div class="flex flex-col space-y-2">
                         <?php
                         if (isset($product_id)) {
