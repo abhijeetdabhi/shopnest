@@ -34,6 +34,30 @@ if (isset($_COOKIE['vendor_id'])) {
 if (isset($_GET['name'])) {
     $product = $_GET['name'];
 }
+
+if (isset($_GET['productId'])) {
+    $productId = $_GET['productId'];
+
+    $findProduct = "SELECT * FROM products WHERE product_id = '$productId'";
+    $findProductQuery = mysqli_query($con, $findProduct);
+
+    if(mysqli_num_rows($findProductQuery)){
+        while($prdc = mysqli_fetch_assoc($findProductQuery)){
+            $productTitle = $prdc['title'];
+            $productCompanyName = $prdc['company_name'];
+            $productType = $prdc['Type'];
+            $productMRP = $prdc['vendor_mrp'];
+            $productVendorPrice = $prdc['vendor_price'];
+            $productCondition = $prdc['Item_Condition'];
+            $productDescription = $prdc['Description'];
+            $productColor = $prdc['color'];
+            $size = $prdc['size'];
+            $sizeExplode = explode(',', $size);
+            $productSize = $sizeExplode[0];
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -150,6 +174,39 @@ if (isset($_GET['name'])) {
     <div class="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
         <div class="container max-w-screen-lg font-medium text-gray-800 mx-auto">
             <h1 class="bg-gray-100 text-2xl font-bold flex items-center justify-center mb-6">Add products</h1>
+            <div class="space-y-4 my-5">
+                <div>
+                    <label for="ListingProducts" class="text-green-500 text-sm block mb-2">
+                        This box is for adding a product. Search for the product name, and if available, suggestions will appear. Click on a product, and all important details will be filled in automatically.
+                    </label>
+                    <input type="search" name="ListingProducts" id="ListingProducts" class="h-10 border mt-1 rounded-md px-4 w-full bg-white focus:ring-gray-600 focus:border-gray-600 transition" placeholder="Search For Listing Products" />
+                </div>
+                <div style="display: none;" id="suggestions" class="w-full overflow-y-auto bg-white p-4 space-y-4 rounded-md mt-3 shadow-md" style="max-height: calc(3 * 10rem + 2 * 1rem);">
+                    
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $("#ListingProducts").on('input', function() {
+                        let word = $(this).val();
+
+                        if(word.length > 2){
+                            $("#suggestions").css('display', 'block');
+
+                            $.ajax({
+                                type: "post",
+                                url: "search.php",
+                                data: {searchWord: word},
+                                success: function (response) {
+                                    $("#suggestions").html(response);
+                                }
+                            });
+                        }else{
+                            $("#suggestions").css('display', 'none');
+                        }
+                    });
+                });
+            </script>
             <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                 <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 lg:grid-cols-1">
                     <div class="lg:col-span-2">
@@ -165,12 +222,12 @@ if (isset($_GET['name'])) {
 
                                 <div class="md:col-span-5">
                                     <label for="full_name" class="require">Product tital:</label>
-                                    <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['full_name']) ? $_SESSION['full_name'] : ''; ?>" />
+                                    <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['full_name']) ? $_SESSION['full_name'] : (isset($_GET['productId']) ? $productTitle : '');?>" />
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label for="Company_name" class="require">Company name:</label>
-                                    <input type="text" name="Company_name" id="Company_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['Company_name']) ? $_SESSION['Company_name'] : ''; ?>" placeholder="" />
+                                    <input type="text" name="Company_name" id="Company_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['Company_name']) ? $_SESSION['Company_name'] : (isset($_GET['productId']) ? $productCompanyName : '') ;?>" placeholder="" />
                                 </div>
 
                                 <div class="md:col-span-2">
@@ -180,13 +237,13 @@ if (isset($_GET['name'])) {
 
                                 <div class="md:col-span-1">
                                     <label for="type" class="require">Type:</label>
-                                    <input type="text" name="type" id="type" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['type']) ? $_SESSION['type'] : ''; ?>" placeholder="" />
+                                    <input type="text" name="type" id="type" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['type']) ? $_SESSION['type'] : (isset($_GET['productId']) ? $productType : ''); ?>" placeholder="" />
                                 </div>
 
                                 <div class="md:col-span-3">
                                     <label for="MRP" class="require">Sell Price:</label>
                                     <div class="relative">
-                                        <input type="number" name="MRP" id="MRP" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['MRP']) ? $_SESSION['MRP'] : ''; ?>" placeholder="" />
+                                        <input type="number" name="MRP" id="MRP" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['MRP']) ? $_SESSION['MRP'] : (isset($_GET['productId']) ? $productMRP : ''); ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
                                     </div>
                                 </div>
@@ -194,7 +251,7 @@ if (isset($_GET['name'])) {
                                 <div class="md:col-span-2">
                                     <label for="your_price" class="require">MRP:</label>
                                     <div class="relative">
-                                        <input type="number" name="your_price" id="your_price" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['your_price']) ? $_SESSION['your_price'] : ''; ?>" placeholder="" />
+                                        <input type="number" name="your_price" id="your_price" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 pl-10 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['your_price']) ? $_SESSION['your_price'] : (isset($_GET['productId']) ? $productVendorPrice : ''); ?>" placeholder="" />
                                         <div class="absolute left-0 rounded-l top-1 w-9 h-10 bg-white border border-gray-500 m-auto text-center flex items-center justify-center">₹</div>
                                     </div>
                                 </div>
@@ -206,7 +263,7 @@ if (isset($_GET['name'])) {
 
                                 <div class="md:col-span-2">
                                     <label for="condition" class="require">Item condition:</label>
-                                    <select name="condition" id="condition" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['condition']) ? $_SESSION['condition'] : ''; ?>">
+                                    <select name="condition" id="condition" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['condition']) ? $_SESSION['condition'] : (isset($_GET['productId']) ? $productCondition : ''); ?>">
                                         <option value="New Condition">New condition</option>
                                         <option value="Old Condition">Old condition</option>
                                     </select>
@@ -214,13 +271,13 @@ if (isset($_GET['name'])) {
 
                                 <div class="md:col-span-5">
                                     <label for="description" class="require">Description:</label>
-                                    <textarea name="description" id="description" class="h-32 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600 resize-none" value="" placeholder=""><?php echo isset($_SESSION['description']) ? $_SESSION['description'] : ''; ?></textarea>
+                                    <textarea name="description" id="description" class="h-32 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600 resize-none" value="" placeholder=""><?php echo isset($_SESSION['description']) ? $_SESSION['description'] : (isset($_GET['productId']) ? $productDescription : ''); ?></textarea>
                                 </div>
 
                                 <div class="md:col-span-5 mt-5">
                                     <label for="size" class="require">Size:</label>
                                     <div id="size-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-2 gap-3">
-
+                                        <input type="text" name="size[]" value="<?php echo isset($_GET['productId']) ? $productSize : ''; ?>" placeholder="Enter size" class="h-10 border rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600">
                                     </div>
                                     <button id="add-size" class="px-4 py-2 bg-gray-600 text-white rounded-tl-lg rounded-br-lg mt-2">Add more size</button>
                                 </div>
@@ -228,7 +285,7 @@ if (isset($_GET['name'])) {
                                 <div class="md:col-span-5 mt-5">
                                     <label for="color">Color:</label>
                                     <div class="relative mt-2">
-                                        <input type="text" id="colorInput" name="color" placeholder="Type a color..." class="h-10 border rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" autocomplete="off" value="<?php echo isset($_SESSION['color']) ? $_SESSION['color'] : ''; ?>">
+                                        <input type="text" id="colorInput" name="color" placeholder="Type a color..." class="h-10 border rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" autocomplete="off" value="<?php echo isset($_SESSION['color']) ? $_SESSION['color'] : (isset($_GET['productId']) ? $productColor : ''); ?>">
                                         <div id="colorSuggestions" class="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded-lg z-10 hidden"></div>
                                     </div>
                                 </div>
@@ -468,14 +525,6 @@ if (isset($_GET['name'])) {
             '4GB - 128GB', '8GB - 256GB', '8GB - 1TB', '16GB - 512GB', '16GB - 2TB', '32GB - 1TB', '32GB - 2TB', '64GB - 1TB', '64GB - 2TB',
             '3GB - 64GB', '4GB - 256GB', '6GB - 512GB', '8GB - 1TB'
         ];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const sizeContainer = document.getElementById('size-container');
-
-            // Create the first size input without remove button, MRP, and Your Price
-            const initialSizeItem = createSizeItem(true);
-            sizeContainer.appendChild(initialSizeItem);
-        });
 
         document.getElementById('add-size').addEventListener('click', function(event) {
             event.preventDefault();
