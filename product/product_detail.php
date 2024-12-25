@@ -394,7 +394,10 @@ if (isset($_GET['product_id'])) {
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-2xl text-red-700 font-light">-77%</span>
+                            <?php
+                            $calcDiscount = round((($Your_Price - $MRP)/$Your_Price) * 100);
+                            ?>
+                            <span class="text-2xl text-red-700 font-light"><?php echo  "-" . $calcDiscount . "%"?></span>
                             <span class="text-2xl font-medium flex gap-0.5"><span class="text-sm block text-start">₹</span><?php echo isset($_GET['product_id']) ? number_format($MRP) : 'MRP' ?></span>
                         </div>
                         <span class="text-sm">M.R.P.:

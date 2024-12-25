@@ -75,6 +75,9 @@ if (isset($_COOKIE['user_id'])) {
     $date4->modify("+$remainTime4 minutes");
     $time4 = $date4->getTimestamp();
     $time4Formatted = $date4->format("h:i:s A");
+
+    $shipedTime = $date4->format('h:i A');
+
 }
 ?>
 <!DOCTYPE html>
@@ -121,6 +124,7 @@ if (isset($_COOKIE['user_id'])) {
                 <?php
                 } else {
                 ?>
+                    <p class="text-red-500 my-4">Note: We aim to deliver your order within given minutes. However, please note that delivery times may vary due to factors like traffic and other unforeseen circumstances. We appreciate your understanding!</p>
                     <h2 class="text-xl font-semibold sm:text-2xl">Your order is confirmed</h2>
                 <?php
                 }
@@ -212,12 +216,12 @@ if (isset($_COOKIE['user_id'])) {
             <div>
                 <?php
                 if ($time4Formatted <= $currentTime) {
-                ?>
+                    ?>
                     <h2 class="font-semibold text-2xl mb-4">Your order is delivered</h2>
-                <?php
+                    <?php
                 } else {
-                ?>
-                    <h2 class="font-semibold text-2xl mb-4">Shipped on: <span class="text-gray-500"><?php echo isset($time4Formatted) ? $time4Formatted : 'Shipping Date'; ?></span></h2>
+                    ?>
+                    <h2 class="font-semibold text-2xl mb-4">Shipped on: <span class="text-gray-500"><?php echo isset($time4Formatted) ? $shipedTime : 'Shipping Date'; ?></span></h2>
                 <?php
                 }
                 ?>

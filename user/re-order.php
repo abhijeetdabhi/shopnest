@@ -180,6 +180,7 @@ if (isset($_GET['product_id'])) {
                         <label class="cursor-pointer text-base font-medium" for="COD">Cash on delivery</label>
                     </div>
                 </div>
+                <p class="text-red-500 my-4 mt-6">Note: We aim to deliver your order within given minutes. However, please note that delivery times may vary due to factors like traffic and other unforeseen circumstances. We appreciate your understanding!</p>
             </div>
             <div class="mt-10 px-4 pt-8 lg:mt-0">
                 <p class="text-xl font-medium">Billing details</p>
@@ -212,19 +213,19 @@ if (isset($_GET['product_id'])) {
                     </div>
                     <label for="state" class="mt-4 mb-2 block text-sm font-medium require">State:</label>
                     <div class="relative">
-                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['state'] : 'User state' ?>" />
+                        <input type="text" id="state" name="state" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['state'] : 'User state' ?>" readonly/>
                     </div>
                     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                         <div>
                             <label for="city" class="mt-4 mb-2 block text-sm font-medium require">City:</label>
                             <div class="relative">
-                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['city'] : 'User city' ?>" />
+                                <input type="text" id="city" name="city" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" value="<?php echo isset($product_id) ? $us['city'] : 'User city' ?>" readonly/>
                             </div>
                         </div>
                         <div>
                             <label for="pin" class="mt-4 mb-2 block text-sm font-medium require">Pincode:</label>
                             <div class="relative">
-                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($product_id) ? $us['pin'] : 'User Pin' ?>" />
+                                <input type="tel" id="pin" name="pin" class="w-full rounded-md border border-gray-200 px-4 py-3 text-base shadow-sm outline-none focus:z-10 focus:border-gray-500 focus:ring-gray-500" maxlength="6" value="<?php echo isset($product_id) ? $us['pin'] : 'User Pin' ?>" readonly/>
                             </div>
                         </div>
                     </div>
@@ -494,7 +495,7 @@ include "../include/connect.php";
         $vendor_profit = number_format($orders_prices - $admin_profit);
 
         date_default_timezone_set('Asia/Kolkata');
-        $order_place_date = date('d-m-Y h:i:s');
+        $order_place_date = date('d-m-Y h:i:s A');
 
         $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
         $get_qty_query = mysqli_query($con, $get_qty);

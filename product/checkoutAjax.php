@@ -40,7 +40,7 @@ include "../include/connect.php";
         $vendor_profit = number_format($orders_prices - $admin_profit);
 
         date_default_timezone_set('Asia/Kolkata');
-        $order_place_date = date('d-m-Y h:i:s');
+        $order_place_date = date('d-m-Y h:i:s A');
 
         $get_qty = "SELECT * FROM products WHERE product_id = '$product_id'";
         $get_qty_query = mysqli_query($con, $get_qty);

@@ -73,7 +73,7 @@ if(isset($_GET['order_id'])){
                 <p class="font-semibold text-gray-900 flex flex-wrap"><?php echo isset($_COOKIE['user_id']) ? $res['user_address'] : 'user address' ?></p>
             </div>
         </header>
-
+        <p class="text-red-500 my-4">Note: We aim to deliver your order within given minutes. However, please note that delivery times may vary due to factors like traffic and other unforeseen circumstances. We appreciate your understanding!</p>
         <!-- Product Details -->
         <section class="mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Product details</h2>
