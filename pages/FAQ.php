@@ -74,7 +74,7 @@ include "../include/connect.php";
                 </svg>
             </div>
             <div x-show="openItem === 3" x-transition class="faq-answer p-4 text-gray-500">
-                We accept various payment methods including credit/debit cards, PayPal, and more.
+                We accept Cash On Delivery payment methods .
             </div>
         </div>
 
@@ -98,7 +98,7 @@ include "../include/connect.php";
                 </svg>
             </div>
             <div x-show="openItem === 5" x-transition class="faq-answer p-4 text-gray-500">
-                We offer a 7-day return policy on most items. Please visit our 'Return & Exchange' section for more details.
+                We offer a 7-day return policy on most items. To return order go to track order section and then Choose Return Order.
             </div>
         </div>
     </div>

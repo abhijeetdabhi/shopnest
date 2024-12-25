@@ -45,26 +45,25 @@
                 <div>
                     <h1 class="text-2xl font-bold">Shipping Information</h1>
                     <div class="pl-6">
-                        <h2 class="text-lg font-semibold mt-3">Shipping Methods:</h2>
+                        <h2 class="text-lg font-semibold mt-3">Shipping Options:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>We offer a variety of shipping methods to suit your needs, including standard, expedited, and express shipping options.</li>
-                            <li>Each shipping method provides an estimated delivery time, which will be displayed at checkout.</li>
+                            <li>At ShopNest, we prioritize fast and efficient delivery, ensuring your products arrive quickly and hassle-free.</li>
                         </ul>
                     </div>
 
                     <div class="pl-6">
                         <h2 class="text-lg font-semibold mt-3">Shipping Costs:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>Shipping costs are calculated based on the weight of your order, the shipping method selected, and the delivery destination.</li>
-                            <li>We offer free shipping on orders over a certain amount. Details of this offer can be found on our promotions page.</li>
+                            <li>Shipping costs are based on the weight of your order and the delivery destination.</li>
+                            <li>Enjoy free shipping on orders up to ₹599! For orders above this amount, regular shipping fees apply. Check out our Promotions page for more details.</li>
                         </ul>
                     </div>
 
                     <div class="pl-6">
                         <h2 class="text-lg font-semibold mt-3">Order Processing Time:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>Orders are typically processed within 1-2 business days.</li>
-                            <li>You will receive a confirmation email once your order has been placed, including a tracking number to monitor your shipment.</li>
+                            <li>We process all orders swiftly, and the processing time for each product is displayed in minutes on the product detail page. </li>
+                            <li>Rest assured, we aim for quick fulfillment to ensure your order reaches you in no time.</li>
                         </ul>
                     </div>
                 </div>
@@ -75,18 +74,17 @@
                     <div class="pl-6">
                         <h2 class="text-lg font-semibold mt-3">Estimated Delivery Times:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>Standard Shipping: 5-7 business days</li>
-                            <li>Expedited Shipping: 2-3 business days</li>
-                            <li>Express Shipping: 1-2 business days</li>
-                            <li>Please note that delivery times may vary based on your location and unforeseen circumstances such as weather conditions or carrier delays.</li>
+                            <li>Typically within 40-50 minutes (for local deliveries and fast order fulfillment).</li>
+                            <li>Note: Delivery times may vary based on location or unforeseen circumstances such as weather or carrier delays</li>
                         </ul>
                     </div>
 
                     <div class="pl-6">
                         <h2 class="text-lg font-semibold mt-3">Delivery Tracking:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>Track your order in real-time with the tracking number provided in your shipping confirmation email.</li>
-                            <li>You can also track your order status by logging into your account on our website.</li>
+                            <li>Track your order in real-time by accessing the Track Order page in your ShopNest account.</li>
+                            <li>Alternatively, you can visit the Track Order page on our website and enter your product ID and email address to view the status of your order.</li>
+                            <li>Please note that logging into your account is compulsory for this feature.</li>
                         </ul>
                     </div>
                 </div>
@@ -96,16 +94,15 @@
                     <div class="pl-6">
                         <h2 class="text-lg font-semibold mt-3">Easy Returns:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>If you are not completely satisfied with your purchase, you can return it within 30 days of receipt for a full refund or exchange</li>
-                            <li>Please visit our Returns & Exchanges page for detailed instructions on how to process a return.</li>
+                            <li>If you're not fully satisfied with your purchase, you can return it within 7 days of receiving your order for a full refund.</li>
+                            <li>For more details on how to process your return, visit our Returns page.</li>
                         </ul>
                     </div>
 
                     <div class="pl-6">
                         <h2 class="text-lg font-semibold mt-3">Shipping Costs:</h2>
                         <ul class="list-disc pl-6 mt-3">
-                            <li>Refunds will be processed within 5-7 business days after we receive and inspect your returned item.</li>
-                            <li>You will be notified via email once your refund has been issued.</li>
+                            <li>Refunds are processed within 5-7 business days after we receive and inspect your returned item.</li>
                         </ul>
                     </div>
                 </div>

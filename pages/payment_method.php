@@ -47,13 +47,6 @@
                         <li>Pay for your order in cash upon delivery. Inspect your items before payment for added convenience and security. No upfront payment required.</li>
                     </ul>
                 </li>
-
-                <li class="mb-4">
-                    <strong>UPI Payment:</strong>
-                    <ul class="list-disc ml-6">
-                        <li> Pay directly through your UPI app for a seamless and instant checkout. Simply choose UPI during checkout and complete your payment with ease. Enjoy a quick and secure transaction process.</li>
-                    </ul>
-                </li>
             </ul>
             <p class="text-lg font-medium">Your payment security is our top priority. All transactions are protected with industry-leading encryption technology to safeguard your personal and financial information. If you have any questions or need assistance with payment, our customer service team is here to help.</p>
         </div>

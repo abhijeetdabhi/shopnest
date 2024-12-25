@@ -68,25 +68,25 @@
                         <div>
                             <h1 class="text-lg font-semibold">Cancel an order:</h1>
                             <ul class="list-disc pl-6 mt-3">
-                                <li>Change your mind? Easily cancel your order before it ships with a few clicks.</li>
+                                <li>Changed your mind? No problem! Easily cancel your order before it ships with just a few clicks on ShopNest. We make managing your purchases as simple as possible, giving you peace of mind.</li>
                             </ul>
                         </div>
                         <div>
                             <h1 class="text-lg font-semibold">Track a package:</h1>
                             <ul class="list-disc pl-6 mt-3">
-                                <li>Stay updated on your order's journey with real-time package tracking.</li>
+                                <li>Stay updated with real-time tracking. From Order Placed to Packed, On the Way, and Delivered, you’ll know exactly where your package is and when to expect it.</li>
                             </ul>
                         </div>
                         <div>
-                            <h1 class="text-lg font-semibold">In-Store consultation:</h1>
+                            <h1 class="text-lg font-semibold">Vendor Support:</h1>
                             <ul class="list-disc pl-6 mt-3">
-                                <li>Schedule a personalized consultation with our experts for tailored advice.</li>
+                                <li>As a vendor on ShopNest, we offer dedicated support to help you succeed. Whether you need assistance with product listings or navigating our platform, our team is here to guide you, ensuring that your products are visible and ready to meet customer demand.</li>
                             </ul>
                         </div>
                         <div>
-                            <h1 class="text-lg font-semibold">Shop with an expert:</h1>
+                            <h1 class="text-lg font-semibold">Fast Delivery:</h1>
                             <ul class="list-disc pl-6 mt-3">
-                                <li>Get guided assistance from our specialists to find the perfect products.</li>
+                                <li>At ShopNest, we prioritize fast delivery for both vendors and customers. Our platform supports rapid fulfillment, ensuring that products are delivered within 40 to 50 minutes from order placement. This speed makes ShopNest an ideal marketplace for vendors who want to provide customers with an exceptional, quick-turnaround shopping experience.</li>
                             </ul>
                         </div>
                     </div>
