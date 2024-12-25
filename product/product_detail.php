@@ -457,30 +457,32 @@ if (isset($_GET['product_id'])) {
                     ?>
                 </div>
                 <!-- color -->
-                <div class="flex items-center gap-5">
+                <div class="space-y-2">
+                    <label for="color" class="text-xl font-medium">Color :</label>
+                    <div class="flex items-center gap-5">
+                        <?php
+                        $sameId = $res['same_id'];
+                        $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
+                        $color_product_query = mysqli_query($con, $color_product_find);
 
-                    <?php
-                    $sameId = $res['same_id'];
-                    $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
-                    $color_product_query = mysqli_query($con, $color_product_find);
-
-                    while ($clr = mysqli_fetch_assoc($color_product_query)) {
-                        if ($clr['color'] == '-') {
-                            echo '';
-                        } else {
-                    ?>
-                            <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
-                                <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
-                            </a>
-                    <?php
+                        while ($clr = mysqli_fetch_assoc($color_product_query)) {
+                            if ($clr['color'] == '-') {
+                                echo '';
+                            } else {
+                        ?>
+                                <a href="../product/product_detail.php?product_id=<?php echo $clr['product_id'] ?>" class="border-2 border-black flex items-center gap-2 py-1 px-2 rounded-tl-xl rounded-br-xl text-center hover:bg-gray-200 w-max cursor-pointer">
+                                    <h1 class="text-lg"><?php echo $clr['color'] ?></h1>
+                                </a>
+                        <?php
+                            }
                         }
-                    }
 
-                    ?>
+                        ?>
+                    </div>
                 </div>
                 <!-- size -->
-                <div>
-                    <div class="md:col-span-2 mt-3">
+                <div class="space-y-5 lg:space-y-0 lg:flex lg:justify-between lg:gap-x-5">
+                    <div class="flex flex-col space-y-2">
                         <?php
                         if (isset($product_id)) {
                             if ($res['size'] == '-') {
@@ -489,7 +491,7 @@ if (isset($_GET['product_id'])) {
                         ?>
                                 <label for="size" class="text-xl font-medium">Size:</label>
                                 <form method="post" action="">
-                                    <select name="size" id="size" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 <?php echo ($product_qty <= 0) ? 'cursor-not-allowed' : ''; ?>" onchange="this.form.submit();" <?php echo ($product_qty <= 0) ? 'disabled' : ''; ?>>
+                                    <select name="size" id="size" class="h-10 w-full lg:w-56 border rounded px-4 bg-gray-50 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 <?php echo ($product_qty <= 0) ? 'cursor-not-allowed' : ''; ?>" onchange="this.form.submit();" <?php echo ($product_qty <= 0) ? 'disabled' : ''; ?>>
                                         <?php
                                         $product_size[] = $res['size'];
                                         foreach ($product_size as $productSize) {
@@ -514,11 +516,9 @@ if (isset($_GET['product_id'])) {
                         ?>
 
                     </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <label for="qty">QTY:</label>
-                    <div class="flex items-center flex-wrap gap-2">
-                        <select name="qty" id="qty" class="h-10 border mt-1 rounded px-4 w-16 bg-gray-50 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 <?php echo ($product_qty <= 0) ? 'cursor-not-allowed' : ''; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
+                    <div class="flex flex-col space-y-2">
+                        <label for="qty" class="text-xl font-medium">QTY:</label>
+                        <select name="qty" id="qty" class="h-10 w-full lg:w-56 border rounded px-4 bg-gray-50 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 <?php echo ($product_qty <= 0) ? 'cursor-not-allowed' : ''; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
                             <?php
                             if ($product_qty > 0) {
                                 // Determine the maximum quantity to display
@@ -557,8 +557,8 @@ if (isset($_GET['product_id'])) {
                 </div>
                 <hr>
                 <div class="mt-4 flex flex-col gap-5 md:flex-row">
-                    <input type="submit" name="AddtoCart" value="Add To Cart" class="md:w-40 text-center text-sm font-medium text-white bg-gray-700 py-4 rounded-tl-xl rounded-br-xl transition duration-200 <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-800'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
-                    <input type="submit" name="buyBtn" value="Buy Now" class="md:w-40 text-sm font-medium text-gray-700 border-2 border-gray-700 py-4 rounded-tl-xl rounded-br-xl text-center <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
+                    <input type="submit" name="AddtoCart" value="Add To Cart" class="md:w-40 text-center text-sm md:text-base font-medium text-white bg-gray-700 py-4 rounded-tl-xl rounded-br-xl transition duration-200 <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-800'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
+                    <input type="submit" name="buyBtn" value="Buy Now" class="md:w-40 text-center text-sm md:text-base font-medium text-gray-700 border-2 border-gray-700 py-4 rounded-tl-xl rounded-br-xl <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
                 </div>
             </div>
         </form>
