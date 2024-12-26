@@ -153,10 +153,11 @@ if (isset($_COOKIE['vendor_id'])) {
                                     }
                                     }
                                 ?>
-                                    </table>
+                                </table>
                             </div>
                         </div>
                     </section>
+                    
                     <!-- place orders -->
                     <section class="container mx-auto p-6">
                         <h2 class="font-manrope font-bold text-4xl leading-10 text-black mb-5">Place Orders</h2>
