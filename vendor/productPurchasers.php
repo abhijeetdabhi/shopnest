@@ -237,8 +237,16 @@ if (isset($_COOKIE['vendor_id'])) {
                             $get_userInfo = "SELECT * FROM orders WHERE vendor_id = '$vendor_id'";
                             $get_userInfo_query = mysqli_query($con, $get_userInfo);
 
+                            $display_users = [];
                             while($usr = mysqli_fetch_assoc($get_userInfo_query)){
                                 $user_id = $usr['user_id'];
+
+                                if(in_array($user_id, $display_users)){
+                                    continue;
+                                }
+
+                                $display_users[] = $user_id;
+
                                 $get_userDetails = "SELECT * FROM user_registration WHERE user_id = '$user_id'";
                                 $userDetails_query = mysqli_query($con, $get_userDetails);
 
