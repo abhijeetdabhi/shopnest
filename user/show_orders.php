@@ -15,6 +15,10 @@ session_start();
 <?php
 include "../include/connect.php";
 
+if(isset($_SESSION['order_id'])){
+    unset($_SESSION['order_id']);
+}
+
 if (isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];
     $user_name = $_COOKIE['fname'];
@@ -250,6 +254,7 @@ if (isset($_SESSION['cartUrl'])) {
                                 $retrieve_order = "SELECT * FROM orders WHERE user_id = '$user_id'";
                                 $retrieve_order_query = mysqli_query($con, $retrieve_order);
 
+                                $i = 1;
                                 while ($res = mysqli_fetch_assoc($retrieve_order_query)) {
                                     $today = date('Y-m-d', strtotime($res['date']));
                                     $future_date = date('Y-m-d', strtotime('+5 days', strtotime($today)));
@@ -263,11 +268,24 @@ if (isset($_SESSION['cartUrl'])) {
                                         </div>
                                         <div class="flex flex-col md:flex-row justify-between items-start w-full">
                                             <div class="flex-1 space-y-4">
-                                                <a href="/order/track_order.php?order_id=<?php echo $res['order_id']; ?>">
-                                                    <h2 class="font-semibold text-lg md:text-xl text-black leading-snug line-clamp-2 w-[90%]">
-                                                        <?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'Product Title'; ?>
-                                                    </h2>
-                                                </a>
+                                                <form method="post" class="text-start">
+                                                    <input type="hidden" name="order_id" value="<?php echo $res['order_id']?>">
+                                                    <button type="submit" name="productTitle<?php echo $i?>">
+                                                        <h2 class="font-semibold text-lg text-start md:text-xl text-black leading-snug line-clamp-2 w-[90%]">
+                                                            <?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'Product Title'; ?>
+                                                        </h2>
+                                                    </button>
+                                                </form>
+                                                <?php 
+                                                    if (isset($_POST['productTitle' . $i])) {
+                                                        $_SESSION['order_id'] = $_POST['order_id'];   
+                                                        ?>
+                                                            <script>
+                                                                window.location.href = "../order/track_order.php?order_id=<?php echo $res['order_id']?>";
+                                                            </script>
+                                                        <?php 
+                                                    }
+                                                ?>
                                                 <div class="flex items-center justify-between md:justify-start md:divide-x-2 md:divide-gray-400 text-gray-600">
                                                     <p class="pr-2">Qty: <span class="text-black"> <?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'product quantity'; ?> </span></p>
                                                     <p class="pl-2">Price: <span class="text-black ml-1">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'product total_price'; ?></span></p>
@@ -318,6 +336,7 @@ if (isset($_SESSION['cartUrl'])) {
                                     </div>
 
                             <?php
+                                $i++;
                                 }
                             } else {
                                 echo '<div class="relative font-bold text-2xl w-max text-center mt-12 flex items-center justify-center m-auto">No data available for this period.</div>';

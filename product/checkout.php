@@ -19,6 +19,32 @@ if (isset($_COOKIE['adminEmail'])) {
 <?php
 include "../include/connect.php";
 
+session_start();
+
+$validNames = [
+    $_SESSION['checkoutId'],
+    $_SESSION['checkoutSize'],
+    $_SESSION['checkoutQty'],
+    $_SESSION['checkoutMRP'],
+    $_SESSION['checkoutTravelTime']
+];
+
+if(isset($_GET['product_id'])){
+    $checkValue = [
+        $_GET['product_id'],
+        $_GET['size'],
+        $_GET['qty'],
+        $_GET['MRP'],
+        $_GET['TravelTime']
+    ];
+
+    $allAvailable = !array_diff($checkValue, $validNames);
+    if (!$allAvailable) {
+        header("Location: product_detail.php");
+        exit();
+    }
+}
+
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
     $product_find = "SELECT * FROM products WHERE product_id = '$product_id'";
@@ -181,6 +207,10 @@ if (isset($_GET['product_id'])) {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="flex item-center gap-1 mt-8">
+                    <span class="text-lg font-semibold">Deliverd In Just:</span>
+                    <p class="my-auto text-green-500 font-bold"><?php echo isset($product_id) ? $travelTime . " minutes" : 'Time'; ?></p>
                 </div>
                 <p class="mt-8 text-xl font-medium">Payment methods</p>
                 <p class="text-gray-400">Complete your order by providing your payment details.</p>

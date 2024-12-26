@@ -18,7 +18,29 @@
 
 <?php
 
+session_start();
+
 include "../include/connect.php";
+
+$validNames = [
+    $_SESSION['order_id']
+];
+
+if (isset($_GET['order_id'])) {
+    $checkValue = [
+        $_GET['order_id']
+    ];
+
+    $allAvailable = !array_diff($checkValue, $validNames);
+
+    if (!$allAvailable) {
+        header("Location: ../user/show_orders.php");
+        exit();
+    }
+}else{
+    header("Location: ../user/show_orders.php");
+    exit();
+}
 
 if(isset($_GET['order_id'])){
     $order_id = $_GET['order_id'];

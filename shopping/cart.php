@@ -21,6 +21,16 @@ if (isset($_SESSION['searchWord'])) {
 if (isset($_SESSION['selectedSize'])) {
     unset($_SESSION['selectedSize']);
 }
+
+if(isset($_SESSION['totalCartPrice'])){
+    unset($_SESSION['totalCartPrice']);
+}
+if(isset($_SESSION['qty'])){
+    unset($_SESSION['qty']);
+}
+if(isset($_SESSION['travelTime'])){
+    unset($_SESSION['travelTime']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +76,7 @@ if (isset($_SESSION['selectedSize'])) {
                         <?php
                         $quantities = [];
                         $totalCartPrice = 0;
+                        $totalTime = 0;
                         if (isset($_COOKIE['Cart_products'])) {
                             $cookie_value = $_COOKIE['Cart_products'];
 
@@ -103,9 +114,16 @@ if (isset($_SESSION['selectedSize'])) {
                                     return null;
                                 }
                             }
-                            $halfTime    = 0;
+                            $halfTime = 0;
                             $cart_products = json_decode($cookie_value, true);
                             if (!empty($cart_products) && is_array($cart_products)) {
+                                $check = '';
+                                foreach($cart_products as $Cproducts){
+                                    $ss = $Cproducts['cart_id'];
+                                    $check .= $ss . ',';
+                                }
+                                $check = rtrim($check, ',');
+                                $cart_ids = explode(',', $check);
                                 foreach ($cart_products as $Cproducts) {
                                     $cart_products_id = $Cproducts['cart_id'];
                                     $cart_products_image = $Cproducts['cart_image'];
@@ -225,7 +243,12 @@ if (isset($_SESSION['selectedSize'])) {
 
                                     $TravelTime = number_format($result['travelTime']) + 25;
                                     $halfTime += $TravelTime;
-                                    $totalTime = $halfTime / 2;
+                                    
+                                    if(count($cart_ids) >= 2){
+                                        $totalTime = $halfTime / 2;
+                                    }else{
+                                        $totalTime = $halfTime;
+                                    }
                                 }
                             } else {
                                 ?>
@@ -273,6 +296,9 @@ if (isset($_SESSION['selectedSize'])) {
                             $color = 'color';
                             $size = 'size';
                             $url = 'checkout_from_cart.php?totalPrice=' . urlencode($totalCartPrice) . '&qty=' . urlencode($encode_josn) . '&travelTime=' . $totalTime;
+                            $_SESSION['totalCartPrice'] = $totalCartPrice;
+                            $_SESSION['qty'] = $encode_josn;
+                            $_SESSION['travelTime'] = $totalTime;
                         } else {
                             $url = '/authentication/user_auth/user_login.php';
                         }

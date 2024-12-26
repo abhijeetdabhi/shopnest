@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])) {
-    header("Location: /index.php");
+    header("Location: /user/show_orders.php");
     exit;
 }
 
@@ -19,7 +19,24 @@ if (isset($_COOKIE['adminEmail'])) {
 
 <?php
 include "../include/connect.php";
+session_start();
 
+$validNames = [
+    $_SESSION['order_id']
+];
+
+if (isset($_GET['order_id'])) {
+    $checkValue = [
+        $_GET['order_id']
+    ];
+
+    $allAvailable = !array_diff($checkValue, $validNames);
+
+    if (!$allAvailable) {
+        header("Location: ../user/show_orders.php");
+        exit();
+    }
+}
 if (isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];
     $user_name = $_COOKIE['fname'];
@@ -150,6 +167,13 @@ if (isset($_COOKIE['user_id'])) {
                 ?>
                     <a href="../user/re-order.php?product_id=<?php echo urlencode($products_id); ?>&color=<?php echo $product_color; ?>&size=<?php echo $product_size; ?>&qty=<?php echo $product_qty; ?>&MRP=<?php echo $product_MRP ?>&travelTime=<?php echo $travelTime ?>" class="bg-gray-600 text-white font-semibold py-2.5 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Re-Order</a>
                 <?php
+
+                $_SESSION['reOrderId'] = $products_id;
+                $_SESSION['reOrderColor'] = $product_color;
+                $_SESSION['reOrderSize'] = $product_size;
+                $_SESSION['reOrderQty'] = $product_qty;
+                $_SESSION['reOrderMRP'] = $product_MRP;
+                $_SESSION['reOrderTravelTime'] = $travelTime;
                 } else {
                 ?>
                     <h1 class="bg-gray-600 text-white font-semibold py-2.5 px-6 w-max rounded-tl-xl rounded-br-xl cursor-not-allowed">Re-Order</h1>

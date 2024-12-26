@@ -20,6 +20,27 @@
 <?php
     include "../include/connect.php";
 
+    session_start();
+
+    $validNames = [
+        $_SESSION['checkoutId'],
+    ];
+
+    if(isset($_GET['product_id'])){
+        $checkValue = [
+            $_GET['product_id'],
+        ];
+
+        $allAvailable = !array_diff($checkValue, $validNames);
+        if (!$allAvailable) {
+            header("Location: product_detail.php?product_id=" . $_SESSION['checkoutId']);
+            exit();
+        }
+    }else{
+        header("Location: product_detail.php?product_id=" . $_SESSION['checkoutId']);
+        exit();
+    }
+
     if(isset($_GET['product_id'])) {
         $product_id = $_GET['product_id'];
         
@@ -42,6 +63,9 @@
         $userFirstName = $fetchUser['first_name'];
         $userLastName = $fetchUser['last_name'];
         $userprofileImage = $fetchUser['profile_image'];
+    }else{
+        header("Location: product_detail.php?product_id=" . $_SESSION['checkoutId']);
+        exit();
     }
 ?>
 <!DOCTYPE html>

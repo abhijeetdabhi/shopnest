@@ -17,7 +17,15 @@ if (isset($_COOKIE['adminEmail'])) {
 ?>
 
 <?php
+session_start();
 include "../include/connect.php";
+
+foreach (['checkoutId', 'checkoutSize', 'checkoutQty', 'checkoutMRP', 'checkoutTravelTime'] as $key) {
+    if (isset($_SESSION[$key])) {
+        unset($_SESSION[$key]);
+    }
+}
+
 
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
@@ -146,7 +154,13 @@ if (isset($_GET['product_id'])) {
             <script>
                 window.location.href = 'checkout.php?product_id=<?php echo urlencode($product_id); ?>&size=<?php echo $selectedSize; ?>&qty=<?php echo $qty; ?>&MRP=<?php echo $MRP ?>&TravelTime=<?php echo $TravelTime ?>'
             </script>
+
         <?php
+            $_SESSION['checkoutId'] = $product_id;
+            $_SESSION['checkoutSize'] = $selectedSize;
+            $_SESSION['checkoutQty'] = $qty;
+            $_SESSION['checkoutMRP'] = $MRP;
+            $_SESSION['checkoutTravelTime'] = $TravelTime;
             unset($_SESSION['selectedSize'][$product_id]);
         } else {
         ?>
@@ -718,6 +732,7 @@ if (isset($_GET['product_id'])) {
                             ?>
                                 <a href="add_review.php?product_id=<?php echo $product_id; ?>" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
                             <?php
+                            $_SESSION['checkoutId'] = $product_id;
                             } else {
                             ?>
                                 <a href="../authentication/user_auth/user_login.php" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
