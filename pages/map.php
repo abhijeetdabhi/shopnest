@@ -17,14 +17,11 @@ if (isset($_COOKIE['adminEmail'])) {
 ?>
 
 <!DOCTYPE html>
-<html class="use-all-space">
-
+<html lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta charset="UTF-8" />
-    <title>My Map</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Location on Map</title>
     <!-- Tailwind Script  -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
@@ -38,9 +35,10 @@ if (isset($_COOKIE['adminEmail'])) {
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js"></script>
     <style>
         #map {
-            width: 60vw;
+            width: 100%;
             height: 60vh;
-            display: none;
+            margin: auto;
+            border-radius: 8px;
         }
 
         /* Custom style for the search box input */
@@ -137,9 +135,14 @@ if (isset($_COOKIE['adminEmail'])) {
         <h1 class="flex-grow text-center text-lg font-semibold">Your Location</h1>
     </header>
 
-    <div id="map" class="map"></div>
-    <div id="distance" class="hidden">Click to select the first point.</div>
-
+    <div class="max-w-screen-md m-auto">
+        <div id="searchBox"></div>
+        <div id="map" class=""></div>
+        <input type="hidden" id="latitude">
+        <input type="hidden" id="longitude">
+        <button id="setLatLng" class="m-auto border bg-red-500 rounded-tl-xl rounded-br-xl text-white w-full p-2 flex items-center justify-center mt-3 hover:bg-red-600 transition-all duration-200">Set Location</button>
+    </div>
+        
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
     <script>
         function loader() {
@@ -154,76 +157,92 @@ if (isset($_COOKIE['adminEmail'])) {
             }, 2000);
         }
 
-        tt.setProductInfo("hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw", "6.25.0");
+        let apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+        tt.setProductInfo(apiKey, "6.25.0");
         let map = tt.map({
-            key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
-            container: "map",
+            key: apiKey,
+            container: 'map',
+            zoom: 3,
+            center: [0, 0]
         });
-
-        var options = {
-            searchOptions: {
-                key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
-                language: "en-GB",
-                limit: 5,
-            },
-            autocompleteOptions: {
-                key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
-                language: "en-GB",
-            },
-        };
-
-        var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
-        var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
-        document.body.append(searchBoxHTML);
-
-        // Predefined location coordinates
-        var predefinedLocation = {
-            lat: 21.23639167790857,
-            lng: 72.82233304180576
-        };
 
         var currentMarker = null;
 
-        // Function to remove the current marker
         function removeCurrentMarker() {
             if (currentMarker) {
                 currentMarker.remove();
             }
         }
 
-        // Haversine formula to calculate the distance
-        function haversine(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distance = R * c;
-            return distance;
-        }
+        var options = {
+                searchOptions: {
+                    key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                    language: "en-GB",
+                    limit: 5,
+                },
+                autocompleteOptions: {
+                    key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                    language: "en-GB",
+                },
+            };
 
-        // Handle search result selection
-        ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
-            const selectedResult = event.data.result;
+        var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
+        var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
+        let searchBox = document.getElementById('searchBox');
+        searchBox.append(searchBoxHTML);
+
+        ttSearchBox.on('tomtom.searchbox.resultselected', function(e) {
+            const selectedResult = e.data.result;
             const coordinates = selectedResult.position;
 
+            let latitude = document.getElementById('latitude');
+            let longitude = document.getElementById('longitude');
+        
             removeCurrentMarker();
-
-            // Add a marker at the selected search location
+        
             currentMarker = new tt.Marker()
-                .setLngLat(coordinates)
+                .setLngLat([coordinates.lng, coordinates.lat])
                 .addTo(map);
+        
+            
+            latitude.value = coordinates.lat;
+            longitude.value = coordinates.lng;
+        
+            map.setCenter([coordinates.lng, coordinates.lat]);
+            map.setZoom(14);   
+        });
 
-            var distance = haversine(predefinedLocation.lat, predefinedLocation.lng, coordinates.lat, coordinates.lng);
+        map.on('click', function(e) {
+            var latitude = e.lngLat.lat;
+            var longitude = e.lngLat.lng;
+
+            let latitudeDiv = document.getElementById('latitude');
+            let longitudeDiv = document.getElementById('longitude');
+        
+            removeCurrentMarker();
+        
+            currentMarker = new tt.Marker()
+                .setLngLat([longitude, latitude])
+                .addTo(map);
+        
+            latitudeDiv.value = latitude;
+            longitudeDiv.value = longitude;
+
+            map.setCenter([longitude, latitude]);
+        });
+
+        let setLatLng = document.getElementById('setLatLng');
+
+        setLatLng.addEventListener("click", function(){
+            let latitudeDiv = document.getElementById('latitude').value;
+            let longitudeDiv = document.getElementById('longitude').value;
 
             fetch('set_location.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: 'latitude=' + coordinates.lat + '&longitude=' + coordinates.lng
+                    body: 'latitude=' + latitudeDiv + '&longitude=' + longitudeDiv
                 })
                 .then(response => response.text())
                 .then(data => {
@@ -231,17 +250,10 @@ if (isset($_COOKIE['adminEmail'])) {
                 })
                 .catch(error => console.error('Error:', error));
 
-
-            var distanceDisplay = document.getElementById('distance');
-            if (distance > 15) {
-                distanceDisplay.innerHTML = "We cannot go there, the location is more than 15 km away.";
-            } else {
-                distanceDisplay.innerHTML = "Distance: " + distance.toFixed(2) + " km";
-            }
-
             loader();
-        });
-    </script>
-</body>
+        })
 
+    </script>
+
+</body>
 </html>

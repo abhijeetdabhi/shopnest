@@ -44,7 +44,7 @@
             $userState = $state; 
             $userCity = $city; 
             $userPincode = $pincode ; 
-            $userPassword = $password; 
+            $userPassword = $pass; 
             $userLoginDate = $user_reg_date; 
         
             $insert_reg_data = "INSERT INTO user_registration(first_name, last_name, phone, email, profile_image, Address, state, city, pin, password, date) VALUES ('$userFirstName', '$userLastName', '$userPhoneNumber', '$userEmailAddress', '$userProfileImage', '$userAddress', '$userState', '$userCity', '$userPincode', '$userPassword' ,'$userLoginDate')";
