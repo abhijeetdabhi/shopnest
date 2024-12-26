@@ -448,7 +448,18 @@ $company_name = $_GET['brandName'];
                             </ul>
                         </div>
                     </div>
-                    <input class="rounded-tl-xl rounded-br-xl mt-2 text-center w-full bg-gray-700 py-2 px-12 text-white hover:bg-gray-800 cursor-pointer transition duration-300" type="submit" value="Search" name="submit">
+                    <button type="submit" name="submit" class="flex justify-center items-center gap-2 rounded-tl-xl rounded-br-xl mt-2 text-center w-full bg-gray-700 py-2 text-white hover:bg-gray-800 cursor-pointer transition duration-300">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                <g>
+                                    <path d="M53.39 8H10.61a5.61 5.61 0 0 0-4.15 9.38L25 37.77V57a2 2 0 0 0 1.13 1.8 1.94 1.94 0 0 0 .87.2 2 2 0 0 0 1.25-.44l3.75-3 6.25-5A2 2 0 0 0 39 49V37.77l18.54-20.39A5.61 5.61 0 0 0 53.39 8z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span>
+                            Apply Filter
+                        </span>
+                    </button>
                 </form>
                 <?php
                 $filters = [];
@@ -1036,7 +1047,18 @@ $company_name = $_GET['brandName'];
                         </div>
                     </div>
 
-                    <input class="rounded-tl-xl rounded-br-xl mt-2 text-center w-full bg-gray-700 py-2 px-12 text-white hover:bg-gray-800 cursor-pointer transition duration-300" type="submit" value="Search" name="submit">
+                    <button type="submit" name="submit" class="flex justify-center items-center gap-2 rounded-tl-xl rounded-br-xl mt-2 text-center w-full bg-gray-700 py-2 text-white hover:bg-gray-800 cursor-pointer transition duration-300">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                <g>
+                                    <path d="M53.39 8H10.61a5.61 5.61 0 0 0-4.15 9.38L25 37.77V57a2 2 0 0 0 1.13 1.8 1.94 1.94 0 0 0 .87.2 2 2 0 0 0 1.25-.44l3.75-3 6.25-5A2 2 0 0 0 39 49V37.77l18.54-20.39A5.61 5.61 0 0 0 53.39 8z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span>
+                            Apply Filter
+                        </span>
+                    </button>
                 </form>
             </div>
         </div>
