@@ -26,6 +26,34 @@ session_start();
 <?php
 include "../include/connect.php";
 
+$totalPriceOfProducts = $_SESSION['totalCartPrice'];
+$totalQtyOfProducts = $_SESSION['qty'];
+$totalTravelTimeOfProducts = $_SESSION['travelTime'];
+
+$validNames = [$totalPriceOfProducts, $totalQtyOfProducts, $totalTravelTimeOfProducts];
+
+if(isset($_GET['totalPrice']) && isset($_GET['qty']) && isset($_GET['travelTime'])){
+    $totalPriceOfProducts = $_GET['totalPrice'];
+    $totalQtyOfProducts = $_GET['qty'];
+    $totalTravelTimeOfProducts = $_GET['travelTime'];
+
+    $checkValue = [$totalPriceOfProducts, $totalQtyOfProducts, $totalTravelTimeOfProducts];
+
+    $allAvailable = true;
+    foreach($checkValue as $value){
+        if(!in_array($value, $validNames)){
+            $allAvailable = false;
+        }
+    }
+
+    if(!$allAvailable){
+        echo "available";
+        header("Location: cart.php");
+        exit();
+    }
+
+}
+
 if (isset($_COOKIE['user_id'])) {
     $totalPrice = $_GET['totalPrice'];
     $myCookie = $_COOKIE['user_id'];

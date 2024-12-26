@@ -19,7 +19,35 @@ if (isset($_COOKIE['adminEmail'])) {
 <?php
 include "../include/connect.php";
 
-if (isset($_GET['product_id'])) {
+session_start();
+
+$validNames = [
+    $_SESSION['reOrderId'],
+    $_SESSION['reOrderColor'],
+    $_SESSION['reOrderSize'],
+    $_SESSION['reOrderQty'],
+    $_SESSION['reOrderMRP'],
+    $_SESSION['reOrderTravelTime']
+];
+
+if(isset($_GET['product_id']) && isset($_GET['color']) && isset($_GET['size']) && isset($_GET['qty']) && isset($_GET['MRP']) && isset($_GET['travelTime'])){
+    $checkValue = [
+        $_GET['product_id'],
+        $_GET['color'],
+        $_GET['size'],
+        $_GET['qty'],
+        $_GET['MRP'],
+        $_GET['travelTime']
+    ];
+
+    $allAvailable = !array_diff($checkValue, $validNames);
+    if (!$allAvailable) {
+        header("Location: ../user/show_orders.php");
+        exit();
+    }
+}
+
+if(isset($_GET['product_id']) && isset($_GET['color']) && isset($_GET['size']) && isset($_GET['qty']) && isset($_GET['MRP']) && isset($_GET['travelTime'])){
     $product_id = $_GET['product_id'];
     $travelTime = $_GET['travelTime'];
 
@@ -58,6 +86,9 @@ if (isset($_GET['product_id'])) {
     $user_query = mysqli_query($con, $get_user);
 
     $us = mysqli_fetch_assoc($user_query);
+}else{
+    header("Location: ../user/show_orders.php");
+    exit();
 }
 
 ?>
@@ -173,6 +204,10 @@ if (isset($_GET['product_id'])) {
                             <p class="my-auto"><?php echo isset($product_id) ? $qty : 'product Quantity'; ?></p>
                         </div>
                     </div>
+                </div>
+                <div class="flex item-center gap-1 mt-8">
+                    <span class="text-lg font-semibold">Deliverd In Just:</span>
+                    <p class="my-auto text-green-500 font-bold"><?php echo isset($product_id) ? $travelTime . " minutes" : 'Time'; ?></p>
                 </div>
                 <p class="mt-8 text-xl font-medium">Payment methods</p>
                 <p class="text-gray-400">Complete your order by providing your payment details.</p>

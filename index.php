@@ -17,16 +17,20 @@ include "include/connect.php";
 
 session_start();
 
-if (isset($_SESSION['searchWord'])) {
-    unset($_SESSION['searchWord']);
-}
+$sessionKeys = [
+    'totalCartPrice', 'qty', 'travelTime',
+    'checkoutId', 'checkoutSize', 'checkoutQty', 'checkoutMRP', 'checkoutTravelTime',
+    'order_id',
+    'reOrderId', 'reOrderColor', 'reOrderSize', 'reOrderQty', 'reOrderMRP', 'reOrderTravelTime',
+    'searchWord',
+    'sort',
+    'selectedSize'
+];
 
-if (isset($_SESSION['sort'])) {
-    unset($_SESSION['sort']);
-}
-
-if (isset($_SESSION['selectedSize'])) {
-    unset($_SESSION['selectedSize']);
+foreach ($sessionKeys as $key) {
+    if (isset($_SESSION[$key])) {
+        unset($_SESSION[$key]);
+    }
 }
 
 if (isset($_SESSION['views'])) {
