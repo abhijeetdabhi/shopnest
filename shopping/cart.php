@@ -22,13 +22,13 @@ if (isset($_SESSION['selectedSize'])) {
     unset($_SESSION['selectedSize']);
 }
 
-if(isset($_SESSION['totalCartPrice'])){
+if (isset($_SESSION['totalCartPrice'])) {
     unset($_SESSION['totalCartPrice']);
 }
-if(isset($_SESSION['qty'])){
+if (isset($_SESSION['qty'])) {
     unset($_SESSION['qty']);
 }
-if(isset($_SESSION['travelTime'])){
+if (isset($_SESSION['travelTime'])) {
     unset($_SESSION['travelTime']);
 }
 ?>
@@ -118,7 +118,7 @@ if(isset($_SESSION['travelTime'])){
                             $cart_products = json_decode($cookie_value, true);
                             if (!empty($cart_products) && is_array($cart_products)) {
                                 $check = '';
-                                foreach($cart_products as $Cproducts){
+                                foreach ($cart_products as $Cproducts) {
                                     $ss = $Cproducts['cart_id'];
                                     $check .= $ss . ',';
                                 }
@@ -243,10 +243,10 @@ if(isset($_SESSION['travelTime'])){
 
                                     $TravelTime = number_format($result['travelTime']) + 25;
                                     $halfTime += $TravelTime;
-                                    
-                                    if(count($cart_ids) >= 2){
+
+                                    if (count($cart_ids) >= 2) {
                                         $totalTime = $halfTime / 2;
-                                    }else{
+                                    } else {
                                         $totalTime = $halfTime;
                                     }
                                 }
@@ -342,7 +342,7 @@ if(isset($_SESSION['travelTime'])){
 
     <div class="py-12 max-w-screen-xl m-auto px-6">
         <span class="text-2xl font-medium">People also search</span>
-        <div class="product-container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4">
+        <div class="product-container grid grid-cols-1 min-[560px]:grid-cols-2 min-[820px]:grid-cols-3 min-[1100px]:grid-cols-4 xl:grid-cols-4 gap-10 mt-4">
             <?php
             $vendorLatitudes = [];
             $vendorLongitudes = [];
@@ -402,7 +402,7 @@ if(isset($_SESSION['travelTime'])){
 
                     <div class="swiper-slide">
                         <div class=" flex justify-center">
-                            <div class="product-card card flex flex-col items-center ring-2 ring-gray-300 rounded-tl-2xl rounded-br-2xl w-64 hover:ring-none overflow-hidden">
+                            <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                                 <div class="p-2" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                     <img src="<?php echo '/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
                                 </div>
@@ -424,7 +424,7 @@ if(isset($_SESSION['travelTime'])){
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center">
+                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
                                     <?php
                                     if ($qty > 0) {
                                     ?>
