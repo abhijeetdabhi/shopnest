@@ -476,7 +476,7 @@ if (isset($_GET['product_id'])) {
                 <!-- color -->
                 <?php
                 $sameId = $res['same_id'];
-                $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId'";
+                $color_product_find = "SELECT * FROM products WHERE same_id = '$sameId' AND vendor_id = '$vendor_id'";
                 $color_product_query = mysqli_query($con, $color_product_find);
 
                 // Check if there are any valid colors
