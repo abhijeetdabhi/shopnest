@@ -677,9 +677,13 @@ $_SESSION['searchWord'] = $keywords;
                 <?php
                 } else {
                 ?>
-                    <div class="text-center w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6M9 16h6M10.29 8.293a1 1 0 011.42 0L12 9.414l.29-.29a1 1 0 011.42 1.42L13.414 12l.293.293a1 1 0 01-1.42 1.42L12 13.414l-.293.293a1 1 0 01-1.42-1.42L10.586 12l-.293-.293a1 1 0 010-1.42z" />
+                    <div class="w-full flex flex-col justify-center items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 66 66" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-24 mb-3 text-gray-700">
+                            <g>
+                                <path d="M22.71 31.52H8.72l-7.22 8.6h13.99zM48.67 29.11c5.48-5.48 5.48-14.37 0-19.85s-14.37-5.48-19.85 0-5.48 14.37 0 19.85 14.37 5.48 19.85 0zM30.94 11.38c2.08-2.08 4.86-3.23 7.8-3.23 2.95 0 5.72 1.15 7.8 3.23 4.3 4.3 4.3 11.3 0 15.6-2.08 2.08-4.85 3.23-7.8 3.23s-5.72-1.15-7.8-3.23c-4.3-4.3-4.3-11.3 0-15.6z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                <path d="M38.74 28.22c2.41 0 4.68-.94 6.39-2.65 3.52-3.52 3.52-9.25 0-12.78a8.962 8.962 0 0 0-6.39-2.65c-2.41 0-4.68.94-6.39 2.65-3.52 3.52-3.52 9.25 0 12.78a8.98 8.98 0 0 0 6.39 2.65zm-5.11-12.74a.996.996 0 1 1 1.41-1.41l3.7 3.7 3.7-3.7a.996.996 0 1 1 1.41 1.41l-3.7 3.7 3.7 3.7a.996.996 0 0 1-.71 1.7c-.26 0-.51-.1-.71-.29l-3.7-3.7-3.7 3.7c-.2.2-.45.29-.71.29s-.51-.1-.71-.29a.996.996 0 0 1 0-1.41l3.7-3.7zM7.72 42.12v18.73h14.99V34.63l-6.29 7.49zM47.33 32.94l-.15-.15a15.868 15.868 0 0 1-8.45 2.42c-3.78 0-7.36-1.3-10.23-3.69h-3.8l7.22 8.59h20.52l-3.63-3.63a5.135 5.135 0 0 1-1.48-3.54zM63.59 39.64l-8.96-8.96a3.114 3.114 0 0 0-2.88-.83l-.56-.56a16.002 16.002 0 0 1-2.34 2.34l.56.56c-.23 1 .05 2.1.83 2.88l8.96 8.96c1.21 1.21 3.18 1.21 4.39 0s1.21-3.18 0-4.39z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                <path d="M24.71 34.63v26.22h26.62V42.12H31zm11.37 22.69h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1s-.45 1-1 1zm1-4.91c0 .55-.45 1-1 1h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                            </g>
                         </svg>
                         <h1 class="text-3xl font-semibold text-gray-800">No Products Found</h1>
                         <p class="text-gray-600 mt-2">It looks like no products match your selected filters.</p>
@@ -688,170 +692,127 @@ $_SESSION['searchWord'] = $keywords;
                 }
                 ?>
 
+                <!-- Pagination Section -->
+                <div x-data="pagination()" x-init="showPage(currentPage)" class="pagination flex justify-center items-center gap-2 mt-5" x-cloak>
+                    <!-- Left Arrow -->
+                    <div class="arrow-button mr-1" x-show="totalPages > 1" x-transition>
+                        <button :disabled="currentPage === 1" @click="showPage(currentPage - 1)" class="pagination-button bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md" x-cloak>
+                            <svg class="w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492">
+                                <path d="M198.608 246.104L382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor"></path>
+                            </svg>
+                        </button>
+                    </div>
 
-                <!-- Add more product cards as needed -->
+                    <!-- Pagination Buttons -->
+                    <div class="pagination-buttons" x-html="paginationButtons"></div>
 
-                <div class="pagination flex justify-center items-center gap-2 mt-5">
-                    <button class=" bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md cursor-pointer" id="prev-page"><svg class="w-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 492 492" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                            <g>
-                                <path d="M198.608 246.104 382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                            </g>
-                        </svg></button> <!-- Left Arrow -->
-
-                    <div class="pagination-buttons"></div>
-
-                    <button class="bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md cursor-pointer" id="next-page"><svg class="w-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                            <g>
-                                <path d="M382.678 226.804 163.73 7.86C158.666 2.792 151.906 0 144.698 0s-13.968 2.792-19.032 7.86l-16.124 16.12c-10.492 10.504-10.492 27.576 0 38.064L293.398 245.9l-184.06 184.06c-5.064 5.068-7.86 11.824-7.86 19.028 0 7.212 2.796 13.968 7.86 19.04l16.124 16.116c5.068 5.068 11.824 7.86 19.032 7.86s13.968-2.792 19.032-7.86L382.678 265c5.076-5.084 7.864-11.872 7.848-19.088.016-7.244-2.772-14.028-7.848-19.108z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                            </g>
-                        </svg>
-                    </button> <!-- Right Arrow -->
+                    <!-- Right Arrow -->
+                    <div class="arrow-button ml-1" x-show="totalPages > 1" x-transition>
+                        <button :disabled="currentPage === totalPages" @click="showPage(currentPage + 1)" class="pagination-button bg-gray-600 h-6 w-6 flex justify-center items-center text-white rounded-tl-md rounded-br-md" x-cloak>
+                            <svg class="w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492.004 492.004">
+                                <path d="M382.678 226.804L163.73 7.86C158.666 2.792 151.906 0 144.698 0s-13.968 2.792-19.032 7.86l-16.124 16.12c-10.492 10.504-10.492 27.576 0 38.064L293.398 245.9l-184.06 184.06c-5.064 5.068-7.86 11.824-7.86 19.028 0 7.212 2.796 13.968 7.86 19.04l16.124 16.116c5.068 5.068 11.824 7.86 19.032 7.86s13.968-2.792 19.032-7.86L382.678 265c5.076-5.084 7.864-11.872 7.848-19.088.016-7.244-2.772-14.028-7.848-19.108z" fill="currentColor"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
     <!-- pagination js -->
     <script>
-        $(document).ready(function() {
-            var rowsPerPage = 2; // Rows per page
-            var currentPage = 1;
-            var totalPages = 0;
+        function pagination() {
+            return {
+                currentPage: 1,
+                totalPages: 0,
+                rowsPerPage: 2,
+                productCards: document.querySelectorAll('.product-card'),
 
-            function getCardsPerRow() {
-                if (window.innerWidth >= 1536) {
-                    return 6; // 6 cards per row for 2xl screens
-                } else if (window.innerWidth >= 1280) {
-                    return 5; // 5 cards per row for xl screens
-                } else if (window.innerWidth >= 1024) {
-                    return 3; // 3 cards per row for lg screens
-                } else if (window.innerWidth >= 768) {
-                    return 2; // 2 cards per row for md screens
-                } else {
-                    return 1; // 1 card per row for smaller screens
-                }
-            }
+                getCardsPerRow() {
+                    if (window.innerWidth >= 1536) return 6;
+                    if (window.innerWidth >= 1280) return 5;
+                    if (window.innerWidth >= 1024) return 3;
+                    if (window.innerWidth >= 768) return 2;
+                    return 1;
+                },
 
-            function showPage(page) {
-                var cardsPerRow = getCardsPerRow();
-                var itemsPerPage = cardsPerRow * rowsPerPage;
-                var $productCards = $('.product-card');
-                var totalItems = $productCards.length;
+                showPage(page) {
+                    let cardsPerRow = this.getCardsPerRow();
+                    let itemsPerPage = cardsPerRow * this.rowsPerPage;
+                    let totalItems = this.productCards.length;
 
-                // Recalculate total pages based on screen size
-                totalPages = Math.ceil(totalItems / itemsPerPage);
+                    // Recalculate total pages based on screen size
+                    this.totalPages = Math.ceil(totalItems / itemsPerPage);
 
-                // Ensure current page is valid
-                if (page > totalPages) {
-                    page = totalPages;
-                } else if (page < 1) {
-                    page = 1;
-                }
-                currentPage = page;
+                    // Ensure current page is valid
+                    if (page > this.totalPages) page = this.totalPages;
+                    if (page < 1) page = 1;
 
-                // Hide all cards
-                $productCards.hide();
+                    this.currentPage = page;
 
-                // Calculate visible range
-                var startIndex = (page - 1) * itemsPerPage;
-                var endIndex = startIndex + itemsPerPage;
+                    // Hide all cards
+                    this.productCards.forEach(card => card.style.display = 'none');
 
-                // Show visible cards
-                $productCards.slice(startIndex, endIndex).show();
+                    // Calculate visible range
+                    let startIndex = (page - 1) * itemsPerPage;
+                    let endIndex = startIndex + itemsPerPage;
 
-                // Update pagination buttons and arrow states
-                updatePagination();
-
-                // Scroll the page to the top (smooth scroll)
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth' // Smooth scroll effect
-                });
-            }
-
-            function updatePagination() {
-                var $paginationButtons = $('.pagination-buttons');
-                var $paginationContainer = $('.pagination'); // Select the entire pagination container
-
-                $paginationButtons.empty(); // Clear existing pagination buttons
-
-                // Only show pagination if there is more than one page
-                if (totalPages > 1) {
-                    // Always show the first page
-                    $paginationButtons.append(`
-                <button class="pagination-btn ${currentPage === 1 ? 'active' : ''}" data-page="1">1</button>
-            `);
-
-                    // Add dots after the first page if the current page is greater than 2
-                    if (currentPage > 2) {
-                        $paginationButtons.append('<span class="dots">...</span>');
+                    // Show visible cards
+                    for (let i = startIndex; i < endIndex; i++) {
+                        if (this.productCards[i]) {
+                            this.productCards[i].style.display = 'block';
+                        }
                     }
 
-                    // Show the current page
-                    if (currentPage !== 1 && currentPage !== totalPages) {
-                        $paginationButtons.append(`
-                    <button class="pagination-btn active" data-page="${currentPage}">
-                        ${currentPage}
-                    </button>
-                `);
-                    }
-
-                    // Add dots before the last page if the current page is less than the last page minus 1
-                    if (currentPage < totalPages - 1) {
-                        $paginationButtons.append('<span class="dots">...</span>');
-                    }
-
-                    // Always show the last page
-                    $paginationButtons.append(`
-                <button class="pagination-btn ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">
-                    ${totalPages}
-                </button>
-            `);
-
-                    // Update arrow button states
-                    $('#prev-page').prop('disabled', currentPage === 1);
-                    $('#next-page').prop('disabled', currentPage === totalPages);
-
-                    // Attach event listeners to pagination buttons
-                    $('.pagination-btn').on('click', function() {
-                        var page = parseInt($(this).data('page'));
-                        showPage(page);
+                    // Scroll to the top of the page
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
                     });
 
-                    // Show pagination container
-                    $paginationContainer.show();
-                } else {
-                    // Hide pagination if there is only 1 page
-                    $paginationContainer.hide();
+                    // Update pagination buttons
+                    this.updatePagination();
+                },
+
+
+                updatePagination() {
+                    let paginationButtons = '';
+
+                    // Only show pagination if there is more than one page
+                    if (this.totalPages > 1) {
+                        // Always show the first page
+                        paginationButtons += `<button :class="{'bg-blue-600 text-white': currentPage === 1,'bg-gray-200 text-black': currentPage !== 1,'flex justify-center items-center h-6 w-6 rounded-tl-md rounded-br-md border-2 border-gray-500': true}" @click="showPage(1)">1</button>`;
+
+                        // Add dots after the first page if there are more than 2 pages and the current page is greater than 3
+                        if (this.currentPage >= 3) {
+                            paginationButtons += `<span class="dots">...</span>`;
+                        }
+
+                        // Show pages between the first and last
+                        if (this.currentPage >= 2) {
+                            paginationButtons += `<button :class="{'bg-blue-600 text-white': currentPage === ${this.currentPage},'bg-gray-200 text-black': currentPage !== ${this.currentPage},'flex justify-center items-center h-6 w-6 rounded-tl-md rounded-br-md border-2 border-gray-500': true}" @click="showPage(${this.currentPage})">${this.currentPage}</button>`;
+                        }
+
+                        // Add dots before the last page if there are more than 2 pages and the current page is less than totalPages - 2
+                        if (this.currentPage < this.totalPages - 1) {
+                            paginationButtons += `<span class="dots">...</span>`;
+                        }
+
+                        // Always show the last page if it's not already shown
+                        if (this.currentPage !== this.totalPages) {
+                            paginationButtons += `<button :class="{'bg-blue-600 text-white': currentPage === ${this.totalPages},'bg-gray-200 text-black': currentPage !== ${this.totalPages},'flex justify-center items-center h-6 w-6 rounded-tl-md rounded-br-md border-2 border-gray-500': true}" @click="showPage(${this.totalPages})">${this.totalPages}</button>`;
+                        }
+                    }
+
+                    // Bind the pagination buttons to the element
+                    this.paginationButtons = paginationButtons;
                 }
-            }
-
-            // Arrow button click handlers
-            $('#prev-page').on('click', function() {
-                if (currentPage > 1) {
-                    showPage(currentPage - 1);
-                }
-            });
-
-            $('#next-page').on('click', function() {
-                if (currentPage < totalPages) {
-                    showPage(currentPage + 1);
-                }
-            });
-
-            // Recalculate pagination on window resize
-            $(window).resize(function() {
-                showPage(currentPage);
-            });
-
-            // Initialize
-            showPage(currentPage);
-        });
+            };
+        }
     </script>
 
-
     <!-- sidebar -->
-    <!-- add hidden in container -->
     <div id="filterSidebarContainer" class="hidden bg-gray-50 pb-3 font-medium fixed top-0 right-0 w-fit h-[100vh] overflow-y-auto z-50 sidebarScroll" x-cloak>
         <div id="filterSidebarHeader" class="p-2 bg-gray-200 flex justify-between items-center">
             <div class="flex items-center gap-2">
