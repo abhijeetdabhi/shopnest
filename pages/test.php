@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,20 +55,24 @@
         .tt-search-box-input-container {
             width: 100%;
             height: 50px;
-            border: 2px solid #d1d5db ;
+            border: 2px solid #d1d5db;
             border-radius: 8px;
             margin: auto;
         }
     </style>
 </head>
-<body>
 
-    <div class="col-span-4 p-4 grid grid-cols-3 gap-x-4 gap-y-5" id="container">
+<body style="font-family: 'Outfit', sans-serif;">
 
+    <div class="p-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5" id="container">
+        
     </div>
-    <button id="addBox" class="border shadow-sm p-3 text-white rounded-md bg-blue-500 hover:bg-blue-600 transition duration-200 cursor-pointer">Add More Search Box</button>
-    <button id="submit" class="border shadow-sm p-3 text-white rounded-md bg-green-500 hover:bg-green-600 transition duration-200 cursor-pointer">Submit Form</button>
-    
+    <div class="w-full flex justify-center gap-3">
+        <button id="addBox" class="w-56 h-10 font-medium ring-1 ring-blue-800 shadow-lg text-blue-800 rounded-tl-lg rounded-br-lg bg-blue-200 transition duration-200 cursor-pointer">Add More Search Box</button>
+        <button id="submit" class="w-56 h-10 font-medium ring-1 ring-green-800 shadow-lg text-green-800 rounded-tl-lg rounded-br-lg bg-green-200 transition duration-200 cursor-pointer">Submit Form</button>
+    </div>
+
+
     <!-- Successfully message container -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-[100]" id="SpopUp" style="display: none;">
         <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
@@ -139,62 +144,52 @@
 
         let divCount = 0;
 
-        addBox.addEventListener("click", function(){
-            divCount ++
-        
-            let newSection = document.createElement('div');
-            newSection.classList.add('map-container', 'border', 'rounded-md', 'shadow-md', 'p-5');
-            newSection.innerHTML = `
-                <div class="grid grid-cols-4 gap-5 mt-5">
-                    <div class="col-span-4 md:col-span-2">
-                        <div class="flex flex-col gap-1 ">
-                            <label for="email${divCount}" class="require font-semibold">Email :</label>
-                            <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" name="email[]" id="email${divCount}">
-                        </div>
-                    </div>
-                    <div class="col-span-4 md:col-span-2 relative" x-data="{ showPassword: false }">
-                        <div class="flex flex-col gap-1 ">
-                            <label for="password${divCount}" class="require font-semibold">Password :</label>
-                            <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="showPassword ? 'text' : 'password'" name="password[]" id="password${divCount}">
-                            <span class="absolute top-[2.50rem] right-2.5 cursor-pointer" @click="showPassword = !showPassword">
-                                <!-- Show Icon (when password is hidden) -->
-                                <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                    <g>
-                                        <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" fill="#000000" opacity="1" data-original="#000000"></path>
-                                    </g>
-                                </svg>
+        addBox.addEventListener("click", function() {
+            divCount++
 
-                                <!-- Hide Icon (when password is visible) -->
-                                <svg x-show="!showPassword" x-cloak xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 128 128" style="fill: rgba(0, 0, 0, 1);">
-                                    <path d="m79.891 65.078 7.27-7.27C87.69 59.787 88 61.856 88 64c0 13.234-10.766 24-24 24-2.144 0-4.213-.31-6.192-.839l7.27-7.27a15.929 15.929 0 0 0 14.813-14.813zm47.605-3.021c-.492-.885-7.47-13.112-21.11-23.474l-5.821 5.821c9.946 7.313 16.248 15.842 18.729 19.602C114.553 71.225 95.955 96 64 96c-4.792 0-9.248-.613-13.441-1.591l-6.573 6.573C50.029 102.835 56.671 104 64 104c41.873 0 62.633-36.504 63.496-38.057a3.997 3.997 0 0 0 0-3.886zm-16.668-39.229-88 88C22.047 111.609 21.023 112 20 112s-2.047-.391-2.828-1.172a3.997 3.997 0 0 1 0-5.656l11.196-11.196C10.268 83.049 1.071 66.964.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24c10.827 0 20.205 2.47 28.222 6.122l12.95-12.95c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656zM34.333 88.011 44.46 77.884C41.663 73.96 40 69.175 40 64c0-13.234 10.766-24 24-24 5.175 0 9.96 1.663 13.884 4.459l8.189-8.189C79.603 33.679 72.251 32 64 32 32.045 32 13.447 56.775 8.707 63.994c3.01 4.562 11.662 16.11 25.626 24.017zm15.934-15.935 21.809-21.809C69.697 48.862 66.958 48 64 48c-8.822 0-16 7.178-16 16 0 2.958.862 5.697 2.267 8.076z"></path>
-                                </svg>
-                            </span>
-                        </div>
+            let newSection = document.createElement('div');
+            newSection.classList.add('map-container', 'ring-2', 'ring-gray-600', 'rounded-md', 'shadow-md', 'p-5',);
+            newSection.innerHTML = `
+                <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 w-full bg-white">
+                    <div class="flex flex-col">
+                        <label for="email${divCount}" class="require font-semibold">Email :</label>
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" name="email[]" id="email${divCount}">
                     </div>
-                    <div class="col-span-4 md:col-span-2">
-                        <div class="flex flex-col gap-1 ">
-                            <label for="shopname${divCount}" class="require font-semibold">shopname :</label>
-                            <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="shopname[]" id="shopname${divCount}">
-                        </div>
+                    <div class="flex flex-col relative" x-data="{ showPassword: false }">
+                        <label for="password${divCount}" class="require font-semibold">Password :</label>
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="showPassword ? 'text' : 'password'" name="password[]" id="password${divCount}">
+                        <span class="absolute top-[2.35rem] right-2.5 cursor-pointer" @click="showPassword = !showPassword">
+                            <!-- Show Icon (when password is hidden) -->
+                            <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                <g>
+                                    <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                </g>
+                            </svg>
+
+                            <!-- Hide Icon (when password is visible) -->
+                            <svg x-show="!showPassword" x-cloak xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 128 128" style="fill: rgba(0, 0, 0, 1);">
+                                <path d="m79.891 65.078 7.27-7.27C87.69 59.787 88 61.856 88 64c0 13.234-10.766 24-24 24-2.144 0-4.213-.31-6.192-.839l7.27-7.27a15.929 15.929 0 0 0 14.813-14.813zm47.605-3.021c-.492-.885-7.47-13.112-21.11-23.474l-5.821 5.821c9.946 7.313 16.248 15.842 18.729 19.602C114.553 71.225 95.955 96 64 96c-4.792 0-9.248-.613-13.441-1.591l-6.573 6.573C50.029 102.835 56.671 104 64 104c41.873 0 62.633-36.504 63.496-38.057a3.997 3.997 0 0 0 0-3.886zm-16.668-39.229-88 88C22.047 111.609 21.023 112 20 112s-2.047-.391-2.828-1.172a3.997 3.997 0 0 1 0-5.656l11.196-11.196C10.268 83.049 1.071 66.964.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24c10.827 0 20.205 2.47 28.222 6.122l12.95-12.95c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656zM34.333 88.011 44.46 77.884C41.663 73.96 40 69.175 40 64c0-13.234 10.766-24 24-24 5.175 0 9.96 1.663 13.884 4.459l8.189-8.189C79.603 33.679 72.251 32 64 32 32.045 32 13.447 56.775 8.707 63.994c3.01 4.562 11.662 16.11 25.626 24.017zm15.934-15.935 21.809-21.809C69.697 48.862 66.958 48 64 48c-8.822 0-16 7.178-16 16 0 2.958.862 5.697 2.267 8.076z"></path>
+                            </svg>
+                        </span>
                     </div>
-                    <div class="col-span-4 md:col-span-2">
-                        <div class="flex flex-col gap-1 ">
-                            <label for="phone${divCount}" class="require font-semibold">Phone :</label>
-                            <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="tel" maxlength="10" name="phone[]" id="phone${divCount}">
-                        </div>
+                    <div class="flex flex-col">
+                        <label for="shopname${divCount}" class="require font-semibold">shopname :</label>
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="shopname[]" id="shopname${divCount}">
                     </div>
-                    <div class="col-span-4">
-                        <div class="flex flex-col gap-1">
-                            <label for="location" class="require font-semibold">Enter Location #${divCount}:</label>
-                            <div id="map${divCount}" class="map"></div>
-                            <div id="searchBox${divCount}"></div>
-                            <input type="text" name="lat[]" id="lat${divCount}" class="hidden">
-                            <input type="text" name="lng[]" id="lng${divCount}" class="hidden">
-                        </div>
+                    <div class="flex flex-col">
+                        <label for="phone${divCount}" class="require font-semibold">Phone :</label>
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="tel" maxlength="10" name="phone[]" id="phone${divCount}">
                     </div>
-                </div>
-                <div class="mt-4">
-                    <button id="remove${divCount}" class="p-3 bg-red-500 text-white rounded-md my-2 w-full  hover:bg-red-600 transition-all duration-200 cursor-pointer">Remove</button>
+                    <div class="flex flex-col  min-[600px]:col-span-2">
+                        <label for="location" class="require font-semibold">Enter Location #${divCount}:</label>
+                        <div id="map${divCount}" class="map"></div>
+                        <div id="searchBox${divCount}"></div>
+                        <input type="text" name="lat[]" id="lat${divCount}" class="hidden">
+                        <input type="text" name="lng[]" id="lng${divCount}" class="hidden">
+                    </div>
+                    <div class="mt-4 flex justify-center min-[600px]:col-span-2">
+                        <button id="remove${divCount}" class="p-3 text-red-800 bg-red-200 ring-1 ring-red-800 rounded-tl-lg rounded-br-lg my-2 w-full min-[600px]:w-72 transition-all duration-200 cursor-pointer">Remove</button>
+                    </div>
                 </div>
             `;
 
@@ -204,7 +199,7 @@
                 key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
                 container: `map${divCount}`,
             });
-    
+
             var options = {
                 searchOptions: {
                     key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
@@ -216,28 +211,28 @@
                     language: "en-GB",
                 },
             };
-    
+
             var searchBox = document.getElementById(`searchBox${divCount}`);
             var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
             var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
             searchBox.append(searchBoxHTML);
-    
+
             ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
                 const selectedResult = event.data.result;
                 const coordinates = selectedResult.position;
-    
+
                 let latInput = document.getElementById(`lat${divCount}`);
                 let lngInput = document.getElementById(`lng${divCount}`);
-                
+
                 latInput.value = coordinates.lat;
                 lngInput.value = coordinates.lng;
-    
+
                 // Optionally, you can add a marker here if needed
                 new tt.Marker().setLngLat([coordinates.lng, coordinates.lat]).addTo(map);
             });
-            
+
             let removeBtn = document.getElementById(`remove${divCount}`);
-            removeBtn.addEventListener("click", function(){
+            removeBtn.addEventListener("click", function() {
                 container.removeChild(newSection);
             });
         });
@@ -258,27 +253,27 @@
                 let lat = container.querySelector(`#lat${index + 1}`).value;
                 let lng = container.querySelector(`#lng${index + 1}`).value;
 
-                if(email === ""){
+                if (email === "") {
                     displayErrorMessage("Please Enter Email Address");
                     return;
                 }
 
-                if(password === ""){
+                if (password === "") {
                     displayErrorMessage("Please Enter Password");
                     return;
                 }
 
-                if(shopname === ""){
+                if (shopname === "") {
                     displayErrorMessage("Please Enter Shopname");
                     return;
                 }
 
-                if(phone === ""){
+                if (phone === "") {
                     displayErrorMessage("Please Enter Phone Number");
                     return;
                 }
 
-                if(lat === ""){
+                if (lat === "") {
                     displayErrorMessage("Please Enter Your Shop Location");
                     return;
                 }
@@ -306,8 +301,8 @@
                 }
             });
         });
-    
     </script>
 
 </body>
+
 </html>
