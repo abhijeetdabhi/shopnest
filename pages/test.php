@@ -65,10 +65,31 @@
 <body style="font-family: 'Outfit', sans-serif;">
 
     <div class="p-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5" id="container">
-        
+
     </div>
-    <div class="w-full flex justify-center gap-3">
-        <button id="addBox" class="w-56 h-10 font-medium ring-1 ring-blue-800 shadow-lg text-blue-800 rounded-tl-lg rounded-br-lg bg-blue-200 transition duration-200 cursor-pointer">Add More Search Box</button>
+    <div class="w-full flex justify-center gap-3 px-2">
+        <button id="addBox" class="w-52 h-10 font-medium ring-1 ring-blue-800 shadow-lg text-blue-800 rounded-tl-lg rounded-br-lg bg-blue-200 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                    <g>
+                        <defs>
+                            <clipPath id="a" clipPathUnits="userSpaceOnUse">
+                                <path d="M0 512h512V0H0Z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                            </clipPath>
+                        </defs>
+                        <g clip-path="url(#a)" transform="matrix(1.33333 0 0 -1.33333 0 682.667)">
+                            <path d="M0 0v-160" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(412 180)" fill="none" stroke="currentColor" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor" class=""></path>
+                            <path d="M0 0h160" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(332 100)" fill="none" stroke="currentColor" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor" class=""></path>
+                            <path d="M0 0c0 70.692 57.308 128 128 128 70.692 0 128-57.308 128-128 0-70.692-57.308-128-128-128C57.308-128 0-70.692 0 0Z" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(128 364)" fill="none" stroke="currentColor" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor" class=""></path>
+                            <path d="M0 0h-272c-22.091 0-40 17.909-40 40v37c0 28.683 12.265 56.034 33.813 74.966C-241.704 184.021-175.165 216-76 216" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(332 20)" fill="none" stroke="currentColor" stroke-width="40" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="currentColor" class=""></path>
+                        </g>
+                    </g>
+                </svg>
+            </span>
+            <span class="mt-0.5">
+                Add Account
+            </span>
+        </button>
         <button id="submit" class="w-56 h-10 font-medium ring-1 ring-green-800 shadow-lg text-green-800 rounded-tl-lg rounded-br-lg bg-green-200 transition duration-200 cursor-pointer">Submit Form</button>
     </div>
 
@@ -148,7 +169,7 @@
             divCount++
 
             let newSection = document.createElement('div');
-            newSection.classList.add('map-container', 'ring-2', 'ring-gray-600', 'rounded-md', 'shadow-md', 'p-5',);
+            newSection.classList.add('map-container', 'ring-2', 'ring-gray-600', 'rounded-md', 'shadow-md', 'p-5', );
             newSection.innerHTML = `
                 <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 w-full bg-white">
                     <div class="flex flex-col">
