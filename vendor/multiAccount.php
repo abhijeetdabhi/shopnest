@@ -22,7 +22,19 @@
 
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.1.2-public-preview.15/services/services-web.min.js"></script>
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js"></script>
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <style>
+        .outfit {
+            font-family: "Outfit", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+        }
+
         .require:after {
             content: " *";
             font-weight: bold;
@@ -62,12 +74,39 @@
     </style>
 </head>
 
-<body style="font-family: 'Outfit', sans-serif;">
+<body class="bg-gray-200 outfit">
+
+    <header class="w-full flex items-center py-4 px-4 border-b-[2.5px] border-gray-700 shadow-md shadow-gray-400 bg-white">
+        <a href="vendor_profile.php">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-7 md:w-10">
+                <g>
+                    <path fill="#000000" fill-rule="evenodd" d="M15 4a1 1 0 1 1 1.414 1.414l-5.879 5.879a1 1 0 0 0 0 1.414l5.88 5.879A1 1 0 0 1 15 20l-7.293-7.293a1 1 0 0 1 0-1.414z" clip-rule="evenodd" opacity="1" data-original="#000000"></path>
+                </g>
+            </svg>
+        </a>
+        <h2 class="font-manrope font-bold text-xl md:text-4xl leading-10 text-black w-full text-center">Add Account</h2>
+    </header>
+
+    <div class="bg-red-100 mt-5 mx-4 px-4 py-2 border border-red-700 rounded-lg border-l-4 space-y-1 shadow-lg">
+        <h1 class="text-red-700 font-semibold text-lg flex items-center gap-2">
+            <span>
+                <svg class="w-4 h-4 mb-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+            </span>
+            <span>
+                Important
+            </span>
+        </h1>
+        <p class="text-red-700 text-sm">
+            You can create multiple accounts using different email and password combinations. When you logging into a new account, all products from your main account will be automatically transferred to the new account, allowing you to manage and organize them effortlessly across both accounts while maintaining their independence.
+        </p>
+    </div>
 
     <div class="p-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5" id="container">
 
     </div>
-    <div class="w-full flex justify-center gap-3 px-2">
+    <div class="w-full flex justify-center gap-3 px-2 mb-5">
         <button id="addBox" class="w-52 h-10 font-medium ring-1 ring-blue-800 shadow-lg text-blue-800 rounded-tl-lg rounded-br-lg bg-blue-200 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
             <span>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
@@ -90,9 +129,8 @@
                 Add Account
             </span>
         </button>
-        <button id="submit" class="w-56 h-10 font-medium ring-1 ring-green-800 shadow-lg text-green-800 rounded-tl-lg rounded-br-lg bg-green-200 transition duration-200 cursor-pointer">Submit Form</button>
+        <button id="submit" class="w-56 h-10 font-medium ring-1 ring-green-800 shadow-lg text-green-800 rounded-tl-lg rounded-br-lg bg-green-200 transition duration-200 cursor-pointer hidden">Submit Form</button>
     </div>
-
 
     <!-- Successfully message container -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-[100]" id="SpopUp" style="display: none;">
@@ -162,16 +200,21 @@
     <script>
         let container = document.getElementById('container');
         let addBox = document.getElementById('addBox');
+        let submit = document.getElementById('submit');
 
         let divCount = 0;
 
         addBox.addEventListener("click", function() {
             divCount++
 
+            if (divCount >= 1) {
+                submit.classList.remove('hidden');
+            }
+
             let newSection = document.createElement('div');
-            newSection.classList.add('map-container', 'ring-2', 'ring-gray-600', 'rounded-md', 'shadow-md', 'p-5', );
+            newSection.classList.add('map-container', 'ring-2', 'ring-gray-600', 'rounded-md', 'shadow-md', 'p-5', 'bg-white', 'mt-2');
             newSection.innerHTML = `
-                <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 w-full bg-white">
+                <div class="grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 w-full">
                     <div class="flex flex-col">
                         <label for="email${divCount}" class="require font-semibold">Email :</label>
                         <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" name="email[]" id="email${divCount}">
@@ -258,7 +301,6 @@
             });
         });
 
-        let submit = document.getElementById('submit');
 
         submit.addEventListener("click", function(e) {
             e.preventDefault();

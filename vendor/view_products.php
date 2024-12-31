@@ -249,7 +249,7 @@ if (isset($_COOKIE['vendor_id'])) {
                             ?>
                                         <div class="flex justify-center relative">
 
-                                            <div class="bg-white border rounded-tl-xl rounded-br-xl transition transform hover:shadow-lg overflow-hidden h-[28rem] w-[17rem]">
+                                            <div class="bg-white border rounded-tl-2xl rounded-br-2xl transition transform hover:shadow-lg overflow-hidden h-[28rem] w-[17rem]">
                                                 <div class="p-3">
                                                     <div>
                                                         <img src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/product_image/product_profile/' . $res['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" class="h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" alt="">

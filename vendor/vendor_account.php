@@ -251,7 +251,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                         <div class="space-y-3 bg-white w-full shadow-lg rounded-md m-auto md:w-max p-4 grid grid-cols-4 gap-3">
                                             <div class="col-span-4 flex flex-col items-center relative mt-3">
                                                 <div class="w-full p-5">
-                                                    <div class="w-full relative bg-blue-500">
+                                                    <div class="w-full relative">
                                                         <div class="w-full relative">
                                                             <img id="CoverPreview" class="w-full h-44 z-50 object-cover" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : "https://t4.ftcdn.net/jpg/07/32/44/11/360_F_732441170_PtWNNaix37yGipnc2uDxLIAXH8VuzBPN.jpg" ?>" alt="">
                                                         </div>
@@ -290,7 +290,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                                         }
                                                     </script>
                                                     <div class="relative flex items-stretch justify-center -mt-10">
-                                                        <img id="previewImage" class="w-20 h-20 rounded-full object-cover m-auto bg-white/20 p-2 filter backdrop-blur-2xl" alt="" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>">
+                                                        <img id="previewImage" class="w-20 h-20 rounded-full object-cover m-auto bg-white/20 p-2 filter backdrop-blur-2xl ring-1 ring-gray-500" alt="" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>">
                                                         <input class="hidden" name="ProfileImage" type="file" id="imageInput">
                                                         <label for="imageInput" class="absolute bottom-0 translate-y-3 translate-x-[2px] rounded-full bg-white p-1 cursor-pointer">
                                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -396,7 +396,7 @@ if (isset($_COOKIE['vendor_id'])) {
 
                                             <div class="col-span-4 text-right mt-7">
                                                 <div class="inline-flex items-end">
-                                                    <button type="submit" value="Update" name="updateBtn" class="bg-gray-600 hover:bg-gray-700 text-white w-28 py-2 px-4 rounded-tl-lg rounded-br-lg cursor-pointer">update</button>
+                                                    <button type="submit" value="Update" name="updateBtn" class="bg-green-600 hover:bg-green-700 text-white w-28 py-2 px-4 rounded-tl-lg rounded-br-lg cursor-pointer">Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -457,7 +457,9 @@ if (isset($_COOKIE['vendor_id'])) {
                                                         </svg>
                                                     </span>
                                                 </div>
-                                                <input type="submit" name="changePass" value="Update now" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-tl-xl rounded-br-xl cursor-pointer mt-7">
+                                                <div class="mt-5 flex justify-end">
+                                                    <input type="submit" name="changePass" value="Update" class="bg-green-600 hover:bg-green-700 text-white w-28 py-2 px-4 rounded-tl-lg rounded-br-lg cursor-pointer">
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
