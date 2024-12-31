@@ -95,11 +95,11 @@ if (isset($_GET['order_id'])) {
             <div class="flex items-center">
                 <!-- icon logo div -->
                 <div>
-                    <img class="w-7 sm:w-14 mt-0.5" src="/src/logo/black_cart_logo.svg" alt="">
+                    <img class="w-7 sm:w-14 mt-0.5" src="../src/logo/black_cart_image.png" alt="">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-16 sm:w-36" src="/src/logo/black_text_logo.svg" alt="">
+                    <img class="w-16 sm:w-36" src="../src/logo/black_text_image.png" alt="">
                 </div>
             </div>
             <h1 class="text-4xl font-extrabold text-gray-800">Invoice</h1>
@@ -169,13 +169,10 @@ if (isset($_GET['order_id'])) {
         document.getElementById('downloadPdf').addEventListener('click', () => {
             const element = document.getElementById('invoice');
             const btn = document.getElementById('downloadPdf');
-
-            // Hide the button
+            
             btn.style.display = 'none';
 
-            // Create PDF from the HTML
             html2pdf().from(element).toPdf().get('pdf').then(function(pdf) {
-                // Show the button again
                 btn.style.display = 'block';
                 pdf.save('<?php echo $res['order_title'] ?>.pdf');
             });
