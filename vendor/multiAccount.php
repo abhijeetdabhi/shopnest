@@ -99,8 +99,8 @@ if (isset($_COOKIE['adminEmail'])) {
         <h2 class="font-manrope font-bold text-xl md:text-4xl leading-10 text-black w-full text-center">Add Account</h2>
     </header>
 
-    <div class="bg-red-100 mt-5 mx-4 px-4 py-2 border border-red-700 rounded-lg border-l-4 space-y-1 shadow-lg">
-        <h1 class="text-red-700 font-semibold text-lg flex items-center gap-2">
+    <div class="bg-blue-100 mt-5 mx-4 px-4 py-2 border border-blue-700 rounded-lg border-l-4 space-y-1 shadow-lg">
+        <h1 class="text-blue-700 font-semibold text-lg flex items-center gap-2">
             <span>
                 <svg class="w-4 h-4 mb-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
@@ -110,7 +110,7 @@ if (isset($_COOKIE['adminEmail'])) {
                 Important
             </span>
         </h1>
-        <p class="text-red-700 text-sm">
+        <p class="text-blue-700 text-sm">
             You can create multiple accounts using different email and password combinations. When you logging into a new account, all products from your main account will be automatically transferred to the new account, allowing you to manage and organize them effortlessly across both accounts while maintaining their independence.
         </p>
     </div>
