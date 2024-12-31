@@ -1,4 +1,14 @@
 <?php
+if (isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
+
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
+
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

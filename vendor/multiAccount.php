@@ -1,3 +1,15 @@
+<?php
+if (isset($_COOKIE['user_id'])) {
+    header("Location: /index.php");
+    exit;
+}
+
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /admin/dashboard.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -192,6 +204,7 @@
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
+                window.location.href = 'vendor_profile.php';
             }, 2000);
         }
     </script>
@@ -306,7 +319,7 @@
             e.preventDefault();
 
             let formData = [];
-            let vendorId = 34;
+            let vendorId = <?php echo $_COOKIE['vendor_id']?>;
 
             document.querySelectorAll(".map-container").forEach((container, index) => {
                 let email = container.querySelector(`#email${index + 1}`).value;
@@ -353,14 +366,14 @@
                 });
             });
 
-            console.log(formData);
             $.ajax({
-                url: 'myTest.php',
+                url: 'multiAccountAjax.php',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(formData),
                 success: function(response) {
-                    console.log('Success:', response);
+                    loader();
+                    displaySuccessMessage('Account Added Successfully');
                 }
             });
         });
