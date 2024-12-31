@@ -249,7 +249,7 @@ if (isset($_COOKIE['user_id'])) {
                                     <div class="flex flex-col md:flex-row items-center py-5 bg-gray-100 px-5 gap-6 w-full mb-7 rounded-xl shadow-md hover:shadow-lg transition-shadow md:h-44">
                                         <!-- Image Section -->
                                         <div class="w-full md:w-auto text-center md:text-left">
-                                            <a href="#">
+                                            <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>">
                                                 <img class="aspect-square w-full md:w-32 lg:w-36 object-cover rounded-lg mix-blend-multiply" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['cancle_order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image">
                                             </a>
                                         </div>
@@ -257,9 +257,9 @@ if (isset($_COOKIE['user_id'])) {
                                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4 md:gap-6 lg:gap-10">
                                             <!-- Title and Price Section -->
                                             <div class="flex-1">
-                                                <h2 class="font-semibold text-lg md:text-xl text-gray-800 line-clamp-2">
+                                                <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="font-semibold text-lg md:text-xl text-gray-800 line-clamp-2">
                                                     <?php echo isset($_COOKIE['user_id']) ? $res['cancle_order_title'] : 'Order Title'; ?>
-                                                </h2>
+                                                </a>
                                                 <p class="text-gray-600 mt-2 space-x-1">
                                                     <span class="font-medium">Price:</span>
                                                     <span class="text-black">
