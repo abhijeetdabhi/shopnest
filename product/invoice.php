@@ -1,19 +1,19 @@
 <?php
 
-    if(!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])){
-        header("Location: /shopnest/index.php");
-        exit;
-    }
+if (!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])) {
+    header("Location: /shopnest/index.php");
+    exit;
+}
 
-    if(isset($_COOKIE['vendor_id'])){
-        header("Location: /shopnest/vendor/vendor_dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: /shopnest/vendor/vendor_dashboard.php");
+    exit;
+}
 
-    if(isset($_COOKIE['adminEmail'])){
-        header("Location: /shopnest/admin/dashboard.php");
-        exit;
-    }
+if (isset($_COOKIE['adminEmail'])) {
+    header("Location: /shopnest/admin/dashboard.php");
+    exit;
+}
 ?>
 
 <?php
@@ -37,20 +37,20 @@ if (isset($_GET['order_id'])) {
         header("Location: ../user/show_orders.php");
         exit();
     }
-}else{
+} else {
     header("Location: ../user/show_orders.php");
     exit();
 }
 
-if(isset($_GET['order_id'])){
+if (isset($_GET['order_id'])) {
     $order_id = $_GET['order_id'];
-    
+
     $retrieve_order = "SELECT * FROM orders WHERE order_id = '$order_id'";
     $retrieve_order_query = mysqli_query($con, $retrieve_order);
-    
+
     $res = mysqli_fetch_assoc($retrieve_order_query);
 
-    
+
     $product_colo = $res['order_color'];
 }
 
@@ -58,6 +58,7 @@ if(isset($_GET['order_id'])){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,28 +85,35 @@ if(isset($_GET['order_id'])){
 
     <!-- title -->
     <title>Invoice</title>
-    
+
 </head>
+
 <body style="font-family: 'Outfit', sans-serif;">
     <div id="invoice" class="max-w-4xl mx-auto p-8 bg-white shadow-xl rounded-lg mt-10">
         <!-- Header -->
         <header class="flex items-center justify-between flex-wrap gap-x-12 gap-y-5 border-b-2 border-gray-300 pb-4 mb-8">
-            <h1 class="text-4xl font-extrabold text-gray-800">Invoice</h1>
-            <div class="text-sm text-gray-600 text-right w-32">
-                <p class="font-semibold text-gray-900 flex flex-wrap"><?php echo isset($_COOKIE['user_id']) ? $res['user_address'] : 'user address' ?></p>
+            <div class="flex items-center">
+                <!-- icon logo div -->
+                <div>
+                    <img class="w-7 sm:w-14 mt-0.5" src="/src/logo/black_cart_logo.svg" alt="">
+                </div>
+                <!-- text logo -->
+                <div>
+                    <img class="w-16 sm:w-36" src="/src/logo/black_text_logo.svg" alt="">
+                </div>
             </div>
+            <h1 class="text-4xl font-extrabold text-gray-800">Invoice</h1>
         </header>
-        <p class="text-red-500 my-4">Note: We aim to deliver your order within given minutes. However, please note that delivery times may vary due to factors like traffic and other unforeseen circumstances. We appreciate your understanding!</p>
         <!-- Product Details -->
         <section class="mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Product details</h2>
             <div class="flex flex-wrap items-center p-4 bg-gray-50 ring-2 ring-gray-300 gap-y-5 rounded-lg shadow-md">
                 <img src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="w-32 h-32 object-cover rounded-md border border-gray-300 mr-6">
                 <div>
-                    <h3 class="text-xl font-bold text-gray-800 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title'?></h3>
+                    <h3 class="text-xl font-bold text-gray-800 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title' ?></h3>
                     <p class="text-gray-700 mt-4 font-semibold">Price: <span class="font-normal text-green-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></span></p>
                     <div class="text-gray-700 flex items-center gap-2 mt-1">
-                        <span class="max-w-max font-semibold">Color:</span> 
+                        <span class="max-w-max font-semibold">Color:</span>
                         <h1 class="my-auto"><?php echo isset($_COOKIE['user_id']) ? htmlspecialchars($product_colo) : 'Product Color' ?></h1>
                     </div>
                     <p class="text-gray-700 mt-1 font-semibold">Size: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['order_size'] : 'Product size' ?></span></p>
@@ -122,6 +130,7 @@ if(isset($_GET['order_id'])){
                     <p class="text-gray-700"><span class="font-semibold">First name:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_first_name'] : 'user first name' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">Last name:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_last_name'] : 'user last name' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">Email:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_email'] : 'user email' ?></p>
+                    <p class="text-gray-700"><span class="font-semibold">Address:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_address'] : 'user address' ?></p>
                 </div>
                 <div class="p-4 bg-gray-50 ring-2 ring-gray-300 rounded-lg shadow-sm space-y-4">
                     <p class="text-gray-700"><span class="font-semibold">Mobile number:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_mobile'] : 'user mobile number' ?></p>
@@ -160,15 +169,15 @@ if(isset($_GET['order_id'])){
         document.getElementById('downloadPdf').addEventListener('click', () => {
             const element = document.getElementById('invoice');
             const btn = document.getElementById('downloadPdf');
-            
+
             // Hide the button
             btn.style.display = 'none';
-            
+
             // Create PDF from the HTML
             html2pdf().from(element).toPdf().get('pdf').then(function(pdf) {
                 // Show the button again
                 btn.style.display = 'block';
-                pdf.save('<?php echo $res['order_title']?>.pdf');
+                pdf.save('<?php echo $res['order_title'] ?>.pdf');
             });
         });
     </script>
@@ -176,4 +185,5 @@ if(isset($_GET['order_id'])){
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
+
 </html>
