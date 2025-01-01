@@ -107,8 +107,8 @@ if (count($nearbyLocation) > 0) {
         $vendorLatitude = $locations['lat'];
         $vendorLongitude = $locations['lng'];
 
-        setcookie("vendorLat" . $i, $vendorLatitude, time() + (10 * 24 * 60 * 60), "/");
-        setcookie("vendorLng" . $i, $vendorLongitude, time() + (10 * 24 * 60 * 60), "/");
+        setcookie("vendorLat" . $i, $vendorLatitude, time() + (365 * 24 * 60 * 60), "/");
+        setcookie("vendorLng" . $i, $vendorLongitude, time() + (365 * 24 * 60 * 60), "/");
 
         $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$vendorLatitude' AND longitude = '$vendorLongitude'";
         $query = mysqli_query($con, $get_vendor);
