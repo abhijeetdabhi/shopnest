@@ -94,7 +94,6 @@ if (isset($_COOKIE['user_id'])) {
     $time4Formatted = $date4->format("h:i:s A");
 
     $shipedTime = $date4->format('h:i A');
-
 }
 ?>
 <!DOCTYPE html>
@@ -168,12 +167,12 @@ if (isset($_COOKIE['user_id'])) {
                     <a href="../user/re-order.php?product_id=<?php echo urlencode($products_id); ?>&color=<?php echo $product_color; ?>&size=<?php echo $product_size; ?>&qty=<?php echo $product_qty; ?>&MRP=<?php echo $product_MRP ?>&travelTime=<?php echo $travelTime ?>" class="bg-gray-600 text-white font-semibold py-2.5 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Re-Order</a>
                 <?php
 
-                $_SESSION['reOrderId'] = $products_id;
-                $_SESSION['reOrderColor'] = $product_color;
-                $_SESSION['reOrderSize'] = $product_size;
-                $_SESSION['reOrderQty'] = $product_qty;
-                $_SESSION['reOrderMRP'] = $product_MRP;
-                $_SESSION['reOrderTravelTime'] = $travelTime;
+                    $_SESSION['reOrderId'] = $products_id;
+                    $_SESSION['reOrderColor'] = $product_color;
+                    $_SESSION['reOrderSize'] = $product_size;
+                    $_SESSION['reOrderQty'] = $product_qty;
+                    $_SESSION['reOrderMRP'] = $product_MRP;
+                    $_SESSION['reOrderTravelTime'] = $travelTime;
                 } else {
                 ?>
                     <h1 class="bg-gray-600 text-white font-semibold py-2.5 px-6 w-max rounded-tl-xl rounded-br-xl cursor-not-allowed">Re-Order</h1>
@@ -187,35 +186,35 @@ if (isset($_COOKIE['user_id'])) {
                 <div class="grid grid-cols-1 mt-12 gap-7 w-full md:grid-cols-2 lg:grid-cols-4 lg:gap-x-12">
                     <div>
                         <h4 class="font-semibold mb-2">Full name</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['user_first_name'] . ' ' . $res['user_last_name'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['user_first_name'] . ' ' . $res['user_last_name'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">User email</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['user_email'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['user_email'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">User mobile</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['user_mobile'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['user_mobile'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">Devliery address</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['user_address'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['user_address'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">State</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['user_state'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['user_state'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">City</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['user_city'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['user_city'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">Order date</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['date'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['date'] : '-' ?></p>
                     </div>
                     <div>
                         <h4 class="font-semibold mb-2">Payment information</h4>
-                        <p><?php echo isset($_COOKIE['user_id']) ? $res['payment_type'] : '-' ?></p>
+                        <p class="text-gray-600"><?php echo isset($_COOKIE['user_id']) ? $res['payment_type'] : '-' ?></p>
                     </div>
                 </div>
             </div>
@@ -240,11 +239,11 @@ if (isset($_COOKIE['user_id'])) {
             <div>
                 <?php
                 if ($time4Formatted <= $currentTime) {
-                    ?>
+                ?>
                     <h2 class="font-semibold text-2xl mb-4">Your order is delivered</h2>
-                    <?php
+                <?php
                 } else {
-                    ?>
+                ?>
                     <h2 class="font-semibold text-2xl mb-4">Shipped on: <span class="text-gray-500"><?php echo isset($time4Formatted) ? $shipedTime : 'Shipping Date'; ?></span></h2>
                 <?php
                 }

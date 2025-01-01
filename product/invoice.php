@@ -85,6 +85,11 @@ if (isset($_GET['order_id'])) {
 
     <!-- title -->
     <title>Invoice</title>
+    <style>
+        #invoice {
+            padding: 20px;
+        }
+    </style>
 
 </head>
 
@@ -105,13 +110,15 @@ if (isset($_GET['order_id'])) {
             <h1 class="text-4xl font-extrabold text-gray-800">Invoice</h1>
         </header>
         <!-- Product Details -->
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Product details</h2>
-            <div class="flex flex-wrap items-center p-4 bg-gray-50 ring-2 ring-gray-300 gap-y-5 rounded-lg shadow-md">
-                <img src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="w-32 h-32 object-cover rounded-md border border-gray-300 mr-6">
-                <div>
+        <section class="mb-20 md:mb-8 mt-10 md:mt-0">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-10">Product details</h2>
+            <div class=" p-4 bg-gray-50 ring-2 ring-gray-300 gap-y-3 rounded-lg shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-normal gap-y-2 md:gap-y-0">
+                    <img src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="w-32 h-32 object-cover rounded-md md:mr-6 mix-blend-multiply">
                     <h3 class="text-xl font-bold text-gray-800 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title' ?></h3>
-                    <p class="text-gray-700 mt-4 font-semibold">Price: <span class="font-normal text-green-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></span></p>
+                </div>
+                <div>
+                    <p class="text-gray-700 font-semibold">Price: <span class="font-normal text-green-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></span></p>
                     <div class="text-gray-700 flex items-center gap-2 mt-1">
                         <span class="max-w-max font-semibold">Color:</span>
                         <h1 class="my-auto"><?php echo isset($_COOKIE['user_id']) ? htmlspecialchars($product_colo) : 'Product Color' ?></h1>
@@ -123,9 +130,9 @@ if (isset($_GET['order_id'])) {
         </section>
 
         <!-- User Information -->
-        <section class="mb-8">
+        <section class="mb-16 md:mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">User information</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-y-0 md:gap-6">
                 <div class="p-4 bg-gray-50 ring-2 ring-gray-300 rounded-lg shadow-sm space-y-4">
                     <p class="text-gray-700"><span class="font-semibold">First name:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_first_name'] : 'user first name' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">Last name:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_last_name'] : 'user last name' ?></p>
@@ -169,10 +176,30 @@ if (isset($_GET['order_id'])) {
         document.getElementById('downloadPdf').addEventListener('click', () => {
             const element = document.getElementById('invoice');
             const btn = document.getElementById('downloadPdf');
-            
+
             btn.style.display = 'none';
 
-            html2pdf().from(element).toPdf().get('pdf').then(function(pdf) {
+            const options = {
+                margin: 0,
+                filename: '<?php echo $res['order_title'] ?>.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 3, // Higher scale for better resolution
+                    useCORS: true, // Handle cross-origin content
+                    windowWidth: element.scrollWidth, // Set dynamic content width
+                    windowHeight: element.scrollHeight, // Set dynamic content Height
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: [8.27, 11.69], // A4 size format
+                    orientation: 'portrait'
+                }
+            };
+
+            html2pdf().from(element).set(options).toPdf().get('pdf').then((pdf) => {
                 btn.style.display = 'block';
                 pdf.save('<?php echo $res['order_title'] ?>.pdf');
             });
