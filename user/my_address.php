@@ -62,8 +62,36 @@ if (isset($_COOKIE['user_id'])) {
             display: none;
         }
 
-        [x-cloak]{
+        [x-cloak] {
             display: none;
+        }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
         }
     </style>
 </head>
@@ -164,7 +192,7 @@ if (isset($_COOKIE['user_id'])) {
             </div>
 
             <div class="flex flex-col flex-1">
-            <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
+                <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
                     <div class="flex items-center justify-between">
                         <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
                             <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -353,9 +381,9 @@ if (isset($_COOKIE['user_id'])) {
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -411,20 +439,19 @@ if (isset($_POST['updateAddress'])) {
     $Pincode = $_POST['Pincode'];
 
 
-    if($address != "" && $state != "" && $city != "" && $Pincode != ""){
+    if ($address != "" && $state != "" && $city != "" && $Pincode != "") {
         $update_add = "UPDATE user_registration SET Address = '$address',state = '$state', city = '$city', pin = '$Pincode'";
         $update_query = mysqli_query($con, $update_add);
-    
+
         if ($update_query) {
             echo "<script>loader()</script>";
             echo '<script>displaySuccessMessage("Data updated successfully.");</script>';
         } else {
             echo '<script>displayErrorMessage("Please Enter Valid Information");</script>';
         }
-    }else{
+    } else {
         echo '<script>displayErrorMessage("Please Enter Valid Information");</script>';
     }
-
 }
 
 ?>

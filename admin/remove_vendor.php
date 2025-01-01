@@ -16,6 +16,7 @@ if (!isset($_GET['id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +39,38 @@ if (!isset($_GET['id'])) {
 
     <!-- title -->
     <title>Remove Vendor</title>
+
+    <style>
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
+        }
+    </style>
 </head>
+
 <body style="font-family: 'Outfit', sans-serif;">
 
 
@@ -67,9 +99,9 @@ if (!isset($_GET['id'])) {
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -109,12 +141,12 @@ if (!isset($_GET['id'])) {
         }
     </script>
 
-<?php
+    <?php
 
     include "../include/connect.php";
 
     $vendor_id = $_GET['id'];
-    
+
     $get_vendor = "SELECT * FROM vendor_registration WHERE vendor_id = '$vendor_id'";
     $get_query = mysqli_query($con, $get_vendor);
     $res = mysqli_fetch_assoc($get_query);
@@ -129,7 +161,8 @@ if (!isset($_GET['id'])) {
     } else {
         echo '<script>displayErrorMessage("Please Try Again Later.");</script>';
     }
-?>
+    ?>
 
 </body>
+
 </html>

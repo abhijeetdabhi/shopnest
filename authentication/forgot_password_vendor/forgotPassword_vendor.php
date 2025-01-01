@@ -63,6 +63,34 @@ session_start();
             color: red;
             margin-left: 3px;
         }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
+        }
     </style>
 </head>
 
@@ -92,9 +120,9 @@ session_start();
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -133,46 +161,46 @@ session_start();
         }
     </script>
     <?php
-        include "../../include/connect.php";
-        $vendor_email = $_SESSION['vendorEmail'];
-        $password_pattern = '/^.{8,}$/';
+    include "../../include/connect.php";
+    $vendor_email = $_SESSION['vendorEmail'];
+    $password_pattern = '/^.{8,}$/';
 
-        $retrieve_data = "SELECT * FROM vendor_registration WHERE email = '$vendor_email'";
-        $retrieve_query = mysqli_query($con, $retrieve_data);
+    $retrieve_data = "SELECT * FROM vendor_registration WHERE email = '$vendor_email'";
+    $retrieve_query = mysqli_query($con, $retrieve_data);
 
-        $row = mysqli_fetch_assoc($retrieve_query);
-        $vendor_id  = $row['vendor_id'];
+    $row = mysqli_fetch_assoc($retrieve_query);
+    $vendor_id  = $row['vendor_id'];
 
-        if (isset($_POST['changePass'])) {
-            $new_pass = $_POST['newPass'];
-            $confirm_pass = $_POST['confirmPass'];
-
-
-            // Validation for password
-            if (!preg_match($password_pattern, $new_pass)) {
-                echo '<script>displayErrorMessage("Enter valid Password");</script>';
-            }
-
-            if (!preg_match($password_pattern, $confirm_pass)) {
-                echo '<script>displayErrorMessage("Enter valid Password");</script>';
-            }
+    if (isset($_POST['changePass'])) {
+        $new_pass = $_POST['newPass'];
+        $confirm_pass = $_POST['confirmPass'];
 
 
-            if ($new_pass === $confirm_pass) {
-                $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
-                $up_pass = "UPDATE vendor_registration SET password='$new_dpass' WHERE vendor_id  = '$vendor_id'";
-                $up_query = mysqli_query($con, $up_pass);
-
-                if ($up_query) {
-                    echo "<script>loader()</script>";
-                    echo '<script>displaySuccessMessage("Password Updated Successfully.");</script>';
-                } else {
-                    echo '<script>displayErrorMessage("Password Not Update");</script>';
-                }
-            } else {
-                echo '<script>displayErrorMessage("The New Password and the Confirm Password do not match. Please try again.");</script>';
-            }
+        // Validation for password
+        if (!preg_match($password_pattern, $new_pass)) {
+            echo '<script>displayErrorMessage("Enter valid Password");</script>';
         }
+
+        if (!preg_match($password_pattern, $confirm_pass)) {
+            echo '<script>displayErrorMessage("Enter valid Password");</script>';
+        }
+
+
+        if ($new_pass === $confirm_pass) {
+            $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
+            $up_pass = "UPDATE vendor_registration SET password='$new_dpass' WHERE vendor_id  = '$vendor_id'";
+            $up_query = mysqli_query($con, $up_pass);
+
+            if ($up_query) {
+                echo "<script>loader()</script>";
+                echo '<script>displaySuccessMessage("Password Updated Successfully.");</script>';
+            } else {
+                echo '<script>displayErrorMessage("Password Not Update");</script>';
+            }
+        } else {
+            echo '<script>displayErrorMessage("The New Password and the Confirm Password do not match. Please try again.");</script>';
+        }
+    }
     ?>
     <div class="p-2 flex items-center justify-center">
         <a class="flex items-center mb-2" href="/index.php">

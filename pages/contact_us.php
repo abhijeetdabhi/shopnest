@@ -38,6 +38,34 @@ include "../include/connect.php";
             color: red;
             margin-left: 3px;
         }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
+        }
     </style>
 </head>
 
@@ -161,9 +189,9 @@ include "../include/connect.php";
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -204,8 +232,8 @@ include "../include/connect.php";
 
     <!-- ajax -->
     <script>
-        $(document).ready(function () {
-            $('#Contect').on("submit",function(e){
+        $(document).ready(function() {
+            $('#Contect').on("submit", function(e) {
                 e.preventDefault();
 
                 let username = $('#username').val().trim();
@@ -213,19 +241,19 @@ include "../include/connect.php";
                 let subject = $('#subject').val().trim();
                 let message = $('#message').val().trim();
 
-                if(!username){
+                if (!username) {
                     displayErrorMessage("Please enter your Name before submitting the form.");
                     return;
                 }
-                if(!useremail){
+                if (!useremail) {
                     displayErrorMessage("Please enter your Email before submitting the form.");
                     return;
                 }
-                if(!subject){
+                if (!subject) {
                     displayErrorMessage("Please enter your Subject before submitting the form.");
                     return;
                 }
-                if(!message){
+                if (!message) {
                     displayErrorMessage("Please enter your Message before submitting the form.");
                     return;
                 }
@@ -239,7 +267,7 @@ include "../include/connect.php";
                         subject: subject,
                         message: message
                     },
-                    success: function (response) {
+                    success: function(response) {
                         loader();;
                         displaySuccessMessage("Thank you! Your message has been successfully sent. We'll get back to you soon!")
                     }

@@ -41,8 +41,8 @@ if (isset($_GET['productId'])) {
     $findProduct = "SELECT * FROM products WHERE product_id = '$productId'";
     $findProductQuery = mysqli_query($con, $findProduct);
 
-    if(mysqli_num_rows($findProductQuery)){
-        while($prdc = mysqli_fetch_assoc($findProductQuery)){
+    if (mysqli_num_rows($findProductQuery)) {
+        while ($prdc = mysqli_fetch_assoc($findProductQuery)) {
             $productTitle = $prdc['title'];
             $productCompanyName = $prdc['company_name'];
             $productType = $prdc['Type'];
@@ -100,6 +100,34 @@ if (isset($_GET['productId'])) {
 
         #logoutPopUp {
             display: none;
+        }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
         }
     </style>
 </head>
@@ -182,26 +210,28 @@ if (isset($_GET['productId'])) {
                     <input type="search" name="ListingProducts" id="ListingProducts" class="h-10 border mt-1 rounded-md px-4 w-full bg-white focus:ring-gray-600 focus:border-gray-600 transition" placeholder="Search For Listing Products" />
                 </div>
                 <div style="display: none;" id="suggestions" class="w-full overflow-y-auto bg-white p-4 space-y-4 rounded-md mt-3 shadow-md" style="max-height: calc(3 * 10rem + 2 * 1rem);">
-                    
+
                 </div>
             </div>
             <script>
-                $(document).ready(function () {
+                $(document).ready(function() {
                     $("#ListingProducts").on('input', function() {
                         let word = $(this).val();
 
-                        if(word.length > 2){
+                        if (word.length > 2) {
                             $("#suggestions").css('display', 'block');
 
                             $.ajax({
                                 type: "post",
                                 url: "search.php",
-                                data: {searchWord: word},
-                                success: function (response) {
+                                data: {
+                                    searchWord: word
+                                },
+                                success: function(response) {
                                     $("#suggestions").html(response);
                                 }
                             });
-                        }else{
+                        } else {
                             $("#suggestions").css('display', 'none');
                         }
                     });
@@ -222,12 +252,12 @@ if (isset($_GET['productId'])) {
 
                                 <div class="md:col-span-5">
                                     <label for="full_name" class="require">Product tital:</label>
-                                    <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['full_name']) ? $_SESSION['full_name'] : (isset($_GET['productId']) ? $productTitle : '');?>" />
+                                    <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['full_name']) ? $_SESSION['full_name'] : (isset($_GET['productId']) ? $productTitle : ''); ?>" />
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label for="Company_name" class="require">Company name:</label>
-                                    <input type="text" name="Company_name" id="Company_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['Company_name']) ? $_SESSION['Company_name'] : (isset($_GET['productId']) ? $productCompanyName : '') ;?>" placeholder="" />
+                                    <input type="text" name="Company_name" id="Company_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" value="<?php echo isset($_SESSION['Company_name']) ? $_SESSION['Company_name'] : (isset($_GET['productId']) ? $productCompanyName : ''); ?>" placeholder="" />
                                 </div>
 
                                 <div class="md:col-span-2">
@@ -470,9 +500,9 @@ if (isset($_GET['productId'])) {
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -508,7 +538,7 @@ if (isset($_GET['productId'])) {
                 SpopUp.style.opacity = '100';
                 window.location.href = "choose_product.php";
             }, 2000);
-        } 
+        }
     </script>
 
     <script src="product.js"></script>
@@ -774,17 +804,18 @@ if (isset($_POST['submitBtn'])) {
         }
     }
 
-    function generateProductKeywords($product) {
+    function generateProductKeywords($product)
+    {
         $category = $_GET['name'];
         $keywords = [];
-    
+
         // Title & Brand Keywords
         $keywords[] = $product['title'];
         $keywords[] = $product['company_name'] . ' ' . strtolower($product['Type']);
         $keywords[] = 'best ' . $product['company_name'] . ' ' . strtolower($product['Type']);
         $keywords[] = $product['title'] . ' for sale';
-    
-    
+
+
         if ($category === 'Phones') {
             // Keywords for phones
             $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'];
@@ -799,7 +830,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Buy " . $product['company_name'] . " phone under " . $product['MRP'];
             $keywords[] = "Latest " . $product['company_name'] . " smartphone for " . $product['Item_Condition'];
             $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'];
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
@@ -807,14 +838,13 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Best " . $product['company_name'] . " smartphone in " . $product['color'];
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-        } 
-        elseif ($category === 'Tabs/Ipad') {
+        } elseif ($category === 'Tabs/Ipad') {
             // Keywords for tablets
             $keywords[] = "Best tablet under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " tablet for sale";
@@ -827,7 +857,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Buy " . $product['company_name'] . " tablet for " . $product['Item_Condition'];
             $keywords[] = $product['company_name'] . " tablet for online classes";
             $keywords[] = $product['company_name'] . " tablet for students";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
@@ -836,16 +866,14 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Latest " . $product['company_name'] . " tablet in " . $product['color'];
                 $keywords[] = "Stylish " . $product['company_name'] . " tablet in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['size'] . " Tablet";
                 $keywords[] = "Best tablet in " . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Laptops/MacBook') {
+        } elseif ($category === 'Laptops/MacBook') {
             // Keywords for laptops
             $keywords[] = "Best laptop under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " laptop with best features";
@@ -860,22 +888,20 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Best " . $product['company_name'] . " laptop for office work";
             $keywords[] = "New " . $product['company_name'] . " laptop with features";
             $keywords[] = $product['company_name'] . " laptop for professional use";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['Type'] . ' in ' . $product['color'];
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " laptop in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . " laptop with " . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'TV') {
+        } elseif ($category === 'TV') {
             // Keywords for TV
             $keywords[] = "Best TV under " . $product['MRP'];
             $keywords[] = "4K " . $product['Type'] . " TV for sale";
@@ -891,23 +917,21 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Latest " . $product['company_name'] . " 4K TV for " . $product['MRP'];
             $keywords[] = "Best TV for watching movies";
             $keywords[] = "Stylish " . $product['company_name'] . " TV for your living room";
-    
-    
+
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = $product['company_name'] . " TV in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Headphone') {
+        } elseif ($category === 'Headphone') {
             // Keywords for Headphones
             $keywords[] = "Best " . $product['Type'] . " headphones under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " headphones for sale";
@@ -922,22 +946,20 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Stylish " . $product['company_name'] . " headphones for men";
             $keywords[] = "Latest " . $product['company_name'] . " headphones for " . $product['MRP'];
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " headphones for gaming";
-            
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = $product['type'] . " headphones in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Earphone') {
+        } elseif ($category === 'Earphone') {
             // Keywords for Earphones
             $keywords[] = "Best " . $product['Type'] . " earphones under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " earphones for sale";
@@ -953,23 +975,21 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Latest " . $product['company_name'] . " earphones for " . $product['Item_Condition'];
             $keywords[] = $product['company_name'] . " earphones for kids";
             $keywords[] = $product['company_name'] . " noise-cancelling earphones";
-    
-    
+
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = "Stylish " . $product['company_name'] . " earphones in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Shoes') {
+        } elseif ($category === 'Shoes') {
             // Keywords for Shoes
             $keywords[] = $product['company_name'] . " shoes under " . $product['MRP'];
             $keywords[] = "Best " . $product['company_name'] . " shoes";
@@ -982,14 +1002,14 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " shoes under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " shoes for everyday use";
             $keywords[] = "Best " . $product['company_name'] . " shoes for running";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = $product['company_name'] . " shoes in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
@@ -998,9 +1018,7 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Latest " . $product['company_name'] . " shoes for " . $product['size'];
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " shoes for " . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Watch') {
+        } elseif ($category === 'Watch') {
             // Keywords for Watch
             $keywords[] = "Best " . $product['company_name'] . " watch under " . $product['MRP'];
             $keywords[] = "Stylish " . $product['company_name'] . " watch for men";
@@ -1015,23 +1033,21 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = $product['company_name'] . " smartwatch for fitness";
             $keywords[] = "Latest " . $product['company_name'] . " watch for " . $product['Item_Condition'];
             $keywords[] = $product['company_name'] . " watch with best features";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " watch in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Electronics Item') {
-           // Keywords for Electronics Items
+        } elseif ($category === 'Electronics Item') {
+            // Keywords for Electronics Items
             $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for electronics";
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " for electronics under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " electronics";
@@ -1042,7 +1058,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " with best features";
             $keywords[] = "Latest " . $product['company_name'] . " " . $product['Type'] . " for " . $product['Item_Condition'];
             $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'];
-    
+
             // Color Keywords for Electronics Items
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for electronics';
@@ -1050,14 +1066,13 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Best " . $product['company_name'] . " electronics in " . $product['color'];
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " electronics";
             }
-    
+
             // Size Keywords for Electronics Items (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for electronics';
                 $keywords[] = $product['title'] . ' ' . $product['size'] . ' electronics';
             }
-        } 
-        elseif ($category === 'Tech Accessories') {
+        } elseif ($category === 'Tech Accessories') {
             // Keywords for Tech accessories
             $keywords[] = "Best " . $product['company_name'] . " tech accessories under " . $product['MRP'];
             $keywords[] = "Affordable " . $product['company_name'] . " tech accessories";
@@ -1070,23 +1085,20 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = $product['company_name'] . " headphones and accessories";
             $keywords[] = $product['company_name'] . " laptop accessories for " . $product['MRP'];
             $keywords[] = "Buy " . $product['company_name'] . " tech accessories for " . $product['Item_Condition'];
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = $product['company_name'] . " tech accessories in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-            
-            
-        } 
-        elseif ($category === 'Cameras') {
+        } elseif ($category === 'Cameras') {
             // Keywords for Cameras
             $keywords[] = $product['company_name'] . " camera under " . $product['MRP'];
             $keywords[] = "Best " . $product['Type'] . " camera for " . $product['MRP'];
@@ -1102,21 +1114,20 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Buy " . $product['company_name'] . " camera for video recording";
             $keywords[] = $product['company_name'] . " camera with wide-angle lens";
             $keywords[] = $product['company_name'] . " camera for professional use";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = "Buy " . $product['company_name'] . " " . $product['Type'] . " camera in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-        } 
-        elseif ($category === 'Game Item') {
+        } elseif ($category === 'Game Item') {
             // Keywords for Game item
             $keywords[] = "Best game items under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " gaming accessories for sale";
@@ -1132,20 +1143,19 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Latest " . $product['company_name'] . " game items for " . $product['MRP'];
             $keywords[] = $product['company_name'] . " gaming items for competitive gaming";
             $keywords[] = "Best " . $product['company_name'] . " game accessories for streamers";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-        } 
-        elseif ($category === 'Kitchen') {
+        } elseif ($category === 'Kitchen') {
             // Keywords for Kitchen
             $keywords[] = "Best kitchen items under " . $product['MRP'];
             $keywords[] = $product['company_name'] . " kitchen appliances for sale";
@@ -1162,20 +1172,19 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Best " . $product['company_name'] . " cooking items for gifting";
             $keywords[] = $product['company_name'] . " smart kitchen appliances";
             $keywords[] = $product['company_name'] . " kitchen products under " . $product['MRP'];
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-        } 
-        elseif ($category === 'Clothes') {
+        } elseif ($category === 'Clothes') {
             // Keywords for clothes    
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " under " . $product['MRP'];
             $keywords[] = "Best " . $product['Type'] . " for " . $product['MRP'];
@@ -1191,7 +1200,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "New arrivals in " . $product['Type'];
             $keywords[] = "Buy " . $product['Type'] . " online in India";
             $keywords[] = "Exclusive deals on " . $product['company_name'] . " " . $product['Type'];
-            
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
@@ -1203,7 +1212,7 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Stylish " . $product['Type'] . " in " . $product['color'] . " under " . $product['MRP'];
                 $keywords[] = "Buy " . $product['Type'] . " online in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
@@ -1217,9 +1226,7 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Top " . $product['Type'] . " in " . $product['size'] . " size under " . $product['MRP'];
                 $keywords[] = "Fashionable " . $product['Type'] . " in " . $product['color'] . " and " . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Toys') {
+        } elseif ($category === 'Toys') {
             // Keywords for Toys
             $keywords[] = "Best electronics under " . $product['MRP'];
             $keywords[] = "Affordable " . $product['company_name'] . " electronics";
@@ -1235,22 +1242,20 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Affordable " . $product['company_name'] . " gadgets online";
             $keywords[] = $product['company_name'] . " tech gadgets for home";
             $keywords[] = "Best " . $product['company_name'] . " electronics";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
                 $keywords[] = $product['company_name'] . " electronics in " . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
-            
-        } 
-        elseif ($category === 'Stationary') {
+        } elseif ($category === 'Stationary') {
             // Keywords for Stationery Items
             $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for stationery";
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " for stationery under " . $product['MRP'];
@@ -1261,7 +1266,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for stationery";
             $keywords[] = "Latest " . $product['company_name'] . " " . $product['Type'] . " for " . $product['Item_Condition'];
             $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'];
-    
+
             // Color Keywords for Stationery Items
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for stationery';
@@ -1269,15 +1274,13 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Best " . $product['company_name'] . " stationery in " . $product['color'];
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " stationery";
             }
-    
+
             // Size Keywords for Stationery Items (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for stationery';
                 $keywords[] = $product['title'] . ' ' . $product['size'] . ' stationery';
             }
-    
-        } 
-        elseif ($category === 'Sports') {
+        } elseif ($category === 'Sports') {
             // Keywords for Sports Items
             $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for sports";
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " for sports under " . $product['MRP'];
@@ -1289,7 +1292,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " with best features for sports";
             $keywords[] = "Latest " . $product['company_name'] . " " . $product['Type'] . " for " . $product['Item_Condition'];
             $keywords[] = "New " . $product['company_name'] . " " . $product['Type'] . " for " . $product['MRP'] . " in sports";
-    
+
             // Color Keywords for Sports Items
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for sports';
@@ -1297,15 +1300,13 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " for sports";
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " for sports in " . $product['color'];
             }
-    
+
             // Size Keywords for Sports Items (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for sports';
                 $keywords[] = $product['title'] . ' ' . $product['size'] . ' for sports';
             }
-    
-        } 
-        elseif ($category === 'Men accessories') {
+        } elseif ($category === 'Men accessories') {
             // Keywords for Men's Accessories
             $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for men";
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " for men under " . $product['MRP'];
@@ -1317,7 +1318,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " for men under " . $product['MRP'];
             $keywords[] = "Latest " . $product['company_name'] . " accessories for men";
             $keywords[] = "Men's " . $product['Type'] . " for " . $product['MRP'];
-    
+
             // Color Keywords for Men's Accessories
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for men';
@@ -1325,15 +1326,13 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " for men";
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " for men in " . $product['color'];
             }
-    
+
             // Size Keywords for Men's Accessories (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for men';
                 $keywords[] = $product['title'] . ' ' . $product['size'] . ' for men';
             }
-    
-        } 
-        elseif ($category === 'Women accessories') {
+        } elseif ($category === 'Women accessories') {
             // Keywords for Women's Accessories
             $keywords[] = "Best " . $product['Type'] . " under " . $product['MRP'] . " for women";
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " for women under " . $product['MRP'];
@@ -1345,7 +1344,7 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " for women under " . $product['MRP'];
             $keywords[] = "Latest " . $product['company_name'] . " accessories for women";
             $keywords[] = "Women's " . $product['Type'] . " for " . $product['MRP'];
-    
+
             // Color Keywords for Women's Accessories
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']) . ' for women';
@@ -1353,15 +1352,13 @@ if (isset($_POST['submitBtn'])) {
                 $keywords[] = "Best " . $product['company_name'] . " " . $product['Type'] . " in " . $product['color'] . " for women";
                 $keywords[] = $product['company_name'] . " " . $product['Type'] . " for women in " . $product['color'];
             }
-    
+
             // Size Keywords for Women's Accessories (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']) . ' for women';
                 $keywords[] = $product['title'] . ' ' . $product['size'] . ' for women';
             }
-    
-        } 
-        elseif($category === 'Furniture'){
+        } elseif ($category === 'Furniture') {
             // Keywords for Furniture
             $keywords[] = $product['company_name'] . " " . $product['Type'] . " furniture under " . $product['MRP'];
             $keywords[] = "Best " . $product['Type'] . " furniture for " . $product['MRP'];
@@ -1377,21 +1374,21 @@ if (isset($_POST['submitBtn'])) {
             $keywords[] = "Shop for " . $product['Type'] . " furniture now";
             $keywords[] = "Buy " . $product['Type'] . " furniture online in India";
             $keywords[] = "Exclusive offers on " . $product['company_name'] . " furniture";
-    
+
             // Color Keywords
             if (isset($product['color'])) {
                 $keywords[] = $product['color'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['company_name'] . ' ' . $product['title'] . ' in ' . $product['color'];
             }
-    
+
             // Size Keywords (if applicable)
             if (isset($product['size'])) {
                 $keywords[] = $product['size'] . ' ' . strtolower($product['Category']);
                 $keywords[] = $product['title'] . ' ' . $product['size'];
             }
         }
-    
-    
+
+
         return array_unique($keywords);
     }
 
@@ -1406,7 +1403,7 @@ if (isset($_POST['submitBtn'])) {
         'color' => $pcolor,
         'size' => $size[0]
     ];
-    
+
     // Generate keywords
     $keywords = generateProductKeywords($product);
     $keywords_value = implode(', ', $keywords);

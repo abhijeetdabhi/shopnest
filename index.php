@@ -390,10 +390,10 @@ function displayRandomProducts($con, $limit)
         </div>
 
         <!-- Swiper -->
-        <div class="swiper mySwiper w-full h-full rounded-lg mt-3">
+        <div class="swiper mySwiper w-full bg-blue-500 h-[12rem] md:h-[22rem] xl:h-[28rem] rounded-lg mt-3">
             <div class="swiper-wrapper">
                 <div class="swiper-slide flex items-center justify-center">
-                    <img class="relative w-full h-[30vh] rounded-md md:h-[60vh] object-cover" src="https://i.pinimg.com/originals/db/12/fe/db12fea16a6836ac1a7580921983fa06.jpg" alt="">
+                    <img class="relative w-full h-full rounded-md object-cover" src="https://i.pinimg.com/originals/db/12/fe/db12fea16a6836ac1a7580921983fa06.jpg" alt="">
                     <div class="bg-gradient-to-r from-black/95 to-black/10 h-full absolute bottom-4 left-0 px-7 md:px-20 top-0 max-w-max flex justify-center flex-col gap-1 text-white">
                         <h1 class="text-base md:text-3xl font-bold">Timeless elegance awaits</h1>
                         <p class="text-sm md:text-lg font-normal my-2 w-full md:w-[60%]">Discover the perfect watch to elevate your style and keep you on time.</p>
@@ -401,7 +401,7 @@ function displayRandomProducts($con, $limit)
                     </div>
                 </div>
                 <div class="swiper-slide flex items-center justify-center">
-                    <img class="relative w-full h-[30vh] rounded-md md:h-[60vh] object-cover" src="https://rog.asus.com/Microsite/ROG-X-INTEL-UNLEASH-THE-LEGEND-INSIDE/in/assets/img/list/ROG-STRIX-SCAR-15-17.jpg" alt="">
+                    <img class="relative w-full h-full rounded-md object-cover" src="https://rog.asus.com/Microsite/ROG-X-INTEL-UNLEASH-THE-LEGEND-INSIDE/in/assets/img/list/ROG-STRIX-SCAR-15-17.jpg" alt="">
                     <div class="bg-gradient-to-r from-black/95 to-black/10 h-full absolute bottom-4 left-0 px-7 md:px-20 top-0 max-w-max flex justify-center flex-col gap-1 text-white">
                         <h1 class="text-base md:text-3xl font-bold">Unleash your productivity</h1>
                         <p class="text-sm md:text-lg font-normal my-2 w-full md:w-[60%]">Experience unparalleled performance and style with our cutting-edge laptops.</p>
@@ -409,7 +409,7 @@ function displayRandomProducts($con, $limit)
                     </div>
                 </div>
                 <div class="swiper-slide flex items-center justify-center">
-                    <img class="relative w-full h-[30vh] rounded-md md:h-[60vh] object-cover" src="https://global.hisense.com/dam/jcr:3beab097-18ec-497a-acef-b5660937c0fb/uled-8k-tv-u80g-banner.jpg" alt="">
+                    <img class="relative w-full h-full rounded-md object-cover" src="https://global.hisense.com/dam/jcr:3beab097-18ec-497a-acef-b5660937c0fb/uled-8k-tv-u80g-banner.jpg" alt="">
                     <div class="bg-gradient-to-r from-black/95 h-full absolute bottom-4 left-0 px-7 md:px-20 top-0 max-w-max flex justify-center flex-col gap-1 text-white">
                         <h1 class="text-base md:text-3xl font-bold">Elevate your viewing experience</h1>
                         <p class="text-sm md:text-lg font-normal my-2 w-full md:w-[60%]">Immerse yourself in stunning clarity and vibrant colors with our latest TVs.</p>

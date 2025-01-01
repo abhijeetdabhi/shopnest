@@ -63,6 +63,34 @@ unset(
         [x-cloak] {
             display: none;
         }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
+        }
     </style>
 </head>
 
@@ -167,9 +195,9 @@ unset(
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -184,7 +212,7 @@ unset(
         function adminLogin(message) {
             let ApopUp = document.getElementById('ApopUp');
             let adminSuccess = document.getElementById('adminSuccess');
-            
+
             setTimeout(() => {
                 adminSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
                 ApopUp.style.display = 'flex';
@@ -223,14 +251,14 @@ unset(
 
     <!-- ajax -->
     <script>
-        $(document).ready(function () {
-            $("#vendorLogin").on("submit",function(e){
+        $(document).ready(function() {
+            $("#vendorLogin").on("submit", function(e) {
                 e.preventDefault();
 
                 let vendorEmail = $("#vendorEmail").val().trim();
                 let vendorPassword = $("#vendorPassword").val().trim();
 
-                if(vendorEmail === "" || vendorPassword === ""){
+                if (vendorEmail === "" || vendorPassword === "") {
                     displayErrorMessage("Please Enter Valid Email or Password")
                     return;
                 }
@@ -239,16 +267,16 @@ unset(
                     type: 'post',
                     url: 'vendor_login_ajax.php',
                     data: {
-                        vendorEmail:vendorEmail,
-                        vendorPassword:vendorPassword
+                        vendorEmail: vendorEmail,
+                        vendorPassword: vendorPassword
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response === 'success') {
                             loader();
                             displaySuccessMessage("Login Successfully!");
-                        } else if(response === 'pass_not_matching'){
+                        } else if (response === 'pass_not_matching') {
                             displayErrorMessage("Please Enter Valid Email Or password.");
-                        }else if(response === 'admin_success'){
+                        } else if (response === 'admin_success') {
                             loader();
                             adminLogin("Admin Login Successfully!");
                         }

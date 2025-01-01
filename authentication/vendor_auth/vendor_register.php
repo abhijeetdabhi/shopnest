@@ -91,9 +91,37 @@ if (isset($_COOKIE['adminEmail'])) {
         .tt-search-box-input-container {
             width: 100%;
             height: 50px;
-            border: 2px solid #d1d5db ;
+            border: 2px solid #d1d5db;
             border-radius: 8px;
             margin: auto;
+        }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
         }
     </style>
 </head>
@@ -308,7 +336,7 @@ if (isset($_COOKIE['adminEmail'])) {
                                 key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
                                 container: "map",
                             });
-                        
+
                             var options = {
                                 searchOptions: {
                                     key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
@@ -320,17 +348,17 @@ if (isset($_COOKIE['adminEmail'])) {
                                     language: "en-GB",
                                 },
                             };
-                        
+
                             let searchBox = document.getElementById('searchBox');
                             var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
                             var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
                             searchBox.append(searchBoxHTML);
-                        
+
                             // // Handle search result selection
                             ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
                                 const selectedResult = event.data.result;
                                 const coordinates = selectedResult.position;
-                            
+
                                 let clat = coordinates.lat;
                                 let clng = coordinates.lng;
 
@@ -392,9 +420,9 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <script>
@@ -509,7 +537,7 @@ if (isset($_POST['submitBtn'])) {
         $_SESSION['vendor_bio'] = $bio;
     }
 
-    if($lat === "" || $lat === ""){
+    if ($lat === "" || $lat === "") {
         echo '<script>displayErrorMessage("Please Enter Your Location");</script>';
     }
 
@@ -618,7 +646,7 @@ if (isset($_POST['submitBtn'])) {
         $vendorLatitude = $lat;
         $vendorLongitude = $lng;
         $vendorRegiDate = $Vendor_reg_date;
-        
+
         $insert_data = "INSERT INTO vendor_registration(name, email, password, username, phone, Bio, GST, cover_image, dp_image, latitude, longitude, date) VALUES ('$vendorName','$vendorEmail','$vendorPassword','$vendorUsername','$vendorPhone','$vendorBio','$vendorGST','$vendorCover_image','$vendorDp_image','$vendorLatitude','$vendorLongitude','$vendorRegiDate')";
         $insert_sql = mysqli_query($con, $insert_data);
 

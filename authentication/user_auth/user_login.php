@@ -52,8 +52,37 @@ if (isset($_COOKIE['adminEmail'])) {
         [x-cloak] {
             display: none;
         }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
+        }
     </style>
 </head>
+
 <body class="flex justify-center items-center h-[100vh] py-2 px-6" style="font-family: 'Outfit', sans-serif;">
     <div class="w-96">
         <!-- header -->
@@ -151,17 +180,15 @@ if (isset($_COOKIE['adminEmail'])) {
     </div>
 
     <!-- loader  -->
-    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
-    <!-- JavaScript function -->
     <script>
-
-        function loader(){
-            let loader =document.getElementById('loader');
+        function loader() {
+            let loader = document.getElementById('loader');
             let body = document.body;
 
             loader.style.display = 'flex';
@@ -171,7 +198,7 @@ if (isset($_COOKIE['adminEmail'])) {
         function adminLogin(message) {
             let ApopUp = document.getElementById('ApopUp');
             let adminSuccess = document.getElementById('adminSuccess');
-            
+
             setTimeout(() => {
                 adminSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
                 ApopUp.style.display = 'flex';
@@ -197,7 +224,7 @@ if (isset($_COOKIE['adminEmail'])) {
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
-            
+
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
@@ -209,14 +236,14 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <!-- user login ajax -->
     <script>
-        $(document).ready(function () {
-            $("#userLogin").on('submit', function(e){
+        $(document).ready(function() {
+            $("#userLogin").on('submit', function(e) {
                 e.preventDefault();
 
                 let userEmail = $('#email').val().trim();
                 let userPass = $('#password').val().trim();
 
-                if(!userEmail === "" || !userPass === ""){
+                if (!userEmail === "" || !userPass === "") {
                     displayErrorMessage("Please Enter Your Email Or Password");
                     return
                 }
@@ -228,13 +255,13 @@ if (isset($_COOKIE['adminEmail'])) {
                         userEmail: userEmail,
                         userPass: userPass
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response === 'success') {
                             loader();
                             displaySuccessMessage("Login Successfully!");
-                        } else if(response === 'pass_not_matching'){
+                        } else if (response === 'pass_not_matching') {
                             displayErrorMessage("Please Enter Valid Email Or password.");
-                        }else if(response === 'admin_success'){
+                        } else if (response === 'admin_success') {
                             loader();
                             adminLogin("Admin Login Successfully!");
                         }
@@ -247,4 +274,5 @@ if (isset($_COOKIE['adminEmail'])) {
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 </body>
+
 </html>

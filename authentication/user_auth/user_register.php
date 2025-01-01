@@ -15,7 +15,8 @@ if (isset($_COOKIE['adminEmail'])) {
 }
 ?>
 <?php
-function getAddressFromLatLng($lat, $lng, $apiKey) {
+function getAddressFromLatLng($lat, $lng, $apiKey)
+{
     $url = "https://api.tomtom.com/search/2/reverseGeocode/{$lat},{$lng}.json?key={$apiKey}";
 
     $ch = curl_init();
@@ -51,7 +52,7 @@ function getAddressFromLatLng($lat, $lng, $apiKey) {
 }
 $lat = $_COOKIE['latitude'];
 $lng = $_COOKIE['longitude'];
-$apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw'; 
+$apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
 
 $address = getAddressFromLatLng($lat, $lng, $apiKey);
 
@@ -105,6 +106,34 @@ if ($address) {
 
         [x-cloak] {
             display: none;
+        }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
         }
     </style>
 </head>
@@ -176,17 +205,17 @@ if ($address) {
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="state" class="require font-semibold">State :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="state" value="<?php echo isset($address) ? $userstate: '' ?>" id="state">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="state" value="<?php echo isset($address) ? $userstate : '' ?>" id="state">
                         <small id="stateValid" class="text-red-500 hidden translate-x-1">Enter Valid State</small>
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="city" class="require font-semibold">City :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="city" value="<?php echo isset($address) ? $usercity: '' ?>" id="city">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="city" value="<?php echo isset($address) ? $usercity : '' ?>" id="city">
                         <small id="cityValid" class="text-red-500 hidden translate-x-1">Enter Valid City</small>
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="pincode" class="require font-semibold">Pincode :</label>
-                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="tel" name="pincode" value="<?php echo isset($address) ? $userpostalCode: '' ?>" id="pincode" maxlength="6">
+                        <input class="h-12 rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="tel" name="pincode" value="<?php echo isset($address) ? $userpostalCode : '' ?>" id="pincode" maxlength="6">
                         <small id="pincodeValid" class="text-red-500 hidden translate-x-1">Enter Valid Pincode</small>
                     </div>
                 </div>
@@ -211,10 +240,10 @@ if ($address) {
 
 
     <!-- loader  -->
-    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm" style="display: none;">
-        <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-            <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-        </div>
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
     <!-- Successfully message container -->
@@ -255,8 +284,8 @@ if ($address) {
             }, 1800);
         }
 
-        function loader(){
-            let loader =document.getElementById('loader');
+        function loader() {
+            let loader = document.getElementById('loader');
             let body = document.body;
 
             loader.style.display = 'flex';
@@ -266,7 +295,7 @@ if ($address) {
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
-            
+
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
@@ -278,8 +307,8 @@ if ($address) {
 
     <!-- script for user registration page -->
     <script>
-        $(document).ready(function () {
-            $("#userRegi").on("submit", function(e){
+        $(document).ready(function() {
+            $("#userRegi").on("submit", function(e) {
                 e.preventDefault();
 
                 let fname = $('#fname').val().trim();
@@ -303,40 +332,38 @@ if ($address) {
                 let city_pattern = /^[a-zA-Z\s'-]+$/;
                 let pincode_pattern = /^[1-9][0-9]{5}$/;
 
-                if(fname === "" || lname === "" || email === "" || password === "" || address === "" || mobileno === "" || state === "" || city === "" || pincode === ""){
+                if (fname === "" || lname === "" || email === "" || password === "" || address === "" || mobileno === "" || state === "" || city === "" || pincode === "") {
                     displayErrorMessage("Please Fill the Input fields");
                     return
-                }else if(fname === "" || !firstname_pattern.test(fname)){
+                } else if (fname === "" || !firstname_pattern.test(fname)) {
                     displayErrorMessage("Enter Valid First Name");
                     return
-                }else if(lname === "" || !lastname_pattern.test(lname)){
+                } else if (lname === "" || !lastname_pattern.test(lname)) {
                     displayErrorMessage("Enter Valid Last Name");
                     return
-                }else if(email === "" || !email_pattern.test(email)){
+                } else if (email === "" || !email_pattern.test(email)) {
                     displayErrorMessage("Enter Valid Email");
                     return
-                }else if(password === "" || !password_pattern.test(password)){
+                } else if (password === "" || !password_pattern.test(password)) {
                     displayErrorMessage("Enter Valid Password");
                     return
-                }else if(address === "" || !address_pattern.test(address)){
+                } else if (address === "" || !address_pattern.test(address)) {
                     displayErrorMessage("Enter Valid Address");
                     return
-                }else if(mobileno === "" || !number_pattern.test(mobileno)){
+                } else if (mobileno === "" || !number_pattern.test(mobileno)) {
                     displayErrorMessage("Enter Valid Mobile Number");
                     return
-                }else if(state === "" || !state_pattern.test(state)){
+                } else if (state === "" || !state_pattern.test(state)) {
                     displayErrorMessage("Enter Valid State");
                     return
-                }
-                else if(city === "" || !city_pattern.test(city)){
+                } else if (city === "" || !city_pattern.test(city)) {
                     displayErrorMessage("Enter Valid City");
                     return
-                }
-                else if(pincode === "" || !pincode_pattern.test(pincode)){
+                } else if (pincode === "" || !pincode_pattern.test(pincode)) {
                     displayErrorMessage("Enter Valid Pincode");
                     return
                 }
-            
+
 
                 $.ajax({
                     type: "post",
@@ -352,15 +379,15 @@ if ($address) {
                         city: city,
                         pincode: pincode
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response === 'email_exists') {
                             displayErrorMessage("Email is already used. Please choose another email.");
-                        }else if(response === 'phone_exists'){
+                        } else if (response === 'phone_exists') {
                             displayErrorMessage("Mobile Number is already used. Please choose another Number.");
                         } else if (response === 'success') {
                             loader();
                             displaySuccessMessage("Login Successfully.");
-                        } 
+                        }
                     }
                 });
 
