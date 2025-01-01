@@ -18,10 +18,21 @@ include "include/connect.php";
 session_start();
 
 $sessionKeys = [
-    'totalCartPrice', 'qty', 'travelTime',
-    'checkoutId', 'checkoutSize', 'checkoutQty', 'checkoutMRP', 'checkoutTravelTime',
+    'totalCartPrice',
+    'qty',
+    'travelTime',
+    'checkoutId',
+    'checkoutSize',
+    'checkoutQty',
+    'checkoutMRP',
+    'checkoutTravelTime',
     'order_id',
-    'reOrderId', 'reOrderColor', 'reOrderSize', 'reOrderQty', 'reOrderMRP', 'reOrderTravelTime',
+    'reOrderId',
+    'reOrderColor',
+    'reOrderSize',
+    'reOrderQty',
+    'reOrderMRP',
+    'reOrderTravelTime',
     'searchWord',
     'sort',
     'selectedSize'
@@ -340,49 +351,49 @@ function displayRandomProducts($con, $limit)
             <div class="style-2 flex overflow-x-auto xl:justify-center gap-9 text-sm py-5 px-6">
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Furniture">
-                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="/shopnest/src/categories_image/FurnitureImage.webp" alt="">
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/FurnitureImage.webp" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Furniture</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Electronics Item">
-                        <img class="rounded-full object-cover object-center transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/ElectronicsImage.jpg" alt="">
+                        <img class="rounded-full object-cover object-center transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/ElectronicsImage.jpg" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Electronics</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Headphone">
-                        <img class="rounded-full object-cover transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/HeadphoneImage.jpg" alt="">
+                        <img class="rounded-full object-cover transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/HeadphoneImage.jpg" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Headphone</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Stationery">
-                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/StationeryImage.avif" alt="">
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/StationeryImage.avif" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Stationery</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Toys">
-                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/ToysImage.webp" alt="">
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/ToysImage.webp" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Toys</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Sports">
-                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/SportsImage.webp" alt="">
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/SportsImage.webp" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Sports</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Phones">
-                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/PhoneImage.webp" alt="">
+                        <img class="rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/PhoneImage.webp" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Phones</span>
                     </a>
                 </div>
                 <div class="group">
                     <a class="flex justify-center flex-col gap-y-2 w-24" href="pages/product_category.php?Category=Women accessories">
-                        <img class="rounded-full object-cover transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/BeautyImage.avif" alt="">
+                        <img class="rounded-full object-cover transform transition-all group-hover:ring-2 h-24 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/BeautyImage.avif" alt="">
                         <span class="text-center text-ellipsis overflow-hidden truncate group-hover:text-gray-600 transition-colors">Beauty & Heathy</span>
                     </a>
                 </div>
@@ -600,7 +611,7 @@ function displayRandomProducts($con, $limit)
             <h1 class="text-2xl w-full">Trending deals</h1>
             <div class="style-2 flex overflow-x-scroll xl:overflow-hidden gap-8 py-5">
                 <a href="pages/product_category.php?Category=Game Item">
-                    <div class="relative w-56 bg-[url('../shopnest/src/categories_image/GamersImage.jpg')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
+                    <div class="relative w-56 bg-[url('../src/categories_image/GamersImage.jpg')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
                         <div>
                             <div class="relative">
                                 <h1 class="text-[#36e318] text-center text-xs font-semibold">LIMITED TIME OFFER</h1>
@@ -625,7 +636,7 @@ function displayRandomProducts($con, $limit)
 
 
                 <a href="pages/product_category.php?Category=TV">
-                    <div class="relative w-56 bg-[url('../shopnest/src/categories_image/TvImage.jpg')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
+                    <div class="relative w-56 bg-[url('../src/categories_image/TvImage.jpg')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
                         <div>
                             <div class="relative">
                                 <h1 class="text-black text-center text-xs font-semibold">BEST TV DEALS</h1>
@@ -647,7 +658,7 @@ function displayRandomProducts($con, $limit)
                 </a>
 
                 <a href="pages/product_category.php?Category=Laptops/MacBook">
-                    <div class="relative w-56 bg-[url('../shopnest/src/categories_image/LaptopImage.jpg')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
+                    <div class="relative w-56 bg-[url('../src/categories_image/LaptopImage.jpg')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
                         <div>
                             <div class="relative">
                                 <h1 class="text-black text-center text-xs font-semibold">NEW ARRIVALS</h1>
@@ -673,7 +684,7 @@ function displayRandomProducts($con, $limit)
                 </a>
 
                 <a href="pages/product_category.php?Category=Kitchen">
-                    <div class="relative w-56 bg-[url('../shopnest/src/categories_image/KitchenImage.webp')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
+                    <div class="relative w-56 bg-[url('../src/categories_image/KitchenImage.webp')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
                         <div>
                             <div class="relative text-gray-300">
                                 <h1 class="text-center text-xs font-semibold">KITCHEN</h1>
@@ -687,7 +698,7 @@ function displayRandomProducts($con, $limit)
                 </a>
 
                 <a href="pages/product_category.php?Category=Clothes">
-                    <div class="relative w-56 bg-[url('../shopnest/src/categories_image/FashionImage.webp')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
+                    <div class="relative w-56 bg-[url('../src/categories_image/FashionImage.webp')] text-center h-[22rem] bg-center bg-cover py-5 cursor-pointer custom-hover-bg rounded">
                         <div>
                             <div class="relative text-[#9d1244]">
                                 <h1 class="text-center text-xs font-semibold">CLOTHING</h1>
@@ -805,43 +816,43 @@ function displayRandomProducts($con, $limit)
                 <div class="style-2 flex overflow-x-auto gap-10 py-5 px-2">
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Men accessories">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/MenaccessoriesImage.webp" alt="Men Accessories">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/MenaccessoriesImage.webp" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">Men accessories</p>
                         </a>
                     </div>
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Tabs/Ipad">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/IpadImage.webp" alt="">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/IpadImage.webp" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">iPads & Tablets</p>
                         </a>
                     </div>
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Earphone">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3 border-2" src="../shopnest/src/categories_image/EarphoneImage.jpg" alt="">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3 border-2" src="../src/categories_image/EarphoneImage.jpg" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">Earphones</p>
                         </a>
                     </div>
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Cameras">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/CameraImage.webp" alt="">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/CameraImage.webp" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">Cameras</p>
                         </a>
                     </div>
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Watch">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/WatchImage.webp" alt="">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/WatchImage.webp" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">Wearable tech</p>
                         </a>
                     </div>
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Shoes">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/ShoesImage.webp" alt="">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/ShoesImage.webp" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">Shoes</p>
                         </a>
                     </div>
                     <div class="group">
                         <a class="flex flex-col items-center space-y-2 w-32" href="pages/product_category.php?Category=Tech Accessories">
-                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../shopnest/src/categories_image/TechImage.webp" alt="">
+                            <img class="w-32 h-32 object-cover object-top rounded-full transform transition-all group-hover:ring-2 group-hover:ring-gray-500 group-hover:-translate-y-3" src="../src/categories_image/TechImage.webp" alt="">
                             <p class="text-center group-hover:text-gray-600 transition-colors">Accessories</p>
                         </a>
                     </div>
