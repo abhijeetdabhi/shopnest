@@ -401,7 +401,7 @@ function displayRandomProducts($con, $limit)
         </div>
 
         <!-- Swiper -->
-        <div class="swiper mySwiper w-full bg-blue-500 h-[12rem] md:h-[22rem] xl:h-[28rem] rounded-lg mt-3">
+        <div class="swiper mySwiper w-full h-[12rem] md:h-[22rem] xl:h-[28rem] rounded-lg mt-3">
             <div class="swiper-wrapper">
                 <div class="swiper-slide flex items-center justify-center">
                     <img class="relative w-full h-full rounded-md object-cover" src="https://i.pinimg.com/originals/db/12/fe/db12fea16a6836ac1a7580921983fa06.jpg" alt="">
