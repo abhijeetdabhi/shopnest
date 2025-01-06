@@ -79,11 +79,11 @@ if (isset($_COOKIE['user_id'])) {
                     <a class="flex w-fit" href="/index.php">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-7 sm:w-14 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-12 sm:w-14 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-16 sm:w-36" src="/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-28 sm:w-36" src="/src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>

@@ -336,16 +336,25 @@ function displayRandomProducts($con, $limit)
         .cursor-not-allowed {
             cursor: not-allowed;
         }
+
+        #logoutPopUp {
+            display: none;
+        }
+        [x-cloak]{
+            display: none;
+        }
     </style>
 
 </head>
 
-<body class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? '' : 'overflow-hidden' ?>">
+<body class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? '' : 'overflow-hidden' ?>" >
 
     <!-- navbar -->
     <?php
     include "pages/_navbar.php";
     ?>
+
+
     <div id="main-content" class="p-4 flex flex-col max-w-screen-xl m-auto outfit">
         <div class="flex justify-center">
             <div class="style-2 flex overflow-x-auto xl:justify-center gap-9 text-sm py-5 px-6">
