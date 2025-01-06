@@ -286,7 +286,7 @@ if (isset($_GET['product_id'])) {
     ?>
 
     <!-- product -->
-    <div class="max-w-screen-xl m-auto grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-5 mt-12 px-2 md:px-8">
+    <div class="max-w-screen-xl m-auto grid grid-cols-1 min-[890px]:grid-cols-2 gap-y-1 gap-x-5 mt-12 px-2 md:px-8">
         <div class="">
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2 w-auto h-auto md:h-96">
                 <div class="swiper-wrapper h-52 md:h-full">
@@ -409,9 +409,9 @@ if (isset($_GET['product_id'])) {
                     <div>
                         <div class="flex items-center gap-2">
                             <?php
-                            $calcDiscount = round((($Your_Price - $MRP)/$Your_Price) * 100);
+                            $calcDiscount = round((($Your_Price - $MRP) / $Your_Price) * 100);
                             ?>
-                            <span class="text-2xl text-red-700 font-light"><?php echo  "-" . $calcDiscount . "%"?></span>
+                            <span class="text-2xl text-red-700 font-light"><?php echo  "-" . $calcDiscount . "%" ?></span>
                             <span class="text-2xl font-medium flex gap-0.5"><span class="text-sm block text-start">₹</span><?php echo isset($_GET['product_id']) ? number_format($MRP) : 'MRP' ?></span>
                         </div>
                         <span class="text-sm">M.R.P.:
@@ -590,6 +590,43 @@ if (isset($_GET['product_id'])) {
                     <p class="text-sm font-medium text-[#0080ff]">Free delivery</p>
                 </div>
                 <hr>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="flex flex-col justify-center items-center w-full h-full gap-y-3">
+                        <span>
+                            <img class="w-10" src="../src/product_detail/return&exchange.svg" alt="">
+                        </span>
+                        <span class="line-clamp-2 text-center text-sm">
+                            7 Day Return & Exchange
+                        </span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center w-full h-full gap-y-3">
+                        <span>
+                            <img class="w-10" src="../src/product_detail/cod.svg" alt="">
+                        </span>
+                        <span class="line-clamp-2 text-center text-sm lg:px-3 xl:px-5">
+                            Pay on Delivery
+                        </span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center w-full h-full gap-y-3">
+                        <span>
+                            <img class="w-10" src="../src/product_detail/original.svg" alt="">
+                        </span>
+                        <span class="line-clamp-2 text-center text-sm lg:px-2 xl:px-4">
+                            Genuine Product
+                        </span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center w-full h-full gap-y-3">
+                        <span>
+                            <img class="w-10" src="../src/product_detail/qualityCheck.svg" alt="">
+                        </span>
+                        <span class="line-clamp-2 text-center text-sm lg:px-2 xl:px-4">
+                            Quality Checked
+                        </span>
+                    </div>
+                </div>
+
+
+                <hr>
                 <div class="mt-4 flex flex-col gap-5 md:flex-row">
                     <input type="submit" name="AddtoCart" value="Add To Cart" class="md:w-40 text-center text-sm md:text-base font-medium text-white bg-gray-700 py-4 rounded-tl-xl rounded-br-xl transition duration-200 <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-800'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
                     <input type="submit" name="buyBtn" value="Buy Now" class="md:w-40 text-center text-sm md:text-base font-medium text-gray-700 border-2 border-gray-700 py-4 rounded-tl-xl rounded-br-xl <?php echo ($product_qty == 0) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'; ?>" <?php echo ($product_qty == 0) ? 'disabled' : ''; ?>>
@@ -732,7 +769,7 @@ if (isset($_GET['product_id'])) {
                             ?>
                                 <a href="add_review.php?product_id=<?php echo $product_id; ?>" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
                             <?php
-                            $_SESSION['checkoutId'] = $product_id;
+                                $_SESSION['checkoutId'] = $product_id;
                             } else {
                             ?>
                                 <a href="../authentication/user_auth/user_login.php" class="text-sm font-medium text-white text-center bg-gray-700 py-3 hover:bg-gray-800 rounded-tl-xl rounded-br-xl transition duration-200">Write a review</a>
