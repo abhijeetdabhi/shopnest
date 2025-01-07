@@ -165,6 +165,37 @@ if (isset($_POST['userLogout'])) {
         .inner-line {
             animation: anti-clock-wise 1.3s linear infinite;
         }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(2px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-4px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(4px, 0, 0);
+            }
+        }
+
+        .logoAnimation:hover {
+            animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
     </style>
 </head>
 
@@ -210,9 +241,8 @@ if (isset($_POST['userLogout'])) {
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
         <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
         <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
-        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
+        <img class="w-10 absolute" src="../shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
-
     <script>
         function loader() {
             let loader = document.getElementById('loader');
@@ -242,7 +272,7 @@ if (isset($_POST['userLogout'])) {
 
     <?php
 
-    if ($userLogout === true) {
+    if ($userLogout) {
     ?>
         <script>
             let logoutPopUp = document.getElementById('logoutPopUp');
@@ -267,7 +297,7 @@ if (isset($_POST['userLogout'])) {
                 </button>
                 <!-- logo -->
                 <div>
-                    <a class="flex w-fit py-2 focus:outline-none" href="../index.php">
+                    <a class="flex w-fit py-2 focus:outline-none logoAnimation" href="../index.php">
                         <!-- icon logo div -->
                         <div>
                             <img class="w-8 sm:w-12" src="../src/logo/white_cart_logo.svg" alt="">

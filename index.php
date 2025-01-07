@@ -347,7 +347,7 @@ function displayRandomProducts($con, $limit)
 
 </head>
 
-<body class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? '' : 'overflow-hidden' ?>" >
+<body class="<?php echo isset($_COOKIE['latitude']) && isset($_COOKIE['longitude']) ? '' : 'overflow-hidden' ?>" :class="overflow-hidden">
 
     <!-- navbar -->
     <?php
@@ -1101,7 +1101,7 @@ function displayRandomProducts($con, $limit)
             </div>
         </div>
     </div>
-
+<!-- script for location -->
     <script>
         let currentLocation = document.getElementById('currentLocation');
 
