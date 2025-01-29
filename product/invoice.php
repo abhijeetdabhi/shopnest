@@ -52,6 +52,13 @@ if (isset($_GET['order_id'])) {
 
 
     $product_colo = $res['order_color'];
+
+    $vendor_id = $res['vendor_id'];
+
+    $retrieve_vendor = "SELECT * FROM vendor_registration WHERE vendor_id = '$vendor_id'";
+    $retrieve_vendor_query = mysqli_query($con, $retrieve_vendor);
+
+    $ven = mysqli_fetch_assoc($retrieve_vendor_query);
 }
 
 ?>
@@ -125,6 +132,8 @@ if (isset($_GET['order_id'])) {
                     </div>
                     <p class="text-gray-700 mt-1 font-semibold">Size: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['order_size'] : 'Product size' ?></span></p>
                     <p class="text-gray-700 mt-1 font-semibold">Quantity: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'Product size' ?></span></p>
+                    <p class="text-gray-700 mt-1 font-semibold">Order Date: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['date'] : 'Order Date' ?></span></p>
+                    <p class="text-gray-700 mt-1 font-semibold">Vendor: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $ven['username'] : 'vendor name' ?></span></p>
                 </div>
             </div>
         </section>

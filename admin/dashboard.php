@@ -21,7 +21,7 @@ if (isset($_COOKIE['adminEmail'])) {
 
     $Cview = mysqli_num_rows($views_query);
 
-    $views = "SELECT view_date, COUNT(view_count) as total_count FROM page_count GROUP BY view_date ORDER BY view_date";
+    $views = "SELECT view_date, COUNT(view_count) as total_count FROM page_count WHERE view_date >= CURDATE() - INTERVAL 10 DAY GROUP BY view_date ORDER BY view_date;";
     $view_query = mysqli_query($con, $views);
 
     $data = array();
@@ -51,8 +51,6 @@ if (isset($_COOKIE['adminEmail'])) {
 
     $products = mysqli_num_rows($products_query);
 
-
-
     // for total users
     $users = "SELECT * FROM user_registration";
     $users_query = mysqli_query($con, $users);
@@ -65,6 +63,37 @@ if (isset($_COOKIE['adminEmail'])) {
     $vendors_query = mysqli_query($con, $vendors);
 
     $vendor = mysqli_num_rows($vendors_query);
+
+
+    // new user in this week
+    $nUsers = array();
+    $newUser = "SELECT date, COUNT(date) as total_user FROM user_registration GROUP BY date";
+    $newUser_query = mysqli_query($con, $newUser);
+
+    while ($nusr = mysqli_fetch_assoc($newUser_query)) {
+        $nUsers[] = array(
+            'date' => $nusr['date'],
+            'users' => (int) $nusr['total_user']
+        );
+    }
+
+    $user_json = json_encode($nUsers);
+
+
+    // new vendor in this week
+    $nvendor = array();
+    $newVendor = "SELECT date, COUNT(date) as total_vendor FROM vendor_registration GROUP BY date";
+    $newVendor_query = mysqli_query($con, $newVendor);
+
+    while ($nvndr = mysqli_fetch_assoc($newVendor_query)) {
+        $nvendor[] = array(
+            'date' => $nvndr['date'],
+            'vendor' => (int) $nvndr['total_vendor']
+        );
+    }
+
+    $vendor_json = json_encode($nvendor);
+
 }
 ?>
 
@@ -79,6 +108,9 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -347,40 +379,167 @@ if (isset($_COOKIE['adminEmail'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white shadow-xl rounded-md px-4 py-3 mt-12">
-                        <h1 class="text-2xl font-bold text-gray-950">Visitors analytics</h1>
-                        <div id="chart" style="height: 250px;"></div>
-                        <script>
-                            $(document).ready(function() {
-                                var chartData = <?php echo $data_json; ?>;
-
-                                if (chartData.length === 0) {
-                                    $('#chart').html('<div style="text-align: center; margin-top: 80px; font-size: 30px; color: #000;">No data available for this period.</div>');
-                                } else {
-                                    new Morris.Bar({
-                                        element: 'chart',
-                                        data: chartData,
-                                        xkey: 'date',
-                                        ykeys: ['count'],
-                                        labels: ['View Count'],
-                                        barColors: ['#00a65a'],
-                                        hideHover: 'auto',
-                                        resize: true,
-                                        xLabelAngle: 60,
-                                        xLabels: 'day',
-                                        dateFormat: function(x) {
-                                            var d = new Date(x);
-                                            return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 9 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear();
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
+                    <div class="mt-12">
+                        <div class="w-full bg-white rounded-xl p-4 h-full">
+                            <h2 class="text-xl font-bold mb-4 md:text-4xl">Visitors analytics</h2>
+                            <div class="chart-container w-full h-full rounded-md">
+                                <canvas id="conversionChart" width="100" height="80"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl p-5">
+                            <h2 class="text-2xl font-bold">New Vendor This Week</h2>
+                            <div class="chart-container flex items-center justify-between mt-4 rounded-md">
+                                <div class="w-full h-auto">
+                                    <canvas id="newVendor"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-5">
+                            <h2 class="text-2xl font-bold">New User This Week</h2>
+                            <div class="chart-container flex items-center justify-between mt-4 rounded-md">
+                                <div class="w-full h-auto">
+                                    <canvas id="newUser"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
         </div>
     </div>
+
+    <script>
+        // Total Visitors
+        const dataFromPHP  = <?php echo $data_json; ?>;
+
+        const date = dataFromPHP.map(item => item.date);
+        const count = dataFromPHP.map(item => item.count);
+
+        const data = {
+            labels: date,
+            datasets: [{
+                label: "Page Views",
+                data: count,
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                borderColor: '#2563eb',
+                pointBackgroundColor: '#2563eb',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+            }]
+        };
+
+        const options = {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw + '%'; // Example: Conversion Rate: 50%
+                        }
+                    }
+                }
+            }
+        };
+
+        window.onload = function() {
+            const ctx = document.getElementById('conversionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: options
+            });
+        };
+
+        function adjustCanvasHeight() {
+            const canvas = document.getElementById('conversionChart');
+            if (window.innerWidth > 425) {
+                canvas.height = 40;
+            } else {
+                canvas.height = 100;
+            }
+        }
+
+        window.addEventListener('resize', adjustCanvasHeight);
+        adjustCanvasHeight();
+
+        // new vendor
+        const newVendor = <?php echo $vendor_json ?>
+
+        const vendorDate = newVendor.map(item => item.date);
+        const vendorCount = newVendor.map(item => item.vendor);
+
+        const Vendor = document.getElementById('newVendor').getContext('2d');
+        const newVendorWeek = new Chart(Vendor, {
+            type: 'bar',
+            data: {
+                labels: vendorDate,
+                datasets: [{
+                    data: vendorCount,
+                    backgroundColor: ['#2563eb'],
+                    borderWidth: 0,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true } 
+                },
+                layout: {
+                    padding: 10
+                }
+            }
+        });
+        
+        // new user
+        const newUser = <?php echo $user_json ?>;
+        
+        const userDate = newUser.map(item => item.date);
+        const userCount = newUser.map(item => item.users);
+
+        const Users = document.getElementById('newUser').getContext('2d');
+        const userWeek = new Chart(Users, {
+            type: 'line',  // Line chart
+            data: {
+                labels: userDate,
+                datasets: [{
+                    data: userCount,
+                    borderColor: '#2563eb',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: .4,
+                    pointBackgroundColor: '#2563eb',
+                    pointBorderWidth: 2,
+                    pointRadius: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }, // Hide legend if not needed
+                    tooltip: { enabled: true }  // Enable tooltips
+                },
+                layout: {
+                    padding: 10
+                }
+            }
+        });
+    </script>
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>

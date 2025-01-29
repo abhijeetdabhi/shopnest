@@ -748,7 +748,13 @@ if (isset($_GET['product_id'])) {
                         </span>
                         <span class="text-sm ml-2 mt-1">(<?php echo $res['total_reviews'] ?>)</span>
                     </div>
-                    <p class="text-sm font-medium text-[#0080ff]">Free delivery</p>
+                    <?php
+                        if($MRP > 599){
+                            echo "<p class='text-sm font-medium text-[#0080ff]'>Free delivery</p>";
+                        }else{
+                            echo "<p class='text-sm font-medium text-[#0080ff]'>₹40 Shipping</p>";
+                        }
+                    ?>
                 </div>
                 <hr>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
