@@ -172,6 +172,20 @@ if (isset($_COOKIE['user_id'])) {
                         <span class="mx-3">Your reviews</span>
                     </a>
 
+                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="complaint.php">
+                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                            <g>
+                                <circle cx="9.339" cy="16.906" r="1.318" fill="currentColor" opacity="1" data-original="currentColor" class=""></circle>
+                                <circle cx="14.13" cy="16.906" r="1.318" fill="currentColor" opacity="1" data-original="currentColor" class=""></circle>
+                                <circle cx="18.92" cy="16.906" r="1.318" fill="currentColor" opacity="1" data-original="currentColor" class=""></circle>
+                                <path d="M25.27 17.154a.9.9 0 0 0-.9.9v4.38a2.237 2.237 0 0 1-2.24 2.229H17.4a.9.9 0 0 0-.64.268l-2.474 2.504c-.101.105-.198.107-.306-.004l-2.47-2.5a.9.9 0 0 0-.64-.268H6.13c-1.229 0-2.23-1-2.23-2.229v-11.06c0-1.235 1-2.239 2.23-2.239h8.26a.9.9 0 0 0 0-1.8H6.13a4.04 4.04 0 0 0-4.03 4.04v11.061a4.035 4.035 0 0 0 4.03 4.03h4.364l2.202 2.229c.374.382.898.602 1.439.602h.001c.541 0 1.065-.22 1.434-.598l2.206-2.232h4.354a4.04 4.04 0 0 0 4.04-4.03v-4.38a.902.902 0 0 0-.9-.903z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                <path d="m28.948 6.63-2.972-2.972c-1.229-1.229-3.372-1.229-4.6 0l-2.973 2.973c-.614.614-.952 1.431-.952 2.3s.338 1.686.953 2.3l2.972 2.972v.001c.614.614 1.431.952 2.3.952s1.686-.338 2.3-.952l2.972-2.973c.614-.614.953-1.431.953-2.3s-.338-1.686-.953-2.301zm-1.273 3.327-2.972 2.973c-.549.55-1.506.548-2.054.001v-.001l-2.973-2.973a1.44 1.44 0 0 1-.425-1.026c0-.389.151-.753.425-1.027l2.973-2.973c.274-.273.639-.425 1.027-.425s.753.151 1.027.426l2.972 2.972c.274.274.425.639.425 1.027.001.387-.15.752-.425 1.026z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                <path d="M23.676 5.686a.9.9 0 0 0-.9.9v2.133a.9.9 0 0 0 1.8 0V6.586a.9.9 0 0 0-.9-.9zM23.676 10.195a.9.9 0 0 0-.9.9v.18a.9.9 0 0 0 1.8 0v-.18a.9.9 0 0 0-.9-.9z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                            </g>
+                        </svg>
+                        <span class="mx-3">Your complaint</span>
+                    </a>
+
                     <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="my_address.php">
                         <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                             <g>

@@ -58,6 +58,13 @@ if (isset($_COOKIE['user_id'])) {
         [x-cloak] {
             display: none;
         }
+
+        .require:after {
+            content: " *";
+            font-weight: bold;
+            color: red;
+            margin-left: 3px;
+        }
     </style>
 </head>
 
@@ -246,9 +253,36 @@ if (isset($_COOKIE['user_id'])) {
                         });
                     </script>
                 </header>
-                <div class="px-1 md:px-6 py-8 mx-auto bg-gray-200 w-full">
+
+                <div class="px-3 md:px-6 py-8 mx-auto bg-gray-200 w-full">
                     <h3 class="text-3xl font-medium">Complaint</h3>
+                    <div class="bg-white rounded-lg shadow-lg shadow-black/20 w-full grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 min-[750px]:gap-10 p-7 min-[750px]:p-10 mt-5">
+                        <div class="space-y-1">
+                            <label class="require" for="">Name :</label>
+                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="name" id="">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="require" for="">Email :</label>
+                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" name="" id="">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="require" for="">Vendor store name :</label>
+                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="" id="">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="require" for="">Product name :</label>
+                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="" id="">
+                        </div>
+                        <div class="col-span-1 min-[600px]:col-span-2 space-y-1">
+                            <label class="require" for="">Complaint description :</label>
+                            <textarea class="h-20 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition resize-none" name="" id=""></textarea>
+                        </div>
+                        <div class="col-span-1 min-[600px]:col-span-2 flex justify-center min-[750px]:justify-end">
+                            <button class="bg-green-600 hover:bg-green-700 text-white hover:transition w-32 min-[750px]:w-28 h-10 rounded-tl-lg rounded-br-lg font-medium tracking-wide">Submit</button>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
