@@ -243,23 +243,6 @@ if (isset($_GET['product_id'])) {
             opacity: 1;
         }
 
-        .zoom-container {
-            position: relative;
-            overflow: hidden;
-            cursor: zoom-in;
-        }
-
-        .zoom-image {
-            transition: transform 0.1s ease;
-        }
-
-        /* When zooming in */
-        .zoom-container.zoomed-in .zoom-image {
-            transform: scale(2.5);
-            /* Adjust this value for zoom intensity */
-            cursor: zoom-out;
-        }
-
         .scrollBar::-webkit-scrollbar-track {
             border-radius: 10px;
             background-color: #e6e6e6;
@@ -275,6 +258,75 @@ if (isset($_GET['product_id'])) {
             border-radius: 10px;
             background-color: #bfbfbf;
         }
+
+        #fullscreen-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+        }
+
+        #fullscreen-container.active {
+            display: flex;
+        }
+
+        #fullscreen-container img {
+            object-fit: contain;
+            max-width: 90%;
+            max-height: 90%;
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-container {
+            position: relative;
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+
+        .zoom-image {
+            transition: transform 0.1s ease;
+            /* Adjust speed */
+            transform-origin: center center;
+            cursor: pointer;
+        }
+
+        .zoom-image:hover {
+            transform: scale(1.3);
+            /* Zoom the image */
+        }
+
+        .zoom-image.scrollable {
+            cursor: move;
+            user-select: none;
+        }
+
+        .swiper.mySwiper3 {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .mySwiper3 .swiper-pagination {
+            display: none;
+        }
+
+        .swiper.mySwiper4 .swiper-slide {
+            flex-shrink: 0;
+            width: auto;
+            height: auto;
+        }
+
+        .mySwiper4 img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            max-height: 80px;
+        }
     </style>
 </head>
 
@@ -287,110 +339,219 @@ if (isset($_GET['product_id'])) {
 
     <!-- product -->
     <div class="max-w-screen-xl m-auto grid grid-cols-1 min-[890px]:grid-cols-2 gap-y-1 gap-x-5 mt-12 px-2 md:px-8">
-        <div class="">
+        <div>
+            <!-- Fullscreen Container -->
+            <div id="fullscreen-container" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 hidden lg:p-10">
+                <button id="back-button" class="absolute top-5 left-5 text-black ring-2 ring-gray-700 w-20 py-2 rounded-full bg-white z-20">Back</button>
+
+                <div class="swiper mySwiper3 w-auto h-auto md:h-96">
+                    <div class="swiper-wrapper h-full">
+                        <?php
+                        $images = [$first_img1, $first_img2, $first_img3, $first_img4];
+                        foreach ($images as $image) {
+                            if (!empty($image)) {
+                                $imageUrl = isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $image : '../src/sample_images/product_1.jpg';
+                                echo "<div class='swiper-slide w-auto h-auto scale-125'>
+                                        <img class='h-full' src='$imageUrl' />
+                                    </div>";
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+
+                <div class="swiper mySwiper4 max-[330px]:h-16 min-[351px]:h-20">
+                    <div class="swiper-wrapper flex item-center justify-center">
+                        <?php
+                        foreach ($images as $image) {
+                            if (!empty($image)) {
+                                $imageUrl = isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $image : '../src/sample_images/product_1.jpg';
+                                echo "<div class='swiper-slide border border-black p-1 cursor-pointer'>
+                                        <img class='w-full h-20 m-auto aspect-square' src='$imageUrl' />
+                                    </div>";
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Image Slider -->
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2 w-auto h-auto md:h-96">
-                <div class="swiper-wrapper h-52 md:h-full">
+                <div class="swiper-wrapper h-64 md:h-full">
                     <?php
-                    if (!empty($first_img1)) {
-                    ?>
-                        <div class="swiper-slide w-auto h-auto zoom-container">
-                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img1 : '../src/sample_images/product_1.jpg' ?>" />
-                        </div>
-                    <?php
-                    }
-
-                    if (!empty($first_img2)) {
-                    ?>
-                        <div class="swiper-slide h-auto zoom-container">
-                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img2 : '../src/sample_images/product_2.jpg' ?>" />
-                        </div>
-                    <?php
-                    }
-
-                    if (!empty($first_img3)) {
-                    ?>
-                        <div class="swiper-slide h-auto zoom-container">
-                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img3 : '../src/sample_images/product_3.jpg' ?>" />
-                        </div>
-                    <?php
-                    }
-
-                    if (!empty($first_img4)) {
-                    ?>
-                        <div class="swiper-slide h-auto zoom-container">
-                            <img class="h-full zoom-image" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img4 : '../src/sample_images/product_4.jpg' ?>" />
-                        </div>
-                    <?php
+                    foreach ($images as $image) {
+                        if (!empty($image)) {
+                            $imageUrl = isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $image : '../src/sample_images/product_1.jpg';
+                            echo "<div class='swiper-slide w-auto h-auto zoom-container'>
+                                    <img class='h-full zoom-image' src='$imageUrl' />
+                                </div>";
+                        }
                     }
                     ?>
                 </div>
             </div>
-            <!-- image zoom effect js -->
-            <script>
-                document.querySelectorAll('.zoom-container').forEach(function(container) {
-                    const zoomImage = container.querySelector('.zoom-image');
 
-                    // Handle zoom on hover
-                    container.addEventListener('mouseenter', function() {
-                        container.classList.add('zoomed-in');
-                    });
-
-                    // Handle zoom out on mouse leave
-                    container.addEventListener('mouseleave', function() {
-                        container.classList.remove('zoomed-in');
-                        zoomImage.style.transformOrigin = 'center center'; // Reset zoom origin
-                    });
-
-                    // Handle cursor move and zoom positioning
-                    container.addEventListener('mousemove', function(e) {
-                        // Get the position of the container
-                        const containerRect = container.getBoundingClientRect();
-                        const xPercent = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-                        const yPercent = ((e.clientY - containerRect.top) / containerRect.height) * 100;
-
-                        // Set the transform origin of the image based on mouse position
-                        zoomImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-                    });
-                });
-            </script>
+            <!-- Thumbnail Slider -->
             <div thumbsSlider="" class="swiper mySwiper md:w-80 h-auto mt-6 px-2">
                 <div class="swiper-wrapper flex item-center justify-center">
                     <?php
-                    if (!empty($first_img1)) {
-                    ?>
-                        <div class="swiper-slide border border-black p-1 cursor-pointer">
-                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img1 : '../src/sample_images/product_1.jpg' ?>" />
-                        </div>
-                    <?php
-                    }
-
-                    if (!empty($first_img2)) {
-                    ?>
-                        <div class="swiper-slide border border-black p-1 cursor-pointer">
-                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img2 : '../src/sample_images/product_1.jpg' ?>" />
-                        </div>
-                    <?php
-                    }
-
-                    if (!empty($first_img3)) {
-                    ?>
-                        <div class="swiper-slide border border-black p-1 cursor-pointer">
-                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img3 : '../src/sample_images/product_1.jpg' ?>" />
-                        </div>
-                    <?php
-                    }
-
-                    if (!empty($first_img4)) {
-                    ?>
-                        <div class="swiper-slide border border-black p-1 cursor-pointer">
-                            <img class="w-full h-full m-auto aspect-square" src="<?php echo isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $first_img4 : '../src/sample_images/product_1.jpg' ?>" />
-                        </div>
-                    <?php
+                    foreach ($images as $image) {
+                        if (!empty($image)) {
+                            $imageUrl = isset($_GET['product_id']) ? '../src/product_image/product_profile/' . $image : '../src/sample_images/product_1.jpg';
+                            echo "<div class='swiper-slide border border-black p-1 cursor-pointer'>
+                                    <img class='w-full h-20 m-auto aspect-square' src='$imageUrl' />
+                                </div>";
+                        }
                     }
                     ?>
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const fullscreenContainer = document.getElementById('fullscreen-container');
+                    const closeButton = document.getElementById('back-button');
+                    const isMobileOrTablet = window.matchMedia('(max-width: 1024px)');
+
+                    // Initialize Swipers
+                    const mainSwiper = new Swiper('.mySwiper3', {
+                        loop: false,
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev'
+                        },
+                        pagination: {
+                            el: null,
+                        }
+                    });
+
+                    const thumbsSwiper = new Swiper('.mySwiper4', {
+                        slidesPerView: 'auto',
+                        spaceBetween: 10,
+                        freeMode: true,
+                        watchSlidesVisibility: true,
+                        watchSlidesProgress: true,
+                    });
+
+                    const mySwiper2Images = document.querySelectorAll('.mySwiper2 .swiper-slide img');
+                    const mySwiper4Images = document.querySelectorAll('.mySwiper4 .swiper-slide img');
+
+                    // Open fullscreen modal
+                    const openFullscreen = (img, index) => {
+                        fullscreenContainer.classList.remove('hidden');
+                        fullscreenContainer.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+
+                        const imageUrl = img.src;
+                        const fullscreenImage = fullscreenContainer.querySelector('img');
+                        fullscreenImage.src = imageUrl;
+
+                        mainSwiper.slideTo(index);
+                        thumbsSwiper.slideTo(index);
+                    };
+
+                    // Image click handler to open fullscreen
+                    const handleImageClick = (img, index) => openFullscreen(img, index);
+
+                    mySwiper2Images.forEach((img, index) => {
+                        img.addEventListener('click', () => handleImageClick(img, index));
+                    });
+
+                    // Mouse move effect for image opposite to cursor
+                    mySwiper2Images.forEach((img) => {
+                        img.addEventListener('mousemove', (e) => {
+                            const rect = img.getBoundingClientRect();
+                            const offsetX = e.clientX - rect.left;
+                            const offsetY = e.clientY - rect.top;
+
+                            // Calculate the direction opposite to the cursor
+                            const moveX = ((offsetX / rect.width) - 0.5) * -110; // Adjust movement range to move opposite
+                            const moveY = ((offsetY / rect.height) - 0.5) * -110; // Adjust movement range to move opposite
+
+                            // Apply the transformation with transition
+                            img.style.transition = 'transform 0.1s ease'; // Add transition here
+                            img.style.transform = `scale(1.2) translate(${moveX}px, ${moveY}px)`; // Apply transformation
+                        });
+
+                        img.addEventListener('mouseleave', () => {
+                            img.style.transition = 'transform 0.1s ease'; // Ensure transition on reset
+                            img.style.transform = 'scale(1)'; // Reset the transform when cursor leaves
+                        });
+                    });
+
+                    // Thumbnail click handler to open fullscreen
+                    mySwiper4Images.forEach((img, index) => {
+                        img.addEventListener('click', () => handleImageClick(img, index));
+                    });
+
+                    // Close fullscreen on clicking outside of the container
+                    fullscreenContainer.addEventListener('click', (e) => {
+                        if (e.target === fullscreenContainer) {
+                            fullscreenContainer.classList.remove('active');
+                            fullscreenContainer.classList.add('hidden');
+                            document.body.style.overflow = '';
+                        }
+                    });
+
+                    // Close button functionality
+                    if (closeButton) {
+                        closeButton.addEventListener('click', () => {
+                            fullscreenContainer.classList.remove('active');
+                            fullscreenContainer.classList.add('hidden');
+                            document.body.style.overflow = '';
+                        });
+                    }
+
+                    // Mobile and desktop-specific behavior
+                    if (isMobileOrTablet.matches) {
+                        mySwiper2Images.forEach((img, index) => {
+                            img.addEventListener('click', () => handleImageClick(img, index));
+                        });
+                    } else {
+                        fullscreenContainer.classList.add('hidden');
+                    }
+
+                    // Zoom functionality for large screens
+                    const zoomImage = document.querySelector('.zoom-image');
+                    let isDragging = false;
+                    let startX, startY, scrollLeft, scrollTop;
+
+                    if (zoomImage) {
+                        zoomImage.addEventListener('mousedown', (e) => {
+                            if (!isMobileOrTablet.matches) {
+                                isDragging = true;
+                                startX = e.pageX - zoomImage.offsetLeft;
+                                startY = e.pageY - zoomImage.offsetTop;
+                                scrollLeft = zoomImage.scrollLeft;
+                                scrollTop = zoomImage.scrollTop;
+                                zoomImage.classList.add('scrollable');
+                            }
+                        });
+
+                        zoomImage.addEventListener('mousemove', (e) => {
+                            if (!isDragging) return;
+                            e.preventDefault();
+                            const moveX = e.pageX - startX;
+                            const moveY = e.pageY - startY;
+                            zoomImage.scrollLeft = scrollLeft - moveX;
+                            zoomImage.scrollTop = scrollTop - moveY;
+                        });
+
+                        zoomImage.addEventListener('mouseup', () => {
+                            isDragging = false;
+                            zoomImage.classList.remove('scrollable');
+                        });
+
+                        zoomImage.addEventListener('mouseleave', () => {
+                            isDragging = false;
+                            zoomImage.classList.remove('scrollable');
+                        });
+                    }
+                });
+            </script>
         </div>
+
         <form action="" Method="post">
             <div class="flex flex-col gap-3 w-full mt-12 px-2">
                 <div class="flex flex-col gap-2">

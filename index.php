@@ -340,7 +340,8 @@ function displayRandomProducts($con, $limit)
         #logoutPopUp {
             display: none;
         }
-        [x-cloak]{
+
+        [x-cloak] {
             display: none;
         }
     </style>
@@ -421,7 +422,7 @@ function displayRandomProducts($con, $limit)
                     </div>
                 </div>
                 <div class="swiper-slide flex items-center justify-center">
-                    <img class="relative w-full h-full rounded-md object-cover" src="https://rog.asus.com/Microsite/ROG-X-INTEL-UNLEASH-THE-LEGEND-INSIDE/in/assets/img/list/ROG-STRIX-SCAR-15-17.jpg" alt="">
+                    <img class="relative w-full h-full rounded-md object-cover" src="https://149367133.v2.pressablecdn.com/wp-content/uploads/2025/01/asus-rog-ces-2025-gaming-laptops-tablets-more-revealed-20250106.jpg" alt="">
                     <div class="bg-gradient-to-r from-black/95 to-black/10 h-full absolute bottom-4 left-0 px-7 md:px-20 top-0 max-w-max flex justify-center flex-col gap-1 text-white">
                         <h1 class="text-base md:text-3xl font-bold">Unleash your productivity</h1>
                         <p class="text-sm md:text-lg font-normal my-2 w-full md:w-[60%]">Experience unparalleled performance and style with our cutting-edge laptops.</p>
@@ -1101,7 +1102,7 @@ function displayRandomProducts($con, $limit)
             </div>
         </div>
     </div>
-<!-- script for location -->
+    <!-- script for location -->
     <script>
         let currentLocation = document.getElementById('currentLocation');
 
