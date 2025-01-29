@@ -417,6 +417,11 @@ if (isset($_COOKIE['adminEmail'])) {
         const date = dataFromPHP.map(item => item.date);
         const count = dataFromPHP.map(item => item.count);
 
+        const backgroundColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        const borderColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        const pointBackgroundColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        const pointBorderColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+
         const data = {
             labels: date,
             datasets: [{
@@ -425,9 +430,9 @@ if (isset($_COOKIE['adminEmail'])) {
                 borderWidth: 2,
                 tension: 0.4,
                 fill: true,
-                backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                borderColor: '#2563eb',
-                pointBackgroundColor: '#2563eb',
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                pointBackgroundColor: pointBackgroundColor,
                 pointBorderWidth: 2,
                 pointRadius: 4,
             }]
@@ -448,7 +453,7 @@ if (isset($_COOKIE['adminEmail'])) {
                     enabled: true,
                     callbacks: {
                         label: function(tooltipItem) {
-                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw + '%'; // Example: Conversion Rate: 50%
+                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw; // Example: Conversion Rate: 50%
                         }
                     }
                 }
@@ -482,6 +487,8 @@ if (isset($_COOKIE['adminEmail'])) {
         const vendorDate = newVendor.map(item => item.date);
         const vendorCount = newVendor.map(item => item.vendor);
 
+        const vendorBackgroundColor = vendorCount.map(v => v < 5 ? '#FF0000' : '#2563eb');
+
         const Vendor = document.getElementById('newVendor').getContext('2d');
         const newVendorWeek = new Chart(Vendor, {
             type: 'bar',
@@ -489,7 +496,7 @@ if (isset($_COOKIE['adminEmail'])) {
                 labels: vendorDate,
                 datasets: [{
                     data: vendorCount,
-                    backgroundColor: ['#2563eb'],
+                    backgroundColor: vendorBackgroundColor,
                     borderWidth: 0,
                     borderRadius: 5,
                 }]
@@ -502,7 +509,15 @@ if (isset($_COOKIE['adminEmail'])) {
                 },
                 layout: {
                     padding: 10
-                }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                },
             }
         });
         
@@ -513,6 +528,9 @@ if (isset($_COOKIE['adminEmail'])) {
         const userCount = newUser.map(item => item.users);
 
         const Users = document.getElementById('newUser').getContext('2d');
+
+        const userBackgroundColor = userCount.map(u => u < 5 ? '#FF0000' : '#2563eb');
+
         const userWeek = new Chart(Users, {
             type: 'line',  // Line chart
             data: {
@@ -523,7 +541,7 @@ if (isset($_COOKIE['adminEmail'])) {
                     borderWidth: 2,
                     fill: false,
                     tension: .4,
-                    pointBackgroundColor: '#2563eb',
+                    pointBackgroundColor: userBackgroundColor,
                     pointBorderWidth: 2,
                     pointRadius: 2,
                 }]
@@ -536,6 +554,16 @@ if (isset($_COOKIE['adminEmail'])) {
                 },
                 layout: {
                     padding: 10
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return value.toFixed(1);
+                            },
+                            stepSize: 1
+                        }
+                    }
                 }
             }
         });
