@@ -248,52 +248,6 @@ if (isset($_COOKIE['user_id'])) {
                 </header>
                 <div class="px-1 md:px-6 py-8 mx-auto bg-gray-200 w-full">
                     <h3 class="text-3xl font-medium">Complaint</h3>
-                    <div class="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 min-[1258px]:grid-cols-3 gap-6 w-full mt-6 lg:h-[70vh] py-4 lg:overflow-y-scroll p-3 rounded-md">
-
-                        <?php
-                        if (isset($_COOKIE['user_id'])) {
-
-                            $retrive_reivew = "SELECT * FROM user_review WHERE user_id = '$user_id'";
-                            $retrive_reivew_query = mysqli_query($con, $retrive_reivew);
-
-                            while ($rev = mysqli_fetch_assoc($retrive_reivew_query)) {
-                        ?>
-                                <div class="bg-white shadow-lg h-max rounded-tl-xl rounded-br-xl overflow-hidden">
-                                    <a href="">
-                                        <div class="flex flex-col gap-y-4 items-start justify-between md:flex-row px-3 pt-3">
-                                            <div class="flex item-center justify-center gap-3">
-                                                <img class="w-12 h-12 rounded-full object-cover" src="<?php echo '../src/user_dp/' . $rev['profile_image'] ?>" alt="">
-                                                <div class="flex flex-col gap-0">
-                                                    <h2 class="font-medium text-base text-neutral-800"><?php echo isset($_COOKIE['user_id']) ? $rev['public_name'] : 'public_name' ?></span></h2>
-                                                    <p class="font-medium text-sm text-gray-500"><?php echo isset($_COOKIE['user_id']) ? $rev['date'] : 'date' ?></p>
-                                                </div>
-                                            </div>
-                                            <div class="flex item-center gap-1">
-                                                <span class="bg-gray-900 rounded-tl-lg rounded-br-lg px-2 py-0.5 flex items-center gap-1">
-                                                    <h1 class="font-semibold text-base text-white"><?php echo isset($_COOKIE['user_id']) ? $rev['Rating'] : 'Rating' ?></h1>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-3 h-3 m-auto fill-current text-white">
-                                                        <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="mt-3 px-3 space-y-1">
-                                            <h1 class="font-medium"><?php echo isset($_COOKIE['user_id']) ? $rev['Headline'] : 'Headline' ?></h1>
-                                            <p class="text-sm"><?php echo isset($_COOKIE['user_id']) ? $rev['description'] : 'description' ?></p>
-                                        </div>
-                                    </a>
-                                    <div class="flex item-center justify-between mt-4 bg-gray-600 px-3 py-2">
-                                        <a href="edit_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-green-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg rounded-br-lg">Edit</a>
-                                        <a href="delete_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-red-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg rounded-br-lg">Delete</a>
-                                    </div>
-                                </div>
-                        <?php
-                            }
-                        } else {
-                            echo '<div class="relative font-bold text-2xl w-max text-center mt-12 flex items-center justify-center m-auto">No data available for this period.</div>';
-                        }
-                        ?>
-                    </div>
                 </div>
             </div>
         </div>
