@@ -511,13 +511,16 @@ if (isset($_COOKIE['adminEmail'])) {
                     padding: 10
                 },
                 scales: {
-                    x: {
-                        beginAtZero: true
-                    },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toFixed(1);
+                            },
+                            stepSize: 1
+                        }
                     }
-                },
+                }
             }
         });
         
