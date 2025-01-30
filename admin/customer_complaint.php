@@ -245,7 +245,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                 <?php
                                 include "../include/connect.php";
 
-                                $get_contacts = "SELECT * FROM contact_us";
+                                $get_contacts = "SELECT * FROM complaint";
                                 $contact_query = mysqli_query($con, $get_contacts);
 
                                 if (mysqli_num_rows($contact_query) > 0) {
@@ -255,7 +255,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                             <div id="custInqContainer" class=" flex flex-col gap-y-4 text-sm sm:text-base">
                                                 <div class="flex gap-1 sm:gap-2">
                                                     <p class="font-bold">Name:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['name'] ?></p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['user_name'] ?></p>
                                                 </div>
 
                                                 <div class="flex gap-1 sm:gap-2">
@@ -264,13 +264,18 @@ if (isset($_COOKIE['vendor_id'])) {
                                                 </div>
 
                                                 <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Subject:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['subject'] ?></p>
+                                                    <p class="font-bold">Vendor:</p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['vendor_store'] ?></p>
                                                 </div>
 
                                                 <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Message:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['message'] ?></p>
+                                                    <p class="font-bold">Product:</p>
+                                                    <p class="font-medium text-gray-800"><?php echo $res['product_name'] ?></p>
+                                                </div>
+
+                                                <div class="flex gap-1 sm:gap-2">
+                                                    <p class="font-bold">Complaint:</p>
+                                                    <p class="font-medium text-gray-500"><?php echo $res['user_complaint'] ?></p>
                                                 </div>
 
                                                 <div class="flex gap-1 sm:gap-2">
@@ -279,7 +284,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                                 </div>
                                             </div>
                                             <div class="text-right">
-                                                <a href="mailto:abc@gmail.com" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Contact</a>
+                                                <a href="" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Add Comment</a>
                                             </div>
                                         </div>
                                     <?php

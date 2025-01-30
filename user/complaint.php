@@ -21,6 +21,41 @@ if (isset($_COOKIE['user_id'])) {
     $retrieve_query = mysqli_query($con, $retrieve_data);
 
     $row = mysqli_fetch_assoc($retrieve_query);
+
+    $getOrder = "SELECT * FROM orders WHERE user_id = '$user_id'";
+    $getOrder_query = mysqli_query($con, $getOrder);
+    $vendorId = [];
+    while($order = mysqli_fetch_assoc($getOrder_query)){
+        if(!in_array($order['vendor_id'], $vendorId)){
+            $vendorId[] = $order['vendor_id'];
+        }
+    }
+
+    if(isset($_GET['vendorId'])){
+        $vendor_id = $_GET['vendorId'];
+
+        $findVendor = "SELECT * FROM vendor_registration WHERE vendor_id = $vendor_id";
+        $vendor_query = mysqli_query($con, $findVendor);
+        $vdr = mysqli_fetch_assoc($vendor_query);
+        $vendor_name = $vdr['username'];
+
+        $findOrder = "SELECT * FROM orders WHERE vendor_id = $vendor_id";
+        $findOrder_query = mysqli_query($con, $findOrder);
+    }
+
+    if(isset($_GET['productId'])){
+        $product_id = $_GET['productId'];
+        $findOrder = "SELECT * FROM orders WHERE product_id = $product_id";
+        $findOrder_query = mysqli_query($con, $findOrder);
+
+        $prdct = mysqli_fetch_assoc($findOrder_query);
+        $order_title = $prdct['order_title'];
+    }
+
+
+    $usersId = isset($_COOKIE['user_id']) ? $_COOKIE['user_id'] : 0;
+    $vendorsId = isset($_GET['vendorId']) ? $_GET['vendorId'] : 0;
+    $productsId = isset($_GET['productId']) ? $_GET['productId'] : 0;
 }
 ?>
 
@@ -35,6 +70,9 @@ if (isset($_COOKIE['user_id'])) {
 
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -254,42 +292,280 @@ if (isset($_COOKIE['user_id'])) {
                     </script>
                 </header>
 
-                <div class="px-3 md:px-6 py-8 mx-auto bg-gray-200 w-full">
+                <div class="px-3 md:px-6 py-8 mx-auto bg-gray-200 w-full h-screen overflow-hidden overflow-y-scroll">
                     <h3 class="text-3xl font-medium">Complaint</h3>
-                    <div class="bg-white rounded-lg shadow-lg shadow-black/20 w-full grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 min-[750px]:gap-10 p-7 min-[750px]:p-10 mt-5">
+                    <form id="userComplaint" method="post" class="bg-white rounded-lg shadow-lg shadow-black/20 w-full grid grid-cols-1 min-[600px]:grid-cols-2 gap-5 min-[750px]:gap-10 p-7 min-[750px]:p-10 mt-5">
                         <div class="space-y-1">
                             <label class="require" for="">Name :</label>
-                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="name" id="">
+                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="name" id="name">
                         </div>
                         <div class="space-y-1">
                             <label class="require" for="">Email :</label>
-                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" name="" id="">
+                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="email" name="email" id="email">
                         </div>
                         <div class="space-y-1">
                             <label class="require" for="">Vendor store name :</label>
-                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="" id="">
+                            <div class="relative">
+                                <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="vendorStore" id="vendorStore" value="<?php echo isset($_GET['vendorId']) ? $vendor_name : '' ?>">
+                                <div class="hidden absolute top-14 left-0 w-full p-2 border rounded-md bg-white shadow-lg z-40" id="vendorSuggestions">
+                                    <?php
+                                        foreach($vendorId as $vd){
+                                            $findVendor = "SELECT * FROM vendor_registration WHERE vendor_id = $vd";
+                                            $vendor_query = mysqli_query($con, $findVendor);
+                                            
+                                            while($res = mysqli_fetch_assoc($vendor_query)){
+                                                ?>
+                                                    <a href="?vendorId=<?php echo $res['vendor_id'] ?>" class="flex flex-col min-[530px]:flex-row items-center gap-4 w-full p-2 my-2 border cursor-pointer hover:bg-gray-100 rounded-md bg-white transition">
+                                                        <div class="w-full flex items-center gap-2">
+                                                            <img class="w-8 h-8 rounded-full object-cover" src="../src/vendor_images/vendor_profile_image/<?php echo $res['dp_image'] ?>" alt="Product Image">
+                                                            <h1 class="whitespace-nowrap"><?php echo $res['username'] ?></h1>
+                                                        </div>
+                                                    </a>
+                                                <?php
+                                            }
+                                        }
+                                    ?>
+                                </div>
+                                <script>
+                                    let vendorStore = document.getElementById('vendorStore');
+                                    let vendorSuggestions = document.getElementById('vendorSuggestions');
+                                    vendorStore.addEventListener('click', ()=>{
+                                        vendorSuggestions.style.display = 'flex';
+                                    });
+
+                                    window.addEventListener('click', (e)=>{
+                                        if(!vendorStore.contains(e.target) || vendorSuggestions.contains(e.target)){
+                                            vendorSuggestions.style.display = 'none';
+                                        }
+                                    });
+
+                                    $(document).ready(function () {
+                                        $('#vendorStore').on('input', function(){
+                                            let words = $(this).val();
+
+                                            if(words.length > 2){
+                                                $("#vendorSuggestions").css('display', 'block');
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "getVendor.php",
+                                                    data: {
+                                                        searchWord: words
+                                                    },
+                                                    success: function (response) {
+                                                        $('#vendorSuggestions').html(response)
+                                                    }
+                                                });
+                                            }
+                                        })
+                                    });
+                                </script>
+                            </div>
                         </div>
                         <div class="space-y-1">
                             <label class="require" for="">Product name :</label>
-                            <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="" id="">
+                            <div class="relative">
+                                <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="vendorProduct" id="vendorProduct" value="<?php echo isset($_GET['productId']) ? $order_title : '' ?>">
+                                <div style="display: none;" class="absolute flex flex-col top-14 left-0 p-2 w-full border rounded-md bg-white shadow-lg z-30" id="productSuggestions">
+                                    <?php
+                                        if(isset($_GET['vendorId'])){
+                                            while($vndr = mysqli_fetch_assoc($findOrder_query)){
+                                                ?>
+                                                    <a href="?vendorId=<?php echo $_GET['vendorId'] ?>&productId=<?php echo $vndr['product_id'] ?>" class="flex flex-col min-[530px]:flex-row items-center gap-4 p-3 my-3 cursor-pointer hover:bg-gray-100 rounded-md bg-white transition">
+                                                        <div class="w-full sm:w-32 flex justify-center">
+                                                            <img class="w-52 h-auto object-contain mix-blend-multiply" src="../src/product_image/product_profile/<?php echo $vndr['order_image'] ?>" alt="Product Image">
+                                                        </div>
+                                                        <div class="flex flex-col gap-2 w-full">
+                                                            <div>
+                                                                <span class="text-base font-normal text-gray-800 line-clamp-2">
+                                                                    <?php echo $vndr['order_title'] ?>
+                                                                </span>
+                                                            </div>
+                                                            <div class="grid grid-cols-2 gap-2 md:w-56">
+                                                                <span class="text-gray-600 font-medium">Colour: <h3 class="text-black"><?php echo $vndr['order_color'] ?></h3></span>
+                                                                <span class="text-gray-600 font-medium">Size: <h3 class="text-black"><?php echo $vndr['total_price'] ?></h3></span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                <?php
+                                            }
+                                        }else{
+                                            echo "<h1 class='text-center'>No Data Found</h1>";
+                                        }
+                                    ?>
+                                </div>
+                                <script>
+                                    let vendorProduct = document.getElementById('vendorProduct');
+                                    let productSuggestions = document.getElementById('productSuggestions');
+                                    vendorProduct.addEventListener('click', ()=>{
+                                        productSuggestions.style.display = 'flex';
+                                    });
+
+                                    window.addEventListener('click', (e)=>{
+                                        if(!vendorProduct.contains(e.target) || productSuggestions.contains(e.target)){
+                                            productSuggestions.style.display = 'none';
+                                        }
+                                    });
+
+                                    $(document).ready(function () {
+                                        $('#vendorProduct').on('input', function(){
+                                            let word = $(this).val();
+                                            let vendorId = <?php echo isset($_GET['vendorId']) ? $_GET['vendorId'] : "N/A" ?>;
+                                            if(word.length > 2){
+                                                $('#productSuggestions').css('display', 'block');
+
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "getItem.php",
+                                                    data: {
+                                                        search: word,
+                                                        vendorId: vendorId
+                                                    },
+                                                    success: function (response) {
+                                                        $('#productSuggestions').html(response);
+                                                    }
+                                                });
+                                            }
+                                        })
+                                    });
+                                </script>
+                            </div>
                         </div>
                         <div class="col-span-1 min-[600px]:col-span-2 space-y-1">
                             <label class="require" for="">Complaint description :</label>
-                            <textarea class="h-20 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition resize-none" name="" id=""></textarea>
+                            <textarea class="h-20 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition resize-none" name="complaint" id="complaint"></textarea>
                         </div>
                         <div class="col-span-1 min-[600px]:col-span-2 flex justify-center min-[750px]:justify-end">
-                            <button class="bg-green-600 hover:bg-green-700 text-white hover:transition w-32 min-[750px]:w-28 h-10 rounded-tl-lg rounded-br-lg font-medium tracking-wide">Submit</button>
+                            <button id="btn" class="bg-green-600 hover:bg-green-700 text-white hover:transition w-32 min-[750px]:w-28 h-10 rounded-tl-lg rounded-br-lg font-medium tracking-wide">Submit</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
 
             </div>
         </div>
     </div>
 
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully"></div>
+        </div>
+    </div>
+
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
+    </div>
+
+    <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+        
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+        
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+        
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+        
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+        
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+        
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = 'profile.php';
+            }, 2000);
+        }
+
+        // ajax for complaint
+        $(document).ready(function () {
+            $('#userComplaint').on('submit', function(e){
+                e.preventDefault();
+
+                let name = $('#name').val().trim();
+                let email = $('#email').val().trim();
+                let vendorStore = $('#vendorStore').val().trim();
+                let vendorProduct = $('#vendorProduct').val();
+                let complaint = $('#complaint').val();
+
+                let usersId = <?php echo $usersId ?>;
+                let vendorsId = <?php echo $vendorsId ?>;
+                let productsId = <?php echo $productsId ?>;
+
+                if(name === ''){
+                    displayErrorMessage('please Enter Your Name');
+                }else if(email === ''){
+                    displayErrorMessage('please Enter Your Email Address');
+                }else if(vendorStore === ''){
+                    displayErrorMessage('please Enter Vendor Store Name');
+                }else if(vendorProduct === ''){
+                    displayErrorMessage('please Enter Product Name');
+                }else if(complaint === ''){
+                    displayErrorMessage('please Enter Your Complaint');
+                }else{
+                    $.ajax({
+                        type: "post",
+                        url: "userComplaintAjax.php",
+                        data: {
+                            name: name,
+                            email: email,
+                            vendorStore: vendorStore,
+                            vendorProduct: vendorProduct,
+                            complaint: complaint,
+    
+                            usersId: usersId,
+                            vendorsId: vendorsId,
+                            productsId: productsId,
+                        },
+                        success: function (response) {
+                            if (response === 'success') {
+                                loader();
+                                displaySuccessMessage('Your complaint has been successfully submitted. We will review it and get back to you shortly.');
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
-</body>
 
+
+</body>
 </html>
