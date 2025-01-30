@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 ?>
@@ -50,18 +50,6 @@ if (isset($_COOKIE['vendor_id'])) {
         .scrollBar::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background-color: #bfbfbf;
-        }
-
-        @media (max-width: 343px) {
-
-            #custInqContainer {
-                font-size: 0.75rem
-                    /* 12px */
-                ;
-                line-height: 1rem
-                    /* 16px */
-                ;
-            }
         }
 
         #logoutPopUp {
@@ -137,8 +125,8 @@ if (isset($_COOKIE['vendor_id'])) {
                         <span class="mx-3">Vendors</span>
                     </a>
 
-                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="new_vendor_request.php">
-                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                    <a class="flex items-center px-6 py-2 mt-4 text-gray-100 bg-gray-700 bg-opacity-25" href="new_vendor_request.php">
+                        <svg class="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                             <g>
                                 <path d="m503.299 378.185-39.741-169.197c-3.33-14.19-17.6-23.034-31.832-19.709l-8.441 1.984V20c0-6.628-5.373-12-12-12H167.934a11.996 11.996 0 0 0-8.485 3.515L92.241 78.723a12.003 12.003 0 0 0-3.515 8.485v104.06l-8.477-1.991c-6.864-1.609-13.955-.441-19.97 3.287-6.017 3.729-10.217 9.562-11.827 16.424L8.719 378.15c-1.633 6.86-.479 13.961 3.249 19.995 3.733 6.043 9.579 10.259 16.451 11.87l36.923 8.678c2.02.472 4.04.698 6.03.698 7.43 0 14.43-3.159 19.371-8.441l82.438 82.166c7.04 7.02 16.407 10.883 26.384 10.883h.063c9.997-.016 19.376-3.91 26.41-10.964a37.123 37.123 0 0 0 7.674-11.205l3.869 3.858c7.398 7.38 16.532 11.272 25.986 11.272 3.058 0 6.15-.407 9.227-1.236 11.162-3.005 20.602-11.193 25.438-21.616 7.016 5.554 14.644 7.964 22.036 7.964 10.131 0 19.813-4.504 26.849-11.555 6.488-6.504 10.797-15.255 11.41-24.523 9.007-.599 17.673-4.644 24.411-11.397 5.751-5.765 9.796-13.294 11.07-21.385 1.63.184 3.27.287 4.917.287 6.085 0 12.244-1.263 18.109-3.856l2.298-1.021c4.949 6.67 12.846 10.769 21.296 10.768 1.99 0 4.011-.227 6.029-.7l36.891-8.67c6.88-1.607 12.727-5.814 16.464-11.846 3.73-6.021 4.899-13.118 3.289-19.988zM161.631 43.273v37.661H123.97zm-48.906 61.661h60.906c6.627 0 12-5.373 12-12V32h213.653v164.903l-4.458 1.048c-6.88 1.613-12.725 5.824-16.456 11.858-3.727 6.027-4.882 13.129-3.259 19.972l2.133 9.085-.591.214c-10.629 3.836-20.679 3.243-30.729-1.815l-50.797-25.54c-25.065-12.601-54.353-7.482-73.636 12.639h-83.9c.294-12.266-8.018-23.509-20.402-26.412l-4.463-1.048v-91.971zM70.816 395.327l-36.913-8.676c-.841-.197-1.312-.786-1.518-1.12a2.402 2.402 0 0 1-.31-1.858l39.741-169.197v-.005c.188-.795.705-1.258 1.106-1.507a2.48 2.48 0 0 1 1.302-.385c.171 0 .353.019.542.063l36.94 8.675c1.297.304 2.132 1.674 1.828 2.977L73.79 393.477c-.305 1.307-1.674 2.152-2.974 1.848zm299.518 13.253c-.195 3.162-1.795 6.467-4.388 9.066-2.59 2.597-5.886 4.202-9.041 4.404-3.401.217-6.676-1.206-9.713-4.236l-60.207-60.037c-4.693-4.679-12.292-4.669-16.97.024-4.68 4.693-4.669 12.291.024 16.97l60.205 60.035c8.871 8.85 1.457 17.18-.119 18.76-1.577 1.58-9.889 9.014-18.761.163l-64.487-64.317c-4.692-4.68-12.29-4.67-16.971.022-4.68 4.692-4.67 12.291.022 16.971l43.468 43.353.014.015c3.713 3.705 5.019 7.747 3.881 12.014-1.332 4.993-5.747 9.419-10.737 10.762-4.263 1.147-8.31-.148-12.026-3.855l-47.792-47.65c-4.693-4.679-12.291-4.668-16.971.025-4.679 4.693-4.668 12.291.025 16.97l19.218 19.161c5.216 5.201 5.23 13.674.032 18.887-2.509 2.516-5.866 3.905-9.455 3.91h-.023c-3.578 0-6.929-1.377-9.44-3.88l-90.018-89.721 32.427-138.034h67.507l-42.942 48.196c-5.883 6.612-8.262 15.041-6.691 23.787 1.602 8.688 6.764 15.746 14.546 19.879 23.227 12.305 51.395 10.823 73.525-3.875l25.014-16.657c8.183-5.432 18.771-4.377 25.737 2.553l76.91 76.688c2.99 3.011 4.404 6.255 4.195 9.645zm14.303-25.093-78.471-78.244c-15.15-15.073-38.155-17.353-55.961-5.534l-25.017 16.659c-14.781 9.817-33.556 10.833-48.987 2.658-1.302-.691-1.916-1.541-2.181-2.976-.255-1.419.037-2.443 1.003-3.529l62.779-70.46c11.9-13.332 30.606-16.905 46.544-8.892l50.792 25.538c15.156 7.628 31.571 8.86 47.616 3.633l28.969 123.401-4.413 1.959c-8.015 3.545-16.487 1.974-22.673-4.212zm94.972 2.047a2.436 2.436 0 0 1-1.537 1.119l-36.9 8.672c-1.303.307-2.674-.558-2.983-1.859L398.47 224.27a2.39 2.39 0 0 1 .313-1.837c.205-.331.674-.916 1.528-1.116l36.89-8.67c.186-.043.372-.064.556-.064 1.126 0 2.175.774 2.437 1.889l39.741 169.197c.198.847-.119 1.532-.325 1.866zM144.907 158.498c0-6.627 5.373-12 12-12h198.167c6.627 0 12 5.373 12 12s-5.373 12-12 12H156.907c-6.627 0-12-5.373-12-12zm82.799-54.821c0-6.627 5.373-12 12-12h115.368c6.627 0 12 5.373 12 12s-5.373 12-12 12H239.706c-6.627 0-12-5.373-12-12z" fill="currentColor" opacity="1" data-original="currentColor"></path>
                             </g>
@@ -155,8 +143,8 @@ if (isset($_COOKIE['vendor_id'])) {
                         <span class="mx-3">Products</span>
                     </a>
 
-                    <a class="flex items-center px-6 py-2 mt-4 text-gray-100 bg-gray-700 bg-opacity-25" href="contact_page.php">
-                        <svg class="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="contact_page.php">
+                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                             <g>
                                 <path d="M255.986 368.994c69.385 0 125.834-56.437 125.834-125.807a125.977 125.977 0 0 0-125.834-125.834c-69.37 0-125.806 56.449-125.806 125.834a126.3 126.3 0 0 0 33.62 85.588l-13.013 48.547a15 15 0 0 0 21.993 16.872l50.895-29.408a125.582 125.582 0 0 0 32.311 4.208zm-41.747-33.4-25.091 14.5 5.868-21.89a15 15 0 0 0-4.268-14.863 94.89 94.89 0 0 1-30.568-70.149 95.775 95.775 0 1 1 66.2 91.128 15 15 0 0 0-12.141 1.271zM503.8 253.9c.163-6.138.332-12.485.039-19.093a71.337 71.337 0 0 0-71.782-68.279C402.4 98.677 334.645 51.136 255.986 51.136S109.6 98.676 79.942 166.527a71.339 71.339 0 0 0-71.779 68.257c-.294 6.632-.125 12.98.038 19.119.173 6.486.351 13.193.018 20.73a71.432 71.432 0 0 0 68.18 74.36q1.678.078 3.349.078a70.393 70.393 0 0 0 27.415-5.54 14.973 14.973 0 0 0 8.114-19.377 8.044 8.044 0 0 0-.824-2.021 162.3 162.3 0 0 1-20.491-78.946c0-89.355 72.684-162.051 162.024-162.051s162.052 72.7 162.052 162.051a161.532 161.532 0 0 1-132.157 159.287 41.584 41.584 0 1 0 1.328 30.209 192.361 192.361 0 0 0 130.075-85.231 70.237 70.237 0 0 0 14.951 1.62q1.653 0 3.315-.076a71.366 71.366 0 0 0 68.23-74.383c-.332-7.513-.153-14.226.02-20.713zM77.733 319.023a41.405 41.405 0 0 1-39.543-43.085c.379-8.579.178-16.151 0-22.833-.156-5.875-.3-11.423-.055-17.014a41.394 41.394 0 0 1 31.274-38.35 192.359 192.359 0 0 0 8.3 116.877l-.018.007q.876 2.232 1.809 4.443-.877-.004-1.767-.045zm170.118 111.841a11.589 11.589 0 1 1 11.588-11.593v.022a11.6 11.6 0 0 1-11.588 11.571zm225.958-154.947a41.366 41.366 0 0 1-39.591 43.108q-.864.041-1.724.044a.255.255 0 0 0 .011-.177 192.27 192.27 0 0 0 10.086-121.15 41.391 41.391 0 0 1 31.275 38.371c.247 5.568.1 11.116-.056 16.99-.178 6.682-.38 14.255-.001 22.814zm-252.869-34.2a14.464 14.464 0 0 1 .07 1.47 14.661 14.661 0 0 1-.07 1.48c-.05.48-.13.97-.22 1.45s-.22.96-.36 1.43-.31.93-.5 1.38-.4.9-.63 1.33-.48.85-.75 1.26a12.819 12.819 0 0 1-.87 1.18c-.31.39-.65.75-.99 1.1a14.668 14.668 0 0 1-1.1.99c-.38.31-.78.6-1.18.88-.41.26-.83.52-1.27.75a13.2 13.2 0 0 1-1.32.62 14.253 14.253 0 0 1-1.38.5c-.47.14-.95.26-1.43.36a14.512 14.512 0 0 1-1.45.22 15.681 15.681 0 0 1-2.96 0 14.512 14.512 0 0 1-1.45-.22c-.48-.1-.96-.22-1.43-.36a14.253 14.253 0 0 1-1.38-.5 13.2 13.2 0 0 1-1.32-.62c-.44-.23-.86-.49-1.27-.75-.4-.28-.8-.57-1.18-.88a14.668 14.668 0 0 1-1.1-.99c-.34-.35-.68-.71-.99-1.1a12.819 12.819 0 0 1-.87-1.18q-.4-.615-.75-1.26c-.23-.43-.44-.88-.63-1.33s-.35-.91-.5-1.38-.26-.95-.36-1.43a14.086 14.086 0 0 1-.29-2.93c0-.49.03-.98.07-1.47s.13-.98.22-1.46.22-.95.36-1.42.31-.93.5-1.38.4-.9.63-1.33a15.584 15.584 0 0 1 1.62-2.45c.31-.38.65-.75.99-1.09a14.668 14.668 0 0 1 1.1-.99c.38-.31.78-.61 1.18-.88a14.6 14.6 0 0 1 1.27-.75q.645-.345 1.32-.63c.45-.18.92-.35 1.38-.49a14.242 14.242 0 0 1 1.43-.36 14.718 14.718 0 0 1 5.86 0 14.242 14.242 0 0 1 1.43.36c.46.14.93.31 1.38.49s.89.4 1.32.63a14.6 14.6 0 0 1 1.27.75c.4.27.8.57 1.18.88a14.668 14.668 0 0 1 1.1.99c.34.34.68.71.99 1.09a15.584 15.584 0 0 1 1.62 2.45c.23.43.44.88.63 1.33s.35.91.5 1.38.26.95.36 1.42.17.966.22 1.456zm20.06 1.47a14.988 14.988 0 0 1 14.986-15h.028a15 15 0 1 1-15.014 15zm50.06 1.476a14.661 14.661 0 0 1-.07-1.48 14.464 14.464 0 0 1 .07-1.47c.05-.49.13-.98.22-1.46s.22-.95.36-1.42a13.353 13.353 0 0 1 .5-1.38c.18-.45.4-.9.62-1.33a16.64 16.64 0 0 1 1.63-2.45c.31-.38.65-.75.99-1.09a14.668 14.668 0 0 1 1.1-.99 12.913 12.913 0 0 1 1.18-.88q.615-.4 1.26-.75c.43-.23.88-.44 1.33-.63s.92-.35 1.38-.49a14.242 14.242 0 0 1 1.43-.36 14.684 14.684 0 0 1 4.4-.22 14.277 14.277 0 0 1 1.46.22 13.41 13.41 0 0 1 1.42.36c.47.14.94.31 1.39.49s.89.4 1.32.63a14.6 14.6 0 0 1 1.27.75c.4.27.8.57 1.18.88a12.8 12.8 0 0 1 1.09.99c.35.34.68.71 1 1.09.3.38.6.78.87 1.19a14.425 14.425 0 0 1 .75 1.26c.23.43.44.88.63 1.33a13.294 13.294 0 0 1 .49 1.38 11.812 11.812 0 0 1 .36 1.42 11.959 11.959 0 0 1 .22 1.46 14.479 14.479 0 0 1 .08 1.47 14.676 14.676 0 0 1-.08 1.48 12.1 12.1 0 0 1-.22 1.45 11.967 11.967 0 0 1-.36 1.43 14.174 14.174 0 0 1-.49 1.38c-.19.45-.4.9-.63 1.33s-.48.85-.75 1.26-.57.81-.87 1.18c-.32.39-.65.75-1 1.1a12.8 12.8 0 0 1-1.09.99c-.38.31-.78.6-1.18.87a14.692 14.692 0 0 1-1.27.76 13.2 13.2 0 0 1-1.32.62 13.525 13.525 0 0 1-1.39.5c-.46.14-.94.26-1.42.36a14.461 14.461 0 0 1-2.93.29 14.661 14.661 0 0 1-1.48-.07 14.512 14.512 0 0 1-1.45-.22c-.48-.1-.96-.22-1.43-.36a14.253 14.253 0 0 1-1.38-.5 13.359 13.359 0 0 1-1.33-.62c-.43-.23-.85-.49-1.26-.76a12.819 12.819 0 0 1-1.18-.87 14.668 14.668 0 0 1-1.1-.99c-.34-.35-.68-.71-.99-1.1a12.819 12.819 0 0 1-.87-1.18c-.27-.41-.53-.83-.76-1.26s-.44-.88-.62-1.33a14.253 14.253 0 0 1-.5-1.38c-.14-.47-.26-.95-.36-1.43s-.17-.97-.22-1.45z" fill="" opacity="1" data-original="#000000"></path>
                             </g>
@@ -188,6 +176,7 @@ if (isset($_COOKIE['vendor_id'])) {
                         </svg>
                         <span class="mx-3 tracking-wide">Setting</span>
                     </a>
+
 
                     <a id="logoutButton1" class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="#">
                         <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -261,69 +250,82 @@ if (isset($_COOKIE['vendor_id'])) {
                     });
                 </script>
                 <main class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
-                    <div class="container mx-auto p-6">
-                        <?php
-                        if (isset($_COOKIE['adminEmail'])) {
-                        ?>
-                            <h1 class="text-4xl font-bold text-center mb-8 text-black">Customer inquiries</h1>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
-                                <?php
-                                include "../include/connect.php";
+                    <?php
+                    include "../include/connect.php";
 
-                                $get_contacts = "SELECT * FROM contact_us";
-                                $contact_query = mysqli_query($con, $get_contacts);
+                    if (isset($_COOKIE['adminEmail'])) {
+                        $vendor_data = "SELECT * FROM vendor_registration";
+                        $vendor_query = mysqli_query($con, $vendor_data);
 
-                                if (mysqli_num_rows($contact_query) > 0) {
-                                    while ($res = mysqli_fetch_assoc($contact_query)) {
-                                ?>
-                                        <div class="bg-white shadow-lg rounded-tl-xl rounded-br-xl p-4 sm:p-6">
-                                            <div id="custInqContainer" class=" flex flex-col gap-y-4 text-sm sm:text-base">
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Name:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['name'] ?></p>
+                    ?>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 min-[1544px]:grid-cols-4 gap-6 mx-4 md:mx-12 my-12">
+                            <?php
+                            if (mysqli_num_rows($vendor_query) > 0) {
+                                while ($row = mysqli_fetch_assoc($vendor_query)) {
+                            ?>
+                                    <div class="w-full h-auto m-auto bg-white rounded-tl-3xl rounded-br-3xl shadow-lg text-center overflow-hidden">
+                                        <div class="flex justify-center">
+                                            <div class="w-full">
+                                                <div class="w-full">
+                                                    <img class="w-full h-40" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://demo.tailadmin.com/src/images/cover/cover-01.png' ?>" alt="">
                                                 </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Email:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['user_email'] ?></p>
+                                                <div class="h-28 -my-10 z-10 flex justify-center">
+                                                    <img class="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'https://via.placeholder.com/150' ?>" alt="Profile Picture">
                                                 </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Subject:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['subject'] ?></p>
-                                                </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Message:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['message'] ?></p>
-                                                </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Date:</p>
-                                                    <p class="font-medium text-gray-500"><?php echo $res['date'] ?></p>
-                                                </div>
-                                            </div>
-                                            <div class="text-right">
-                                                <a href="mailto:<?php echo $res['user_email'] ?>" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Contact</a>
                                             </div>
                                         </div>
-                                    <?php
-                                    }
-                                } else {
-                                    ?>
-                                    <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
+                                        <div class=" text-center divide-y-2">
+                                            <div class="px-6 py-4">
+                                                <h2 class="text-xl font-semibold"><?php echo isset($_COOKIE['adminEmail']) ? $row['username'] : 'UserName' ?></h2>
+                                                <a href="mailto:<?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email' ?>" class="text-sm text-gray-500"><?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email' ?></a>
+                                            </div>
+                                            <div class="flex justify-between items-center divide-x-2">
+                                                <div class="w-full">
+                                                    <button class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
+                                                        <span>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                                                <g>
+                                                                    <path d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0zm6.082 9.457-6.5 6.5a.997.997 0 0 1-1.414 0l-3.25-3.25a.999.999 0 1 1 1.414-1.414l2.543 2.543 5.793-5.793a.999.999 0 1 1 1.414 1.414z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                        <span>Accept</span>
+                                                    </button>
+                                                </div>
+                                                <div class="w-full">
+                                                    <button class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-red-600">
+                                                        <span>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                                                <g>
+                                                                    <path d="M436.896 74.869c-99.84-99.819-262.208-99.819-362.048 0-99.797 99.819-99.797 262.229 0 362.048 49.92 49.899 115.477 74.837 181.035 74.837s131.093-24.939 181.013-74.837c99.819-99.818 99.819-262.229 0-362.048zm-75.435 256.448c8.341 8.341 8.341 21.824 0 30.165a21.275 21.275 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251l-75.413-75.435-75.392 75.413a21.348 21.348 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251c-8.341-8.341-8.341-21.845 0-30.165l75.392-75.413-75.413-75.413c-8.341-8.341-8.341-21.845 0-30.165 8.32-8.341 21.824-8.341 30.165 0l75.413 75.413 75.413-75.413c8.341-8.341 21.824-8.341 30.165 0 8.341 8.32 8.341 21.824 0 30.165l-75.413 75.413 75.415 75.435z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                        <span>
+                                                            Cancel
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <?php
+
                                 }
+                            } else {
                                 ?>
-                            </div>
-                        <?php
-                        } else {
-                        ?>
-                            <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
-                        <?php
-                        }
-                        ?>
-                    </div>
+                                <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Vendor Found for this period.</div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Vendor Found for this period.</div>
+                    <?php
+                    }
+                    ?>
                 </main>
             </div>
         </div>
