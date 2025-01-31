@@ -253,7 +253,7 @@ if (isset($_COOKIE['vendor_id'])) {
                     include "../include/connect.php";
 
                     if (isset($_COOKIE['adminEmail'])) {
-                        $vendor_data = "SELECT * FROM vendor_registration";
+                        $vendor_data = "SELECT * FROM vendor_registration WHERE action = 'Accept'";
                         $vendor_query = mysqli_query($con, $vendor_data);
 
                     ?>

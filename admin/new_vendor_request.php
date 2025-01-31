@@ -22,6 +22,9 @@ if (isset($_COOKIE['vendor_id'])) {
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -249,18 +252,19 @@ if (isset($_COOKIE['vendor_id'])) {
                         }
                     });
                 </script>
-                <main class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
+                <div class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
                     <?php
                     include "../include/connect.php";
 
                     if (isset($_COOKIE['adminEmail'])) {
-                        $vendor_data = "SELECT * FROM vendor_registration";
+                        $vendor_data = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
                         $vendor_query = mysqli_query($con, $vendor_data);
 
                     ?>
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 min-[1544px]:grid-cols-4 gap-6 mx-4 md:mx-12 my-12">
                             <?php
                             if (mysqli_num_rows($vendor_query) > 0) {
+                                $i = 0;
                                 while ($row = mysqli_fetch_assoc($vendor_query)) {
                             ?>
                                     <div class="w-full h-auto m-auto bg-white rounded-tl-3xl rounded-br-3xl shadow-lg text-center overflow-hidden">
@@ -281,7 +285,8 @@ if (isset($_COOKIE['vendor_id'])) {
                                             </div>
                                             <div class="flex justify-between items-center divide-x-2">
                                                 <div class="w-full">
-                                                    <button class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
+                                                    <input type="text" value="<?php echo $row['vendor_id'] ?>" class="vendorId hidden">
+                                                    <button data-id="<?php echo $i ?>" class="accept flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
                                                                 <g>
@@ -293,7 +298,8 @@ if (isset($_COOKIE['vendor_id'])) {
                                                     </button>
                                                 </div>
                                                 <div class="w-full">
-                                                    <button class="flex justify-center items-center space-x-1 w-full py-2 px-1 text-red-600">
+                                                    <input type="text" value="<?php echo $row['vendor_id'] ?>" class="vendor_id hidden">
+                                                    <button data-id="<?php echo $i ?>" class="cancel flex justify-center items-center space-x-1 w-full py-2 px-1 text-red-600">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
                                                                 <g>
@@ -310,7 +316,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                         </div>
                                     </div>
                                 <?php
-
+                                $i++;
                                 }
                             } else {
                                 ?>
@@ -326,10 +332,146 @@ if (isset($_COOKIE['vendor_id'])) {
                     <?php
                     }
                     ?>
-                </main>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- logout -->
+    <div class="fixed top-0 left-0 w-full h-full bg-black/30 backdrop-blur-md z-40 m-auto flex items-center justify-center overflow-hidden" style="display: none;" id="cancleVendor">
+        <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto z-40">
+            <div class="p-4">
+                <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
+                    <svg class="text-red-500 w-6 h-6" aria-hidden="true" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" stroke-linejoin="round" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+                <div class="mt-3 text-center">
+                <span class="text-gray-900 text-base font-semibold leading-6">Cancel Vendor Account Request</span>
+                <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to cancel the Vendor Account Request?</p>
+                </div>
+                <div class="mx-4 my-3">
+                    <input type="submit" name="adminLogout" value="Yes" class="cancelRequest inline-flex px-4 py-2 text-white bg-red-500 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
+                    <div onClick="closePopup()" class="inline-flex mt-3 px-4 py-2 bg-white text-gray-500 text-base leading-6 font-medium justify-center w-full rounded-md border border-gray-400 shadow-sm cursor-pointer">No</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-0 left-[50%] -translate-x-[50%] mt-2 w-max border-t-4 rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully"></div>
+        </div>
+    </div>
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-0 left-[50%] -translate-x-[50%] mt-2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
+    </div>
+
+    <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = "";
+            }, 2000);
+        }
+
+        function closePopup() {
+            let cancleVendor = document.getElementById('cancleVendor');
+            cancleVendor.style.display = 'none';
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.accept').on('click', function(e){
+                let index = $(this).data('id');
+                let vendorId = $('.vendorId').eq(index).val();
+
+                $.ajax({
+                    type: "post",
+                    url: "accept_request.php",
+                    data: {
+                        vendorId: vendorId
+                    },
+                    success: function (response) {
+                        loader();
+                        displaySuccessMessage('vendor request accept successfully')
+                    }
+                });
+            });
+
+            $('.cancel').click(function(e){
+                let cancleVendor = document.getElementById('cancleVendor');
+                cancleVendor.style.display = 'flex';
+
+                let index = $(this).data('id');
+                let vendorId = $('.vendor_id').eq(index).val();
+                
+                $('.cancelRequest').click(function(e){
+                    $.ajax({
+                        type: "post",
+                        url: "cancel_request.php",
+                        data: {
+                            vendorId: vendorId
+                        },
+                        success: function (response) {
+                            closePopup();
+                            loader();
+                            displaySuccessMessage('vendor request Cancel successfully')
+                        }
+                    });
+                })
+
+            });
+        });
+    </script>
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>

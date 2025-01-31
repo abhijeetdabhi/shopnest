@@ -150,79 +150,82 @@ function displayRandomProducts($con, $limit)
     foreach ($vendorLatitudes as $index => $lat) {
         $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A'; // Get longitude for the same index
 
-        $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
+        $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng' AND action = 'Accept'";
         $query = mysqli_query($con, $get_vendor);
 
-        $vendorCount = mysqli_fetch_assoc($query);
-        $vendorId = $vendorCount['vendor_id'];
-
-
-        $product_find = "SELECT * FROM products WHERE vendor_id = '$vendorId' ORDER BY RAND() LIMIT $limit";
-        $product_query = mysqli_query($con, $product_find);
-
-        while ($res = mysqli_fetch_assoc($product_query)) {
-            $product_id = $res['product_id'];
-
-            $MRP = $res['vendor_mrp'];
-
-            // for qty
-            if ($res['Quantity'] > 0) {
-                $qty = 1;
-            } else {
-                $qty = 0;
-            }
-
-            // for the size
-            $size = $res['size'];
-            $filter_size = explode(',', $size);
-            foreach ($filter_size as $product_size) {
-                $product_size;
-                break;
-            }
-?>
-
-            <div class="swiper-slide">
-                <div class=" flex justify-center">
-                    <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
-                        <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
-                        </div>
-                        <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                            <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
-                            <div class="flex justify-between px-2">
-                                <p class="space-x-1">
-                                    <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
-                                    <del class="text-xs font-medium">₹<?php echo number_format($res['vendor_price']) ?></del>
-                                </p>
-                                <div class="flex items-center">
-                                    <span class="bg-gray-900 rounded-tl-md rounded-br-md px-2 py-0.5 flex items-center gap-1">
-                                        <h1 class="font-semibold text-xs text-white"><?php echo isset($res['avg_rating']) ? $res['avg_rating'] : '0.0' ?></h1>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-2.5 h-2.5 m-auto fill-current text-white">
-                                            <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
-                                        </svg>
-                                    </span>
-                                    <span class="text-sm ml-2 text-gray-900 tracking-wide">(<?php echo $res['total_reviews'] ?>)</span>
+        if(mysqli_num_rows($query)){
+            $vendorCount = mysqli_fetch_assoc($query);
+            $vendorId = $vendorCount['vendor_id'];
+    
+    
+            $product_find = "SELECT * FROM products WHERE vendor_id = '$vendorId' ORDER BY RAND() LIMIT $limit";
+            $product_query = mysqli_query($con, $product_find);
+    
+            while ($res = mysqli_fetch_assoc($product_query)) {
+                $product_id = $res['product_id'];
+    
+                $MRP = $res['vendor_mrp'];
+    
+                // for qty
+                if ($res['Quantity'] > 0) {
+                    $qty = 1;
+                } else {
+                    $qty = 0;
+                }
+    
+                // for the size
+                $size = $res['size'];
+                $filter_size = explode(',', $size);
+                foreach ($filter_size as $product_size) {
+                    $product_size;
+                    break;
+                }
+    ?>
+    
+                <div class="swiper-slide">
+                    <div class=" flex justify-center">
+                        <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
+                            <div class="p-2" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                <img src="<?php echo 'src/product_image/product_profile/' . $res['profile_image_1'] ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
+                            </div>
+                            <div class="mt-2 space-y-3" onclick="window.location.href = 'product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                <a href="product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
+                                <div class="flex justify-between px-2">
+                                    <p class="space-x-1">
+                                        <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
+                                        <del class="text-xs font-medium">₹<?php echo number_format($res['vendor_price']) ?></del>
+                                    </p>
+                                    <div class="flex items-center">
+                                        <span class="bg-gray-900 rounded-tl-md rounded-br-md px-2 py-0.5 flex items-center gap-1">
+                                            <h1 class="font-semibold text-xs text-white"><?php echo isset($res['avg_rating']) ? $res['avg_rating'] : '0.0' ?></h1>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-2.5 h-2.5 m-auto fill-current text-white">
+                                                <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
+                                            </svg>
+                                        </span>
+                                        <span class="text-sm ml-2 text-gray-900 tracking-wide">(<?php echo $res['total_reviews'] ?>)</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
-                            <?php
-                            if ($qty > 0) {
-                            ?>
-                                <a href="<?php echo $qty > 0 ? 'shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                            <?php
-                            } else {
-                            ?>
-                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-not-allowed select-none">Out of stock</h1>
-                            <?php
-                            }
-                            ?>
+                            <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
+                                <?php
+                                if ($qty > 0) {
+                                ?>
+                                    <a href="<?php echo $qty > 0 ? 'shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                <?php
+                                } else {
+                                ?>
+                                    <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-not-allowed select-none">Out of stock</h1>
+                                <?php
+                                }
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-<?php
+    <?php
+            }
         }
+
     }
 }
 ?>

@@ -57,7 +57,7 @@ if (isset($_POST['adminLogout'])) {
 
 <!-- logout -->
 <form method="post" class="fixed w-full h-full bg-black/30 backdrop-blur-md z-50 m-auto flex items-center justify-center overflow-hidden" id="logoutPopUp">
-    <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto fz-50">
+    <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto z-50">
         <div class="p-4">
             <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
                 <svg class="text-red-500 w-6 h-6" aria-hidden="true" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none">

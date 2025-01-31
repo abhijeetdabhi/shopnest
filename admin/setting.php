@@ -8,6 +8,14 @@ if (isset($_COOKIE['vendor_id'])) {
     header("Location: /vendor/vendor_dashboard.php");
     exit;
 }
+
+include '../include/connect.php';
+
+$adminEmail = $_COOKIE['adminEmail'];
+$retrieve_data = "SELECT * FROM admin WHERE email = '$adminEmail'";
+$retrieve_query = mysqli_query($con, $retrieve_data);
+
+$row = mysqli_fetch_assoc($retrieve_query);
 ?>
 
 <!DOCTYPE html>
@@ -267,7 +275,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                     <!-- Profile image -->
                                     <div class="relative flex items-stretch justify-center">
                                         <img id="previewImage" class="w-20 h-20 rounded-full border object-cover object-center border-black" alt=""
-                                            src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+                                            src="../src/adminProfile/<?php echo $row['profile_image']?>">
 
                                         <input class="hidden" name="ProfileImage" type="file" id="imageInput" accept="image/jpg, image/png, image/jpeg" onchange="previewSelectedImage()">
 
@@ -316,7 +324,7 @@ if (isset($_COOKIE['vendor_id'])) {
 
                                 <div class="space-y-1 relative" x-data="{ currentPassword: false }">
                                     <label class="require" for="">Current Password :</label>
-                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="currentPassword ? 'text' : 'password'" name="vendorPassword" name="" id="">
+                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="currentPassword ? 'text' : 'password'" name="vendorPassword" id="">
                                     <!-- Toggle Icon Button -->
                                     <span class="absolute top-[2.25rem] right-3 cursor-pointer" @click="currentPassword = !currentPassword">
                                         <!-- Show Icon (when password is hidden) -->
@@ -334,7 +342,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                 </div>
                                 <div class="space-y-1 relative" x-data="{ newPassword: false }">
                                     <label class="require" for="">New Password :</label>
-                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="newPassword ? 'text' : 'password'" name="vendorPassword" name="" id="">
+                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="newPassword ? 'text' : 'password'" name="vendorNewPassword" id="">
                                     <!-- Toggle Icon Button -->
                                     <span class="absolute top-[2.25rem] right-3 cursor-pointer" @click="newPassword = !newPassword">
                                         <!-- Show Icon (when password is hidden) -->
@@ -352,7 +360,7 @@ if (isset($_COOKIE['vendor_id'])) {
                                 </div>
                                 <div class="space-y-1 relative" x-data="{ confirmPassword: false }">
                                     <label class="require" for="">Confirm Password :</label>
-                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="confirmPassword ? 'text' : 'password'" name="vendorPassword" name="" id="">
+                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="confirmPassword ? 'text' : 'password'" name="vendorRePassword" id="">
                                     <!-- Toggle Icon Button -->
                                     <span class="absolute top-[2.25rem] right-3 cursor-pointer" @click="confirmPassword = !confirmPassword">
                                         <!-- Show Icon (when password is hidden) -->
@@ -385,9 +393,112 @@ if (isset($_COOKIE['vendor_id'])) {
         </div>
     </div>
 
+    <!-- Successfully message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="Successfully"></div>
+        </div>
+    </div>
+
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
+    </div>
+
+    <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+        function displaySuccessMessage(message) {
+            let SpopUp = document.getElementById('SpopUp');
+            let Successfully = document.getElementById('Successfully');
+
+            setTimeout(() => {
+                Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
+                SpopUp.style.display = 'flex';
+                SpopUp.style.opacity = '100';
+                window.location.href = '';
+            }, 2000);
+        }
+    </script>
+
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
 </body>
 
 </html>
+
+<?php
+// update Password
+if (isset($_POST['changePass'])) {
+
+    $dpass = $row['password'];
+
+    $current_pass = $_POST['vendorPassword'];
+    $new_pass = $_POST['vendorNewPassword'];
+    $re_pass = $_POST['vendorRePassword'];
+
+    $file_name = $_FILES['ProfileImage']['name'];
+    $tempname = $_FILES['ProfileImage']['tmp_name'];
+    $folder = '../src/adminProfile/' . $file_name;
+
+    $decod_pass = password_verify($current_pass, $dpass);
+
+    if ($decod_pass) {
+        if ($new_pass === $re_pass) {
+            $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
+
+            $up_pass = "UPDATE admin SET password = '$new_dpass', profile_image = '$file_name' WHERE email = '$adminEmail'";
+            $up_query = mysqli_query($con, $up_pass);
+
+            if ($up_query) {
+                echo "<script>loader()</script>";
+                echo '<script>displaySuccessMessage("Password Updated Successfully.");</script>';
+            } else {
+                echo '<script>displayErrorMessage("Password Not Update.");</script>';
+            }
+        } else {
+            echo '<script>displayErrorMessage("The new password and the re-typed password do not match. Please try again.");</script>';
+        }
+    } else {
+        echo '<script>displayErrorMessage("Current password not match with new password or re-type password. Please try again.");</script>';
+    }
+}
