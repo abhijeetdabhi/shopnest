@@ -20,19 +20,46 @@ if (isset($_COOKIE['adminEmail'])) {
     $views_query = mysqli_query($con, $views);
 
     $Cview = mysqli_num_rows($views_query);
+    
+    $weekly = " SELECT view_date, COUNT(view_count) as total_count 
+        FROM page_count 
+        WHERE view_date >= CURDATE() - INTERVAL 1 WEEK
+        GROUP BY view_date 
+        ORDER BY view_date DESC
+    ";
+    $weekQuery = mysqli_query($con, $weekly);
 
-    $views = "SELECT view_date, COUNT(view_count) as total_count FROM page_count WHERE view_date >= CURDATE() - INTERVAL 10 DAY GROUP BY view_date ORDER BY view_date;";
-    $view_query = mysqli_query($con, $views);
-
-    $data = array();
-    while ($row = mysqli_fetch_assoc($view_query)) {
-        $data[] = array(
-            'date' => $row['view_date'],
+    $weekData = array();
+    while ($row = mysqli_fetch_assoc($weekQuery)) {
+        $date = $row['view_date'];
+        $myDate = date('d-m-Y', strtotime($date));
+        $weekData[] = array(
+            'date' => $myDate,
             'count' => (int) $row['total_count']
         );
     }
 
-    $data_json = json_encode($data);
+    $week_json = json_encode($weekData);
+
+    $monthly = " SELECT view_date, COUNT(view_count) as total_count 
+        FROM page_count 
+        WHERE view_date >= CURDATE() - INTERVAL 1 MONTH
+        GROUP BY view_date 
+        ORDER BY view_date DESC
+    ";
+
+    $monthQuery = mysqli_query($con, $monthly);
+
+    $monthData = array();
+    while ($row = mysqli_fetch_assoc($monthQuery)) {
+        $date = $row['view_date'];
+        $myDate = date('d-m-Y', strtotime($date));
+        $monthData[] = array(
+            'date' => $myDate,
+            'count' => (int) $row['total_count']
+        );
+    }
+    $month_json = json_encode($monthData);
 
     // for profit
     $earning_orders = "SELECT * FROM orders";
@@ -43,7 +70,6 @@ if (isset($_COOKIE['adminEmail'])) {
         $trimEarnings = str_replace(",", "", $earnings['admin_profit']);
         $totalEarnings += $trimEarnings;
     }
-
 
     // for total products
     $products = "SELECT * FROM products";
@@ -420,7 +446,13 @@ if (isset($_COOKIE['adminEmail'])) {
                     </div>
                     <div class="mt-12">
                         <div class="w-full bg-white rounded-xl p-4 h-full">
-                            <h2 class="text-xl font-bold mb-4 md:text-4xl">Visitors analytics</h2>
+                            <div class="flex items-center justify-between flex-wrap mb-4">
+                                <h2 class="text-xl font-bold md:text-4xl">Visitors analytics</h2>
+                                <div class="flex items-center gap-3">
+                                    <button id="weekButton" class="border-2 border-[#2563eb] bg-[#2563eb33] p-1">Weekly</button>
+                                    <button id="monthButton" class="border-2 border-[#2563eb] bg-[#2563eb33] p-1">Monthly</button>
+                                </div>
+                            </div>
                             <div class="chart-container w-full h-full rounded-md">
                                 <canvas id="conversionChart" width="100" height="80"></canvas>
                             </div>
@@ -451,21 +483,29 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <script>
         // Total Visitors
-        const dataFromPHP = <?php echo $data_json; ?>;
+        const weekFromData = <?php echo $week_json ?>;
+        const weekDate = weekFromData.map(week => week.date);
+        const weekCount = weekFromData.map(week => week.count);
 
-        const date = dataFromPHP.map(item => item.date);
-        const count = dataFromPHP.map(item => item.count);
+        const monthFromData = <?php echo $month_json ?>;
+        const monthDate = monthFromData.map(month => month.date);
+        const monthCount = monthFromData.map(month => month.count);
 
-        const backgroundColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
-        const borderColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
-        const pointBackgroundColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
-        const pointBorderColor = count.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        const backgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        const borderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        const pointBackgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        const pointBorderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+
+        // const backgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        // const borderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        // const pointBackgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        // const pointBorderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
 
         const data = {
-            labels: date,
+            labels: weekDate,
             datasets: [{
                 label: "Page Views",
-                data: count,
+                data: weekCount,
                 borderWidth: 2,
                 tension: 0.4,
                 fill: true,
@@ -501,12 +541,26 @@ if (isset($_COOKIE['adminEmail'])) {
 
         window.onload = function() {
             const ctx = document.getElementById('conversionChart').getContext('2d');
-            new Chart(ctx, {
+            const myChart = new Chart(ctx, {
                 type: 'bar',
                 data: data,
                 options: options
             });
+
+            document.getElementById('weekButton').addEventListener('click', function() {
+                myChart.data.labels = weekLabels;
+                myChart.data.datasets[0].data = weekData;
+                myChart.update();
+            });
+    
+            // Update chart for monthly data
+            document.getElementById('monthButton').addEventListener('click', function() {
+                myChart.data.labels = monthLabels;
+                myChart.data.datasets[0].data = monthData;
+                myChart.update();
+            });
         };
+
 
         function adjustCanvasHeight() {
             const canvas = document.getElementById('conversionChart');

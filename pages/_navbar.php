@@ -275,6 +275,7 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                 </div>
                 <a href="../pages/map.php" class="flex flex-col cursor-pointer">
                     <span class="text-sm min-[410px]:text-base font-semibold text-blue-600">
+                        <?php echo $fullAddress; ?>
                     </span>
                     <span class="flex items-center space-x-1 text-xs min-[410px]:text-sm">
                         <span>

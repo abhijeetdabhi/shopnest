@@ -51,7 +51,7 @@ if (isset($_SESSION['views'])) {
 }
 
 $page_view = $_SESSION['views'];
-$view_date = date('d-m-y');
+$view_date = date('Y-m-d');
 
 $view_count = "INSERT INTO page_count(view_count, view_date) VALUES ('$page_view','$view_date')";
 $view_query = mysqli_query($con, $view_count);
