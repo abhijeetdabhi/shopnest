@@ -52,24 +52,20 @@ if (isset($_COOKIE['vendor_id'])) {
             background-color: #bfbfbf;
         }
 
-        @media (max-width: 343px) {
-
-            #custInqContainer {
-                font-size: 0.75rem
-                    /* 12px */
-                ;
-                line-height: 1rem
-                    /* 16px */
-                ;
-            }
-        }
-
         #logoutPopUp {
             display: none;
         }
 
         [x-cloak] {
             display: none;
+        }
+
+        .require:after {
+            content: " *";
+            font-weight: bold;
+            color: red;
+            margin-left: 3px;
+            font-size: medium;
         }
     </style>
 </head>
@@ -261,11 +257,121 @@ if (isset($_COOKIE['vendor_id'])) {
                     });
                 </script>
                 <main class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
-                    <div class="container mx-auto p-6">
+                    <div class="container mx-auto p-6 flex flex-col justify-center items-center">
                         <?php
                         if (isset($_COOKIE['adminEmail'])) {
                         ?>
-                            <h1 class="text-4xl font-bold text-left mb-8 text-black">Account setting</h1>
+                            <h1 class="text-4xl font-bold text-left w-full mb-8 text-black">Account setting</h1>
+                            <div class="bg-white rounded-xl shadow-lg shadow-black/30 w-full lg:w-[30rem] p-5 md:p-10 space-y-5">
+                                <div class="w-full">
+                                    <!-- Profile image -->
+                                    <div class="relative flex items-stretch justify-center">
+                                        <img id="previewImage" class="w-20 h-20 rounded-full border object-cover object-center border-black" alt=""
+                                            src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+
+                                        <input class="hidden" name="ProfileImage" type="file" id="imageInput" accept="image/jpg, image/png, image/jpeg" onchange="previewSelectedImage()">
+
+                                        <label for="imageInput" class="absolute bottom-0 translate-y-3 translate-x-[2px] rounded-full bg-white p-1 cursor-pointer border border-black">
+                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
+                                                <g>
+                                                    <path d="M14 19.6H4c-1.4 0-2.6-1.2-2.6-2.6V5c0-1.4 1.2-2.6 2.6-2.6h16c1.4 0 2.6 1.2 2.6 2.6v9c0 .3-.3.6-.6.6s-.6-.3-.6-.6V5c0-.8-.6-1.4-1.4-1.4H4c-.8 0-1.4.6-1.4 1.4v12c0 .8.6 1.4 1.4 1.4h10c.3 0 .6.3.6.6s-.3.6-.6.6z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                                    <path d="M14 19.6H4c-1.4 0-2.6-1.2-2.6-2.6v-2c0-.2.1-.4.2-.5l4-3c.2-.2.5-.2.7 0l4.5 3.6 5.6-7.5c.1-.1.3-.2.5-.2s.4.1.5.2l5 6c.2.3.2.6-.1.8s-.6.2-.8-.1L17 9l-5.5 7.4c-.1.1-.2.2-.4.2s-.3 0-.5-.1L6 12.8l-3.4 2.5V17c0 .8.6 1.4 1.4 1.4h10c.3 0 .6.3.6.6s-.3.6-.6.6zM7 8.6c-.9 0-1.6-.7-1.6-1.6S6.1 5.4 7 5.4s1.6.7 1.6 1.6S7.9 8.6 7 8.6zm0-2c-.2 0-.4.2-.4.4s.2.4.4.4.4-.2.4-.4-.2-.4-.4-.4zM23 19.6h-6c-.3 0-.6-.3-.6-.6s.3-.6.6-.6h6c.3 0 .6.3.6.6s-.3.6-.6.6z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                                    <path d="M20 22.6c-.3 0-.6-.3-.6-.6v-6c0-.3.3-.6.6-.6s.6.3.6.6v6c0 .3-.3.6-.6.6z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                                </g>
+                                            </svg>
+                                        </label>
+                                    </div>
+
+                                    <!-- Error message -->
+                                    <small id="error-message" class="text-red-500 mt-2 text-xs hidden">
+                                        The profile image must be a PNG, JPG, or JPEG file.
+                                    </small>
+                                    <!-- JavaScript -->
+                                    <script>
+                                        const imageInput = document.getElementById('imageInput');
+                                        const previewImage = document.getElementById('previewImage');
+                                        const errorMessage = document.getElementById('error-message');
+
+                                        function previewSelectedImage() {
+                                            const file = imageInput.files[0];
+
+                                            if (file) {
+                                                const fileType = file.type;
+                                                if (fileType === "image/png" || fileType === "image/jpeg" || fileType === "image/jpg") {
+                                                    const reader = new FileReader();
+                                                    reader.onload = function(e) {
+                                                        previewImage.src = e.target.result;
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                    errorMessage.classList.add('hidden');
+                                                } else {
+                                                    previewImage.src = "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png";
+                                                    errorMessage.classList.remove('hidden');
+                                                }
+                                            }
+                                        }
+                                    </script>
+                                </div>
+
+
+                                <div class="space-y-1 relative" x-data="{ currentPassword: false }">
+                                    <label class="require" for="">Current Password :</label>
+                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="currentPassword ? 'text' : 'password'" name="vendorPassword" name="" id="">
+                                    <!-- Toggle Icon Button -->
+                                    <span class="absolute top-[2.25rem] right-3 cursor-pointer" @click="currentPassword = !currentPassword">
+                                        <!-- Show Icon (when password is hidden) -->
+                                        <svg x-show="currentPassword" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                            <g>
+                                                <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                            </g>
+                                        </svg>
+
+                                        <!-- Hide Icon (when password is visible) -->
+                                        <svg x-show="!currentPassword" x-cloak xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 128 128" style="fill: rgba(0, 0, 0, 1);">
+                                            <path d="m79.891 65.078 7.27-7.27C87.69 59.787 88 61.856 88 64c0 13.234-10.766 24-24 24-2.144 0-4.213-.31-6.192-.839l7.27-7.27a15.929 15.929 0 0 0 14.813-14.813zm47.605-3.021c-.492-.885-7.47-13.112-21.11-23.474l-5.821 5.821c9.946 7.313 16.248 15.842 18.729 19.602C114.553 71.225 95.955 96 64 96c-4.792 0-9.248-.613-13.441-1.591l-6.573 6.573C50.029 102.835 56.671 104 64 104c41.873 0 62.633-36.504 63.496-38.057a3.997 3.997 0 0 0 0-3.886zm-16.668-39.229-88 88C22.047 111.609 21.023 112 20 112s-2.047-.391-2.828-1.172a3.997 3.997 0 0 1 0-5.656l11.196-11.196C10.268 83.049 1.071 66.964.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24c10.827 0 20.205 2.47 28.222 6.122l12.95-12.95c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656zM34.333 88.011 44.46 77.884C41.663 73.96 40 69.175 40 64c0-13.234 10.766-24 24-24 5.175 0 9.96 1.663 13.884 4.459l8.189-8.189C79.603 33.679 72.251 32 64 32 32.045 32 13.447 56.775 8.707 63.994c3.01 4.562 11.662 16.11 25.626 24.017zm15.934-15.935 21.809-21.809C69.697 48.862 66.958 48 64 48c-8.822 0-16 7.178-16 16 0 2.958.862 5.697 2.267 8.076z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 relative" x-data="{ newPassword: false }">
+                                    <label class="require" for="">New Password :</label>
+                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="newPassword ? 'text' : 'password'" name="vendorPassword" name="" id="">
+                                    <!-- Toggle Icon Button -->
+                                    <span class="absolute top-[2.25rem] right-3 cursor-pointer" @click="newPassword = !newPassword">
+                                        <!-- Show Icon (when password is hidden) -->
+                                        <svg x-show="newPassword" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                            <g>
+                                                <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                            </g>
+                                        </svg>
+
+                                        <!-- Hide Icon (when password is visible) -->
+                                        <svg x-show="!newPassword" x-cloak xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 128 128" style="fill: rgba(0, 0, 0, 1);">
+                                            <path d="m79.891 65.078 7.27-7.27C87.69 59.787 88 61.856 88 64c0 13.234-10.766 24-24 24-2.144 0-4.213-.31-6.192-.839l7.27-7.27a15.929 15.929 0 0 0 14.813-14.813zm47.605-3.021c-.492-.885-7.47-13.112-21.11-23.474l-5.821 5.821c9.946 7.313 16.248 15.842 18.729 19.602C114.553 71.225 95.955 96 64 96c-4.792 0-9.248-.613-13.441-1.591l-6.573 6.573C50.029 102.835 56.671 104 64 104c41.873 0 62.633-36.504 63.496-38.057a3.997 3.997 0 0 0 0-3.886zm-16.668-39.229-88 88C22.047 111.609 21.023 112 20 112s-2.047-.391-2.828-1.172a3.997 3.997 0 0 1 0-5.656l11.196-11.196C10.268 83.049 1.071 66.964.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24c10.827 0 20.205 2.47 28.222 6.122l12.95-12.95c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656zM34.333 88.011 44.46 77.884C41.663 73.96 40 69.175 40 64c0-13.234 10.766-24 24-24 5.175 0 9.96 1.663 13.884 4.459l8.189-8.189C79.603 33.679 72.251 32 64 32 32.045 32 13.447 56.775 8.707 63.994c3.01 4.562 11.662 16.11 25.626 24.017zm15.934-15.935 21.809-21.809C69.697 48.862 66.958 48 64 48c-8.822 0-16 7.178-16 16 0 2.958.862 5.697 2.267 8.076z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 relative" x-data="{ confirmPassword: false }">
+                                    <label class="require" for="">Confirm Password :</label>
+                                    <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" :type="confirmPassword ? 'text' : 'password'" name="vendorPassword" name="" id="">
+                                    <!-- Toggle Icon Button -->
+                                    <span class="absolute top-[2.25rem] right-3 cursor-pointer" @click="confirmPassword = !confirmPassword">
+                                        <!-- Show Icon (when password is hidden) -->
+                                        <svg x-show="confirmPassword" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                            <g>
+                                                <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                            </g>
+                                        </svg>
+
+                                        <!-- Hide Icon (when password is visible) -->
+                                        <svg x-show="!confirmPassword" x-cloak xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 128 128" style="fill: rgba(0, 0, 0, 1);">
+                                            <path d="m79.891 65.078 7.27-7.27C87.69 59.787 88 61.856 88 64c0 13.234-10.766 24-24 24-2.144 0-4.213-.31-6.192-.839l7.27-7.27a15.929 15.929 0 0 0 14.813-14.813zm47.605-3.021c-.492-.885-7.47-13.112-21.11-23.474l-5.821 5.821c9.946 7.313 16.248 15.842 18.729 19.602C114.553 71.225 95.955 96 64 96c-4.792 0-9.248-.613-13.441-1.591l-6.573 6.573C50.029 102.835 56.671 104 64 104c41.873 0 62.633-36.504 63.496-38.057a3.997 3.997 0 0 0 0-3.886zm-16.668-39.229-88 88C22.047 111.609 21.023 112 20 112s-2.047-.391-2.828-1.172a3.997 3.997 0 0 1 0-5.656l11.196-11.196C10.268 83.049 1.071 66.964.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24c10.827 0 20.205 2.47 28.222 6.122l12.95-12.95c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656zM34.333 88.011 44.46 77.884C41.663 73.96 40 69.175 40 64c0-13.234 10.766-24 24-24 5.175 0 9.96 1.663 13.884 4.459l8.189-8.189C79.603 33.679 72.251 32 64 32 32.045 32 13.447 56.775 8.707 63.994c3.01 4.562 11.662 16.11 25.626 24.017zm15.934-15.935 21.809-21.809C69.697 48.862 66.958 48 64 48c-8.822 0-16 7.178-16 16 0 2.958.862 5.697 2.267 8.076z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="w-full flex justify-center md:justify-end">
+                                    <button class="w-32 h-10 font-medium rounded-tl-lg rounded-br-lg tracking-wide text-white bg-green-600 hover:bg-green-700 hover:transition">Update</button>
+                                </div>
+                            </div>
                         <?php
                         } else {
                         ?>

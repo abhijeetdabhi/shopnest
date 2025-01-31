@@ -222,13 +222,19 @@ if (isset($_COOKIE['adminEmail'])) {
                         <span class="mx-3">Contacts</span>
                     </a>
 
-                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="customer_complaint.php">
+                    <a class="relative group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="customer_complaint.php">
                         <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 18062 18062" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd" class="">
                             <g>
                                 <path d="M5557 16496H3939l-71 892h1689zM4877 5133c-43 0-87-9-127-28L2217 3939l-1289 1c-168 0-305-137-305-305V369c0-169 137-305 305-305h5305c168 0 305 136 305 305v3266c0 168-137 305-305 305H5182v888c0 167-140 305-305 305zM1233 3330h1051c44 0 87 9 127 27l2161 995v-717c0-169 137-305 305-305h1051V674H1233zm1674 7885H1889c-159 0-292-123-304-282l-351-4563c-13-175 129-329 304-329h1720c175 0 318 154 304 329l-351 4563c-12 159-144 282-304 282zm-735-610h453l304-3954H1867zm735 2682H1889c-168 0-305-137-305-305v-1099c0-169 137-305 305-305h1018c169 0 305 136 305 305v1099c0 168-136 305-305 305zm-713-610h408v-489h-408zm14589-5158h-1018c-159 0-292-123-304-282l-351-4563c-13-175 129-328 304-328h1720c175 0 318 153 304 328l-351 4563c-12 159-145 282-304 282zm-735-610h453l304-3954h-1062zm735 2682h-1018c-168 0-305-136-305-305V8187c0-169 137-305 305-305h1018c169 0 305 136 305 305v1099c0 169-136 305-305 305zm-713-610h408v-489h-408zM2398 2307h-379c-169 0-305-137-305-305 0-169 136-305 305-305h379c169 0 305 136 305 305 0 168-136 305-305 305zm1388 0h-380c-168 0-304-137-304-305 0-169 136-305 304-305h380c168 0 305 136 305 305 0 168-137 305-305 305zm1388 0h-380c-168 0-305-137-305-305 0-169 137-305 305-305h380c168 0 305 136 305 305 0 168-137 305-305 305zm7975 7165h-1065c-142 312-348 662-647 1022l360 1527 2597 625c1037 243 1195 1014 1201 1082l316 3941c14 175-128 329-304 329H3537c-175 0-318-154-304-329l317-3941c5-68 164-838 1203-1083l2595-624 359-1527c-31-38-62-76-91-114h-976c-169 0-305-136-305-305v-603h-340c-168 0-305-137-305-305V7432c0-169 137-305 305-305h375c-315-1320-38-2432 813-3145 264-222 957-758 1691-955 1147-309 2571-195 3293 673 399 478 280 815 674 1283 486 579 355 1383 82 2144h226c169 0 305 136 305 305v1735c0 168-136 305-305 305zm-1557-394c5-16 11-31 18-46 149-385 176-663 181-739-239-1581-836-2434-1279-2434-108 0-219 52-329 154-425 393-829 584-1235 584-273 0-491-87-651-151-46-19-105-43-144-54-23 37-69 127-124 333-124 467-337 1098-659 1541 23 229 123 840 559 1504h1516c168 0 305 137 305 305 0 169-137 305-305 305h-966c262 206 670 458 1086 448l40 1c657 0 1288-643 1344-701 321-382 520-747 643-1050zm713-216h539V7737h-168l-278 613c-7 93-29 273-93 512zm-5231 610h-130v298h275c-55-102-103-201-145-298zm-522-1735h-252v1125h560c-76-290-98-512-104-620-77-171-145-339-204-505zm-2564 8149h1569v-271c0-168 137-305 305-305 169 0 305 137 305 305v1773h6810v-1773c0-168 136-305 305-305 168 0 305 137 305 305v271h1569l-167-2083c-24-76-163-432-734-563l-2640-635-1855 1447c-110 87-265 87-375 0l-1855-1447-2637 634c-574 132-714 488-737 564zm3955-3732 1629 1271 1629-1271-282-1201c-908 649-1787 647-2693 0zm5644 5234h1690l-72-892h-1618zM10047 3480c-333 0-684 47-1015 136-616 166-1224 638-1457 833-987 827-762 2166-460 3043 120-256 231-570 325-924 68-257 211-791 685-791 506 0 772 594 1644-212 223-207 480-316 743-316 716 0 1340 777 1691 2044 307-725 534-1485 171-1918-466-554-379-929-675-1285-328-394-915-610-1652-610zm-446 12133c-168 0-304-136-304-305v-395c0-169 136-305 304-305 169 0 305 136 305 305v395c0 169-136 305-305 305zm0 1304c-168 0-304-136-304-305v-395c0-169 136-305 304-305 169 0 305 136 305 305v395c0 169-136 305-305 305z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
                             </g>
                         </svg>
                         <span class="mx-3">Complaints</span>
+                        <div class="flex items-center">
+                            <span class="absolute right-5 flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                        </div>
                     </a>
 
                     <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="setting.php">
@@ -325,7 +331,7 @@ if (isset($_COOKIE['adminEmail'])) {
                         <!-- top seller -->
                         <section class="container mx-auto p-6">
                             <h2 class="font-manrope font-bold text-4xl leading-10 text-black mb-5">Top seller vendors</h2>
-                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
+                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg bg-white">
                                 <div class="w-full overflow-x-auto h-max text-center">
                                     <?php
                                     if (mysqli_num_rows($vendor_query) > 0) {
@@ -377,7 +383,7 @@ if (isset($_COOKIE['adminEmail'])) {
                         <!-- top buyers -->
                         <section class="container mx-auto p-6">
                             <h2 class="font-manrope font-bold text-4xl leading-10 text-black mb-5">Top buyers</h2>
-                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
+                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg bg-white">
                                 <div class="w-full overflow-x-auto h-max text-center">
                                     <?php
                                     if (mysqli_num_rows($buyer_queyr) > 0) {
@@ -424,7 +430,7 @@ if (isset($_COOKIE['adminEmail'])) {
                         <!-- top rated product -->
                         <section class="container mx-auto p-6">
                             <h2 class="font-manrope font-bold text-4xl leading-10 text-black mb-5">Top rated products</h2>
-                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
+                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg bg-white">
                                 <div class="w-full overflow-x-auto h-max text-center">
                                     <?php
                                     if (mysqli_num_rows($topRated_query) > 0) {
@@ -492,7 +498,7 @@ if (isset($_COOKIE['adminEmail'])) {
                         <!-- top buying products -->
                         <section class="container mx-auto p-6">
                             <h2 class="font-manrope font-bold text-4xl leading-10 text-black mb-5">Top buying products</h2>
-                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
+                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg bg-white">
                                 <div class="w-full overflow-x-auto h-max text-center">
                                     <?php
                                     if (mysqli_num_rows($topBuying_query) > 0) {
@@ -516,7 +522,7 @@ if (isset($_COOKIE['adminEmail'])) {
                                                 <tbody class="bg-white border">
                                                     <tr class="text-gray-700">
                                                         <td class="px-4 py-3 border"><?php echo $i; ?></td>
-                                                        <td class="px-4 py-3 border"><img class="h-14 w-14 object-cover rounded-full m-auto" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $tb['order_image'] : 'order_image'; ?>" alt="" class="w-20 h-20 m-auto"></td>
+                                                        <td class="px-4 py-3 border"><img class="h-20 inline-flex justify" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/product_image/product_profile/' . $tb['order_image'] : 'order_image'; ?>" alt=""></td>
                                                         <td class="px-4 py-3 leading-9 line-clamp-2"><?php echo isset($_COOKIE['adminEmail']) ? $tb['order_title'] : 'order_title'; ?></td>
                                                         <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $tb['total_price'] : 'total_price'; ?></td>
                                                         <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $tb['totalProducts'] : 'totalProducts'; ?></td>
