@@ -537,64 +537,71 @@ $company_name = $_GET['brandName'];
                 }
 
                 $vendorIds = [];
+                $vendorLat = [];
+                $vendorLng = [];
                 foreach ($vendorLatitudes as $index => $lat) {
                     $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A';
 
-                    $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
+                    $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng' AND action = 'Accept'";
                     $query = mysqli_query($con, $get_vendor);
 
                     if (mysqli_num_rows($query) > 0) {
                         while ($vendorCount = mysqli_fetch_assoc($query)) {
                             $vendorIds[] = $vendorCount['vendor_id']; // Store vendor IDs
+
+                            $vendorLat[] = $lat; 
+                            $vendorLng[] = $lng; 
                         }
                     }
                 }
 
-                if ($filter_query) {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' AND $filter_query ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
-                } elseif ($selected === 'Newest') {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
-                } elseif ($selected === 'All') {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
-                } elseif ($selected === 'Low to High') {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
-                } elseif ($selected === 'High to Low') {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) DESC";
-                } elseif ($selected === 'Most Popular') {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT
-                            pr.product_id,
-                            pr.profile_image_1,
-                            pr.title,
-                            pr.MRP,
-                            pr.vendor_mrp,
-                            pr.vendor_price,
-                            pr.size,
-                            pr.color,
-                            pr.Quantity,
-                            pr.avg_rating,
-                            pr.total_reviews,
-                            COUNT(v.vendor_id) AS order_count
-                        FROM products pr
-                        LEFT JOIN vendor_registration v ON pr.vendor_id = v.vendor_id
-                        WHERE v.vendor_id IN ($vendorIdList) AND pr.company_name = '$company_name'
-                        GROUP BY pr.product_id, pr.profile_image_1, pr.title, pr.MRP, pr.vendor_mrp, pr.vendor_price, pr.size, pr.color, pr.Quantity, pr.avg_rating, pr.total_reviews, v.vendor_id
-                        ORDER BY order_count DESC";
-                } elseif ($selected === 'Best Rating') {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY avg_rating DESC";
-                } else {
-                    $vendorIdList = implode(',', $vendorIds);
-                    $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
+                if(!empty($vendorIds)){
+                    if ($filter_query) {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' AND $filter_query ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
+                    } elseif ($selected === 'Newest') {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
+                    } elseif ($selected === 'All') {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
+                    } elseif ($selected === 'Low to High') {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) $sort_order";
+                    } elseif ($selected === 'High to Low') {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY CAST(REPLACE($sort_column, ',', '') AS UNSIGNED) DESC";
+                    } elseif ($selected === 'Most Popular') {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT
+                                pr.product_id,
+                                pr.profile_image_1,
+                                pr.title,
+                                pr.MRP,
+                                pr.vendor_mrp,
+                                pr.vendor_price,
+                                pr.size,
+                                pr.color,
+                                pr.Quantity,
+                                pr.avg_rating,
+                                pr.total_reviews,
+                                COUNT(v.vendor_id) AS order_count
+                            FROM products pr
+                            LEFT JOIN vendor_registration v ON pr.vendor_id = v.vendor_id
+                            WHERE v.vendor_id IN ($vendorIdList) AND pr.company_name = '$company_name'
+                            GROUP BY pr.product_id, pr.profile_image_1, pr.title, pr.MRP, pr.vendor_mrp, pr.vendor_price, pr.size, pr.color, pr.Quantity, pr.avg_rating, pr.total_reviews, v.vendor_id
+                            ORDER BY order_count DESC";
+                    } elseif ($selected === 'Best Rating') {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name' ORDER BY avg_rating DESC";
+                    } else {
+                        $vendorIdList = implode(',', $vendorIds);
+                        $products = "SELECT * FROM products WHERE vendor_id IN ($vendorIdList) AND company_name = '$company_name'";
+                    }
+    
+                    $Product_query = mysqli_query($con, $products);
+                    unset($_SESSION['selected']);
                 }
-
-                $Product_query = mysqli_query($con, $products);
-                unset($_SESSION['selected']);
                 ?>
             </div>
 
@@ -602,89 +609,105 @@ $company_name = $_GET['brandName'];
             <div class="flex flex-col items-center mt-10 lg:ml-10 w-full">
                 <!-- Product cards will be displayed here -->
                 <?php
-
-                if (mysqli_num_rows($Product_query) > 0) {
-                ?>
-                    <div class="product-container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10">
-                        <?php
-                        while ($res = mysqli_fetch_assoc($Product_query)) {
-                            $product_id = $res['product_id'];
-
-                            $MRP = $res['vendor_mrp'];
-
-                            // for qty
-                            if ($res['Quantity'] > 0) {
-                                $qty = 1;
-                            } else {
-                                $qty = 0;
-                            }
-
-                            // for the size
-                            $size = $res['size'];
-                            $filter_size = explode(',', $size);
-                            foreach ($filter_size as $product_size) {
-                                $product_size;
-                                break;
-                            }
-
+                if(!empty($vendorIds)){
+                    if (mysqli_num_rows($Product_query) > 0) {
                         ?>
-                            <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
-                                <div class="p-2" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
-                                </div>
-                                <div class="mt-2 space-y-3" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                    <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
-                                    <div class="flex justify-between px-2">
-                                        <p class="space-x-1">
-                                            <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
-                                            <del class="text-xs font-medium">₹<?php echo number_format($res['vendor_price']) ?></del>
-                                        </p>
-                                        <div class="flex items-center">
-                                            <span class="bg-gray-900 rounded-tl-md rounded-br-md px-2 py-0.5 flex items-center gap-1">
-                                                <h1 class="font-semibold text-xs text-white"><?php echo $res['avg_rating'] ?></h1>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-2.5 h-2.5 m-auto fill-current text-white">
-                                                    <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
-                                                </svg>
-                                            </span>
-                                            <span class="text-sm ml-2 text-gray-900 tracking-wide">(<?php echo $res['total_reviews'] ?>)</span>
+                            <div class="product-container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10">
+                                <?php
+                                while ($res = mysqli_fetch_assoc($Product_query)) {
+                                    $product_id = $res['product_id'];
+        
+                                    $MRP = $res['vendor_mrp'];
+        
+                                    // for qty
+                                    if ($res['Quantity'] > 0) {
+                                        $qty = 1;
+                                    } else {
+                                        $qty = 0;
+                                    }
+        
+                                    // for the size
+                                    $size = $res['size'];
+                                    $filter_size = explode(',', $size);
+                                    foreach ($filter_size as $product_size) {
+                                        $product_size;
+                                        break;
+                                    }
+        
+                                ?>
+                                    <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
+                                        <div class="p-2" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                            <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
+                                        </div>
+                                        <div class="mt-2 space-y-3" onclick="window.location.href = '../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
+                                            <a href="../product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
+                                            <div class="flex justify-between px-2">
+                                                <p class="space-x-1">
+                                                    <span class="text-lg font-medium text-gray-900">₹<?php echo number_format($MRP) ?></span>
+                                                    <del class="text-xs font-medium">₹<?php echo number_format($res['vendor_price']) ?></del>
+                                                </p>
+                                                <div class="flex items-center">
+                                                    <span class="bg-gray-900 rounded-tl-md rounded-br-md px-2 py-0.5 flex items-center gap-1">
+                                                        <h1 class="font-semibold text-xs text-white"><?php echo $res['avg_rating'] ?></h1>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.991 511" class="w-2.5 h-2.5 m-auto fill-current text-white">
+                                                            <path d="M510.652 185.883a27.177 27.177 0 0 0-23.402-18.688l-147.797-13.418-58.41-136.75C276.73 6.98 266.918.497 255.996.497s-20.738 6.483-25.023 16.53l-58.41 136.75-147.82 13.418c-10.837 1-20.013 8.34-23.403 18.688a27.25 27.25 0 0 0 7.937 28.926L121 312.773 88.059 457.86c-2.41 10.668 1.73 21.7 10.582 28.098a27.087 27.087 0 0 0 15.957 5.184 27.14 27.14 0 0 0 13.953-3.86l127.445-76.203 127.422 76.203a27.197 27.197 0 0 0 29.934-1.324c8.851-6.398 12.992-17.43 10.582-28.098l-32.942-145.086 111.723-97.964a27.246 27.246 0 0 0 7.937-28.926zM258.45 409.605"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="text-sm ml-2 text-gray-900 tracking-wide">(<?php echo $res['total_reviews'] ?>)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
+                                            <?php
+                                            if ($qty > 0) {
+                                            ?>
+                                                <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="bg-gray-600 w-full mt-2 py-1.5 flex justify-center absolute bottom-0">
-                                    <?php
-                                    if ($qty > 0) {
-                                    ?>
-                                        <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
-                                    <?php
-                                    } else {
-                                    ?>
-                                        <h1 class="bg-white border-2 border-gray-800 text-red-600 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center cursor-default select-none">Out of Stock</h1>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
+                                <?php
+        
+                                }
+                                ?>
                             </div>
                         <?php
-
-                        }
+                    } else {
                         ?>
-                    </div>
-                <?php
-                } else {
-                ?>
-                    <div class="flex flex-col justify-center items-center w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 66 66" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-24 mb-3 text-gray-700">
-                            <g>
-                                <path d="M22.71 31.52H8.72l-7.22 8.6h13.99zM48.67 29.11c5.48-5.48 5.48-14.37 0-19.85s-14.37-5.48-19.85 0-5.48 14.37 0 19.85 14.37 5.48 19.85 0zM30.94 11.38c2.08-2.08 4.86-3.23 7.8-3.23 2.95 0 5.72 1.15 7.8 3.23 4.3 4.3 4.3 11.3 0 15.6-2.08 2.08-4.85 3.23-7.8 3.23s-5.72-1.15-7.8-3.23c-4.3-4.3-4.3-11.3 0-15.6z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                <path d="M38.74 28.22c2.41 0 4.68-.94 6.39-2.65 3.52-3.52 3.52-9.25 0-12.78a8.962 8.962 0 0 0-6.39-2.65c-2.41 0-4.68.94-6.39 2.65-3.52 3.52-3.52 9.25 0 12.78a8.98 8.98 0 0 0 6.39 2.65zm-5.11-12.74a.996.996 0 1 1 1.41-1.41l3.7 3.7 3.7-3.7a.996.996 0 1 1 1.41 1.41l-3.7 3.7 3.7 3.7a.996.996 0 0 1-.71 1.7c-.26 0-.51-.1-.71-.29l-3.7-3.7-3.7 3.7c-.2.2-.45.29-.71.29s-.51-.1-.71-.29a.996.996 0 0 1 0-1.41l3.7-3.7zM7.72 42.12v18.73h14.99V34.63l-6.29 7.49zM47.33 32.94l-.15-.15a15.868 15.868 0 0 1-8.45 2.42c-3.78 0-7.36-1.3-10.23-3.69h-3.8l7.22 8.59h20.52l-3.63-3.63a5.135 5.135 0 0 1-1.48-3.54zM63.59 39.64l-8.96-8.96a3.114 3.114 0 0 0-2.88-.83l-.56-.56a16.002 16.002 0 0 1-2.34 2.34l.56.56c-.23 1 .05 2.1.83 2.88l8.96 8.96c1.21 1.21 3.18 1.21 4.39 0s1.21-3.18 0-4.39z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                <path d="M24.71 34.63v26.22h26.62V42.12H31zm11.37 22.69h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1s-.45 1-1 1zm1-4.91c0 .55-.45 1-1 1h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                            </g>
-                        </svg>
-                        <h1 class="text-3xl font-semibold text-gray-800">No products found</h1>
-                        <p class="text-gray-600 mt-2">It looks like no products match your selected filters.</p>
-                    </div>
-                <?php
-                }
+                            <div class="flex flex-col justify-center items-center w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 66 66" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-24 mb-3 text-gray-700">
+                                    <g>
+                                        <path d="M22.71 31.52H8.72l-7.22 8.6h13.99zM48.67 29.11c5.48-5.48 5.48-14.37 0-19.85s-14.37-5.48-19.85 0-5.48 14.37 0 19.85 14.37 5.48 19.85 0zM30.94 11.38c2.08-2.08 4.86-3.23 7.8-3.23 2.95 0 5.72 1.15 7.8 3.23 4.3 4.3 4.3 11.3 0 15.6-2.08 2.08-4.85 3.23-7.8 3.23s-5.72-1.15-7.8-3.23c-4.3-4.3-4.3-11.3 0-15.6z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                        <path d="M38.74 28.22c2.41 0 4.68-.94 6.39-2.65 3.52-3.52 3.52-9.25 0-12.78a8.962 8.962 0 0 0-6.39-2.65c-2.41 0-4.68.94-6.39 2.65-3.52 3.52-3.52 9.25 0 12.78a8.98 8.98 0 0 0 6.39 2.65zm-5.11-12.74a.996.996 0 1 1 1.41-1.41l3.7 3.7 3.7-3.7a.996.996 0 1 1 1.41 1.41l-3.7 3.7 3.7 3.7a.996.996 0 0 1-.71 1.7c-.26 0-.51-.1-.71-.29l-3.7-3.7-3.7 3.7c-.2.2-.45.29-.71.29s-.51-.1-.71-.29a.996.996 0 0 1 0-1.41l3.7-3.7zM7.72 42.12v18.73h14.99V34.63l-6.29 7.49zM47.33 32.94l-.15-.15a15.868 15.868 0 0 1-8.45 2.42c-3.78 0-7.36-1.3-10.23-3.69h-3.8l7.22 8.59h20.52l-3.63-3.63a5.135 5.135 0 0 1-1.48-3.54zM63.59 39.64l-8.96-8.96a3.114 3.114 0 0 0-2.88-.83l-.56-.56a16.002 16.002 0 0 1-2.34 2.34l.56.56c-.23 1 .05 2.1.83 2.88l8.96 8.96c1.21 1.21 3.18 1.21 4.39 0s1.21-3.18 0-4.39z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                        <path d="M24.71 34.63v26.22h26.62V42.12H31zm11.37 22.69h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1s-.45 1-1 1zm1-4.91c0 .55-.45 1-1 1h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                    </g>
+                                </svg>
+                                <h1 class="text-3xl font-semibold text-gray-800">No products found</h1>
+                                <p class="text-gray-600 mt-2">It looks like no products match your selected filters.</p>
+                            </div>
+                        <?php
+                        }
+                }else {
+                    ?>
+                        <div class="flex flex-col justify-center items-center w-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 66 66" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-24 mb-3 text-gray-700">
+                                <g>
+                                    <path d="M22.71 31.52H8.72l-7.22 8.6h13.99zM48.67 29.11c5.48-5.48 5.48-14.37 0-19.85s-14.37-5.48-19.85 0-5.48 14.37 0 19.85 14.37 5.48 19.85 0zM30.94 11.38c2.08-2.08 4.86-3.23 7.8-3.23 2.95 0 5.72 1.15 7.8 3.23 4.3 4.3 4.3 11.3 0 15.6-2.08 2.08-4.85 3.23-7.8 3.23s-5.72-1.15-7.8-3.23c-4.3-4.3-4.3-11.3 0-15.6z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                    <path d="M38.74 28.22c2.41 0 4.68-.94 6.39-2.65 3.52-3.52 3.52-9.25 0-12.78a8.962 8.962 0 0 0-6.39-2.65c-2.41 0-4.68.94-6.39 2.65-3.52 3.52-3.52 9.25 0 12.78a8.98 8.98 0 0 0 6.39 2.65zm-5.11-12.74a.996.996 0 1 1 1.41-1.41l3.7 3.7 3.7-3.7a.996.996 0 1 1 1.41 1.41l-3.7 3.7 3.7 3.7a.996.996 0 0 1-.71 1.7c-.26 0-.51-.1-.71-.29l-3.7-3.7-3.7 3.7c-.2.2-.45.29-.71.29s-.51-.1-.71-.29a.996.996 0 0 1 0-1.41l3.7-3.7zM7.72 42.12v18.73h14.99V34.63l-6.29 7.49zM47.33 32.94l-.15-.15a15.868 15.868 0 0 1-8.45 2.42c-3.78 0-7.36-1.3-10.23-3.69h-3.8l7.22 8.59h20.52l-3.63-3.63a5.135 5.135 0 0 1-1.48-3.54zM63.59 39.64l-8.96-8.96a3.114 3.114 0 0 0-2.88-.83l-.56-.56a16.002 16.002 0 0 1-2.34 2.34l.56.56c-.23 1 .05 2.1.83 2.88l8.96 8.96c1.21 1.21 3.18 1.21 4.39 0s1.21-3.18 0-4.39z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                    <path d="M24.71 34.63v26.22h26.62V42.12H31zm11.37 22.69h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1s-.45 1-1 1zm1-4.91c0 .55-.45 1-1 1h-7.84c-.55 0-1-.45-1-1s.45-1 1-1h7.84c.55 0 1 .45 1 1z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                </g>
+                            </svg>
+                            <h1 class="text-3xl font-semibold text-gray-800">No products found</h1>
+                            <p class="text-gray-600 mt-2">It looks like no products match your selected filters.</p>
+                        </div>
+                    <?php
+                    }
+                
                 ?>
 
 
