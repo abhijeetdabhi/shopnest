@@ -14,6 +14,8 @@ if (isset($_COOKIE['vendor_id'])) {
 
 include "../include/connect.php";
 
+session_start();
+
 if (isset($_COOKIE['adminEmail'])) {
     // for views
     $views = "SELECT * FROM page_count";
@@ -23,7 +25,7 @@ if (isset($_COOKIE['adminEmail'])) {
     
     $weekly = " SELECT view_date, COUNT(view_count) as total_count 
         FROM page_count 
-        WHERE view_date >= CURDATE() - INTERVAL 1 WEEK
+        WHERE view_date >= CURDATE() - INTERVAL 16 DAY
         GROUP BY view_date 
         ORDER BY view_date DESC
     ";
@@ -119,6 +121,14 @@ if (isset($_COOKIE['adminEmail'])) {
     }
 
     $vendor_json = json_encode($nvendor);
+
+
+    $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+    $newDataQuery = mysqli_query($con, $newData);
+
+    $newCount = mysqli_num_rows($newDataQuery);
+
+    $_SESSION['currentData'] = $newCount;
 }
 ?>
 
@@ -252,10 +262,16 @@ if (isset($_COOKIE['adminEmail'])) {
                         </svg>
                         <div class="flex items-center justify-between">
                             <span class="mx-3">Vendor request</span>
-                            <span class="relative flex size-2">
-                              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                              <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
-                            </span>
+                            <?php
+                            if($_SESSION['existingData'] < $_SESSION['currentData']){
+                                ?>
+                                <span class="relative flex size-2">
+                                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+                                </span>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </a>
 
