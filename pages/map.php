@@ -166,7 +166,7 @@ if (isset($_COOKIE['adminEmail'])) {
     <div class="max-w-screen-md m-auto">
         <div id="searchBox"></div>
         <div id="map" class="relative">
-            <button class="absolute bottom-1 right-1 z-40 bg-black backdrop-blur-md rounded-full p-3">
+            <button id="locate-btn" class="absolute bottom-1 right-1 z-40 bg-black backdrop-blur-md rounded-full p-3">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 469.333 469.333" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-7 text-white">
                     <g>
                         <path d="M234.667 149.333c-47.147 0-85.333 38.187-85.333 85.333S187.52 320 234.667 320 320 281.813 320 234.667s-38.187-85.334-85.333-85.334zm190.72 64C415.573 124.373 344.96 53.76 256 43.947V0h-42.667v43.947C124.373 53.76 53.76 124.373 43.947 213.333H0V256h43.947c9.813 88.96 80.427 159.573 169.387 169.387v43.947H256v-43.947C344.96 415.573 415.573 344.96 425.387 256h43.947v-42.667h-43.947zM234.667 384c-82.453 0-149.333-66.88-149.333-149.333s66.88-149.333 149.333-149.333S384 152.213 384 234.667 317.12 384 234.667 384z" fill="currentColor" opacity="1" data-original="currentColor"></path>
@@ -199,7 +199,7 @@ if (isset($_COOKIE['adminEmail'])) {
             key: apiKey,
             container: 'map',
             zoom: 3,
-            center: [0, 0]
+            center: [78.9629, 20.5937]
         });
 
         var currentMarker = null;
@@ -221,6 +221,9 @@ if (isset($_COOKIE['adminEmail'])) {
                 language: "en-GB",
             },
         };
+
+        let latitudeDiv = document.getElementById('latitude');
+        let longitudeDiv = document.getElementById('longitude');
 
         var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
         var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
@@ -252,9 +255,6 @@ if (isset($_COOKIE['adminEmail'])) {
             var latitude = e.lngLat.lat;
             var longitude = e.lngLat.lng;
 
-            let latitudeDiv = document.getElementById('latitude');
-            let longitudeDiv = document.getElementById('longitude');
-
             removeCurrentMarker();
 
             currentMarker = new tt.Marker()
@@ -265,6 +265,28 @@ if (isset($_COOKIE['adminEmail'])) {
             longitudeDiv.value = longitude;
 
             map.setCenter([longitude, latitude]);
+        });
+
+        // get current location
+        document.getElementById('locate-btn').addEventListener('click', function(){
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    console.log(lat);
+
+                    map.setCenter([lng, lat]);
+                    map.setZoom(15);
+
+                    currentMarker = new tt.Marker()
+                        .setLngLat([lng, lat])
+                        .addTo(map);
+
+                    latitudeDiv.value = lat;
+                    longitudeDiv.value = lng;
+                });
+            }
         });
 
         let setLatLng = document.getElementById('setLatLng');

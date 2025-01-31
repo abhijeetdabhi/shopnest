@@ -32,7 +32,7 @@ if (isset($_COOKIE['adminEmail'])) {
     $weekData = array();
     while ($row = mysqli_fetch_assoc($weekQuery)) {
         $date = $row['view_date'];
-        $myDate = date('d-m-Y', strtotime($date));
+        $myDate = date('j/n/y', strtotime($date));
         $weekData[] = array(
             'date' => $myDate,
             'count' => (int) $row['total_count']
@@ -53,7 +53,7 @@ if (isset($_COOKIE['adminEmail'])) {
     $monthData = array();
     while ($row = mysqli_fetch_assoc($monthQuery)) {
         $date = $row['view_date'];
-        $myDate = date('d-m-Y', strtotime($date));
+        $myDate = date('j/n/y', strtotime($date));
         $monthData[] = array(
             'date' => $myDate,
             'count' => (int) $row['total_count']
@@ -491,15 +491,15 @@ if (isset($_COOKIE['adminEmail'])) {
         const monthDate = monthFromData.map(month => month.date);
         const monthCount = monthFromData.map(month => month.count);
 
-        const backgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
-        const borderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
-        const pointBackgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
-        const pointBorderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var backgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        var borderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBackgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBorderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
 
-        // const backgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
-        // const borderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
-        // const pointBackgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
-        // const pointBorderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var backgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        var borderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBackgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBorderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
 
         const data = {
             labels: weekDate,
@@ -548,15 +548,15 @@ if (isset($_COOKIE['adminEmail'])) {
             });
 
             document.getElementById('weekButton').addEventListener('click', function() {
-                myChart.data.labels = weekLabels;
-                myChart.data.datasets[0].data = weekData;
+                myChart.data.labels = weekDate;
+                myChart.data.datasets[0].data = weekCount;
                 myChart.update();
             });
     
             // Update chart for monthly data
             document.getElementById('monthButton').addEventListener('click', function() {
-                myChart.data.labels = monthLabels;
-                myChart.data.datasets[0].data = monthData;
+                myChart.data.labels = monthDate;
+                myChart.data.datasets[0].data = monthCount;
                 myChart.update();
             });
         };
