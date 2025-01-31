@@ -25,13 +25,13 @@ if (isset($_COOKIE['user_id'])) {
     $getOrder = "SELECT * FROM orders WHERE user_id = '$user_id'";
     $getOrder_query = mysqli_query($con, $getOrder);
     $vendorId = [];
-    while($order = mysqli_fetch_assoc($getOrder_query)){
-        if(!in_array($order['vendor_id'], $vendorId)){
+    while ($order = mysqli_fetch_assoc($getOrder_query)) {
+        if (!in_array($order['vendor_id'], $vendorId)) {
             $vendorId[] = $order['vendor_id'];
         }
     }
 
-    if(isset($_GET['vendorId'])){
+    if (isset($_GET['vendorId'])) {
         $vendor_id = $_GET['vendorId'];
 
         $findVendor = "SELECT * FROM vendor_registration WHERE vendor_id = $vendor_id";
@@ -43,7 +43,7 @@ if (isset($_COOKIE['user_id'])) {
         $findOrder_query = mysqli_query($con, $findOrder);
     }
 
-    if(isset($_GET['productId'])){
+    if (isset($_GET['productId'])) {
         $product_id = $_GET['productId'];
         $findOrder = "SELECT * FROM orders WHERE product_id = $product_id";
         $findOrder_query = mysqli_query($con, $findOrder);
@@ -89,6 +89,28 @@ if (isset($_COOKIE['user_id'])) {
     <title>Complaint</title>
 
     <style>
+        #vendorSuggestions {
+            max-height: calc(4 * 3rem + 8px);
+            /* Adjust height for 4 cards + some spacing */
+            overflow-y: auto;
+        }
+
+        .scrollBar::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background-color: #e6e6e6;
+        }
+
+        .scrollBar::-webkit-scrollbar {
+            width: 10px;
+            height: 5px;
+            background-color: #F5F5F5;
+        }
+
+        .scrollBar::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: #bfbfbf;
+        }
+
         #logoutPopUp {
             display: none;
         }
@@ -307,43 +329,44 @@ if (isset($_COOKIE['user_id'])) {
                             <label class="require" for="">Vendor store name :</label>
                             <div class="relative">
                                 <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="vendorStore" id="vendorStore" value="<?php echo isset($_GET['vendorId']) ? $vendor_name : '' ?>">
-                                <div class="hidden absolute top-14 left-0 w-full p-2 border rounded-md bg-white shadow-lg z-40" id="vendorSuggestions">
+                                <div id="vendorSuggestions" class="hidden absolute top-14 left-0 w-full p-2 border rounded-md bg-white shadow-lg shadow-black/50 z-40 min-[0px]:grid grid-cols-1 gap-y-4 h-auto max-h-[13rem] overflow-y-auto scrollBar">
                                     <?php
-                                        foreach($vendorId as $vd){
-                                            $findVendor = "SELECT * FROM vendor_registration WHERE vendor_id = $vd";
-                                            $vendor_query = mysqli_query($con, $findVendor);
-                                            
-                                            while($res = mysqli_fetch_assoc($vendor_query)){
-                                                ?>
-                                                    <a href="?vendorId=<?php echo $res['vendor_id'] ?>" class="flex flex-col min-[530px]:flex-row items-center gap-4 w-full p-2 my-2 border cursor-pointer hover:bg-gray-100 rounded-md bg-white transition">
-                                                        <div class="w-full flex items-center gap-2">
-                                                            <img class="w-8 h-8 rounded-full object-cover" src="../src/vendor_images/vendor_profile_image/<?php echo $res['dp_image'] ?>" alt="Product Image">
-                                                            <h1 class="whitespace-nowrap"><?php echo $res['username'] ?></h1>
-                                                        </div>
-                                                    </a>
-                                                <?php
-                                            }
+                                    foreach ($vendorId as $vd) {
+                                        $findVendor = "SELECT * FROM vendor_registration WHERE vendor_id = $vd";
+                                        $vendor_query = mysqli_query($con, $findVendor);
+
+                                        while ($res = mysqli_fetch_assoc($vendor_query)) {
+                                    ?>
+                                            <a href="?vendorId=<?php echo $res['vendor_id'] ?>"
+                                                class="flex flex-col min-[530px]:flex-row items-center gap-4 w-full p-2 h-12 border cursor-pointer bg-gray-200 rounded-md transition shadow-md shadow-black/20">
+                                                <div class="w-full flex items-center gap-2">
+                                                    <img class="w-8 h-8 rounded-full object-cover" src="../src/vendor_images/vendor_profile_image/<?php echo $res['dp_image'] ?>" alt="Product Image">
+                                                    <h1 class="whitespace-nowrap truncate"><?php echo $res['username'] ?></h1>
+                                                </div>
+                                            </a>
+                                    <?php
                                         }
+                                    }
                                     ?>
                                 </div>
                                 <script>
                                     let vendorStore = document.getElementById('vendorStore');
                                     let vendorSuggestions = document.getElementById('vendorSuggestions');
-                                    vendorStore.addEventListener('click', ()=>{
+                                    vendorStore.addEventListener('click', () => {
                                         vendorSuggestions.style.display = 'flex';
                                     });
 
-                                    window.addEventListener('click', (e)=>{
-                                        if(!vendorStore.contains(e.target) || vendorSuggestions.contains(e.target)){
+                                    window.addEventListener('click', (e) => {
+                                        if (!vendorStore.contains(e.target) || vendorSuggestions.contains(e.target)) {
                                             vendorSuggestions.style.display = 'none';
                                         }
                                     });
 
-                                    $(document).ready(function () {
-                                        $('#vendorStore').on('input', function(){
+                                    $(document).ready(function() {
+                                        $('#vendorStore').on('input', function() {
                                             let words = $(this).val();
 
-                                            if(words.length > 2){
+                                            if (words.length > 2) {
                                                 $("#vendorSuggestions").css('display', 'block');
                                                 $.ajax({
                                                     type: "post",
@@ -351,7 +374,7 @@ if (isset($_COOKIE['user_id'])) {
                                                     data: {
                                                         searchWord: words
                                                     },
-                                                    success: function (response) {
+                                                    success: function(response) {
                                                         $('#vendorSuggestions').html(response)
                                                     }
                                                 });
@@ -365,52 +388,52 @@ if (isset($_COOKIE['user_id'])) {
                             <label class="require" for="">Product name :</label>
                             <div class="relative">
                                 <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="vendorProduct" id="vendorProduct" value="<?php echo isset($_GET['productId']) ? $order_title : '' ?>">
-                                <div style="display: none;" class="absolute flex flex-col top-14 left-0 p-2 w-full border rounded-md bg-white shadow-lg z-30" id="productSuggestions">
+                                <div style="display: none;" class="absolute flex flex-col top-14 left-0 p-2 w-full border rounded-md bg-white shadow-lg shadow-black/40 z-30 h-[10.5rem] md:h-[17rem] overflow-auto scrollBar" id="productSuggestions">
                                     <?php
-                                        if(isset($_GET['vendorId'])){
-                                            while($vndr = mysqli_fetch_assoc($findOrder_query)){
-                                                ?>
-                                                    <a href="?vendorId=<?php echo $_GET['vendorId'] ?>&productId=<?php echo $vndr['product_id'] ?>" class="flex flex-col min-[530px]:flex-row items-center gap-4 p-3 my-3 cursor-pointer hover:bg-gray-100 rounded-md bg-white transition">
-                                                        <div class="w-full sm:w-32 flex justify-center">
-                                                            <img class="w-52 h-auto object-contain mix-blend-multiply" src="../src/product_image/product_profile/<?php echo $vndr['order_image'] ?>" alt="Product Image">
-                                                        </div>
-                                                        <div class="flex flex-col gap-2 w-full">
-                                                            <div>
-                                                                <span class="text-base font-normal text-gray-800 line-clamp-2">
-                                                                    <?php echo $vndr['order_title'] ?>
-                                                                </span>
-                                                            </div>
-                                                            <div class="grid grid-cols-2 gap-2 md:w-56">
-                                                                <span class="text-gray-600 font-medium">Colour: <h3 class="text-black"><?php echo $vndr['order_color'] ?></h3></span>
-                                                                <span class="text-gray-600 font-medium">Size: <h3 class="text-black"><?php echo $vndr['total_price'] ?></h3></span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                <?php
-                                            }
-                                        }else{
-                                            echo "<h1 class='text-center'>No Data Found</h1>";
+                                    if (isset($_GET['vendorId'])) {
+                                        while ($vndr = mysqli_fetch_assoc($findOrder_query)) {
+                                    ?>
+                                            <a href="?vendorId=<?php echo $_GET['vendorId'] ?>&productId=<?php echo $vndr['product_id'] ?>" class="flex flex-row lg:flex-row items-center gap-4 p-3 my-3 cursor-pointer bg-gray-200 rounded-md ">
+                                                <div class="flex justify-center">
+                                                    <img class="w-28 h-auto object-contain mix-blend-multiply" src="../src/product_image/product_profile/<?php echo $vndr['order_image'] ?>" alt="Product Image">
+                                                </div>
+                                                <div class="flex flex-col gap-2 w-full">
+                                                    <div>
+                                                        <span class="text-sm 2xl:text-base font-normal text-gray-800 line-clamp-2">
+                                                            <?php echo $vndr['order_title'] ?>
+                                                        </span>
+                                                    </div>
+                                                    <div class="grid grid-cols-1 2xl:grid-cols-2 gap-2 2xl:w-full">
+                                                        <span class="text-gray-600 font-medium flex items-center text-xs 2xl:text-base gap-x-2">Colour: <h3 class="text-black"><?php echo $vndr['order_color'] ?></h3></span>
+                                                        <span class="text-gray-600 font-medium flex items-center text-xs 2xl:text-base gap-x-2">Size: <h3 class="text-black"><?php echo $vndr['total_price'] ?></h3></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                    <?php
                                         }
+                                    } else {
+                                        echo "<h1 class='text-center'>No Data Found</h1>";
+                                    }
                                     ?>
                                 </div>
                                 <script>
                                     let vendorProduct = document.getElementById('vendorProduct');
                                     let productSuggestions = document.getElementById('productSuggestions');
-                                    vendorProduct.addEventListener('click', ()=>{
+                                    vendorProduct.addEventListener('click', () => {
                                         productSuggestions.style.display = 'flex';
                                     });
 
-                                    window.addEventListener('click', (e)=>{
-                                        if(!vendorProduct.contains(e.target) || productSuggestions.contains(e.target)){
+                                    window.addEventListener('click', (e) => {
+                                        if (!vendorProduct.contains(e.target) || productSuggestions.contains(e.target)) {
                                             productSuggestions.style.display = 'none';
                                         }
                                     });
 
-                                    $(document).ready(function () {
-                                        $('#vendorProduct').on('input', function(){
+                                    $(document).ready(function() {
+                                        $('#vendorProduct').on('input', function() {
                                             let word = $(this).val();
                                             let vendorId = <?php echo isset($_GET['vendorId']) ? $_GET['vendorId'] : "N/A" ?>;
-                                            if(word.length > 2){
+                                            if (word.length > 2) {
                                                 $('#productSuggestions').css('display', 'block');
 
                                                 $.ajax({
@@ -420,7 +443,7 @@ if (isset($_COOKIE['user_id'])) {
                                                         search: word,
                                                         vendorId: vendorId
                                                     },
-                                                    success: function (response) {
+                                                    success: function(response) {
                                                         $('#productSuggestions').html(response);
                                                     }
                                                 });
@@ -478,29 +501,29 @@ if (isset($_COOKIE['user_id'])) {
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
-        
+
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
         }
-        
+
         function displayErrorMessage(message) {
             let popUp = document.getElementById('popUp');
             let errorMessage = document.getElementById('errorMessage');
-        
+
             errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
             popUp.style.display = 'flex';
             popUp.style.opacity = '100';
-        
+
             setTimeout(() => {
                 popUp.style.display = 'none';
                 popUp.style.opacity = '0';
             }, 1800);
         }
-        
+
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
-        
+
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
@@ -510,8 +533,8 @@ if (isset($_COOKIE['user_id'])) {
         }
 
         // ajax for complaint
-        $(document).ready(function () {
-            $('#userComplaint').on('submit', function(e){
+        $(document).ready(function() {
+            $('#userComplaint').on('submit', function(e) {
                 e.preventDefault();
 
                 let name = $('#name').val().trim();
@@ -524,17 +547,17 @@ if (isset($_COOKIE['user_id'])) {
                 let vendorsId = <?php echo $vendorsId ?>;
                 let productsId = <?php echo $productsId ?>;
 
-                if(name === ''){
+                if (name === '') {
                     displayErrorMessage('please Enter Your Name');
-                }else if(email === ''){
+                } else if (email === '') {
                     displayErrorMessage('please Enter Your Email Address');
-                }else if(vendorStore === ''){
+                } else if (vendorStore === '') {
                     displayErrorMessage('please Enter Vendor Store Name');
-                }else if(vendorProduct === ''){
+                } else if (vendorProduct === '') {
                     displayErrorMessage('please Enter Product Name');
-                }else if(complaint === ''){
+                } else if (complaint === '') {
                     displayErrorMessage('please Enter Your Complaint');
-                }else{
+                } else {
                     $.ajax({
                         type: "post",
                         url: "userComplaintAjax.php",
@@ -544,12 +567,12 @@ if (isset($_COOKIE['user_id'])) {
                             vendorStore: vendorStore,
                             vendorProduct: vendorProduct,
                             complaint: complaint,
-    
+
                             usersId: usersId,
                             vendorsId: vendorsId,
                             productsId: productsId,
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response === 'success') {
                                 loader();
                                 displaySuccessMessage('Your complaint has been successfully submitted. We will review it and get back to you shortly.');
@@ -568,4 +591,5 @@ if (isset($_COOKIE['user_id'])) {
 
 
 </body>
+
 </html>
