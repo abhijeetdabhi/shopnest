@@ -1,10 +1,4 @@
 <?php
-if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
-    header("Location: ../index.php");
-    exit;
-}
-
-
 if (isset($_COOKIE['user_id'])) {
     header("Location: ../user/profile.php");
     exit;
@@ -27,6 +21,11 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <!-- favicon -->
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" />
     <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css" />
@@ -165,7 +164,9 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <div class="max-w-screen-md m-auto">
         <div id="searchBox"></div>
-        <div id="map" class=""></div>
+        <div id="map" class="relative">
+            <div class="absolute bottom-1 right-1 z-40 bg-white/30 text-black backdrop-blur-md rounded-md p-3 text-base font-semibold"><h2>Current Location</h2></div>
+        </div>
         <input type="hidden" id="latitude">
         <input type="hidden" id="longitude">
         <button id="setLatLng" class="m-auto border bg-red-500 rounded-tl-xl rounded-br-xl text-white w-full p-2 flex items-center justify-center mt-3 hover:bg-red-600 transition-all duration-200">Set Location</button>

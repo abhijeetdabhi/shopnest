@@ -21,6 +21,64 @@ if (isset($_POST['userLogout'])) {
 
     $userLogout = true;
 }
+
+
+if(isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])){
+    function getAddressFromLatLng($lat, $lng, $apiKey)
+    {
+        $url = "https://api.tomtom.com/search/2/reverseGeocode/{$lat},{$lng}.json?key={$apiKey}";
+    
+        $ch = curl_init();
+    
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    
+        $response = curl_exec($ch);
+    
+        if ($response === false) {
+            echo "cURL Error: " . curl_error($ch);
+            return null;
+        }
+    
+        $data = json_decode($response, true);
+        curl_close($ch);
+    
+        if (isset($data['addresses'][0]['address'])) {
+            $address = $data['addresses'][0]['address'];
+    
+            $street = isset($address['street']) ? $address['street'] : 'Not Available';
+            $municipalitySubdivision = isset($address['municipalitySubdivision']) ? $address['municipalitySubdivision'] : 'Not Available';
+            $city = isset($address['municipality']) ? $address['municipality'] : 'Not available';
+    
+            return [
+                'street' => $street,
+                'municipalitySubdivision' => $municipalitySubdivision,
+                'city' => $city,
+            ];
+        }
+    
+        return null;
+    }
+    $lat = $_COOKIE['latitude'];
+    $lng = $_COOKIE['longitude'];
+    $apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+    
+    $address = getAddressFromLatLng($lat, $lng, $apiKey);
+    
+    if ($address) {
+        $street = $address['street'];
+        $municipalitySubdivision = $address['municipalitySubdivision'];
+        $usercity = $address['city'];
+
+        $fullAddress = $street . ', ' . $municipalitySubdivision . ', ' . $usercity;
+    }
+}else{
+    $street = '';
+    $municipalitySubdivision = '';
+    $usercity = '';
+
+    $fullAddress = $street . ', ' . $municipalitySubdivision . ', ' . $usercity;
+}
 ?>
 
 <!DOCTYPE html>
@@ -202,46 +260,51 @@ if (isset($_POST['userLogout'])) {
 <body style="font-family: 'Outfit', sans-serif;" x-data="{ logoutPopUp: false }" :class="{ 'overflow-hidden ': logoutPopUp}">
 
     <!-- location div -->
-    <div id="topBar" class="flex justify-between items-center space-x-2 p-2 shadow-inner shadow-black/70">
+    <?php 
+        if(isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])){
+            ?>
+                <div id="topBar" class="flex justify-between items-center space-x-2 p-2 shadow-inner shadow-black/70">
 
-        <div class="flex items-center space-x-2">
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-6 min-[410px]:w-8 text-blue-600">
-                    <g>
-                        <path d="M12 0C7.038 0 3 4.066 3 9.065c0 7.103 8.154 14.437 8.501 14.745a.749.749 0 0 0 .998.001C12.846 23.502 21 16.168 21 9.065 21 4.066 16.962 0 12 0zm0 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                    </g>
-                </svg>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-sm min-[410px]:text-base font-semibold text-blue-600">
-                    dilivered in just 10 min
-                </span>
-                <span class="text-xs min-[410px]:text-sm">
-                    magdalla,vesu,surat
-                </span>
-            </div>
-        </div>
-        <div class="flex items-center">
-            <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/track_order.php">
-                <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                    <g>
-                        <path d="M492.522 118.3 266.433 3.743l-.094-.047c-10.067-5.012-22.029-4.9-32.002.3L137.368 55.46c-.788.334-1.545.739-2.27 1.205L18.896 118.337C7.24 124.44 0 136.398 0 149.559V362.44c0 13.161 7.24 25.118 18.896 31.221l215.345 114.292.097.051a35.255 35.255 0 0 0 16.297 3.981 35.232 35.232 0 0 0 15.704-3.682l226.183-114.604C504.538 387.69 512 375.618 512 362.18V149.82c0-13.439-7.462-25.512-19.478-31.52zM248.237 30.569a5.26 5.26 0 0 1 4.705-.042l211.629 107.23-82.364 41.005L175.308 69.275l72.929-38.706zM235.424 474.63 32.91 367.147l-.097-.051a5.237 5.237 0 0 1-2.824-4.656V163.091l205.435 107.124V474.63zm15.153-230.335L46.272 137.76l97.024-51.493L349.171 195.21l-98.594 49.085zm231.432 117.883a5.22 5.22 0 0 1-2.911 4.703L265.414 475.152V270.408l98.386-48.982v51.355c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-66.286l88.219-43.92v199.603z" fill="#000000" opacity="1" data-original="#000000"></path>
-                    </g>
-                </svg>
-                <span class="hidden md:block font-medium">Track Order</span>
-            </a>
+                    <div class="flex items-center space-x-2">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-6 min-[410px]:w-8 text-blue-600">
+                                <g>
+                                    <path d="M12 0C7.038 0 3 4.066 3 9.065c0 7.103 8.154 14.437 8.501 14.745a.749.749 0 0 0 .998.001C12.846 23.502 21 16.168 21 9.065 21 4.066 16.962 0 12 0zm0 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <a href="../pages/map.php" class="flex flex-col cursor-pointer">
+                            <span class="text-sm min-[410px]:text-base font-semibold text-blue-600">
+                            </span>
+                            <span class="text-xs min-[410px]:text-sm">
+                                click to change address
+                            </span>
+                        </a>
+                    </div>
+                    <div class="flex items-center">
+                        <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/track_order.php">
+                            <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                <g>
+                                    <path d="M492.522 118.3 266.433 3.743l-.094-.047c-10.067-5.012-22.029-4.9-32.002.3L137.368 55.46c-.788.334-1.545.739-2.27 1.205L18.896 118.337C7.24 124.44 0 136.398 0 149.559V362.44c0 13.161 7.24 25.118 18.896 31.221l215.345 114.292.097.051a35.255 35.255 0 0 0 16.297 3.981 35.232 35.232 0 0 0 15.704-3.682l226.183-114.604C504.538 387.69 512 375.618 512 362.18V149.82c0-13.439-7.462-25.512-19.478-31.52zM248.237 30.569a5.26 5.26 0 0 1 4.705-.042l211.629 107.23-82.364 41.005L175.308 69.275l72.929-38.706zM235.424 474.63 32.91 367.147l-.097-.051a5.237 5.237 0 0 1-2.824-4.656V163.091l205.435 107.124V474.63zm15.153-230.335L46.272 137.76l97.024-51.493L349.171 195.21l-98.594 49.085zm231.432 117.883a5.22 5.22 0 0 1-2.911 4.703L265.414 475.152V270.408l98.386-48.982v51.355c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-66.286l88.219-43.92v199.603z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                </g>
+                            </svg>
+                            <span class="hidden md:block font-medium">Track Order</span>
+                        </a>
 
-            <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/help_center.php">
-                <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                    <g>
-                        <path d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm0 476.279c-121.462 0-220.279-98.816-220.279-220.279S134.538 35.721 256 35.721c121.463 0 220.279 98.816 220.279 220.279S377.463 476.279 256 476.279z" fill="#000000" opacity="1" data-original="#000000"></path>
-                        <path d="M248.425 323.924c-14.153 0-25.61 11.794-25.61 25.946 0 13.817 11.12 25.948 25.61 25.948s25.946-12.131 25.946-25.948c0-14.152-11.794-25.946-25.946-25.946zM252.805 127.469c-45.492 0-66.384 26.959-66.384 45.155 0 13.142 11.12 19.208 20.218 19.208 18.197 0 10.784-25.948 45.155-25.948 16.848 0 30.328 7.414 30.328 22.915 0 18.196-18.871 28.642-29.991 38.077-9.773 8.423-22.577 22.24-22.577 51.22 0 17.522 4.718 22.577 18.533 22.577 16.511 0 19.881-7.413 19.881-13.817 0-17.522.337-27.631 18.871-42.121 9.098-7.076 37.74-29.991 37.74-61.666s-28.642-55.6-71.774-55.6z" fill="#000000" opacity="1" data-original="#000000"></path>
-                    </g>
-                </svg>
-                <span class="hidden md:block font-medium">Help Center</span>
-            </a>
-        </div>
-    </div>
+                        <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/help_center.php">
+                            <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                <g>
+                                    <path d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm0 476.279c-121.462 0-220.279-98.816-220.279-220.279S134.538 35.721 256 35.721c121.463 0 220.279 98.816 220.279 220.279S377.463 476.279 256 476.279z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                    <path d="M248.425 323.924c-14.153 0-25.61 11.794-25.61 25.946 0 13.817 11.12 25.948 25.61 25.948s25.946-12.131 25.946-25.948c0-14.152-11.794-25.946-25.946-25.946zM252.805 127.469c-45.492 0-66.384 26.959-66.384 45.155 0 13.142 11.12 19.208 20.218 19.208 18.197 0 10.784-25.948 45.155-25.948 16.848 0 30.328 7.414 30.328 22.915 0 18.196-18.871 28.642-29.991 38.077-9.773 8.423-22.577 22.24-22.577 51.22 0 17.522 4.718 22.577 18.533 22.577 16.511 0 19.881-7.413 19.881-13.817 0-17.522.337-27.631 18.871-42.121 9.098-7.076 37.74-29.991 37.74-61.666s-28.642-55.6-71.774-55.6z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                </g>
+                            </svg>
+                            <span class="hidden md:block font-medium">Help Center</span>
+                        </a>
+                    </div>
+                </div>
+            <?php
+        }
+    ?>
 
     <!-- logoutpopUp -->
     <form method="post" class="fixed w-full h-full bg-black/30 z-[100] m-auto flex items-center justify-center" x-show="logoutPopUp" x-transition x-cloak @click.outside="logoutPopUp=false">
