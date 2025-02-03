@@ -1,6 +1,6 @@
 <?php
-if (isset($_COOKIE['user_id'])) {
-    header("Location: ../user/profile.php");
+if (isset($_COOKIE['vendor_id'])) {
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 

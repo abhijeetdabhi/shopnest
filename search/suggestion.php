@@ -52,7 +52,7 @@ if (isset($_POST["query"])) {
     $keywords = explode(' ', $mydata);
 
     // Build query for matching keywords (AND logic)
-    $query = "SELECT * FROM products WHERE ";
+    $query = "SELECT * FROM products";
     $queryParts = [];
     foreach ($keywords as $keyword) {
         $queryParts[] = "keywords LIKE '%" . $keyword . "%'"; // Match each keyword
