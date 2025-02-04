@@ -193,6 +193,7 @@ if (isset($_COOKIE['adminEmail'])) {
 
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
     <script>
+        // Loader function
         function loader() {
             let loader = document.getElementById('loader');
             let body = document.body;
@@ -205,6 +206,7 @@ if (isset($_COOKIE['adminEmail'])) {
             }, 2000);
         }
 
+        // Display error messages
         function displayErrorMessage(message) {
             let popUp = document.getElementById('popUp');
             let errorMessage = document.getElementById('errorMessage');
@@ -219,52 +221,49 @@ if (isset($_COOKIE['adminEmail'])) {
             }, 1800);
         }
 
-
-        // map API
-
-        let apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+        // Map API
+        const apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
         tt.setProductInfo(apiKey, "6.25.0");
         let map = tt.map({
             key: apiKey,
             container: 'map',
             zoom: 3,
-            center: [78.9629, 20.5937]
+            center: [78.9629, 20.5937] // Default coordinates
         });
 
-        var currentMarker = null;
+        let currentMarker = null;
 
+        // Remove existing marker
         function removeCurrentMarker() {
             if (currentMarker) {
                 currentMarker.remove();
             }
         }
 
-        var options = {
+        // Search and autocomplete options
+        const options = {
             searchOptions: {
-                key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                key: apiKey,
                 language: "en-GB",
                 limit: 5,
             },
             autocompleteOptions: {
-                key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                key: apiKey,
                 language: "en-GB",
             },
         };
 
-        let latitudeDiv = document.getElementById('latitude');
-        let longitudeDiv = document.getElementById('longitude');
+        const latitudeDiv = document.getElementById('latitude');
+        const longitudeDiv = document.getElementById('longitude');
 
-        var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
-        var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
-        let searchBox = document.getElementById('searchBox');
+        const ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
+        const searchBoxHTML = ttSearchBox.getSearchBoxHTML();
+        const searchBox = document.getElementById('searchBox');
         searchBox.append(searchBoxHTML);
 
         ttSearchBox.on('tomtom.searchbox.resultselected', function(e) {
             const selectedResult = e.data.result;
             const coordinates = selectedResult.position;
-
-            let latitude = document.getElementById('latitude');
-            let longitude = document.getElementById('longitude');
 
             removeCurrentMarker();
 
@@ -272,17 +271,16 @@ if (isset($_COOKIE['adminEmail'])) {
                 .setLngLat([coordinates.lng, coordinates.lat])
                 .addTo(map);
 
-
-            latitude.value = coordinates.lat;
-            longitude.value = coordinates.lng;
+            latitudeDiv.value = coordinates.lat;
+            longitudeDiv.value = coordinates.lng;
 
             map.setCenter([coordinates.lng, coordinates.lat]);
             map.setZoom(14);
         });
 
         map.on('click', function(e) {
-            var latitude = e.lngLat.lat;
-            var longitude = e.lngLat.lng;
+            const latitude = e.lngLat.lat;
+            const longitude = e.lngLat.lng;
 
             removeCurrentMarker();
 
@@ -296,40 +294,42 @@ if (isset($_COOKIE['adminEmail'])) {
             map.setCenter([longitude, latitude]);
         });
 
-        // get current location
-        document.getElementById('locate-btn').addEventListener('click', function(){
-            if(navigator.geolocation){
+        // Get current location
+        document.getElementById('locate-btn').addEventListener('click', function() {
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
 
-                    console.log(latitude);
-                    console.log(longitude);
+                    console.log(lat);
 
-                    map.setCenter([longitude, latitude]);
+                    map.setCenter([lng, lat]);
                     map.setZoom(15);
 
                     currentMarker = new tt.Marker()
-                        .setLngLat([longitude, latitude])
+                        .setLngLat([lng, lat])
                         .addTo(map);
 
-                    latitudeDiv.value = latitude;
-                    longitudeDiv.value = longitude;
+                    latitudeDiv.value = lat;
+                    longitudeDiv.value = lng;
+                }, function(error) {
+                    alert("Unable to retrieve your location. Please check your permissions.");
                 });
+            } else {
+                alert("Geolocation is not supported by your browser.");
             }
         });
 
-        
-
-        let setLatLng = document.getElementById('setLatLng');
+        // Setting the location coordinates
+        const setLatLng = document.getElementById('setLatLng');
 
         setLatLng.addEventListener("click", function() {
-            if(latitudeDiv.value === '' && longitudeDiv.value === ''){
-                displayErrorMessage('Please Select Your location')
-            }else{
-                let latitude = document.getElementById('latitude').value;
-                let longitude = document.getElementById('longitude').value;
-    
+            if (latitudeDiv.value === '' && longitudeDiv.value === '') {
+                displayErrorMessage('Please Select Your location');
+            } else {
+                const latitude = document.getElementById('latitude').value;
+                const longitude = document.getElementById('longitude').value;
+
                 fetch('set_location.php', {
                         method: 'POST',
                         headers: {
@@ -342,11 +342,12 @@ if (isset($_COOKIE['adminEmail'])) {
                         console.log(data); // This is the PHP response
                     })
                     .catch(error => console.error('Error:', error));
-    
+
                 loader();
             }
         });
     </script>
+
 
 </body>
 
