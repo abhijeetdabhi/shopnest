@@ -146,10 +146,22 @@ if (isset($_COOKIE['adminEmail'])) {
 
 <body style="font-family: 'Outfit', sans-serif;">
 
+    <!-- loader -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
         <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
         <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
         <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
+    </div>
+
+    <!-- Error message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-400">
+            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium" id="errorMessage"></div>
+        </div>
     </div>
 
     <!-- Header -->
@@ -192,6 +204,23 @@ if (isset($_COOKIE['adminEmail'])) {
                 window.location.href = "../index.php";
             }, 2000);
         }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+
+
+        // map API
 
         let apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
         tt.setProductInfo(apiKey, "6.25.0");
@@ -292,24 +321,28 @@ if (isset($_COOKIE['adminEmail'])) {
         let setLatLng = document.getElementById('setLatLng');
 
         setLatLng.addEventListener("click", function() {
-            let latitudeDiv = document.getElementById('latitude').value;
-            let longitudeDiv = document.getElementById('longitude').value;
-
-            fetch('set_location.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'latitude=' + latitudeDiv + '&longitude=' + longitudeDiv
-                })
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data); // This is the PHP response
-                })
-                .catch(error => console.error('Error:', error));
-
-            loader();
-        })
+            if(latitudeDiv.value === '' && longitudeDiv.value === ''){
+                displayErrorMessage('Please Select Your location')
+            }else{
+                let latitude = document.getElementById('latitude').value;
+                let longitude = document.getElementById('longitude').value;
+    
+                fetch('set_location.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'latitude=' + latitude + '&longitude=' + longitude
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data); // This is the PHP response
+                    })
+                    .catch(error => console.error('Error:', error));
+    
+                loader();
+            }
+        });
     </script>
 
 </body>
