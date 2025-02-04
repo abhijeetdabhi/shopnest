@@ -300,23 +300,26 @@ if (isset($_COOKIE['adminEmail'])) {
         document.getElementById('locate-btn').addEventListener('click', function(){
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
 
-                    console.log(lat);
+                    console.log(latitude);
+                    console.log(longitude);
 
-                    map.setCenter([lng, lat]);
+                    map.setCenter([longitude, latitude]);
                     map.setZoom(15);
 
                     currentMarker = new tt.Marker()
-                        .setLngLat([lng, lat])
+                        .setLngLat([longitude, latitude])
                         .addTo(map);
 
-                    latitudeDiv.value = lat;
-                    longitudeDiv.value = lng;
+                    latitudeDiv.value = latitude;
+                    longitudeDiv.value = longitude;
                 });
             }
         });
+
+        
 
         let setLatLng = document.getElementById('setLatLng');
 
