@@ -254,23 +254,13 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
             backface-visibility: hidden;
             perspective: 1000px;
         }
-
-        #logoutPopUp {
-            opacity: 0.5;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .blur-effect {
-            filter: blur(5px);
-            transition: filter 0.3s ease-in-out;
-        }
     </style>
 </head>
 
-<body style="font-family: 'Outfit', sans-serif;" x-data="{ logoutPopUp: false }" :class="{ 'overflow-hidden backdrop-blur-md': logoutPopUp}">
+<body style="font-family: 'Outfit', sans-serif;" x-data="{ logoutPopUp: false }" :class="{ 'overflow-hidden ': logoutPopUp}">
 
-    <!-- Logout Popup -->
-    <form method="post" id="logoutPopUp" class="fixed w-full h-full bg-black/50 z-[100] m-auto flex items-center justify-center min-[0px]:hidden">
+    <!-- logoutpopUp -->
+    <form method="post" class="fixed w-full h-full bg-black/30 z-[100] m-auto flex items-center justify-center" x-show="logoutPopUp" x-transition x-cloak @click.outside="logoutPopUp=false">
         <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto">
             <div class="p-4">
                 <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
@@ -283,10 +273,9 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                     <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to deactivate your account? This action cannot be undone.</p>
                 </div>
                 <div class="mx-4 my-3">
-                    <input type="submit" name="userLogout" value="Logout"
-                        class="inline-flex px-4 py-2 text-white bg-red-700 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
-
-                    <div data-logout-close
+                    <input type="submit" name="userLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-700 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
+                    <div
+                        @click="logoutPopUp = false"
                         class="inline-flex mt-3 px-4 py-2 bg-white text-gray-500 text-base leading-6 font-medium justify-center w-full rounded-md border border-gray-400 shadow-sm cursor-pointer">
                         Cancel
                     </div>
@@ -294,51 +283,6 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
             </div>
         </div>
     </form>
-
-    <!-- script for logoutPopUp -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let logoutPopUp = document.getElementById("logoutPopUp");
-            let pageContent = document.getElementById("pageContent"); // Main content wrapper
-
-            function togglePopup(isOpen) {
-                if (isOpen) {
-                    console.log("Popup Opened");
-                    logoutPopUp.style.display = "flex";
-                    setTimeout(() => {
-                        logoutPopUp.style.opacity = "1"; // Fade-in effect
-                    }, 10);
-                    document.body.style.overflow = "hidden"; // Disable scrolling
-                    pageContent.classList.add("blur-effect"); // Apply blur effect
-                } else {
-                    console.log("Popup Closed");
-                    logoutPopUp.style.opacity = "0"; // Fade-out effect
-                    setTimeout(() => {
-                        logoutPopUp.style.display = "none";
-                        document.body.style.overflow = "auto"; // Enable scrolling
-                        pageContent.classList.remove("blur-effect"); // Remove blur
-                    }, 300); // Delay to match transition duration
-                }
-            }
-
-            // Show the popup
-            document.querySelector("[data-logout-trigger]")?.addEventListener("click", function() {
-                togglePopup(true);
-            });
-
-            // Close when clicking outside the popup
-            logoutPopUp?.addEventListener("click", function(e) {
-                if (e.target === logoutPopUp) {
-                    togglePopup(false);
-                }
-            });
-
-            // Close when clicking the cancel button
-            document.querySelector("[data-logout-close]")?.addEventListener("click", function() {
-                togglePopup(false);
-            });
-        });
-    </script>
 
     <!-- Successfully message container -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="LpopUp" style="display: none;">
@@ -799,7 +743,7 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                                     </li>
                                     <hr class="border">
                                     <li class="hover:bg-gray-500 hover:text-white px-3 cursor-pointer" @click="logoutPopUp = true">
-                                        <a data-logout-trigger class="flex items-center gap-x-2 py-2">
+                                        <a class="flex items-center gap-x-2 py-2">
                                             <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                                 <g>
                                                     <g fill="#000">

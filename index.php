@@ -340,10 +340,6 @@ function displayRandomProducts($con, $limit)
             cursor: not-allowed;
         }
 
-        #logoutPopUp {
-            display: none;
-        }
-
         [x-cloak] {
             display: none;
         }
