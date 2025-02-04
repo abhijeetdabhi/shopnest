@@ -254,74 +254,27 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
             backface-visibility: hidden;
             perspective: 1000px;
         }
+
+        #logoutPopUp {
+            opacity: 0.5;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .blur-effect {
+            filter: blur(5px);
+            transition: filter 0.3s ease-in-out;
+        }
     </style>
 </head>
 
-<body style="font-family: 'Outfit', sans-serif;" x-data="{ logoutPopUp: false }" :class="{ 'overflow-hidden ': logoutPopUp}">
+<body style="font-family: 'Outfit', sans-serif;" x-data="{ logoutPopUp: false }" :class="{ 'overflow-hidden backdrop-blur-md': logoutPopUp}">
 
-    <!-- location div -->
-    <?php
-    if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
-    ?>
-        <div id="topBar" class="flex justify-between items-center space-x-2 p-2 shadow-inner shadow-black/70">
-
-            <div class="flex items-center space-x-2">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-6 min-[410px]:w-8 text-blue-600">
-                        <g>
-                            <path d="M12 0C7.038 0 3 4.066 3 9.065c0 7.103 8.154 14.437 8.501 14.745a.749.749 0 0 0 .998.001C12.846 23.502 21 16.168 21 9.065 21 4.066 16.962 0 12 0zm0 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                        </g>
-                    </svg>
-                </div>
-                <a href="../pages/map.php" class="flex flex-col cursor-pointer">
-                    <span class="text-sm min-[410px]:text-base font-semibold text-blue-600">
-                        <?php echo $fullAddress; ?>
-                    </span>
-                    <span class="flex items-center space-x-1 text-xs min-[410px]:text-sm">
-                        <span>
-                            click to change address
-                        </span>
-                        <span>
-                            <svg class="w-5 mt-1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                <g>
-                                    <path d="M12 16a1 1 0 0 1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42l5.29 5.3 5.29-5.29a1 1 0 0 1 1.41 1.41l-6 6a1 1 0 0 1-.7.29z" data-name="16" fill="#000000" opacity="1" data-original="#000000"></path>
-                                </g>
-                            </svg>
-                        </span>
-                    </span>
-                </a>
-            </div>
-            <div class="flex items-center">
-                <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/track_order.php">
-                    <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                        <g>
-                            <path d="M492.522 118.3 266.433 3.743l-.094-.047c-10.067-5.012-22.029-4.9-32.002.3L137.368 55.46c-.788.334-1.545.739-2.27 1.205L18.896 118.337C7.24 124.44 0 136.398 0 149.559V362.44c0 13.161 7.24 25.118 18.896 31.221l215.345 114.292.097.051a35.255 35.255 0 0 0 16.297 3.981 35.232 35.232 0 0 0 15.704-3.682l226.183-114.604C504.538 387.69 512 375.618 512 362.18V149.82c0-13.439-7.462-25.512-19.478-31.52zM248.237 30.569a5.26 5.26 0 0 1 4.705-.042l211.629 107.23-82.364 41.005L175.308 69.275l72.929-38.706zM235.424 474.63 32.91 367.147l-.097-.051a5.237 5.237 0 0 1-2.824-4.656V163.091l205.435 107.124V474.63zm15.153-230.335L46.272 137.76l97.024-51.493L349.171 195.21l-98.594 49.085zm231.432 117.883a5.22 5.22 0 0 1-2.911 4.703L265.414 475.152V270.408l98.386-48.982v51.355c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-66.286l88.219-43.92v199.603z" fill="#000000" opacity="1" data-original="#000000"></path>
-                        </g>
-                    </svg>
-                    <span class="hidden md:block font-medium">Track Order</span>
-                </a>
-
-                <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/help_center.php">
-                    <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                        <g>
-                            <path d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm0 476.279c-121.462 0-220.279-98.816-220.279-220.279S134.538 35.721 256 35.721c121.463 0 220.279 98.816 220.279 220.279S377.463 476.279 256 476.279z" fill="#000000" opacity="1" data-original="#000000"></path>
-                            <path d="M248.425 323.924c-14.153 0-25.61 11.794-25.61 25.946 0 13.817 11.12 25.948 25.61 25.948s25.946-12.131 25.946-25.948c0-14.152-11.794-25.946-25.946-25.946zM252.805 127.469c-45.492 0-66.384 26.959-66.384 45.155 0 13.142 11.12 19.208 20.218 19.208 18.197 0 10.784-25.948 45.155-25.948 16.848 0 30.328 7.414 30.328 22.915 0 18.196-18.871 28.642-29.991 38.077-9.773 8.423-22.577 22.24-22.577 51.22 0 17.522 4.718 22.577 18.533 22.577 16.511 0 19.881-7.413 19.881-13.817 0-17.522.337-27.631 18.871-42.121 9.098-7.076 37.74-29.991 37.74-61.666s-28.642-55.6-71.774-55.6z" fill="#000000" opacity="1" data-original="#000000"></path>
-                        </g>
-                    </svg>
-                    <span class="hidden md:block font-medium">Help Center</span>
-                </a>
-            </div>
-        </div>
-    <?php
-    }
-    ?>
-
-    <!-- logoutpopUp -->
-    <form method="post" class="fixed w-full h-full bg-black/30 z-[100] m-auto flex items-center justify-center" x-show="logoutPopUp" x-transition x-cloak @click.outside="logoutPopUp=false">
+    <!-- Logout Popup -->
+    <form method="post" id="logoutPopUp" class="fixed w-full h-full bg-black/50 z-[100] m-auto flex items-center justify-center min-[0px]:hidden">
         <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto">
             <div class="p-4">
                 <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
-                    <svg class="text-red-500 w-6 h-6" aria-hidden="true" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none">
+                    <svg class="text-red-700 w-6 h-6" aria-hidden="true" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none">
                         <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" stroke-linejoin="round" stroke-linecap="round"></path>
                     </svg>
                 </div>
@@ -330,9 +283,10 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                     <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to deactivate your account? This action cannot be undone.</p>
                 </div>
                 <div class="mx-4 my-3">
-                    <input type="submit" name="userLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-500 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
-                    <div
-                        @click="logoutPopUp = false"
+                    <input type="submit" name="userLogout" value="Logout"
+                        class="inline-flex px-4 py-2 text-white bg-red-700 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
+
+                    <div data-logout-close
                         class="inline-flex mt-3 px-4 py-2 bg-white text-gray-500 text-base leading-6 font-medium justify-center w-full rounded-md border border-gray-400 shadow-sm cursor-pointer">
                         Cancel
                     </div>
@@ -340,6 +294,51 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
             </div>
         </div>
     </form>
+
+    <!-- script for logoutPopUp -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let logoutPopUp = document.getElementById("logoutPopUp");
+            let pageContent = document.getElementById("pageContent"); // Main content wrapper
+
+            function togglePopup(isOpen) {
+                if (isOpen) {
+                    console.log("Popup Opened");
+                    logoutPopUp.style.display = "flex";
+                    setTimeout(() => {
+                        logoutPopUp.style.opacity = "1"; // Fade-in effect
+                    }, 10);
+                    document.body.style.overflow = "hidden"; // Disable scrolling
+                    pageContent.classList.add("blur-effect"); // Apply blur effect
+                } else {
+                    console.log("Popup Closed");
+                    logoutPopUp.style.opacity = "0"; // Fade-out effect
+                    setTimeout(() => {
+                        logoutPopUp.style.display = "none";
+                        document.body.style.overflow = "auto"; // Enable scrolling
+                        pageContent.classList.remove("blur-effect"); // Remove blur
+                    }, 300); // Delay to match transition duration
+                }
+            }
+
+            // Show the popup
+            document.querySelector("[data-logout-trigger]")?.addEventListener("click", function() {
+                togglePopup(true);
+            });
+
+            // Close when clicking outside the popup
+            logoutPopUp?.addEventListener("click", function(e) {
+                if (e.target === logoutPopUp) {
+                    togglePopup(false);
+                }
+            });
+
+            // Close when clicking the cancel button
+            document.querySelector("[data-logout-close]")?.addEventListener("click", function() {
+                togglePopup(false);
+            });
+        });
+    </script>
 
     <!-- Successfully message container -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="LpopUp" style="display: none;">
@@ -400,42 +399,525 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
 
     ?>
 
-    <header class="bg-black px-2 py-4 outfit relative" :class="{'opacity-50':logoutPopUp}">
-        <div class="flex items-center justify-between gap-10">
-            <div class="flex xl:gap-5">
-                <button class="focus:outline-none pr-4" onclick="showSidebar()">
-                    <svg class="w-5 sm:w-9" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                        <g>
-                            <path d="M30 7a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h26a1 1 0 0 1 1 1zm-5 8H3a1 1 0 0 0 0 2h22a1 1 0 0 0 0-2zm-9 9H3a1 1 0 0 0 0 2h13a1 1 0 0 0 0-2z" data-name="Layer 13" fill="#ffffff" opacity="1" data-original="#000000"></path>
-                        </g>
-                    </svg>
-                </button>
-                <!-- logo -->
-                <div>
-                    <a class="flex w-fit py-2 focus:outline-none logoAnimation" href="../index.php">
-                        <!-- icon logo div -->
-                        <div>
-                            <img class="w-8 sm:w-12" src="../src/logo/white_cart_logo.svg" alt="">
-                        </div>
-                        <!-- text logo -->
-                        <div>
-                            <img class="w-20 sm:w-32" src="../src/logo/white_text_logo.svg" alt="">
-                        </div>
+    <div>
+        <!-- location div -->
+        <?php
+        if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
+        ?>
+            <div id="topBar" class="flex justify-between items-center space-x-2 p-2 shadow-inner shadow-black/70">
+
+                <div class="flex items-center space-x-2">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-6 min-[410px]:w-8 text-blue-600">
+                            <g>
+                                <path d="M12 0C7.038 0 3 4.066 3 9.065c0 7.103 8.154 14.437 8.501 14.745a.749.749 0 0 0 .998.001C12.846 23.502 21 16.168 21 9.065 21 4.066 16.962 0 12 0zm0 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <a href="../pages/map.php" class="flex flex-col cursor-pointer">
+                        <span class="text-sm min-[410px]:text-base font-semibold text-blue-600">
+                            <?php echo $fullAddress; ?>
+                        </span>
+                        <span class="flex items-center space-x-1 text-xs min-[410px]:text-sm">
+                            <span>
+                                click to change address
+                            </span>
+                            <span>
+                                <svg class="w-5 mt-1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                    <g>
+                                        <path d="M12 16a1 1 0 0 1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42l5.29 5.3 5.29-5.29a1 1 0 0 1 1.41 1.41l-6 6a1 1 0 0 1-.7.29z" data-name="16" fill="#000000" opacity="1" data-original="#000000"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                        </span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/track_order.php">
+                        <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                            <g>
+                                <path d="M492.522 118.3 266.433 3.743l-.094-.047c-10.067-5.012-22.029-4.9-32.002.3L137.368 55.46c-.788.334-1.545.739-2.27 1.205L18.896 118.337C7.24 124.44 0 136.398 0 149.559V362.44c0 13.161 7.24 25.118 18.896 31.221l215.345 114.292.097.051a35.255 35.255 0 0 0 16.297 3.981 35.232 35.232 0 0 0 15.704-3.682l226.183-114.604C504.538 387.69 512 375.618 512 362.18V149.82c0-13.439-7.462-25.512-19.478-31.52zM248.237 30.569a5.26 5.26 0 0 1 4.705-.042l211.629 107.23-82.364 41.005L175.308 69.275l72.929-38.706zM235.424 474.63 32.91 367.147l-.097-.051a5.237 5.237 0 0 1-2.824-4.656V163.091l205.435 107.124V474.63zm15.153-230.335L46.272 137.76l97.024-51.493L349.171 195.21l-98.594 49.085zm231.432 117.883a5.22 5.22 0 0 1-2.911 4.703L265.414 475.152V270.408l98.386-48.982v51.355c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-66.286l88.219-43.92v199.603z" fill="#000000" opacity="1" data-original="#000000"></path>
+                            </g>
+                        </svg>
+                        <span class="hidden md:block font-medium">Track Order</span>
+                    </a>
+
+                    <a class="flex items-center text-xs gap-2 px-2 h-10" href="/shopnest/pages/help_center.php">
+                        <svg class="w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                            <g>
+                                <path d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm0 476.279c-121.462 0-220.279-98.816-220.279-220.279S134.538 35.721 256 35.721c121.463 0 220.279 98.816 220.279 220.279S377.463 476.279 256 476.279z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                <path d="M248.425 323.924c-14.153 0-25.61 11.794-25.61 25.946 0 13.817 11.12 25.948 25.61 25.948s25.946-12.131 25.946-25.948c0-14.152-11.794-25.946-25.946-25.946zM252.805 127.469c-45.492 0-66.384 26.959-66.384 45.155 0 13.142 11.12 19.208 20.218 19.208 18.197 0 10.784-25.948 45.155-25.948 16.848 0 30.328 7.414 30.328 22.915 0 18.196-18.871 28.642-29.991 38.077-9.773 8.423-22.577 22.24-22.577 51.22 0 17.522 4.718 22.577 18.533 22.577 16.511 0 19.881-7.413 19.881-13.817 0-17.522.337-27.631 18.871-42.121 9.098-7.076 37.74-29.991 37.74-61.666s-28.642-55.6-71.774-55.6z" fill="#000000" opacity="1" data-original="#000000"></path>
+                            </g>
+                        </svg>
+                        <span class="hidden md:block font-medium">Help Center</span>
                     </a>
                 </div>
             </div>
-            <!-- search -->
-            <div class="relative h-full hidden lg:block" x-data="{showMic:false}">
-                <form action="#" method="post">
-                    <div class="flex items-center">
-                        <div class="relative">
+        <?php
+        }
+        ?>
+
+        <header class="bg-black px-2 py-4 outfit relative">
+            <div class="flex items-center justify-between gap-10">
+                <div class="flex xl:gap-5">
+                    <button class="focus:outline-none pr-4" onclick="showSidebar()">
+                        <svg class="w-5 sm:w-9" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                            <g>
+                                <path d="M30 7a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h26a1 1 0 0 1 1 1zm-5 8H3a1 1 0 0 0 0 2h22a1 1 0 0 0 0-2zm-9 9H3a1 1 0 0 0 0 2h13a1 1 0 0 0 0-2z" data-name="Layer 13" fill="#ffffff" opacity="1" data-original="#000000"></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <!-- logo -->
+                    <div>
+                        <a class="flex w-fit py-2 focus:outline-none logoAnimation" href="../index.php">
+                            <!-- icon logo div -->
+                            <div>
+                                <img class="w-8 sm:w-12" src="../src/logo/white_cart_logo.svg" alt="">
+                            </div>
+                            <!-- text logo -->
+                            <div>
+                                <img class="w-20 sm:w-32" src="../src/logo/white_text_logo.svg" alt="">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- search -->
+                <div class="relative h-full hidden lg:block" x-data="{showMic:false}">
+                    <form action="#" method="post">
+                        <div class="flex items-center">
+                            <div class="relative">
+                                <!-- search input -->
+                                <input id="search-input" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems" class="lg:w-[26vw] xl:w-[40vw] h-12 pr-12 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
+                                <!-- suggation -->
+                                <input type="submit" id="searchBtn" name="searchBtn" class="hidden">
+                                <ul id="suggestions-list" class="w-full h-60 bg-white absolute top-11 left-0 rounded-b-md z-[100] list-none hidden custom-scrollbar"></ul>
+                                <!-- microphone button -->
+                                <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn" @click="showMic=true">
+                                    <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                        <g>
+                                            <path d="M356.864 224.768c0-8.704-6.656-15.36-15.36-15.36s-15.36 6.656-15.36 15.36c0 59.904-48.64 108.544-108.544 108.544-59.904 0-108.544-48.64-108.544-108.544 0-8.704-6.656-15.36-15.36-15.36s-15.36 6.656-15.36 15.36c0 71.168 53.248 131.072 123.904 138.752v40.96h-55.808c-8.704 0-15.36 6.656-15.36 15.36s6.656 15.36 15.36 15.36h142.336c8.704 0 15.36-6.656 15.36-15.36s-6.656-15.36-15.36-15.36H232.96v-40.96c70.656-7.68 123.904-67.584 123.904-138.752z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                            <path d="M217.6 0c-47.104 0-85.504 38.4-85.504 85.504v138.752c0 47.616 38.4 85.504 85.504 86.016 47.104 0 85.504-38.4 85.504-85.504V85.504C303.104 38.4 264.704 0 217.6 0z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <!-- js for suggetion -->
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const searchInput = document.getElementById('search-input');
+                                    const suggestionsList = document.getElementById('suggestions-list');
+                                    let currentIndex = -1;
+
+                                    // Fetch search suggestions
+                                    const fetchSuggestions = (query) => {
+                                        if (query.length === 0) {
+                                            suggestionsList.classList.add('hidden');
+                                            return;
+                                        }
+
+                                        fetch('../search/suggestion.php', {
+                                                method: 'POST',
+                                                body: new URLSearchParams({
+                                                    query
+                                                }),
+                                            })
+                                            .then((response) => {
+                                                if (!response.ok) {
+                                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                                }
+                                                return response.text();
+                                            })
+                                            .then((data) => {
+                                                suggestionsList.innerHTML = data;
+                                                suggestionsList.classList.toggle('hidden', data.trim() === '');
+                                                currentIndex = -1; // Reset index
+                                            })
+                                            .catch((error) => console.error('Error fetching suggestions:', error));
+                                    };
+
+                                    // Update suggestions on input
+                                    searchInput.addEventListener('input', (e) => {
+                                        const query = e.target.value.trim();
+                                        fetchSuggestions(query);
+                                        currentIndex = -1;
+                                    });
+
+                                    // Handle key navigation and Enter
+                                    searchInput.addEventListener('keydown', (e) => {
+                                        const items = suggestionsList.querySelectorAll('li');
+                                        const query = searchInput.value.trim();
+
+                                        if (e.key === 'ArrowDown') {
+                                            // Move to the next suggestion
+                                            if (currentIndex < items.length - 1) {
+                                                currentIndex++;
+                                            }
+                                            highlightSuggestion();
+                                            scrollToSuggestion();
+                                        } else if (e.key === 'ArrowUp') {
+                                            // Move to the previous suggestion
+                                            if (currentIndex > 0) {
+                                                currentIndex--;
+                                            }
+                                            highlightSuggestion();
+                                            scrollToSuggestion();
+                                        } else if (e.key === 'Enter') {
+                                            if (query === '') {
+                                                // If search input is empty, redirect to the index page
+                                                e.preventDefault();
+                                                window.location.href = '../index.php'; // Redirect to index page
+                                            } else if (currentIndex >= 0 && currentIndex < items.length) {
+                                                const selectedSuggestion = items[currentIndex];
+                                                const link = selectedSuggestion.querySelector('a');
+                                                if (link) {
+                                                    e.preventDefault();
+                                                    window.location.href = link.href;
+                                                }
+                                            } else if (query) {
+                                                window.location.assign(`../search/search_items.php?query=${encodeURIComponent(query)}`);
+                                            }
+                                        }
+                                    });
+
+                                    // Highlight suggestions and update the input value
+                                    const highlightSuggestion = () => {
+                                        const items = suggestionsList.querySelectorAll('li');
+                                        items.forEach((item) => item.classList.remove('bg-gray-300'));
+                                        if (currentIndex >= 0 && currentIndex < items.length) {
+                                            const selectedItem = items[currentIndex];
+                                            selectedItem.classList.add('bg-gray-300');
+                                            // Update the input field with the current selected suggestion
+                                            searchInput.value = selectedItem.textContent.trim();
+                                        }
+                                    };
+
+                                    // Scroll to the selected suggestion
+                                    const scrollToSuggestion = () => {
+                                        const items = suggestionsList.querySelectorAll('li');
+                                        const selectedItem = items[currentIndex];
+                                        if (selectedItem) {
+                                            const container = suggestionsList;
+                                            const itemRect = selectedItem.getBoundingClientRect();
+                                            const containerRect = container.getBoundingClientRect();
+
+                                            // Scroll the container to ensure the selected item is visible
+                                            if (itemRect.top < containerRect.top) {
+                                                container.scrollTop -= (containerRect.top - itemRect.top);
+                                            } else if (itemRect.bottom > containerRect.bottom) {
+                                                container.scrollTop += (itemRect.bottom - containerRect.bottom);
+                                            }
+                                        }
+                                    };
+
+                                    // Click suggestion to update input and search
+                                    suggestionsList.addEventListener('click', (e) => {
+                                        if (e.target.tagName === 'LI') {
+                                            searchInput.value = e.target.textContent;
+                                            suggestionsList.classList.add('hidden');
+                                        }
+                                    });
+
+                                    // Close suggestions if clicking outside
+                                    document.addEventListener('click', (e) => {
+                                        if (!e.target.closest('.relative')) {
+                                            suggestionsList.classList.add('hidden');
+                                        }
+                                    });
+                                });
+                            </script>
+
+                            <!-- search button -->
+                            <label for="searchBtn">
+                                <div id="searchBtns" class="search-btn bg-[#b7ff1d] px-3 h-12 flex items-center justify-center rounded-e-md hover:bg-[#81b909] transition duration-300 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" x="0" y="0" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                        <g>
+                                            <path d="M115.97 101.597 88.661 74.286a47.75 47.75 0 0 0 7.333-25.488c0-26.509-21.49-47.996-47.998-47.996S0 22.289 0 48.798c0 26.51 21.487 47.995 47.996 47.995a47.776 47.776 0 0 0 27.414-8.605l26.984 26.986a9.574 9.574 0 0 0 6.788 2.806 9.58 9.58 0 0 0 6.791-2.806 9.602 9.602 0 0 0-.003-13.577zM47.996 81.243c-17.917 0-32.443-14.525-32.443-32.443s14.526-32.444 32.443-32.444c17.918 0 32.443 14.526 32.443 32.444S65.914 81.243 47.996 81.243z" fill="#000000" opacity="1" data-original="#000000"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div id="mic-popup" class="w-full h-full z-[100] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-40 hidden" x-show="showMic">
+                            <div class="w-max h-max z-[100] flex flex-col items-center justify-center p-8 bg-white border-2 border-blue-600 rounded-lg shadow-2xl relative">
+                                <span class="absolute top-2 right-2">
+                                    <svg id="mic-close-btn" x-on:click="showMic=false" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                        <g>
+                                            <path d="M436.896 74.869c-99.84-99.819-262.208-99.819-362.048 0-99.797 99.819-99.797 262.229 0 362.048 49.92 49.899 115.477 74.837 181.035 74.837s131.093-24.939 181.013-74.837c99.819-99.818 99.819-262.229 0-362.048zm-75.435 256.448c8.341 8.341 8.341 21.824 0 30.165a21.275 21.275 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251l-75.413-75.435-75.392 75.413a21.348 21.348 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251c-8.341-8.341-8.341-21.845 0-30.165l75.392-75.413-75.413-75.413c-8.341-8.341-8.341-21.845 0-30.165 8.32-8.341 21.824-8.341 30.165 0l75.413 75.413 75.413-75.413c8.341-8.341 21.824-8.341 30.165 0 8.341 8.32 8.341 21.824 0 30.165l-75.413 75.413 75.415 75.435z" fill="#ff0000" opacity="1" data-original="#ff0000" class=""></path>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <h2 class="text-xl font-semibold text-center text-gray-800">Listening...</h2>
+                                <div class="wave my-6 mx-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="mt-[1px] ml-[1px]">
+                                        <g>
+                                            <defs>
+                                                <clipPath id="a" clipPathUnits="userSpaceOnUse">
+                                                    <path d="M0 512h512V0H0Z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
+                                                </clipPath>
+                                            </defs>
+                                            <g clip-path="url(#a)" transform="matrix(1.33333 0 0 -1.33333 0 682.667)">
+                                                <path d="M0 0h160" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(176 20.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v-72" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 92.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0c0-88.223-71.777-160-160-160S-320-88.223-320 0" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 252.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0c-44.183 0-80 35.817-80 80v160c0 44.183 35.817 80 80 80s80-35.817 80-80V80C80 35.817 44.183 0 0 0Z" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 172.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(96 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(20 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(492 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <p class="text-sm text-center text-gray-600 mt-2">Please speak clearly into the microphone.</p>
+                            </div>
+                        </div>
+                        <!-- speech recognition search 1 -->
+                        <script>
+                            // Check for browser support
+                            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+                            if (!SpeechRecognition) {
+                                alert("Your browser does not support speech recognition.");
+                            } else {
+                                const recognition = new SpeechRecognition();
+                                recognition.continuous = true; // Continuous listening until stopped
+                                recognition.interimResults = false; // Don't return interim results
+
+                                const micPopup = document.getElementById('mic-popup');
+                                const startButton = document.getElementById('start-btn');
+
+                                function toggleBodyScroll(isOpen) {
+                                    if (isOpen) {
+                                        document.body.style.overflow = "hidden"; // Disable scrolling
+                                    } else {
+                                        document.body.style.overflow = "auto"; // Enable scrolling
+                                    }
+                                }
+
+                                recognition.onstart = () => {
+                                    micPopup.classList.remove('hidden');
+                                    toggleBodyScroll(true);
+                                };
+
+                                // Event handler for result
+                                recognition.onresult = (event) => {
+                                    const transcript = event.results[event.resultIndex][0].transcript;
+                                    document.getElementById('search-input').value = transcript;
+                                    document.getElementById('searchBtns').click();
+                                };
+
+                                // Error handling
+                                recognition.onerror = (event) => {
+                                    console.error('Error occurred in recognition: ' + event.error);
+                                    micPopup.classList.add('hidden'); // Hide popup on error
+                                    toggleBodyScroll(false);
+                                };
+
+                                // Start recognition when button is clicked
+                                startButton.addEventListener('click', () => {
+                                    recognition.start();
+                                });
+
+                                // Stop recognition function
+                                function stopRecognition() {
+                                    recognition.stop();
+                                    micPopup.classList.add('hidden');
+                                    toggleBodyScroll(false);
+                                }
+
+                                // Stop recognition when the popup is closed
+                                document.getElementById('mic-close-btn').addEventListener('click', () => {
+                                    stopRecognition();
+                                });
+                            }
+                        </script>
+
+                    </form>
+                    <?php
+                    if (isset($_POST["searchBtn"])) {
+                        $searchName = $_POST['searchInputItems'];
+                        $filterName = str_replace(' ', '+', $searchName); // Replace spaces with "+" for URL compatibility
+                    ?>
+                        <script>
+                            let filterName = "<?php echo htmlspecialchars($filterName, ENT_QUOTES, 'UTF-8'); ?>";
+
+                            if (filterName != "") {
+                                window.location.href = "../search/search_items.php?searchName=" + filterName;
+                            }
+                        </script>
+                    <?php
+                    }
+                    ?>
+                </div>
+                <!-- user & cart -->
+                <div class="flex items-center gap-4 md:gap-5 pr-4">
+                    <?php
+                    if (isset($_COOKIE['user_id'])) {
+                    ?>
+                        <!-- popup is show when user is login -->
+                        <div x-data="{loginUser:false}" class="relative">
+                            <div>
+                                <button class="flex items-center gap-2 text-white rounded-full px-0.5 py-0.5 hover:ring-1 hover:ring-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:bg-gray-800" x-on:click="loginUser = !loginUser" @click.outside="loginUser=false">
+                                    <div class="w-6 h-6 md:w-9 md:h-9 m-auto">
+                                        <img class="w-full h-full rounded-full flex justify-center object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '../src/user_dp/' . $row['profile_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>" alt="" class="bg-white">
+                                    </div>
+                                    <svg class="w-3 mr-0.5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                        <g>
+                                            <path d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                        </g>
+                                    </svg>
+
+                                </button>
+                            </div>
+                            <div x-show="loginUser" x-transition x-cloak class="w-40 bg-white text-black overflow-hidden absolute -left-14 top-10 md:top-12 shadow-lg shadow-black/60 rounded-md z-10">
+                                <div class="py-2 px-3">
+                                    <a href="../index.php" class="w-full">Hi,<?php echo isset($_COOKIE['fname']) ? $_COOKIE['fname'] : 'User Name' ?></a>
+                                </div>
+                                <hr class="border">
+                                <ul class="text-sm lg:text-base">
+                                    <li class="hover:bg-gray-500 hover:text-white px-3">
+                                        <a class="flex items-center gap-x-2 py-2" href="../user/profile.php">
+                                            <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                                <g>
+                                                    <path d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zm0 240c-57.897 0-105-47.103-105-105S198.103 30 256 30s105 47.103 105 105-47.103 105-105 105zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805zM61.66 482c7.515-85.086 78.351-152 164.34-152h60c85.989 0 156.825 66.914 164.34 152H61.66z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                </g>
+                                            </svg>
+                                            Account
+                                        </a>
+                                    </li>
+                                    <li class="hover:bg-gray-500 hover:text-white px-3">
+                                        <a class="flex items-center gap-x-2 py-2" href="../user/show_orders.php">
+                                            <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                                <g>
+                                                    <path d="m458.737 422.218-22.865-288.116c-1.425-18.562-17.123-33.103-35.739-33.103H354.97v-2.03C354.97 44.397 310.573 0 256.001 0s-98.969 44.397-98.969 98.969v2.03H111.87c-18.617 0-34.316 14.54-35.736 33.064L53.262 422.257c-1.77 23.075 6.235 46.048 21.961 63.026C90.949 502.261 113.242 512 136.385 512h239.231c23.142 0 45.436-9.738 61.163-26.717 15.726-16.979 23.73-39.951 21.958-63.065zM187.022 98.969c0-38.035 30.945-68.979 68.979-68.979s68.979 30.945 68.979 68.979v2.03H187.022v-2.03zm227.754 365.936c-10.218 11.03-24.124 17.105-39.16 17.105h-239.23c-15.036 0-28.942-6.075-39.16-17.105-10.217-11.031-15.211-25.363-14.063-40.315l22.87-288.195c.232-3.032 2.796-5.406 5.837-5.406h45.162v36.935c0 8.281 6.714 14.995 14.995 14.995 8.281 0 14.995-6.714 14.995-14.995v-36.935H324.98v36.935c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-36.935h45.163c3.04 0 5.604 2.375 5.84 5.446l22.865 288.115c1.15 14.992-3.845 29.323-14.062 40.355z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                    <path d="M323.556 254.285c-5.854-5.856-15.349-5.856-21.204 0l-66.956 66.956-25.746-25.746c-5.855-5.856-15.35-5.856-21.206 0s-5.856 15.35 0 21.206l36.349 36.349c2.928 2.928 6.766 4.393 10.602 4.393s7.675-1.464 10.602-4.393l77.558-77.558c5.857-5.857 5.857-15.351.001-21.207z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                </g>
+                                            </svg>
+                                            Order
+                                        </a>
+                                    </li>
+                                    <hr class="border">
+                                    <li class="hover:bg-gray-500 hover:text-white px-3 cursor-pointer" @click="logoutPopUp = true">
+                                        <a data-logout-trigger class="flex items-center gap-x-2 py-2">
+                                            <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                                <g>
+                                                    <g fill="#000">
+                                                        <path d="M14.945 1.25c-1.367 0-2.47 0-3.337.117-.9.12-1.658.38-2.26.981-.524.525-.79 1.17-.929 1.928-.135.737-.161 1.638-.167 2.72a.75.75 0 0 0 1.5.008c.006-1.093.034-1.868.142-2.457.105-.566.272-.895.515-1.138.277-.277.666-.457 1.4-.556.755-.101 1.756-.103 3.191-.103h1c1.436 0 2.437.002 3.192.103.734.099 1.122.28 1.4.556s.456.665.555 1.4c.102.754.103 1.756.103 3.191v8c0 1.435-.001 2.437-.103 3.192-.099.734-.279 1.122-.556 1.399s-.665.457-1.399.556c-.755.101-1.756.103-3.192.103h-1c-1.435 0-2.436-.002-3.192-.103-.733-.099-1.122-.28-1.399-.556-.243-.243-.41-.572-.515-1.138-.108-.589-.136-1.364-.142-2.457a.75.75 0 1 0-1.5.008c.006 1.082.032 1.983.167 2.72.14.758.405 1.403.93 1.928.601.602 1.36.86 2.26.982.866.116 1.969.116 3.336.116h1.11c1.368 0 2.47 0 3.337-.117.9-.12 1.658-.38 2.26-.981.602-.602.86-1.36.982-2.26.116-.867.116-1.97.116-3.337v-8.11c0-1.367 0-2.47-.116-3.337-.121-.9-.38-1.658-.982-2.26-.602-.602-1.36-.86-2.26-.981-.867-.117-1.97-.117-3.337-.117z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                        <path d="M15 11.25a.75.75 0 0 1 0 1.5H4.027l1.961 1.68a.75.75 0 1 1-.976 1.14l-3.5-3a.75.75 0 0 1 0-1.14l3.5-3a.75.75 0 1 1 .976 1.14l-1.96 1.68z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            Logout
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <div>
+                            <div class="hidden md:flex items-center gap-3 text-white w-full">
+                                <svg class="w-9" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                    <g>
+                                        <path d="M437.02 74.98C388.668 26.63 324.379 0 256 0S123.332 26.629 74.98 74.98C26.63 123.332 0 187.621 0 256s26.629 132.668 74.98 181.02C123.332 485.37 187.621 512 256 512s132.668-26.629 181.02-74.98C485.37 388.668 512 324.379 512 256s-26.629-132.668-74.98-181.02zM111.105 429.297c8.454-72.735 70.989-128.89 144.895-128.89 38.96 0 75.598 15.179 103.156 42.734 23.281 23.285 37.965 53.687 41.742 86.152C361.641 462.172 311.094 482 256 482s-105.637-19.824-144.895-52.703zM256 269.507c-42.871 0-77.754-34.882-77.754-77.753C178.246 148.879 213.13 114 256 114s77.754 34.879 77.754 77.754c0 42.871-34.883 77.754-77.754 77.754zm170.719 134.427a175.9 175.9 0 0 0-46.352-82.004c-18.437-18.438-40.25-32.27-64.039-40.938 28.598-19.394 47.426-52.16 47.426-89.238C363.754 132.34 315.414 84 256 84s-107.754 48.34-107.754 107.754c0 37.098 18.844 69.875 47.465 89.266-21.887 7.976-42.14 20.308-59.566 36.542-25.235 23.5-42.758 53.465-50.883 86.348C50.852 364.242 30 312.512 30 256 30 131.383 131.383 30 256 30s226 101.383 226 226c0 56.523-20.86 108.266-55.281 147.934zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
+                                    </g>
+                                </svg>
+                                <div class="text-xs hidden md:block">
+                                    <h1>Username</h1>
+                                    <a class="underline focus:outline-none" href="../authentication/user_auth/user_login.php">Login</a> / <a class="underline focus:outline-none" href="../authentication/user_auth/user_register.php">Register</a>
+                                </div>
+                            </div>
+                            <div class="md:hidden" x-data="{withOutLogin:false}">
+                                <button x-on:click="withOutLogin = !withOutLogin" @click.outside="withOutLogin=false" class="focus:outline-none text-white flex items-center gap-2 rounded-full px-1 py-0.5 hover:ring-1 hover:ring-gray-400 hover:bg-gray-800">
+                                    <svg class="w-5 md:w-9" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                        <g>
+                                            <path d="M437.02 74.98C388.668 26.63 324.379 0 256 0S123.332 26.629 74.98 74.98C26.63 123.332 0 187.621 0 256s26.629 132.668 74.98 181.02C123.332 485.37 187.621 512 256 512s132.668-26.629 181.02-74.98C485.37 388.668 512 324.379 512 256s-26.629-132.668-74.98-181.02zM111.105 429.297c8.454-72.735 70.989-128.89 144.895-128.89 38.96 0 75.598 15.179 103.156 42.734 23.281 23.285 37.965 53.687 41.742 86.152C361.641 462.172 311.094 482 256 482s-105.637-19.824-144.895-52.703zM256 269.507c-42.871 0-77.754-34.882-77.754-77.753C178.246 148.879 213.13 114 256 114s77.754 34.879 77.754 77.754c0 42.871-34.883 77.754-77.754 77.754zm170.719 134.427a175.9 175.9 0 0 0-46.352-82.004c-18.437-18.438-40.25-32.27-64.039-40.938 28.598-19.394 47.426-52.16 47.426-89.238C363.754 132.34 315.414 84 256 84s-107.754 48.34-107.754 107.754c0 37.098 18.844 69.875 47.465 89.266-21.887 7.976-42.14 20.308-59.566 36.542-25.235 23.5-42.758 53.465-50.883 86.348C50.852 364.242 30 312.512 30 256 30 131.383 131.383 30 256 30s226 101.383 226 226c0 56.523-20.86 108.266-55.281 147.934zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
+                                        </g>
+                                    </svg>
+                                    <svg class="w-2.5 md:w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                        <g>
+                                            <path d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <!-- popup for without login -->
+                                <div x-show="withOutLogin" x-transition x-cloak class="text-sm border rounded-md flex flex-col space-y-1 absolute top-14  bg-white text-black overflow-hidden z-10">
+                                    <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="../authentication/user_auth/user_login.php">
+                                        <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                            <g>
+                                                <g fill="#000">
+                                                    <path d="M14.945 1.25c-1.367 0-2.47 0-3.337.117-.9.12-1.658.38-2.26.981-.524.525-.79 1.17-.929 1.928-.135.737-.161 1.638-.167 2.72a.75.75 0 0 0 1.5.008c.006-1.093.034-1.868.142-2.457.105-.566.272-.895.515-1.138.277-.277.666-.457 1.4-.556.755-.101 1.756-.103 3.191-.103h1c1.436 0 2.437.002 3.192.103.734.099 1.122.28 1.4.556s.456.665.555 1.4c.102.754.103 1.756.103 3.191v8c0 1.435-.001 2.437-.103 3.192-.099.734-.279 1.122-.556 1.399s-.665.457-1.399.556c-.755.101-1.756.103-3.192.103h-1c-1.435 0-2.436-.002-3.192-.103-.733-.099-1.122-.28-1.399-.556-.243-.243-.41-.572-.515-1.138-.108-.589-.136-1.364-.142-2.457a.75.75 0 1 0-1.5.008c.006 1.082.032 1.983.167 2.72.14.758.405 1.403.93 1.928.601.602 1.36.86 2.26.982.866.116 1.969.116 3.336.116h1.11c1.368 0 2.47 0 3.337-.117.9-.12 1.658-.38 2.26-.981.602-.602.86-1.36.982-2.26.116-.867.116-1.97.116-3.337v-8.11c0-1.367 0-2.47-.116-3.337-.121-.9-.38-1.658-.982-2.26-.602-.602-1.36-.86-2.26-.981-.867-.117-1.97-.117-3.337-.117z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                    <path d="M2.001 11.249a.75.75 0 0 0 0 1.5h11.973l-1.961 1.68a.75.75 0 1 0 .976 1.14l3.5-3a.75.75 0 0 0 0-1.14l-3.5-3a.75.75 0 0 0-.976 1.14l1.96 1.68z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                </g>
+                                            </g>
+                                        </svg>Login</a>
+                                    <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="../authentication/user_auth/user_register.php">
+                                        <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 1.27 1.27" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd">
+                                            <g>
+                                                <g fill="currentColor">
+                                                    <path fill-rule="nonzero" d="M.565.042a.257.257 0 0 1 .183.44.257.257 0 0 1-.365 0 .257.257 0 0 1 .182-.44zm.123.136A.173.173 0 0 0 .445.176L.443.178a.173.173 0 0 0 0 .245.173.173 0 0 0 .245-.245zM.579 1.228H.127a.086.086 0 0 1-.064-.029.086.086 0 0 1-.022-.066.54.54 0 0 1 .792-.425c.01.005.016.014.018.024.003.01.002.02-.004.03L.842.77a.038.038 0 0 1-.05.014.454.454 0 0 0-.667.358v.001h.001l.001.001h.686c.021 0 .038.017.038.038v.009a.038.038 0 0 1-.038.038zm-.492-.01a.042.042 0 0 1-.018-.024" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                    <path d="M.846.93h.341c.024 0 .043.018.043.042a.042.042 0 0 1-.043.042H.846a.042.042 0 0 1 0-.085z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                    <path d="M.974 1.142V.801c0-.023.02-.042.043-.042.023 0 .042.019.042.042v.341a.042.042 0 0 1-.085 0z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                                                </g>
+                                            </g>
+                                        </svg>Register</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+
+                    <div>
+                        <a href="../shopping/cart.php" class="relative focus:outline-none">
+                            <svg class="w-5 sm:w-7" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                <g>
+                                    <path d="M164.96 300.004h.024c.02 0 .04-.004.059-.004H437a15.003 15.003 0 0 0 14.422-10.879l60-210a15.003 15.003 0 0 0-2.445-13.152A15.006 15.006 0 0 0 497 60H130.367l-10.722-48.254A15.003 15.003 0 0 0 105 0H15C6.715 0 0 6.715 0 15s6.715 15 15 15h77.969c1.898 8.55 51.312 230.918 54.156 243.71C131.184 280.64 120 296.536 120 315c0 24.812 20.188 45 45 45h272c8.285 0 15-6.715 15-15s-6.715-15-15-15H165c-8.27 0-15-6.73-15-15 0-8.258 6.707-14.977 14.96-14.996zM477.114 90l-51.43 180H177.032l-40-180zM150 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zM362 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
+                                </g>
+                            </svg>
+                            <p class="text-white text-center rounded-full text-xs px-1 absolute -top-2 -right-2 bg-[#ff0000]">
+                                <?php
+                                if (isset($_COOKIE['Cart_products'])) {
+                                    $cookie_value = $_COOKIE['Cart_products'];
+
+                                    $cart_products = json_decode($cookie_value, true);
+                                    if (!empty($cart_products) && is_array($cart_products)) {
+                                        $totalCartItems = count($cart_products);
+                                        echo $totalCartItems;
+                                    }
+                                }
+                                ?>
+                            </p>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="flex items-center gap-2 text-white text-xs focus:outline-none" href="../authentication/vendor_auth/vendor_register.php">
+                            <svg class="w-5 h-5 xl:w-7 xl:h-7" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                <g>
+                                    <path d="M143.5 326.255a7.5 7.5 0 0 0-7.5 7.5v13.5a7.5 7.5 0 0 0 15 0v-13.5a7.5 7.5 0 0 0-7.5-7.5z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
+                                    <path d="M488.312 425.849h-12.143V217.76c20.115-3.56 35.445-21.155 35.445-42.276v-28.876c0-.147-.014-.291-.022-.436-.005-.081-.005-.162-.012-.243a7.517 7.517 0 0 0-.128-.871c-.003-.017-.009-.033-.013-.049a7.389 7.389 0 0 0-.224-.8c-.022-.066-.048-.132-.072-.197a7.436 7.436 0 0 0-.278-.655c-.019-.039-.031-.08-.05-.118L477.653 77.29V42.796c0-8.902-7.243-16.145-16.145-16.145H120.456a7.5 7.5 0 0 0 0 15h341.052c.631 0 1.145.514 1.145 1.145V71.64H49.347V42.796c0-.631.514-1.145 1.145-1.145H85.56a7.5 7.5 0 0 0 0-15H50.492c-8.902 0-16.145 7.243-16.145 16.145V77.29L1.186 143.239c-.019.039-.032.08-.05.118a7.436 7.436 0 0 0-.278.655c-.024.066-.05.131-.072.197a7.389 7.389 0 0 0-.224.8l-.013.049c-.06.285-.102.575-.128.871-.007.081-.007.162-.012.243-.008.145-.022.289-.022.436v28.876c0 21.12 15.33 38.716 35.445 42.276v208.089H23.688C10.626 425.849 0 436.476 0 449.538v23.722c0 6.666 5.423 12.089 12.089 12.089h487.822c6.666 0 12.089-5.423 12.089-12.089v-23.722c0-13.062-10.626-23.689-23.688-23.689zm8.301-250.364c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.536-27.945-27.945v-21.376h55.89v21.376zM465.565 86.64l26.382 52.468h-53.448L419.655 86.64h45.91zm-61.849 0 18.844 52.468h-54.17L357.083 86.64h46.633zm22.008 67.468v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.536-27.945-27.945v-21.376h55.89zM341.739 86.64l11.307 52.468h-54.62l-3.769-52.468h47.082zm13.095 67.468v21.376c0 15.409-12.536 27.945-27.944 27.945s-27.945-12.536-27.945-27.945v-21.376h55.889zM232.382 86.64h47.235l3.769 52.468h-54.773l3.769-52.468zm-4.327 67.468h55.89v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.536-27.945-27.945v-21.376zM256 218.429c14.704 0 27.701-7.431 35.445-18.732 7.744 11.301 20.741 18.732 35.445 18.732s27.701-7.431 35.444-18.732c7.744 11.301 20.741 18.732 35.445 18.732s27.701-7.431 35.445-18.732c6.396 9.334 16.379 16.016 27.945 18.063v208.089H178.836V259.185c0-7.692-6.258-13.95-13.95-13.95H78.177c-7.692 0-13.95 6.258-13.95 13.95v166.664H50.832V217.76c11.566-2.047 21.549-8.729 27.945-18.063 7.744 11.301 20.741 18.732 35.445 18.732s27.701-7.431 35.445-18.732c7.744 11.301 20.741 18.732 35.444 18.732s27.701-7.431 35.445-18.732c7.743 11.301 20.74 18.732 35.444 18.732zm-92.164 41.806v165.614H79.227V260.235h84.609zm-77.56-84.75v-21.376h55.89v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.537-27.945-27.945zm83.985-88.845h47.082l-3.769 52.468h-54.62l11.307-52.468zm-13.095 67.468h55.889v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.944-12.536-27.944-27.945v-21.376zm-2.25-67.468-11.307 52.468h-54.17l18.844-52.468h46.633zm-108.481 0h45.91l-18.844 52.468H20.053L46.435 86.64zm-31.048 88.845v-21.376h55.89v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.537-27.945-27.945zM15 470.349v-20.812c0-4.791 3.897-8.688 8.688-8.688h464.623c4.791 0 8.688 3.897 8.688 8.688v20.812H15z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
+                                    <path d="M426.773 245.235H335.06a7.5 7.5 0 0 0 0 15h90.664V378.27H209.5V260.235h90.25a7.5 7.5 0 0 0 0-15h-91.3c-7.692 0-13.95 6.257-13.95 13.95v120.136c0 7.692 6.258 13.95 13.95 13.95h218.323c7.692 0 13.95-6.258 13.95-13.95V259.185c0-7.692-6.258-13.95-13.95-13.95z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
+                                </g>
+                            </svg>
+                            <span class="hidden md:block">Become a vendor</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:hidden px-5 my-4">
+                <form action="" method="post">
+                    <div class="flex justify-center items-center" x-data="{showMic2:false}">
+                        <div class="relative w-full">
                             <!-- search input -->
-                            <input id="search-input" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems" class="lg:w-[26vw] xl:w-[40vw] h-12 pr-12 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
-                            <!-- suggation -->
-                            <input type="submit" id="searchBtn" name="searchBtn" class="hidden">
-                            <ul id="suggestions-list" class="w-full h-60 bg-white absolute top-11 left-0 rounded-b-md z-[100] list-none hidden custom-scrollbar"></ul>
+                            <input id="search-input2" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems2" class="w-full h-12 pr-10 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
+                            <!-- suggetion -->
+                            <input type="submit" id="searchBtn2" name="searchBtn2" class="hidden">
+                            <ul id="suggestions-list2" class="w-full h-60 bg-white absolute top-11 left-0 rounded-b-md z-[100] list-none hidden custom-scrollbar"></ul>
                             <!-- microphone button -->
-                            <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn" @click="showMic=true">
+                            <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn2" @click="showMic2=true">
                                 <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M356.864 224.768c0-8.704-6.656-15.36-15.36-15.36s-15.36 6.656-15.36 15.36c0 59.904-48.64 108.544-108.544 108.544-59.904 0-108.544-48.64-108.544-108.544 0-8.704-6.656-15.36-15.36-15.36s-15.36 6.656-15.36 15.36c0 71.168 53.248 131.072 123.904 138.752v40.96h-55.808c-8.704 0-15.36 6.656-15.36 15.36s6.656 15.36 15.36 15.36h142.336c8.704 0 15.36-6.656 15.36-15.36s-6.656-15.36-15.36-15.36H232.96v-40.96c70.656-7.68 123.904-67.584 123.904-138.752z" fill="currentColor" opacity="1" data-original="currentColor"></path>
@@ -444,11 +926,11 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                                 </svg>
                             </div>
                         </div>
-                        <!-- js for suggetion -->
+                        <!-- js for suggetion search 2 -->
                         <script>
                             document.addEventListener('DOMContentLoaded', () => {
-                                const searchInput = document.getElementById('search-input');
-                                const suggestionsList = document.getElementById('suggestions-list');
+                                const searchInput = document.getElementById('search-input2');
+                                const suggestionsList = document.getElementById('suggestions-list2');
                                 let currentIndex = -1;
 
                                 // Fetch search suggestions
@@ -568,10 +1050,8 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                                 });
                             });
                         </script>
-
-                        <!-- search button -->
-                        <label for="searchBtn">
-                            <div id="searchBtns" class="search-btn bg-[#b7ff1d] px-3 h-12 flex items-center justify-center rounded-e-md hover:bg-[#81b909] transition duration-300 cursor-pointer">
+                        <label for="searchBtn2" id="searchBtns2">
+                            <div class="search-btn bg-[#b7ff1d] px-3 h-12 flex items-center justify-center rounded-e-md transition duration-300 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" x="0" y="0" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
                                         <path d="M115.97 101.597 88.661 74.286a47.75 47.75 0 0 0 7.333-25.488c0-26.509-21.49-47.996-47.998-47.996S0 22.289 0 48.798c0 26.51 21.487 47.995 47.996 47.995a47.776 47.776 0 0 0 27.414-8.605l26.984 26.986a9.574 9.574 0 0 0 6.788 2.806 9.58 9.58 0 0 0 6.791-2.806 9.602 9.602 0 0 0-.003-13.577zM47.996 81.243c-17.917 0-32.443-14.525-32.443-32.443s14.526-32.444 32.443-32.444c17.918 0 32.443 14.526 32.443 32.444S65.914 81.243 47.996 81.243z" fill="#000000" opacity="1" data-original="#000000"></path>
@@ -579,95 +1059,105 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                                 </svg>
                             </div>
                         </label>
-                    </div>
-
-                    <div id="mic-popup" class="w-full h-full z-[100] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-40 hidden" x-show="showMic">
-                        <div class="w-max h-max z-[100] flex flex-col items-center justify-center p-8 bg-white border-2 border-blue-600 rounded-lg shadow-2xl relative">
-                            <span class="absolute top-2 right-2">
-                                <svg id="mic-close-btn" x-on:click="showMic=false" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                    <g>
-                                        <path d="M436.896 74.869c-99.84-99.819-262.208-99.819-362.048 0-99.797 99.819-99.797 262.229 0 362.048 49.92 49.899 115.477 74.837 181.035 74.837s131.093-24.939 181.013-74.837c99.819-99.818 99.819-262.229 0-362.048zm-75.435 256.448c8.341 8.341 8.341 21.824 0 30.165a21.275 21.275 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251l-75.413-75.435-75.392 75.413a21.348 21.348 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251c-8.341-8.341-8.341-21.845 0-30.165l75.392-75.413-75.413-75.413c-8.341-8.341-8.341-21.845 0-30.165 8.32-8.341 21.824-8.341 30.165 0l75.413 75.413 75.413-75.413c8.341-8.341 21.824-8.341 30.165 0 8.341 8.32 8.341 21.824 0 30.165l-75.413 75.413 75.415 75.435z" fill="#ff0000" opacity="1" data-original="#ff0000" class=""></path>
-                                    </g>
-                                </svg>
-                            </span>
-                            <h2 class="text-xl font-semibold text-center text-gray-800">Listening...</h2>
-                            <div class="wave my-6 mx-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="mt-[1px] ml-[1px]">
-                                    <g>
-                                        <defs>
-                                            <clipPath id="a" clipPathUnits="userSpaceOnUse">
-                                                <path d="M0 512h512V0H0Z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
-                                            </clipPath>
-                                        </defs>
-                                        <g clip-path="url(#a)" transform="matrix(1.33333 0 0 -1.33333 0 682.667)">
-                                            <path d="M0 0h160" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(176 20.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v-72" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 92.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0c0-88.223-71.777-160-160-160S-320-88.223-320 0" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 252.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0c-44.183 0-80 35.817-80 80v160c0 44.183 35.817 80 80 80s80-35.817 80-80V80C80 35.817 44.183 0 0 0Z" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 172.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(96 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(20 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(492 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                        <div id="mic-popup2" class="w-full h-full z-[100] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-40 px-5 hidden" x-show="showMic2">
+                            <div class="w-max h-max z-[100] flex flex-col items-center justify-center p-8 bg-white border-2 border-blue-600 rounded-lg shadow-2xl relative">
+                                <span class="absolute top-2 right-2">
+                                    <svg id="mic-close-btn2" @click="showMic2=false" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                        <g>
+                                            <path d="M436.896 74.869c-99.84-99.819-262.208-99.819-362.048 0-99.797 99.819-99.797 262.229 0 362.048 49.92 49.899 115.477 74.837 181.035 74.837s131.093-24.939 181.013-74.837c99.819-99.818 99.819-262.229 0-362.048zm-75.435 256.448c8.341 8.341 8.341 21.824 0 30.165a21.275 21.275 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251l-75.413-75.435-75.392 75.413a21.348 21.348 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251c-8.341-8.341-8.341-21.845 0-30.165l75.392-75.413-75.413-75.413c-8.341-8.341-8.341-21.845 0-30.165 8.32-8.341 21.824-8.341 30.165 0l75.413 75.413 75.413-75.413c8.341-8.341 21.824-8.341 30.165 0 8.341 8.32 8.341 21.824 0 30.165l-75.413 75.413 75.415 75.435z" fill="#ff0000" opacity="1" data-original="#ff0000" class=""></path>
                                         </g>
-                                    </g>
-                                </svg>
+                                    </svg>
+                                </span>
+                                <h2 class="text-xl font-semibold text-center text-gray-800">Listening...</h2>
+                                <div class="wave my-6 mx-auto"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                        <g>
+                                            <defs>
+                                                <clipPath id="a" clipPathUnits="userSpaceOnUse">
+                                                    <path d="M0 512h512V0H0Z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
+                                                </clipPath>
+                                            </defs>
+                                            <g clip-path="url(#a)" transform="matrix(1.33333 0 0 -1.33333 0 682.667)">
+                                                <path d="M0 0h160" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(176 20.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v-72" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 92.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0c0-88.223-71.777-160-160-160S-320-88.223-320 0" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 252.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0c-44.183 0-80 35.817-80 80v160c0 44.183 35.817 80 80 80s80-35.817 80-80V80C80 35.817 44.183 0 0 0Z" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 172.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(96 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(20 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                                <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(492 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
+                                            </g>
+                                        </g>
+                                    </svg></div>
+                                <p class="text-sm text-center text-gray-600 mt-2">Please speak clearly into the microphone.</p>
                             </div>
-                            <p class="text-sm text-center text-gray-600 mt-2">Please speak clearly into the microphone.</p>
                         </div>
-                    </div>
-                    <!-- speech recognition search 1 -->
-                    <script>
-                        // Check for browser support
-                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                        if (!SpeechRecognition) {
-                            alert("Your browser does not support speech recognition.");
-                        } else {
-                            const recognition = new SpeechRecognition();
-                            recognition.continuous = true; // Continuous listening until stopped
-                            recognition.interimResults = false; // Don't return interim results
+                        <!-- speech recognisation for search 2 -->
+                        <script>
+                            // Check for browser support
+                            const SpeechRecognition2 = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-                            const micPopup = document.getElementById('mic-popup');
-                            const startButton = document.getElementById('start-btn');
+                            if (!SpeechRecognition2) {
+                                alert("Your browser does not support speech recognition.");
+                            } else {
+                                const recognition = new SpeechRecognition();
+                                recognition.continuous = true; // Continuous listening until stopped
+                                recognition.interimResults = false; // Don't return interim results
 
-                            recognition.onstart = () => {
-                                micPopup.classList.remove('hidden');
-                            };
+                                const micPopup = document.getElementById('mic-popup2');
+                                const startButton = document.getElementById('start-btn2');
 
-                            // Event handler for result
-                            recognition.onresult = (event) => {
-                                const transcript = event.results[event.resultIndex][0].transcript;
-                                document.getElementById('search-input').value = transcript;
-                                document.getElementById('searchBtns').click();
-                            };
+                                function toggleBodyScroll(isOpen) {
+                                    document.body.style.overflow = isOpen ? "hidden" : "auto"; // Toggle scrolling
+                                }
 
-                            // Error handling
-                            recognition.onerror = (event) => {
-                                console.error('Error occurred in recognition: ' + event.error);
-                                micPopup.classList.add('hidden'); // Hide popup on error
-                            };
+                                recognition.onstart = () => {
+                                    micPopup.classList.remove('hidden');
+                                    toggleBodyScroll(true);
+                                };
 
-                            // Start recognition when button is clicked
-                            document.getElementById('start-btn').addEventListener('click', () => {
-                                recognition.start();
-                            });
+                                // Event handler for result
+                                recognition.onresult = (event) => {
+                                    const transcript = event.results[event.resultIndex][0].transcript;
 
-                            // Stop recognition function
-                            function stopRecognition() {
-                                recognition.stop();
-                                micPopup.classList.add('hidden');
+                                    const searchInput = document.getElementById('search-input2');
+                                    if (searchInput) {
+                                        searchInput.value = transcript;
+                                        document.getElementById('searchBtns2').click();
+                                    } else {
+                                        console.error("Search input element not found.");
+                                    }
+                                };
+
+                                // Error handling
+                                recognition.onerror = (event) => {
+                                    console.error('Error occurred in recognition: ' + event.error);
+                                    micPopup.classList.add('hidden'); // Hide popup on error
+                                    toggleBodyScroll(false);
+                                };
+
+                                // Start recognition when button is clicked
+                                startButton.addEventListener('click', () => {
+                                    recognition.start();
+                                });
+
+                                // Stop recognition function
+                                function stopRecognition() {
+                                    recognition.stop();
+                                    micPopup.classList.add('hidden');
+                                    toggleBodyScroll(false);
+                                }
+
+                                // Stop recognition when the popup is closed
+                                document.getElementById('mic-close-btn2').addEventListener('click', () => {
+                                    stopRecognition();
+                                });
                             }
-
-                            // Stop recognition when the popup is closed
-                            document.getElementById('mic-close-btn').addEventListener('click', () => {
-                                stopRecognition();
-                            });
-                        }
-                    </script>
-
+                        </script>
+                    </div>
                 </form>
                 <?php
-                if (isset($_POST["searchBtn"])) {
-                    $searchName = $_POST['searchInputItems'];
+                if (isset($_POST["searchBtn2"])) {
+                    $searchName = $_POST['searchInputItems2'];
                     $filterName = str_replace(' ', '+', $searchName); // Replace spaces with "+" for URL compatibility
                 ?>
                     <script>
@@ -681,421 +1171,10 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                 }
                 ?>
             </div>
-            <!-- user & cart -->
-            <div class="flex items-center gap-4 md:gap-5 pr-4">
-                <?php
-                if (isset($_COOKIE['user_id'])) {
-                ?>
-                    <!-- popup is show when user is login -->
-                    <div x-data="{loginUser:false}" class="relative">
-                        <div>
-                            <button class="flex items-center gap-2 text-white rounded-full px-0.5 py-0.5 hover:ring-1 hover:ring-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:bg-gray-800" x-on:click="loginUser = !loginUser" @click.outside="loginUser=false">
-                                <div class="w-6 h-6 md:w-9 md:h-9 m-auto">
-                                    <img class="w-full h-full rounded-full flex justify-center object-cover" src="<?php echo isset($_COOKIE['user_id']) ? '../src/user_dp/' . $row['profile_image'] : 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ?>" alt="" class="bg-white">
-                                </div>
-                                <svg class="w-3 mr-0.5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                    <g>
-                                        <path d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                    </g>
-                                </svg>
-
-                            </button>
-                        </div>
-                        <div x-show="loginUser" x-transition x-cloak class="w-40 bg-white text-black overflow-hidden absolute -left-14 top-10 md:top-12 shadow-lg shadow-black/60 rounded-md z-10">
-                            <div class="py-2 px-3">
-                                <a href="../index.php" class="w-full">Hi,<?php echo isset($_COOKIE['fname']) ? $_COOKIE['fname'] : 'User Name' ?></a>
-                            </div>
-                            <hr class="border">
-                            <ul class="text-sm lg:text-base">
-                                <li class="hover:bg-gray-500 hover:text-white px-3">
-                                    <a class="flex items-center gap-x-2 py-2" href="../user/profile.php">
-                                        <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                            <g>
-                                                <path d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zm0 240c-57.897 0-105-47.103-105-105S198.103 30 256 30s105 47.103 105 105-47.103 105-105 105zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805zM61.66 482c7.515-85.086 78.351-152 164.34-152h60c85.989 0 156.825 66.914 164.34 152H61.66z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                            </g>
-                                        </svg>
-                                        Account
-                                    </a>
-                                </li>
-                                <li class="hover:bg-gray-500 hover:text-white px-3">
-                                    <a class="flex items-center gap-x-2 py-2" href="../user/show_orders.php">
-                                        <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                            <g>
-                                                <path d="m458.737 422.218-22.865-288.116c-1.425-18.562-17.123-33.103-35.739-33.103H354.97v-2.03C354.97 44.397 310.573 0 256.001 0s-98.969 44.397-98.969 98.969v2.03H111.87c-18.617 0-34.316 14.54-35.736 33.064L53.262 422.257c-1.77 23.075 6.235 46.048 21.961 63.026C90.949 502.261 113.242 512 136.385 512h239.231c23.142 0 45.436-9.738 61.163-26.717 15.726-16.979 23.73-39.951 21.958-63.065zM187.022 98.969c0-38.035 30.945-68.979 68.979-68.979s68.979 30.945 68.979 68.979v2.03H187.022v-2.03zm227.754 365.936c-10.218 11.03-24.124 17.105-39.16 17.105h-239.23c-15.036 0-28.942-6.075-39.16-17.105-10.217-11.031-15.211-25.363-14.063-40.315l22.87-288.195c.232-3.032 2.796-5.406 5.837-5.406h45.162v36.935c0 8.281 6.714 14.995 14.995 14.995 8.281 0 14.995-6.714 14.995-14.995v-36.935H324.98v36.935c0 8.281 6.714 14.995 14.995 14.995s14.995-6.714 14.995-14.995v-36.935h45.163c3.04 0 5.604 2.375 5.84 5.446l22.865 288.115c1.15 14.992-3.845 29.323-14.062 40.355z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                <path d="M323.556 254.285c-5.854-5.856-15.349-5.856-21.204 0l-66.956 66.956-25.746-25.746c-5.855-5.856-15.35-5.856-21.206 0s-5.856 15.35 0 21.206l36.349 36.349c2.928 2.928 6.766 4.393 10.602 4.393s7.675-1.464 10.602-4.393l77.558-77.558c5.857-5.857 5.857-15.351.001-21.207z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                            </g>
-                                        </svg>
-                                        Order
-                                    </a>
-                                </li>
-                                <hr class="border">
-                                <li class="hover:bg-gray-500 hover:text-white px-3 cursor-pointer" @click="logoutPopUp = true">
-                                    <a class="flex items-center gap-x-2 py-2">
-                                        <svg class="h-4 w-4 lg:h-5 lg:w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                            <g>
-                                                <g fill="#000">
-                                                    <path d="M14.945 1.25c-1.367 0-2.47 0-3.337.117-.9.12-1.658.38-2.26.981-.524.525-.79 1.17-.929 1.928-.135.737-.161 1.638-.167 2.72a.75.75 0 0 0 1.5.008c.006-1.093.034-1.868.142-2.457.105-.566.272-.895.515-1.138.277-.277.666-.457 1.4-.556.755-.101 1.756-.103 3.191-.103h1c1.436 0 2.437.002 3.192.103.734.099 1.122.28 1.4.556s.456.665.555 1.4c.102.754.103 1.756.103 3.191v8c0 1.435-.001 2.437-.103 3.192-.099.734-.279 1.122-.556 1.399s-.665.457-1.399.556c-.755.101-1.756.103-3.192.103h-1c-1.435 0-2.436-.002-3.192-.103-.733-.099-1.122-.28-1.399-.556-.243-.243-.41-.572-.515-1.138-.108-.589-.136-1.364-.142-2.457a.75.75 0 1 0-1.5.008c.006 1.082.032 1.983.167 2.72.14.758.405 1.403.93 1.928.601.602 1.36.86 2.26.982.866.116 1.969.116 3.336.116h1.11c1.368 0 2.47 0 3.337-.117.9-.12 1.658-.38 2.26-.981.602-.602.86-1.36.982-2.26.116-.867.116-1.97.116-3.337v-8.11c0-1.367 0-2.47-.116-3.337-.121-.9-.38-1.658-.982-2.26-.602-.602-1.36-.86-2.26-.981-.867-.117-1.97-.117-3.337-.117z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                    <path d="M15 11.25a.75.75 0 0 1 0 1.5H4.027l1.961 1.68a.75.75 0 1 1-.976 1.14l-3.5-3a.75.75 0 0 1 0-1.14l3.5-3a.75.75 0 1 1 .976 1.14l-1.96 1.68z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                        Logout
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                <?php
-                } else {
-                ?>
-                    <div>
-                        <div class="hidden md:flex items-center gap-3 text-white w-full">
-                            <svg class="w-9" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                <g>
-                                    <path d="M437.02 74.98C388.668 26.63 324.379 0 256 0S123.332 26.629 74.98 74.98C26.63 123.332 0 187.621 0 256s26.629 132.668 74.98 181.02C123.332 485.37 187.621 512 256 512s132.668-26.629 181.02-74.98C485.37 388.668 512 324.379 512 256s-26.629-132.668-74.98-181.02zM111.105 429.297c8.454-72.735 70.989-128.89 144.895-128.89 38.96 0 75.598 15.179 103.156 42.734 23.281 23.285 37.965 53.687 41.742 86.152C361.641 462.172 311.094 482 256 482s-105.637-19.824-144.895-52.703zM256 269.507c-42.871 0-77.754-34.882-77.754-77.753C178.246 148.879 213.13 114 256 114s77.754 34.879 77.754 77.754c0 42.871-34.883 77.754-77.754 77.754zm170.719 134.427a175.9 175.9 0 0 0-46.352-82.004c-18.437-18.438-40.25-32.27-64.039-40.938 28.598-19.394 47.426-52.16 47.426-89.238C363.754 132.34 315.414 84 256 84s-107.754 48.34-107.754 107.754c0 37.098 18.844 69.875 47.465 89.266-21.887 7.976-42.14 20.308-59.566 36.542-25.235 23.5-42.758 53.465-50.883 86.348C50.852 364.242 30 312.512 30 256 30 131.383 131.383 30 256 30s226 101.383 226 226c0 56.523-20.86 108.266-55.281 147.934zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
-                                </g>
-                            </svg>
-                            <div class="text-xs hidden md:block">
-                                <h1>Username</h1>
-                                <a class="underline focus:outline-none" href="../authentication/user_auth/user_login.php">Login</a> / <a class="underline focus:outline-none" href="../authentication/user_auth/user_register.php">Register</a>
-                            </div>
-                        </div>
-                        <div class="md:hidden" x-data="{withOutLogin:false}">
-                            <button x-on:click="withOutLogin = !withOutLogin" @click.outside="withOutLogin=false" class="focus:outline-none text-white flex items-center gap-2 rounded-full px-1 py-0.5 hover:ring-1 hover:ring-gray-400 hover:bg-gray-800">
-                                <svg class="w-5 md:w-9" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                    <g>
-                                        <path d="M437.02 74.98C388.668 26.63 324.379 0 256 0S123.332 26.629 74.98 74.98C26.63 123.332 0 187.621 0 256s26.629 132.668 74.98 181.02C123.332 485.37 187.621 512 256 512s132.668-26.629 181.02-74.98C485.37 388.668 512 324.379 512 256s-26.629-132.668-74.98-181.02zM111.105 429.297c8.454-72.735 70.989-128.89 144.895-128.89 38.96 0 75.598 15.179 103.156 42.734 23.281 23.285 37.965 53.687 41.742 86.152C361.641 462.172 311.094 482 256 482s-105.637-19.824-144.895-52.703zM256 269.507c-42.871 0-77.754-34.882-77.754-77.753C178.246 148.879 213.13 114 256 114s77.754 34.879 77.754 77.754c0 42.871-34.883 77.754-77.754 77.754zm170.719 134.427a175.9 175.9 0 0 0-46.352-82.004c-18.437-18.438-40.25-32.27-64.039-40.938 28.598-19.394 47.426-52.16 47.426-89.238C363.754 132.34 315.414 84 256 84s-107.754 48.34-107.754 107.754c0 37.098 18.844 69.875 47.465 89.266-21.887 7.976-42.14 20.308-59.566 36.542-25.235 23.5-42.758 53.465-50.883 86.348C50.852 364.242 30 312.512 30 256 30 131.383 131.383 30 256 30s226 101.383 226 226c0 56.523-20.86 108.266-55.281 147.934zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
-                                    </g>
-                                </svg>
-                                <svg class="w-2.5 md:w-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                    <g>
-                                        <path d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                    </g>
-                                </svg>
-                            </button>
-                            <!-- popup for without login -->
-                            <div x-show="withOutLogin" x-transition x-cloak class="text-sm border rounded-md flex flex-col space-y-1 absolute top-14  bg-white text-black overflow-hidden z-10">
-                                <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="../authentication/user_auth/user_login.php">
-                                    <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                        <g>
-                                            <g fill="#000">
-                                                <path d="M14.945 1.25c-1.367 0-2.47 0-3.337.117-.9.12-1.658.38-2.26.981-.524.525-.79 1.17-.929 1.928-.135.737-.161 1.638-.167 2.72a.75.75 0 0 0 1.5.008c.006-1.093.034-1.868.142-2.457.105-.566.272-.895.515-1.138.277-.277.666-.457 1.4-.556.755-.101 1.756-.103 3.191-.103h1c1.436 0 2.437.002 3.192.103.734.099 1.122.28 1.4.556s.456.665.555 1.4c.102.754.103 1.756.103 3.191v8c0 1.435-.001 2.437-.103 3.192-.099.734-.279 1.122-.556 1.399s-.665.457-1.399.556c-.755.101-1.756.103-3.192.103h-1c-1.435 0-2.436-.002-3.192-.103-.733-.099-1.122-.28-1.399-.556-.243-.243-.41-.572-.515-1.138-.108-.589-.136-1.364-.142-2.457a.75.75 0 1 0-1.5.008c.006 1.082.032 1.983.167 2.72.14.758.405 1.403.93 1.928.601.602 1.36.86 2.26.982.866.116 1.969.116 3.336.116h1.11c1.368 0 2.47 0 3.337-.117.9-.12 1.658-.38 2.26-.981.602-.602.86-1.36.982-2.26.116-.867.116-1.97.116-3.337v-8.11c0-1.367 0-2.47-.116-3.337-.121-.9-.38-1.658-.982-2.26-.602-.602-1.36-.86-2.26-.981-.867-.117-1.97-.117-3.337-.117z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                <path d="M2.001 11.249a.75.75 0 0 0 0 1.5h11.973l-1.961 1.68a.75.75 0 1 0 .976 1.14l3.5-3a.75.75 0 0 0 0-1.14l-3.5-3a.75.75 0 0 0-.976 1.14l1.96 1.68z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                            </g>
-                                        </g>
-                                    </svg>Login</a>
-                                <a class="px-2 py-1 flex items-center gap-x-2 hover:bg-gray-500 hover:text-white" href="../authentication/user_auth/user_register.php">
-                                    <svg class="h-4" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 1.27 1.27" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd">
-                                        <g>
-                                            <g fill="currentColor">
-                                                <path fill-rule="nonzero" d="M.565.042a.257.257 0 0 1 .183.44.257.257 0 0 1-.365 0 .257.257 0 0 1 .182-.44zm.123.136A.173.173 0 0 0 .445.176L.443.178a.173.173 0 0 0 0 .245.173.173 0 0 0 .245-.245zM.579 1.228H.127a.086.086 0 0 1-.064-.029.086.086 0 0 1-.022-.066.54.54 0 0 1 .792-.425c.01.005.016.014.018.024.003.01.002.02-.004.03L.842.77a.038.038 0 0 1-.05.014.454.454 0 0 0-.667.358v.001h.001l.001.001h.686c.021 0 .038.017.038.038v.009a.038.038 0 0 1-.038.038zm-.492-.01a.042.042 0 0 1-.018-.024" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                <path d="M.846.93h.341c.024 0 .043.018.043.042a.042.042 0 0 1-.043.042H.846a.042.042 0 0 1 0-.085z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                                <path d="M.974 1.142V.801c0-.023.02-.042.043-.042.023 0 .042.019.042.042v.341a.042.042 0 0 1-.085 0z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                            </g>
-                                        </g>
-                                    </svg>Register</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php
-                }
-                ?>
-
-                <div>
-                    <a href="../shopping/cart.php" class="relative focus:outline-none">
-                        <svg class="w-5 sm:w-7" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                            <g>
-                                <path d="M164.96 300.004h.024c.02 0 .04-.004.059-.004H437a15.003 15.003 0 0 0 14.422-10.879l60-210a15.003 15.003 0 0 0-2.445-13.152A15.006 15.006 0 0 0 497 60H130.367l-10.722-48.254A15.003 15.003 0 0 0 105 0H15C6.715 0 0 6.715 0 15s6.715 15 15 15h77.969c1.898 8.55 51.312 230.918 54.156 243.71C131.184 280.64 120 296.536 120 315c0 24.812 20.188 45 45 45h272c8.285 0 15-6.715 15-15s-6.715-15-15-15H165c-8.27 0-15-6.73-15-15 0-8.258 6.707-14.977 14.96-14.996zM477.114 90l-51.43 180H177.032l-40-180zM150 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zM362 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zm0 0" fill="#ffffff" opacity="1" data-original="#000000"></path>
-                            </g>
-                        </svg>
-                        <p class="text-white text-center rounded-full text-xs px-1 absolute -top-2 -right-2 bg-[#ff0000]">
-                            <?php
-                            if (isset($_COOKIE['Cart_products'])) {
-                                $cookie_value = $_COOKIE['Cart_products'];
-
-                                $cart_products = json_decode($cookie_value, true);
-                                if (!empty($cart_products) && is_array($cart_products)) {
-                                    $totalCartItems = count($cart_products);
-                                    echo $totalCartItems;
-                                }
-                            }
-                            ?>
-                        </p>
-                    </a>
-                </div>
-                <div>
-                    <a class="flex items-center gap-2 text-white text-xs focus:outline-none" href="../authentication/vendor_auth/vendor_register.php">
-                        <svg class="w-5 h-5 xl:w-7 xl:h-7" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                            <g>
-                                <path d="M143.5 326.255a7.5 7.5 0 0 0-7.5 7.5v13.5a7.5 7.5 0 0 0 15 0v-13.5a7.5 7.5 0 0 0-7.5-7.5z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
-                                <path d="M488.312 425.849h-12.143V217.76c20.115-3.56 35.445-21.155 35.445-42.276v-28.876c0-.147-.014-.291-.022-.436-.005-.081-.005-.162-.012-.243a7.517 7.517 0 0 0-.128-.871c-.003-.017-.009-.033-.013-.049a7.389 7.389 0 0 0-.224-.8c-.022-.066-.048-.132-.072-.197a7.436 7.436 0 0 0-.278-.655c-.019-.039-.031-.08-.05-.118L477.653 77.29V42.796c0-8.902-7.243-16.145-16.145-16.145H120.456a7.5 7.5 0 0 0 0 15h341.052c.631 0 1.145.514 1.145 1.145V71.64H49.347V42.796c0-.631.514-1.145 1.145-1.145H85.56a7.5 7.5 0 0 0 0-15H50.492c-8.902 0-16.145 7.243-16.145 16.145V77.29L1.186 143.239c-.019.039-.032.08-.05.118a7.436 7.436 0 0 0-.278.655c-.024.066-.05.131-.072.197a7.389 7.389 0 0 0-.224.8l-.013.049c-.06.285-.102.575-.128.871-.007.081-.007.162-.012.243-.008.145-.022.289-.022.436v28.876c0 21.12 15.33 38.716 35.445 42.276v208.089H23.688C10.626 425.849 0 436.476 0 449.538v23.722c0 6.666 5.423 12.089 12.089 12.089h487.822c6.666 0 12.089-5.423 12.089-12.089v-23.722c0-13.062-10.626-23.689-23.688-23.689zm8.301-250.364c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.536-27.945-27.945v-21.376h55.89v21.376zM465.565 86.64l26.382 52.468h-53.448L419.655 86.64h45.91zm-61.849 0 18.844 52.468h-54.17L357.083 86.64h46.633zm22.008 67.468v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.536-27.945-27.945v-21.376h55.89zM341.739 86.64l11.307 52.468h-54.62l-3.769-52.468h47.082zm13.095 67.468v21.376c0 15.409-12.536 27.945-27.944 27.945s-27.945-12.536-27.945-27.945v-21.376h55.889zM232.382 86.64h47.235l3.769 52.468h-54.773l3.769-52.468zm-4.327 67.468h55.89v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.536-27.945-27.945v-21.376zM256 218.429c14.704 0 27.701-7.431 35.445-18.732 7.744 11.301 20.741 18.732 35.445 18.732s27.701-7.431 35.444-18.732c7.744 11.301 20.741 18.732 35.445 18.732s27.701-7.431 35.445-18.732c6.396 9.334 16.379 16.016 27.945 18.063v208.089H178.836V259.185c0-7.692-6.258-13.95-13.95-13.95H78.177c-7.692 0-13.95 6.258-13.95 13.95v166.664H50.832V217.76c11.566-2.047 21.549-8.729 27.945-18.063 7.744 11.301 20.741 18.732 35.445 18.732s27.701-7.431 35.445-18.732c7.744 11.301 20.741 18.732 35.444 18.732s27.701-7.431 35.445-18.732c7.743 11.301 20.74 18.732 35.444 18.732zm-92.164 41.806v165.614H79.227V260.235h84.609zm-77.56-84.75v-21.376h55.89v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.537-27.945-27.945zm83.985-88.845h47.082l-3.769 52.468h-54.62l11.307-52.468zm-13.095 67.468h55.889v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.944-12.536-27.944-27.945v-21.376zm-2.25-67.468-11.307 52.468h-54.17l18.844-52.468h46.633zm-108.481 0h45.91l-18.844 52.468H20.053L46.435 86.64zm-31.048 88.845v-21.376h55.89v21.376c0 15.409-12.536 27.945-27.945 27.945s-27.945-12.537-27.945-27.945zM15 470.349v-20.812c0-4.791 3.897-8.688 8.688-8.688h464.623c4.791 0 8.688 3.897 8.688 8.688v20.812H15z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
-                                <path d="M426.773 245.235H335.06a7.5 7.5 0 0 0 0 15h90.664V378.27H209.5V260.235h90.25a7.5 7.5 0 0 0 0-15h-91.3c-7.692 0-13.95 6.257-13.95 13.95v120.136c0 7.692 6.258 13.95 13.95 13.95h218.323c7.692 0 13.95-6.258 13.95-13.95V259.185c0-7.692-6.258-13.95-13.95-13.95z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
-                            </g>
-                        </svg>
-                        <span class="hidden md:block">Become a vendor</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="lg:hidden px-5 my-4">
-            <form action="" method="post">
-                <div class="flex justify-center items-center" x-data="{showMic2:false}">
-                    <div class="relative w-full">
-                        <!-- search input -->
-                        <input id="search-input2" value="<?php echo isset($_SESSION['searchWord']) ? $_SESSION['searchWord'] : ''; ?>" name="searchInputItems2" class="w-full h-12 pr-10 focus:ring-[#08091b] border-0 text-black focus:ring-0 focus:outline-none rounded-s-md text-lg" type="text" placeholder="search for anything..." autocomplete="off">
-                        <!-- suggetion -->
-                        <input type="submit" id="searchBtn2" name="searchBtn2" class="hidden">
-                        <ul id="suggestions-list2" class="w-full h-60 bg-white absolute top-11 left-0 rounded-b-md z-[100] list-none hidden custom-scrollbar"></ul>
-                        <!-- microphone button -->
-                        <div class="absolute right-3 top-2.5 p-1 cursor-pointer" id="start-btn2" @click="showMic2=true">
-                            <svg class="text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 435.2 435.2" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                <g>
-                                    <path d="M356.864 224.768c0-8.704-6.656-15.36-15.36-15.36s-15.36 6.656-15.36 15.36c0 59.904-48.64 108.544-108.544 108.544-59.904 0-108.544-48.64-108.544-108.544 0-8.704-6.656-15.36-15.36-15.36s-15.36 6.656-15.36 15.36c0 71.168 53.248 131.072 123.904 138.752v40.96h-55.808c-8.704 0-15.36 6.656-15.36 15.36s6.656 15.36 15.36 15.36h142.336c8.704 0 15.36-6.656 15.36-15.36s-6.656-15.36-15.36-15.36H232.96v-40.96c70.656-7.68 123.904-67.584 123.904-138.752z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                    <path d="M217.6 0c-47.104 0-85.504 38.4-85.504 85.504v138.752c0 47.616 38.4 85.504 85.504 86.016 47.104 0 85.504-38.4 85.504-85.504V85.504C303.104 38.4 264.704 0 217.6 0z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <!-- js for suggetion search 2 -->
-                    <script>
-                        document.addEventListener('DOMContentLoaded', () => {
-                            const searchInput = document.getElementById('search-input2');
-                            const suggestionsList = document.getElementById('suggestions-list2');
-                            let currentIndex = -1;
-
-                            // Fetch search suggestions
-                            const fetchSuggestions = (query) => {
-                                if (query.length === 0) {
-                                    suggestionsList.classList.add('hidden');
-                                    return;
-                                }
-
-                                fetch('../search/suggestion.php', {
-                                        method: 'POST',
-                                        body: new URLSearchParams({
-                                            query
-                                        }),
-                                    })
-                                    .then((response) => {
-                                        if (!response.ok) {
-                                            throw new Error(`HTTP error! status: ${response.status}`);
-                                        }
-                                        return response.text();
-                                    })
-                                    .then((data) => {
-                                        suggestionsList.innerHTML = data;
-                                        suggestionsList.classList.toggle('hidden', data.trim() === '');
-                                        currentIndex = -1; // Reset index
-                                    })
-                                    .catch((error) => console.error('Error fetching suggestions:', error));
-                            };
-
-                            // Update suggestions on input
-                            searchInput.addEventListener('input', (e) => {
-                                const query = e.target.value.trim();
-                                fetchSuggestions(query);
-                                currentIndex = -1;
-                            });
-
-                            // Handle key navigation and Enter
-                            searchInput.addEventListener('keydown', (e) => {
-                                const items = suggestionsList.querySelectorAll('li');
-                                const query = searchInput.value.trim();
-
-                                if (e.key === 'ArrowDown') {
-                                    // Move to the next suggestion
-                                    if (currentIndex < items.length - 1) {
-                                        currentIndex++;
-                                    }
-                                    highlightSuggestion();
-                                    scrollToSuggestion();
-                                } else if (e.key === 'ArrowUp') {
-                                    // Move to the previous suggestion
-                                    if (currentIndex > 0) {
-                                        currentIndex--;
-                                    }
-                                    highlightSuggestion();
-                                    scrollToSuggestion();
-                                } else if (e.key === 'Enter') {
-                                    if (query === '') {
-                                        // If search input is empty, redirect to the index page
-                                        e.preventDefault();
-                                        window.location.href = '../index.php'; // Redirect to index page
-                                    } else if (currentIndex >= 0 && currentIndex < items.length) {
-                                        const selectedSuggestion = items[currentIndex];
-                                        const link = selectedSuggestion.querySelector('a');
-                                        if (link) {
-                                            e.preventDefault();
-                                            window.location.href = link.href;
-                                        }
-                                    } else if (query) {
-                                        window.location.assign(`../search/search_items.php?query=${encodeURIComponent(query)}`);
-                                    }
-                                }
-                            });
-
-                            // Highlight suggestions and update the input value
-                            const highlightSuggestion = () => {
-                                const items = suggestionsList.querySelectorAll('li');
-                                items.forEach((item) => item.classList.remove('bg-gray-300'));
-                                if (currentIndex >= 0 && currentIndex < items.length) {
-                                    const selectedItem = items[currentIndex];
-                                    selectedItem.classList.add('bg-gray-300');
-                                    // Update the input field with the current selected suggestion
-                                    searchInput.value = selectedItem.textContent.trim();
-                                }
-                            };
-
-                            // Scroll to the selected suggestion
-                            const scrollToSuggestion = () => {
-                                const items = suggestionsList.querySelectorAll('li');
-                                const selectedItem = items[currentIndex];
-                                if (selectedItem) {
-                                    const container = suggestionsList;
-                                    const itemRect = selectedItem.getBoundingClientRect();
-                                    const containerRect = container.getBoundingClientRect();
-
-                                    // Scroll the container to ensure the selected item is visible
-                                    if (itemRect.top < containerRect.top) {
-                                        container.scrollTop -= (containerRect.top - itemRect.top);
-                                    } else if (itemRect.bottom > containerRect.bottom) {
-                                        container.scrollTop += (itemRect.bottom - containerRect.bottom);
-                                    }
-                                }
-                            };
-
-                            // Click suggestion to update input and search
-                            suggestionsList.addEventListener('click', (e) => {
-                                if (e.target.tagName === 'LI') {
-                                    searchInput.value = e.target.textContent;
-                                    suggestionsList.classList.add('hidden');
-                                }
-                            });
-
-                            // Close suggestions if clicking outside
-                            document.addEventListener('click', (e) => {
-                                if (!e.target.closest('.relative')) {
-                                    suggestionsList.classList.add('hidden');
-                                }
-                            });
-                        });
-                    </script>
-                    <label for="searchBtn2" id="searchBtns2">
-                        <div class="search-btn bg-[#b7ff1d] px-3 h-12 flex items-center justify-center rounded-e-md transition duration-300 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" x="0" y="0" viewBox="0 0 118.783 118.783" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                <g>
-                                    <path d="M115.97 101.597 88.661 74.286a47.75 47.75 0 0 0 7.333-25.488c0-26.509-21.49-47.996-47.998-47.996S0 22.289 0 48.798c0 26.51 21.487 47.995 47.996 47.995a47.776 47.776 0 0 0 27.414-8.605l26.984 26.986a9.574 9.574 0 0 0 6.788 2.806 9.58 9.58 0 0 0 6.791-2.806 9.602 9.602 0 0 0-.003-13.577zM47.996 81.243c-17.917 0-32.443-14.525-32.443-32.443s14.526-32.444 32.443-32.444c17.918 0 32.443 14.526 32.443 32.444S65.914 81.243 47.996 81.243z" fill="#000000" opacity="1" data-original="#000000"></path>
-                                </g>
-                            </svg>
-                        </div>
-                    </label>
-                    <div id="mic-popup2" class="w-full h-full z-[100] fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-40 px-5 hidden" x-show="showMic2">
-                        <div class="w-max h-max z-[100] flex flex-col items-center justify-center p-8 bg-white border-2 border-blue-600 rounded-lg shadow-2xl relative">
-                            <span class="absolute top-2 right-2">
-                                <svg id="mic-close-btn2" @click="showMic2=false" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                    <g>
-                                        <path d="M436.896 74.869c-99.84-99.819-262.208-99.819-362.048 0-99.797 99.819-99.797 262.229 0 362.048 49.92 49.899 115.477 74.837 181.035 74.837s131.093-24.939 181.013-74.837c99.819-99.818 99.819-262.229 0-362.048zm-75.435 256.448c8.341 8.341 8.341 21.824 0 30.165a21.275 21.275 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251l-75.413-75.435-75.392 75.413a21.348 21.348 0 0 1-15.083 6.251 21.277 21.277 0 0 1-15.083-6.251c-8.341-8.341-8.341-21.845 0-30.165l75.392-75.413-75.413-75.413c-8.341-8.341-8.341-21.845 0-30.165 8.32-8.341 21.824-8.341 30.165 0l75.413 75.413 75.413-75.413c8.341-8.341 21.824-8.341 30.165 0 8.341 8.32 8.341 21.824 0 30.165l-75.413 75.413 75.415 75.435z" fill="#ff0000" opacity="1" data-original="#ff0000" class=""></path>
-                                    </g>
-                                </svg>
-                            </span>
-                            <h2 class="text-xl font-semibold text-center text-gray-800">Listening...</h2>
-                            <div class="wave my-6 mx-auto"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                    <g>
-                                        <defs>
-                                            <clipPath id="a" clipPathUnits="userSpaceOnUse">
-                                                <path d="M0 512h512V0H0Z" fill="#ffffff" opacity="1" data-original="#ffffff"></path>
-                                            </clipPath>
-                                        </defs>
-                                        <g clip-path="url(#a)" transform="matrix(1.33333 0 0 -1.33333 0 682.667)">
-                                            <path d="M0 0h160" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(176 20.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v-72" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 92.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0c0-88.223-71.777-160-160-160S-320-88.223-320 0" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 252.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0c-44.183 0-80 35.817-80 80v160c0 44.183 35.817 80 80 80s80-35.817 80-80V80C80 35.817 44.183 0 0 0Z" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(256 172.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(96 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(20 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v40" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(416 332.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                            <path d="M0 0v120" style="stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" transform="translate(492 292.036)" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="none" stroke-opacity="" data-original="#ffffff" class=""></path>
-                                        </g>
-                                    </g>
-                                </svg></div>
-                            <p class="text-sm text-center text-gray-600 mt-2">Please speak clearly into the microphone.</p>
-                        </div>
-                    </div>
-                    <!-- speech recognisation for search 2 -->
-                    <script>
-                        // Check for browser support
-                        const SpeechRecognition2 = window.SpeechRecognition || window.webkitSpeechRecognition;
-                        if (!SpeechRecognition2) {
-                            alert("Your browser does not support speech recognition.");
-                        } else {
-                            const recognition = new SpeechRecognition();
-                            recognition.continuous = true; // Continuous listening until stopped
-                            recognition.interimResults = false; // Don't return interim results
-
-                            const micPopup = document.getElementById('mic-popup2');
-                            const startButton = document.getElementById('start-btn2');
-
-                            recognition.onstart = () => {
-                                micPopup.classList.remove('hidden');
-                            };
-
-                            // Event handler for result
-                            recognition.onresult = (event) => {
-                                const transcript = event.results[event.resultIndex][0].transcript;
-
-                                const searchInput = document.getElementById('search-input2');
-                                if (searchInput) {
-                                    searchInput.value = transcript;
-                                    document.getElementById('searchBtns2').click();
-                                } else {
-                                    console.error("Search input element not found.");
-                                }
-                            };
-
-                            // Error handling
-                            recognition.onerror = (event) => {
-                                console.error('Error occurred in recognition: ' + event.error);
-                                micPopup.classList.add('hidden'); // Hide popup on error
-                            };
-
-                            // Start recognition when button is clicked
-                            document.getElementById('start-btn2').addEventListener('click', () => {
-                                recognition.start();
-                            });
-
-                            // Stop recognition function
-                            function stopRecognition() {
-                                recognition.stop();
-                                micPopup.classList.add('hidden');
-                            }
-
-                            // Stop recognition when the popup is closed
-                            document.getElementById('mic-close-btn2').addEventListener('click', () => {
-                                stopRecognition();
-                            });
-                        }
-                    </script>
-                </div>
-            </form>
-            <?php
-            if (isset($_POST["searchBtn2"])) {
-                $searchName = $_POST['searchInputItems2'];
-                $filterName = str_replace(' ', '+', $searchName); // Replace spaces with "+" for URL compatibility
-            ?>
-                <script>
-                    let filterName = "<?php echo htmlspecialchars($filterName, ENT_QUOTES, 'UTF-8'); ?>";
-
-                    if (filterName != "") {
-                        window.location.href = "../search/search_items.php?searchName=" + filterName;
-                    }
-                </script>
-            <?php
-            }
-            ?>
-        </div>
-        </div>
+    </div>
     </header>
+    </div>
+
     <!-- sidebar -->
     <div id="main-sidebarContainer" class="hidden h-full w-full fixed top-0 bg-black/30 z-[100]">
         <div id="sidebarContainer" class=" bg-gray-50 pb-3 font-medium fixed top-0 w-72 lg:w-80 h-[100vh] overflow-y-auto z-50 scrollBar">
