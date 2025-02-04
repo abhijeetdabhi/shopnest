@@ -303,8 +303,6 @@ if (isset($_COOKIE['adminEmail'])) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
 
-                    console.log(lat);
-
                     map.setCenter([lng, lat]);
                     map.setZoom(15);
 
