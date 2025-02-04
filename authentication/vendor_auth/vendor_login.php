@@ -200,6 +200,24 @@ unset(
         <img class="w-10 absolute" src="../../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
+    <div id="notAccept" style="display: none;" class="absolute p-5 bg-black/30 h-full w-full flex justify-center items-center backdrop-blur-md z-50">
+        <div class="bg-white rounded-xl p-5 w-96 flex flex-col items-center justify-center space-y-4 shadow-lg shadow-black/30">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 347.442 347.442" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-20 text-yellow-500">
+                    <g>
+                        <path d="M173.721 347.442c95.919 0 173.721-77.802 173.721-173.721S269.64 0 173.721 0 0 77.802 0 173.721s77.802 173.721 173.721 173.721zm-12.409-272.99c0-6.825 5.584-12.409 12.409-12.409s12.409 5.584 12.409 12.409v93.313l57.39 45.912c5.336 4.281 6.204 12.098 1.923 17.434a12.342 12.342 0 0 1-9.679 4.653c-2.73 0-5.46-.869-7.755-2.73L165.966 183.4c-2.916-2.358-4.653-5.894-4.653-9.679V74.452z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                    </g>
+                </svg>
+            </span>
+            <span class="bg-yellow-50 text-yellow-600 p-2 rounded-md">
+                <p class="text-center">Your account is still pending approval from the admin.</p>
+            </span>
+            <span id="closePopup">
+                <button class="bg-red-700 text-white w-32 h-8 rounded-md">Close</button>
+            </span>
+        </div>
+    </div>
+
     <script>
         function loader() {
             let loader = document.getElementById('loader');
@@ -246,6 +264,18 @@ unset(
                 window.location.href = '../../index.php';
             }, 2000);
         }
+
+        function displayNotAcceptPopUp(){
+            let notAccept = document.getElementById('notAccept');
+            notAccept.style.display = 'flex';
+
+            let closePopup = document.getElementById('closePopup');
+            
+            closePopup.addEventListener('click', function(){
+                notAccept.style.display = 'none';
+            })
+        }
+
     </script>
 
 
@@ -276,6 +306,8 @@ unset(
                             displaySuccessMessage("Login Successfully!");
                         } else if (response === 'pass_not_matching') {
                             displayErrorMessage("Please Enter Valid Email Or password.");
+                        } else if (response === 'not_accept'){
+                            displayNotAcceptPopUp()
                         } else if (response === 'admin_success') {
                             loader();
                             adminLogin("Admin Login Successfully!");
@@ -285,24 +317,6 @@ unset(
             })
         });
     </script>
-
-    <div class="absolute p-5 bg-black/30 h-full w-full flex justify-center items-center backdrop-blur-md z-50">
-        <div class="bg-white rounded-xl p-5 w-96 flex flex-col items-center justify-center space-y-4 shadow-lg shadow-black/30">
-            <span>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 347.442 347.442" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-20 text-yellow-500">
-                    <g>
-                        <path d="M173.721 347.442c95.919 0 173.721-77.802 173.721-173.721S269.64 0 173.721 0 0 77.802 0 173.721s77.802 173.721 173.721 173.721zm-12.409-272.99c0-6.825 5.584-12.409 12.409-12.409s12.409 5.584 12.409 12.409v93.313l57.39 45.912c5.336 4.281 6.204 12.098 1.923 17.434a12.342 12.342 0 0 1-9.679 4.653c-2.73 0-5.46-.869-7.755-2.73L165.966 183.4c-2.916-2.358-4.653-5.894-4.653-9.679V74.452z" fill="currentColor" opacity="1" data-original="currentColor"></path>
-                    </g>
-                </svg>
-            </span>
-            <span class="bg-yellow-50 text-yellow-600 p-2 rounded-md">
-                <p class="text-center">Your account is still pending approval from the admin.</p>
-            </span>
-            <span>
-                <button class="bg-red-700 text-white w-32 h-8 rounded-md">Close</button>
-            </span>
-        </div>
-    </div>
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>

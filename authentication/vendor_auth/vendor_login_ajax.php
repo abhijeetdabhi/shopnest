@@ -11,17 +11,24 @@
         $search_query = mysqli_query($con, $email_search);
 
         if(mysqli_num_rows($search_query) > 0){
-            $emailPass = mysqli_fetch_assoc($search_query);
+            $validVendor = "SELECT * FROM vendor_registration WHERE email = '$email' AND action = 'Accept'";
+            $validVendorQuery = mysqli_query($con, $validVendor);
 
-            $vendorPassword = $emailPass['password'];
-            $vendorId = $emailPass['vendor_id'];
-
-            if(password_verify($password, $vendorPassword)){
-                setcookie('vendor_id', $vendorId, time() + (365 * 24 * 60 * 60), "/");
-
-                echo 'success';
+            if(mysqli_num_rows($validVendorQuery) > 0){
+                $emailPass = mysqli_fetch_assoc($validVendorQuery);
+    
+                $vendorPassword = $emailPass['password'];
+                $vendorId = $emailPass['vendor_id'];
+    
+                if(password_verify($password, $vendorPassword)){
+                    setcookie('vendor_id', $vendorId, time() + (365 * 24 * 60 * 60), "/");
+    
+                    echo 'success';
+                }else{
+                    echo "pass_not_matching";
+                }
             }else{
-                echo "pass_not_matching";
+                echo 'not_accept';
             }
         }else {
             // for the admin

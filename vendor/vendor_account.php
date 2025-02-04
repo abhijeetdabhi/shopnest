@@ -19,6 +19,53 @@ if (isset($_COOKIE['vendor_id'])) {
     $row = mysqli_fetch_assoc($retrieve_query);
 }
 ?>
+
+<?php
+function getAddressFromLatLng($lat, $lng, $apiKey)
+{
+    $url = "https://api.tomtom.com/search/2/reverseGeocode/{$lat},{$lng}.json?key={$apiKey}";
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        echo "cURL Error: " . curl_error($ch);
+        return null;
+    }
+
+    $data = json_decode($response, true);
+
+    curl_close($ch);
+
+    if (isset($data['addresses'][0]['address'])) {
+        $address = $data['addresses'][0]['address'];
+        $formAddress = isset($address['freeformAddress']) ? $address['freeformAddress'] : 'Not available';
+
+        return [
+            'formAddress' => $formAddress
+        ];
+    }
+
+    return null;
+}
+
+
+$lat = $row['latitude'];
+$lng = $row['longitude'];
+$apiKey = 'hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw';
+
+$address = getAddressFromLatLng($lat, $lng, $apiKey);
+
+if ($address) {
+    $formAddress = $address['formAddress'];
+} else {
+    $formAddress = "";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,6 +83,13 @@ if (isset($_COOKIE['vendor_id'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" />
+    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css" />
+
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.1.2-public-preview.15/services/services-web.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js"></script>
+
+
     <!-- link to css -->
     <link rel="stylesheet" href="">
 
@@ -44,7 +98,37 @@ if (isset($_COOKIE['vendor_id'])) {
 
     <!-- title -->
     <title>Vendor Deshboard</title>
+
     <style>
+        #map {
+            width: 60vw;
+            height: 60vh;
+            display: none;
+        }
+
+        .tt-search-box {
+            width: 100%;
+            margin: auto;
+        }
+
+        .tt-search-box input {
+            font-size: 16px;
+            width: 100%;
+            height: 50px;
+        }
+
+        .tt-search-box input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .tt-search-box-input-container {
+            width: 100%;
+            height: 50px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            margin: auto;
+        }
         /* width */
         .scrollBar::-webkit-scrollbar-track {
             border-radius: 10px;
@@ -416,17 +500,64 @@ if (isset($_COOKIE['vendor_id'])) {
                                                 <small class="hidden text-red-500">GST no is require</small>
                                             </div>
                                             <div class="col-span-4">
-                                                <label for="Location" class="require">Location:</label>
-                                                <span class="relative">
-                                                    <input type="text" class="h-10 border mt-1 rounded pl-8 pr-4 w-full bg-gray-50 focus:ring-gray-600 focus:border-gray-600" name="Location" id="Location">
-                                                    <span class="absolute left-2 top-[0.5px]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
-                                                            <g>
-                                                                <path d="M12 0C7.038 0 3 4.066 3 9.065c0 7.103 8.154 14.437 8.501 14.745a.749.749 0 0 0 .998.001C12.846 23.502 21 16.168 21 9.065 21 4.066 16.962 0 12 0zm0 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" fill="#000000" opacity="1" data-original="#000000" class=""></path>
-                                                            </g>
-                                                        </svg>
-                                                    </span>
-                                                </span>
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="location" class="require font-semibold">Enter Location :</label>
+                                                    <div id="map" class="map"></div>
+                                                    <div id="searchBox"></div>
+                                                    <input type="text" value="<?php echo isset($_COOKIE['vendor_id']) ? $row['latitude'] : '' ?>" name="lat" id="lat" class="hidden">
+                                                    <input type="text" value="<?php echo isset($_COOKIE['vendor_id']) ? $row['longitude'] : '' ?>" name="lng" id="lng" class="hidden">
+                                                </div>
+                                                <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
+                                                <script>
+                                                    tt.setProductInfo("hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw", "6.25.0");
+                                                    let map = tt.map({
+                                                        key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                                                        container: "map",
+                                                    });
+
+                                                    var options = {
+                                                        searchOptions: {
+                                                            key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                                                            language: "en-GB",
+                                                            limit: 5,
+                                                        },
+                                                        autocompleteOptions: {
+                                                            key: "hMLEkomeHUGPEdhMWuKMYX9pXh8eZgVw",
+                                                            language: "en-GB",
+                                                        },
+                                                    };
+
+                                                    let searchBox = document.getElementById('searchBox');
+                                                    var ttSearchBox = new tt.plugins.SearchBox(tt.services, options);
+                                                    var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
+                                                    searchBox.append(searchBoxHTML);
+
+                                                    let formAddress = <?php echo json_encode($formAddress); ?>;
+                                                    let inputField = searchBox.querySelector('input');
+                                                    if(inputField){
+                                                        inputField.value = formAddress;
+
+                                                        let initialValue = formAddress;
+
+                                                        inputField.addEventListener('blur', function() {
+                                                            if (inputField.value === '') {
+                                                                inputField.value = initialValue;
+                                                            }
+                                                        });
+                                                    }
+
+                                                    // // Handle search result selection
+                                                    ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
+                                                        const selectedResult = event.data.result;
+                                                        const coordinates = selectedResult.position;
+
+                                                        let clat = coordinates.lat;
+                                                        let clng = coordinates.lng;
+
+                                                        document.getElementById('lat').value = clat;
+                                                        document.getElementById('lng').value = clng;
+                                                    });
+                                                </script>
                                             </div>
 
                                             <div class="col-span-4">
@@ -656,8 +787,10 @@ if (isset($_POST['updateBtn'])) {
     $userName = $_POST['userName'];
     $gst = $_POST['gst'];
     $bio = $_POST['bio'];
+    $lat = $_POST['lat'];
+    $lng = $_POST['lng'];
 
-    $updateVenodr = "UPDATE vendor_registration SET name='$full_name', email='$email', username='$userName', phone='$phone', Bio='$bio', GST='$gst' WHERE vendor_id = '$vendor_id'";
+    $updateVenodr = "UPDATE vendor_registration SET name='$full_name', email='$email', username='$userName', phone='$phone', Bio='$bio', GST='$gst', latitude='$lat', longitude='$lng' WHERE vendor_id = '$vendor_id'";
     $update_query = mysqli_query($con, $updateVenodr);
 
     if ($update_query) {
