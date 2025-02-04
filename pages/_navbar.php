@@ -260,7 +260,7 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
 <body style="font-family: 'Outfit', sans-serif;" x-data="{ logoutPopUp: false }" :class="{ 'overflow-hidden ': logoutPopUp}">
 
     <!-- logoutpopUp -->
-    <form method="post" class="fixed w-full h-full bg-black/30 z-[100] m-auto flex items-center justify-center" x-show="logoutPopUp" x-transition x-cloak @click.outside="logoutPopUp=false">
+    <form method="post" class="fixed w-full h-full bg-black/50 z-[100] m-auto flex items-center justify-center" x-show="logoutPopUp" x-transition x-cloak @click.outside="logoutPopUp=false">
         <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto">
             <div class="p-4">
                 <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
@@ -269,10 +269,10 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
                     </svg>
                 </div>
                 <div class="mt-3 text-center">
-                    <span class="text-gray-900 text-base font-semibold leading-6">Deactivate account</span>
-                    <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to deactivate your account? This action cannot be undone.</p>
+                    <span class="text-gray-900 text-base font-semibold leading-6">Logout</span>
+                    <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to logout your account? This action cannot be undone.</p>
                 </div>
-                <div class="mx-4 my-3">
+                <div class="mx-4 my-5">
                     <input type="submit" name="userLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-700 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
                     <div
                         @click="logoutPopUp = false"

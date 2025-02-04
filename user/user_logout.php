@@ -43,7 +43,7 @@ if (isset($_POST['userLogout'])) {
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
 <!-- logout -->
-<form method="post" class="fixed w-full h-full bg-black/30 backdrop-blur-md z-50 m-auto flex items-center justify-center overflow-hidden" id="logoutPopUp">
+<form method="post" class="fixed w-full h-full bg-black/50 backdrop-blur-md z-50 m-auto flex items-center justify-center overflow-hidden" id="logoutPopUp">
     <div class="bg-white text-left rounded-lg max-w-xs shadow-md m-auto fz-50">
         <div class="p-4">
             <div class="flex m-auto bg-red-100 shrink-0 justify-center items-center w-12 h-12 rounded-full">
@@ -52,8 +52,8 @@ if (isset($_POST['userLogout'])) {
                 </svg>
             </div>
             <div class="mt-3 text-center">
-                <span class="text-gray-900 text-base font-semibold leading-6">Desactivate account</span>
-                <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+                <span class="text-gray-900 text-base font-semibold leading-6">Logout</span>
+                <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to logout your account? All of your data will be permanently removed. This action cannot be undone.</p>
             </div>
             <div class="mx-4 my-3">
                 <input type="submit" name="userLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-500 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
