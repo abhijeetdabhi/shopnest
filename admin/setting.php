@@ -288,7 +288,7 @@ $_SESSION['currentData'] = $newCount;
                         }
                     });
                 </script>
-                <main class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
+                <form method="post" enctype="multipart/form-data" class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
                     <div class="container mx-auto p-6 flex flex-col justify-center items-center">
                         <?php
                         if (isset($_COOKIE['adminEmail'])) {
@@ -401,7 +401,7 @@ $_SESSION['currentData'] = $newCount;
                                     </span>
                                 </div>
                                 <div class="w-full flex justify-center md:justify-end">
-                                    <button class="w-32 h-10 font-medium rounded-tl-lg rounded-br-lg tracking-wide text-white bg-green-600 hover:bg-green-700 hover:transition">Update</button>
+                                    <button name="changePass" class="w-32 h-10 font-medium rounded-tl-lg rounded-br-lg tracking-wide text-white bg-green-600 hover:bg-green-700 hover:transition">Update</button>
                                 </div>
                             </div>
                         <?php
@@ -412,7 +412,7 @@ $_SESSION['currentData'] = $newCount;
                         }
                         ?>
                     </div>
-                </main>
+                </form>
             </div>
         </div>
     </div>
