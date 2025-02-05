@@ -22,7 +22,7 @@ if (isset($_COOKIE['adminEmail'])) {
     $views_query = mysqli_query($con, $views);
 
     $Cview = mysqli_num_rows($views_query);
-    
+
     $weekly = " SELECT view_date, COUNT(view_count) as total_count 
         FROM page_count 
         WHERE view_date >= CURDATE() - INTERVAL 16 DAY
@@ -263,14 +263,14 @@ if (isset($_COOKIE['adminEmail'])) {
                         <div class="flex items-center justify-between">
                             <span class="mx-3">Vendor request</span>
                             <?php
-                            if(isset($_SESSION['existingData'])){
-                                if($_SESSION['existingData'] < $_SESSION['currentData']){
-                                    ?>
+                            if (isset($_SESSION['existingData'])) {
+                                if ($_SESSION['existingData'] < $_SESSION['currentData']) {
+                            ?>
                                     <span class="relative flex size-2">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
                                         <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
                                     </span>
-                                    <?php
+                            <?php
                                 }
                             }
                             ?>
@@ -450,9 +450,9 @@ if (isset($_COOKIE['adminEmail'])) {
                         </div>
                         <div class="flex items-center gap-4 bg-white shadow-xl rounded-md px-4 py-3">
                             <div class="bg-gray-50 rounded-md max-w-max p-2">
-                                <svg class="w-8 h-8 fill-gray-600" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                <svg class="w-8 h-8 fill-gray-600" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <g>
-                                        <path d="M30 20V9.657c.182-.087.358-.186.525-.305 1.167-.83 1.652-2.371 1.205-3.833-.32-1.049-.881-2.54-1.295-3.606A2.977 2.977 0 0 0 27.639 0H4.359C3.113 0 2.017.75 1.566 1.91 1.155 2.966.6 4.444.279 5.499-.204 7.082.478 8.931 2 9.655V20c-1.103 0-2 .897-2 2v2c0 1.103.897 2 2 2v3c0 1.654 1.346 3 3 3h22c1.654 0 3-1.346 3-3v-3c1.103 0 2-.897 2-2v-2c0-1.103-.897-2-2-2zM2.192 6.08c.304-.996.84-2.423 1.237-3.446A.991.991 0 0 1 4.36 2h23.28a.99.99 0 0 1 .93.636c.33.847.93 2.426 1.25 3.468.19.627.004 1.292-.454 1.619a1.518 1.518 0 0 1-1.732.001c-.936-.666-2.313-.677-3.266 0-.508.36-1.226.36-1.734 0a2.856 2.856 0 0 0-3.266 0c-.508.36-1.226.36-1.734 0a2.853 2.853 0 0 0-3.265 0c-.51.361-1.227.36-1.735 0a2.853 2.853 0 0 0-3.265 0c-.51.361-1.227.36-1.735 0a2.853 2.853 0 0 0-3.265 0 1.507 1.507 0 0 1-1.538.116c-.58-.293-.853-1.05-.638-1.76zM4 9.948a3.483 3.483 0 0 0 1.526-.594.84.84 0 0 1 .949 0c1.19.845 2.86.846 4.051 0a.84.84 0 0 1 .949 0c1.19.845 2.86.846 4.051 0a.84.84 0 0 1 .949 0c1.19.846 2.86.846 4.05 0a.84.84 0 0 1 .95 0c1.19.846 2.86.846 4.05 0a.84.84 0 0 1 .95 0c.457.325.977.53 1.525.608V20h-6.356a6.003 6.003 0 0 0-3.761-3.683A2.982 2.982 0 0 0 19 14c0-1.654-1.346-3-3-3s-3 1.346-3 3c0 .938.441 1.766 1.117 2.317A6.002 6.002 0 0 0 10.357 20H4zM12.534 20c.699-1.207 2.009-2 3.466-2s2.768.793 3.467 2zM16 15c-.551 0-1-.449-1-1s.449-1 1-1 1 .449 1 1-.449 1-1 1zm12 14a1 1 0 0 1-1 1H5c-.551 0-1-.448-1-1v-3h24zm2-5H2v-2h18.9l.006-.001h8.085L29 22l.01-.002H30z" fill="" opacity="1" data-original="#000000" class=""></path>
+                                        <path d="M30 20V9.657c.182-.087.358-.186.525-.305 1.167-.83 1.652-2.371 1.205-3.833-.32-1.049-.881-2.54-1.295-3.606A2.977 2.977 0 0 0 27.639 0H4.359C3.113 0 2.017.75 1.566 1.91 1.155 2.966.6 4.444.279 5.499-.204 7.082.478 8.931 2 9.655V20c-1.103 0-2 .897-2 2v2c0 1.103.897 2 2 2v3c0 1.654 1.346 3 3 3h22c1.654 0 3-1.346 3-3v-3c1.103 0 2-.897 2-2v-2c0-1.103-.897-2-2-2zM2.192 6.08c.304-.996.84-2.423 1.237-3.446A.991.991 0 0 1 4.36 2h23.28a.99.99 0 0 1 .93.636c.33.847.93 2.426 1.25 3.468.19.627.004 1.292-.454 1.619a1.518 1.518 0 0 1-1.732.001c-.936-.666-2.313-.677-3.266 0-.508.36-1.226.36-1.734 0a2.856 2.856 0 0 0-3.266 0c-.508.36-1.226.36-1.734 0a2.853 2.853 0 0 0-3.265 0c-.51.361-1.227.36-1.735 0a2.853 2.853 0 0 0-3.265 0c-.51.361-1.227.36-1.735 0a2.853 2.853 0 0 0-3.265 0 1.507 1.507 0 0 1-1.538.116c-.58-.293-.853-1.05-.638-1.76zM4 9.948a3.483 3.483 0 0 0 1.526-.594.84.84 0 0 1 .949 0c1.19.845 2.86.846 4.051 0a.84.84 0 0 1 .949 0c1.19.845 2.86.846 4.051 0a.84.84 0 0 1 .949 0c1.19.846 2.86.846 4.05 0a.84.84 0 0 1 .95 0c1.19.846 2.86.846 4.05 0a.84.84 0 0 1 .95 0c.457.325.977.53 1.525.608V20h-6.356a6.003 6.003 0 0 0-3.761-3.683A2.982 2.982 0 0 0 19 14c0-1.654-1.346-3-3-3s-3 1.346-3 3c0 .938.441 1.766 1.117 2.317A6.002 6.002 0 0 0 10.357 20H4zM12.534 20c.699-1.207 2.009-2 3.466-2s2.768.793 3.467 2zM16 15c-.551 0-1-.449-1-1s.449-1 1-1 1 .449 1 1-.449 1-1 1zm12 14a1 1 0 0 1-1 1H5c-.551 0-1-.448-1-1v-3h24zm2-5H2v-2h18.9l.006-.001h8.085L29 22l.01-.002H30z" fill="" opacity="1" data-original="#000000"></path>
                                     </g>
                                 </svg>
                             </div>
@@ -464,11 +464,23 @@ if (isset($_COOKIE['adminEmail'])) {
                     </div>
                     <div class="mt-12">
                         <div class="w-full bg-white rounded-xl p-4 h-full">
+                            <div class="space-y-3 py-4">
+                                <div class="space-x-1 text-xs">
+                                    <span class="border-2 px-4 border-[#ff0000] bg-[#ffe6e6]">
+                                    </span>
+                                    <span>Less than 10 view</span>
+                                </div>
+                                <div class="space-x-1 text-xs">
+                                    <span class="border-2 px-4 border-[#2563eb] bg-[#ece6ff]">
+                                    </span>
+                                    <span>More than 10 view</span>
+                                </div>
+                            </div>
                             <div class="flex items-center justify-between flex-wrap mb-4">
                                 <h2 class="text-xl font-bold md:text-4xl">Visitors analytics</h2>
                                 <div class="flex items-center gap-3">
-                                    <button id="weekButton" class="border-2 border-[#2563eb] bg-[#2563eb33] p-1">Weekly</button>
-                                    <button id="monthButton" class="border-2 border-[#2563eb] bg-[#2563eb33] p-1">Monthly</button>
+                                    <button id="weekButton" class="rounded-md text-[#2563eb] border-2 border-[#2563eb] bg-[#2563eb33] p-1 active:scale-90 transition">Weekly</button>
+                                    <button id="monthButton" class="rounded-md text-[#2563eb] border-2 border-[#2563eb] bg-[#2563eb33] p-1 active:scale-90 transition">Monthly</button>
                                 </div>
                             </div>
                             <div class="chart-container w-full h-full rounded-md">
@@ -570,7 +582,7 @@ if (isset($_COOKIE['adminEmail'])) {
                 myChart.data.datasets[0].data = weekCount;
                 myChart.update();
             });
-    
+
             // Update chart for monthly data
             document.getElementById('monthButton').addEventListener('click', function() {
                 myChart.data.labels = monthDate;
