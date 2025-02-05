@@ -504,8 +504,32 @@ if (isset($_POST['changePass'])) {
     $tempname = $_FILES['ProfileImage']['tmp_name'];
     $folder = '../src/adminProfile/' . $file_name;
 
-    $decod_pass = password_verify($current_pass, $dpass);
+    $isImageUpdated = false;
+    $isPasswordUpdated = false;
 
+    if(!empty($file_name)){
+        if (move_uploaded_file($tempname, $folder)) {
+            $vendor_id = $_COOKIE['vendor_id'];
+            $update_cover = "UPDATE admin SET profile_image = '$file_name' WHERE email = '$adminEmail'";
+            $updatedcover_query = mysqli_query($con, $update_cover);
+    
+            if ($updatedcover_query) {
+                echo '<script>loader()</script>';
+                echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
+                $isImageUpdated = true;
+            } else {
+                echo '<script>displayErrorMessage("Enter Valid Data.");</script>';
+            }
+        } else {
+            echo '<script>displayErrorMessage("Failed to upload image. Please try again.");</script>';
+        }
+    }
+
+    $decod_pass = false;
+    if (!empty($current_pass) && !empty($new_pass) && !empty($re_pass)) {
+        $decod_pass = password_verify($current_pass, $dpass);
+    }
+    
     if ($decod_pass) {
         if ($new_pass === $re_pass) {
             $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
@@ -516,13 +540,20 @@ if (isset($_POST['changePass'])) {
             if ($up_query) {
                 echo "<script>loader()</script>";
                 echo '<script>displaySuccessMessage("Password Updated Successfully.");</script>';
+                $isPasswordUpdated = true;
             } else {
                 echo '<script>displayErrorMessage("Password Not Update.");</script>';
             }
-        } else {
+        }else {
             echo '<script>displayErrorMessage("The new password and the re-typed password do not match. Please try again.");</script>';
         }
-    } else {
-        echo '<script>displayErrorMessage("Current password not match with new password or re-type password. Please try again.");</script>';
+    }else {
+        if (!empty($current_pass) || !empty($new_pass) || !empty($re_pass)) {
+            echo '<script>displayErrorMessage("Current password does not match. Please try again.");</script>';
+        }
+    }
+
+    if ($isImageUpdated && $isPasswordUpdated) {
+        echo '<script>displaySuccessMessage("Profile updated successfully with both image and password.");</script>';
     }
 }

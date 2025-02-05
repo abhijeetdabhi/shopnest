@@ -306,7 +306,7 @@ unset(
                             } else if (response === 'pass_not_matching') {
                                 displayErrorMessage("Please Enter Valid Email Or password.");
                             }else if(response === 'email_not_found'){
-                                displayErrorMessage("The email address you've entered doesn't exist. Please check and try again or create an account first.");
+                                displayErrorMessage("The email address you've entered doesn't exist.");
                             } else if (response === 'not_accept'){
                                 displayNotAcceptPopUp()
                             } else if (response === 'admin_success') {

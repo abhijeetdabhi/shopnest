@@ -869,7 +869,7 @@ if (isset($_POST['changePass'])) {
             echo '<script>displayErrorMessage("The new password and the re-typed password do not match. Please try again.");</script>';
         }
     } else {
-        echo '<script>displayErrorMessage("Current password not match with new password or re-type password. Please try again.");</script>';
+        echo '<script>displayErrorMessage("Current password does not match. Please try again.");</script>';
     }
 }
 ?>
