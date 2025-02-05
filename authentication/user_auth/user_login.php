@@ -243,30 +243,33 @@ if (isset($_COOKIE['adminEmail'])) {
                 let userEmail = $('#email').val().trim();
                 let userPass = $('#password').val().trim();
 
-                if (!userEmail === "" || !userPass === "") {
+                if (userEmail === "" || userPass === "") {
                     displayErrorMessage("Please Enter Your Email Or Password");
-                    return
+                    return;
+                }else{
+                    $.ajax({
+                        type: "post",
+                        url: "user_login_ajax.php",
+                        data: {
+                            userEmail: userEmail,
+                            userPass: userPass
+                        },
+                        success: function(response) {
+                            if (response === 'success') {
+                                loader();
+                                displaySuccessMessage("Login Successfully!");
+                            } else if(response === 'email_not_found'){
+                                displayErrorMessage("The email address you've entered doesn't exist. Please check and try again or create an account first.");
+                            } else if (response === 'pass_not_matching') {
+                                displayErrorMessage("Please Enter Valid Email Or password.");
+                            }else if (response === 'admin_success') {
+                                loader();
+                                adminLogin("Admin Login Successfully!");
+                            }
+                        }
+                    });
                 }
 
-                $.ajax({
-                    type: "post",
-                    url: "user_login_ajax.php",
-                    data: {
-                        userEmail: userEmail,
-                        userPass: userPass
-                    },
-                    success: function(response) {
-                        if (response === 'success') {
-                            loader();
-                            displaySuccessMessage("Login Successfully!");
-                        } else if (response === 'pass_not_matching') {
-                            displayErrorMessage("Please Enter Valid Email Or password.");
-                        } else if (response === 'admin_success') {
-                            loader();
-                            adminLogin("Admin Login Successfully!");
-                        }
-                    }
-                });
             });
         });
     </script>
