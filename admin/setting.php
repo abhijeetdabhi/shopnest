@@ -160,14 +160,14 @@ $_SESSION['currentData'] = $newCount;
                         <div class="flex items-center justify-between">
                             <span class="mx-3">Vendor request</span>
                             <?php
-                            if(isset($_SESSION['existingData'])){
-                                if($_SESSION['existingData'] < $_SESSION['currentData']){
-                                    ?>
+                            if (isset($_SESSION['existingData'])) {
+                                if ($_SESSION['existingData'] < $_SESSION['currentData']) {
+                            ?>
                                     <span class="relative flex size-2">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
                                         <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
                                     </span>
-                                    <?php
+                            <?php
                                 }
                             }
                             ?>
@@ -299,7 +299,7 @@ $_SESSION['currentData'] = $newCount;
                                     <!-- Profile image -->
                                     <div class="relative flex items-stretch justify-center">
                                         <img id="previewImage" class="w-20 h-20 rounded-full border object-cover object-center border-black" alt=""
-                                            src="../src/adminProfile/<?php echo $row['profile_image']?>">
+                                            src="../src/adminProfile/<?php echo $row['profile_image'] ?>">
 
                                         <input class="hidden" name="ProfileImage" type="file" id="imageInput" accept="image/jpg, image/png, image/jpeg" onchange="previewSelectedImage()">
 
@@ -418,7 +418,7 @@ $_SESSION['currentData'] = $newCount;
     </div>
 
     <!-- Successfully message container -->
-    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] border-t-4 m-auto rounded-lg border-green-400 py-3 px-6 bg-gray-800 z-50" id="SpopUp" style="display: none;">
         <div class="flex items-center m-auto justify-center text-sm text-green-400" role="alert">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
@@ -430,13 +430,13 @@ $_SESSION['currentData'] = $newCount;
 
 
     <!-- Error message container -->
-    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-max border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] border-t-4 rounded-lg border-red-500 py-3 px-6 bg-gray-800 z-50" id="popUp" style="display: none;">
         <div class="flex items-center m-auto justify-center text-sm text-red-400">
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
-            <div class="capitalize font-medium" id="errorMessage"></div>
+            <div class="capitalize font-medium text-center" id="errorMessage"></div>
         </div>
     </div>
 
@@ -507,12 +507,12 @@ if (isset($_POST['changePass'])) {
     $isImageUpdated = false;
     $isPasswordUpdated = false;
 
-    if(!empty($file_name)){
+    if (!empty($file_name)) {
         if (move_uploaded_file($tempname, $folder)) {
             $vendor_id = $_COOKIE['vendor_id'];
             $update_cover = "UPDATE admin SET profile_image = '$file_name' WHERE email = '$adminEmail'";
             $updatedcover_query = mysqli_query($con, $update_cover);
-    
+
             if ($updatedcover_query) {
                 echo '<script>loader()</script>';
                 echo '<script>displaySuccessMessage("Image Updated Properly.");</script>';
@@ -529,7 +529,7 @@ if (isset($_POST['changePass'])) {
     if (!empty($current_pass) && !empty($new_pass) && !empty($re_pass)) {
         $decod_pass = password_verify($current_pass, $dpass);
     }
-    
+
     if ($decod_pass) {
         if ($new_pass === $re_pass) {
             $new_dpass = password_hash($new_pass, PASSWORD_BCRYPT);
@@ -544,16 +544,16 @@ if (isset($_POST['changePass'])) {
             } else {
                 echo '<script>displayErrorMessage("Password Not Update.");</script>';
             }
-        }else {
-            echo '<script>displayErrorMessage("The new password and the re-typed password do not match. Please try again.");</script>';
+        } else {
+            echo '<script>displayErrorMessage("Both passwords do not match. Please try again.");</script>';
         }
-    }else {
+    } else {
         if (!empty($current_pass) || !empty($new_pass) || !empty($re_pass)) {
-            echo '<script>displayErrorMessage("Current password does not match. Please try again.");</script>';
+            echo '<script>displayErrorMessage("The current password is incorrect. Please try again.");</script>';
         }
     }
 
     if ($isImageUpdated && $isPasswordUpdated) {
-        echo '<script>displaySuccessMessage("Profile updated successfully with both image and password.");</script>';
+        echo '<script>displaySuccessMessage("Profile updated successfully with both the image and password.");</script>';
     }
 }
