@@ -13,6 +13,10 @@ session_start();
 
 include "../include/connect.php";
 
+if (!isset($_SESSION['existingData'])) {
+    $_SESSION['existingData'] = 0;
+}
+
 $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
 $newDataQuery = mysqli_query($con, $newData);
 

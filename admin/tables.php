@@ -31,10 +31,11 @@ if (isset($_COOKIE['adminEmail'])) {
           FROM vendor_registration vr
           LEFT JOIN products p ON vr.vendor_id = p.vendor_id
           LEFT JOIN orders o ON vr.vendor_id = o.vendor_id
+          WHERE vr.action = 'Accept'
           GROUP BY vr.vendor_id
           ORDER BY total_products DESC
           LIMIT 10
-      ";
+    ";
 
     $vendor_query = mysqli_query($con, $topVendors);
 
@@ -77,6 +78,11 @@ if (isset($_COOKIE['adminEmail'])) {
           ORDER BY totalProducts DESC
           LIMIT 10";
     $topBuying_query = mysqli_query($con, $topBuying);
+
+
+    if (!isset($_SESSION['existingData'])) {
+        $_SESSION['existingData'] = 0;
+    }
 
     $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
     $newDataQuery = mysqli_query($con, $newData);

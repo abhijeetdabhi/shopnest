@@ -123,6 +123,10 @@ if (isset($_COOKIE['adminEmail'])) {
     $vendor_json = json_encode($nvendor);
 
 
+    if (!isset($_SESSION['existingData'])) {
+        $_SESSION['existingData'] = 0;
+    }
+
     $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
     $newDataQuery = mysqli_query($con, $newData);
 

@@ -20,6 +20,10 @@ $retrieve_query = mysqli_query($con, $retrieve_data);
 $row = mysqli_fetch_assoc($retrieve_query);
 
 
+if (!isset($_SESSION['existingData'])) {
+    $_SESSION['existingData'] = 0;
+}
+
 $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
 $newDataQuery = mysqli_query($con, $newData);
 

@@ -10,6 +10,11 @@ if (isset($_COOKIE['vendor_id'])) {
 }
 
 session_start();
+
+if (!isset($_SESSION['existingData'])) {
+    $_SESSION['existingData'] = 0;
+}
+
 include "../include/connect.php";
 $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
 $newDataQuery = mysqli_query($con, $newData);
