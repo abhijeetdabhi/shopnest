@@ -64,7 +64,7 @@ if (isset($_POST['userLogout'])) {
 </form>
 
 <!-- Successfully message container -->
-<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 m-auto rounded-lg border-green-500 py-3 px-6 bg-green-100 z-50" id="SpopUp" style="display: none;">
+<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 m-auto rounded-lg border-green-500 py-3 px-6 bg-green-100 z-50" id="LpopUp" style="display: none;">
     <div class="flex items-center m-auto justify-center text-sm text-green-500" role="alert">
         <svg class="flex-shrink-0 inline w-5 h-5 me-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 21 21" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd" class="">
             <g>
@@ -72,7 +72,7 @@ if (isset($_POST['userLogout'])) {
             </g>
         </svg>
         <span class="sr-only">Info</span>
-        <div class="capitalize font-medium text-center" id="Successfully"></div>
+        <div class="capitalize font-medium text-center" id="logoutSuccess"></div>
     </div>
 </div>
 
@@ -92,15 +92,15 @@ if (isset($_POST['userLogout'])) {
         body.style.overflow = 'hidden';
     }
 
-    function loginPopUp(message) {
+    function logout(message) {
         let LpopUp = document.getElementById('LpopUp');
-        let loginSuccess = document.getElementById('loginSuccess');
+        let logoutSuccess = document.getElementById('logoutSuccess');
 
         setTimeout(() => {
-            loginSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
+            logoutSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
             LpopUp.style.display = 'flex';
             LpopUp.style.opacity = '100';
-            window.location.href = "../index.php";
+            window.location.href = '../index.php';
         }, 2000);
     }
 
@@ -120,7 +120,7 @@ if ($userLogout === true) {
     </script>
 <?php
     echo '<script>loader()</script>';
-    echo '<script>loginPopUp("Logout Successfully.");</script>';
+    echo '<script>logout("Logout Successfully.");</script>';
 }
 
 ?>

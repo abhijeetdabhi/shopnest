@@ -159,6 +159,7 @@ if (isset($_COOKIE['adminEmail'])) {
         </div>
     </div>
 
+    <!-- for the admin -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 m-auto rounded-lg border-green-500 py-3 px-6 bg-green-100 z-50" id="ApopUp" style="display: none;">
         <div class="flex items-center m-auto justify-center text-sm text-green-500" role="alert">
             <svg class="flex-shrink-0 inline w-5 h-5 me-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 21 21" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd" class="">
@@ -167,7 +168,7 @@ if (isset($_COOKIE['adminEmail'])) {
                 </g>
             </svg>
             <span class="sr-only">Info</span>
-            <div class="capitalize font-medium text-center" id="Successfully"></div>
+            <div class="capitalize font-medium text-center" id="adminSuccess"></div>
         </div>
     </div>
 

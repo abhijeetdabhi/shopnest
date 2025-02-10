@@ -85,7 +85,7 @@ if (isset($_POST['adminLogout'])) {
             </g>
         </svg>
         <span class="sr-only">Info</span>
-        <div class="capitalize font-medium text-center" id="loginSuccess"></div>
+        <div class="capitalize font-medium text-center" id="logoutSuccess"></div>
     </div>
 </div>
 
@@ -105,12 +105,12 @@ if (isset($_POST['adminLogout'])) {
         body.style.overflow = 'hidden';
     }
 
-    function logOutPopUp(message) {
+    function logout(message) {
         let LpopUp = document.getElementById('LpopUp');
-        let loginSuccess = document.getElementById('loginSuccess');
+        let logoutSuccess = document.getElementById('logoutSuccess');
 
         setTimeout(() => {
-            loginSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
+            logoutSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
             LpopUp.style.display = 'flex';
             LpopUp.style.opacity = '100';
             window.location.href = '../index.php';
@@ -133,7 +133,7 @@ if ($adminLogout === true) {
     </script>
 <?php
     echo '<script>loader()</script>';
-    echo '<script>logOutPopUp("Logout Successfully.");</script>';
+    echo '<script>logout("Logout Successfully.");</script>';
 }
 
 ?>

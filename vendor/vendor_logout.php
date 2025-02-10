@@ -13,12 +13,12 @@ if (isset($_COOKIE['adminEmail'])) {
 
 
 <?php
-$userLogout = false;
+$vendorLogout = false;
 
-if (isset($_POST['userLogout'])) {
+if (isset($_POST['vendorLogout'])) {
     setcookie('vendor_id', '', time() - 3600, '/');
 
-    $userLogout = true;
+    $vendorLogout = true;
 }
 ?>
 
@@ -69,7 +69,7 @@ if (isset($_POST['userLogout'])) {
                 <p class="mt-2 text-gray-400 text-sm leading-5">Are you sure you want to logout your account? All of your data will be permanently removed. This action cannot be undone.</p>
             </div>
             <div class="mx-4 my-3">
-                <input type="submit" name="userLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-500 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
+                <input type="submit" name="vendorLogout" value="Logout" class="inline-flex px-4 py-2 text-white bg-red-500 text-base font-medium justify-center w-full rounded-md border-2 border-transparent shadow-sm cursor-pointer">
                 <div onClick="closePopup()" class="inline-flex mt-3 px-4 py-2 bg-white text-gray-500 text-base leading-6 font-medium justify-center w-full rounded-md border border-gray-400 shadow-sm cursor-pointer">Cancel</div>
             </div>
         </div>
@@ -77,7 +77,7 @@ if (isset($_POST['userLogout'])) {
 </form>
 
 <!-- Successfully message container -->
-<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 m-auto rounded-lg border-green-500 py-3 px-6 bg-green-100 z-50" id="SpopUp" style="display: none;">
+<div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 m-auto rounded-lg border-green-500 py-3 px-6 bg-green-100 z-50" id="LpopUp" style="display: none;">
     <div class="flex items-center m-auto justify-center text-sm text-green-500" role="alert">
         <svg class="flex-shrink-0 inline w-5 h-5 me-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 21 21" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd" class="">
             <g>
@@ -85,7 +85,7 @@ if (isset($_POST['userLogout'])) {
             </g>
         </svg>
         <span class="sr-only">Info</span>
-        <div class="capitalize font-medium text-center" id="Successfully"></div>
+        <div class="capitalize font-medium text-center" id="logoutSuccess"></div>
     </div>
 </div>
 
@@ -106,15 +106,15 @@ if (isset($_POST['userLogout'])) {
         body.style.overflow = 'hidden';
     }
 
-    function loginPopUp(message) {
+    function logout(message) {
         let LpopUp = document.getElementById('LpopUp');
-        let loginSuccess = document.getElementById('loginSuccess');
+        let logoutSuccess = document.getElementById('logoutSuccess');
 
         setTimeout(() => {
-            loginSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
+            logoutSuccess.innerHTML = '<span class="font-medium">' + message + '</span>';
             LpopUp.style.display = 'flex';
             LpopUp.style.opacity = '100';
-            window.location.href = "../index.php";
+            window.location.href = '../index.php';
         }, 2000);
     }
 
@@ -126,7 +126,7 @@ if (isset($_POST['userLogout'])) {
 
 <?php
 
-if ($userLogout === true) {
+if ($vendorLogout === true) {
 ?>
     <script>
         let logoutPopUp = document.getElementById('logoutPopUp');
@@ -134,7 +134,7 @@ if ($userLogout === true) {
     </script>
 <?php
     echo '<script>loader()</script>';
-    echo '<script>loginPopUp("Logout Successfully.");</script>';
+    echo '<script>logout("Logout Successfully.");</script>';
 }
 
 ?>
