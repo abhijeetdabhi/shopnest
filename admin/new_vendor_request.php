@@ -13,14 +13,14 @@ include "../include/connect.php";
 
 session_start();
 
-$oldData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+$oldData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
 $oldDataQuery = mysqli_query($con, $oldData);
 $oldCount = mysqli_num_rows($oldDataQuery);
 
 $_SESSION['existingData'] = $oldCount;
 $existingData = $_SESSION['existingData'];
 
-$newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+$newData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
 $newDataQuery = mysqli_query($con, $newData);
 
 $newCount = mysqli_num_rows($newDataQuery);
@@ -289,7 +289,7 @@ $currentData = $_SESSION['currentData'];
                 <div class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
                     <?php
                     if (isset($_COOKIE['adminEmail'])) {
-                        $vendor_data = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+                        $vendor_data = "SELECT * FROM vendor_request WHERE status = 'Pending'";
                         $vendor_query = mysqli_query($con, $vendor_data);
 
                     ?>
@@ -317,7 +317,7 @@ $currentData = $_SESSION['currentData'];
                                             </div>
                                             <div class="flex justify-between items-center divide-x-2">
                                                 <div class="w-full">
-                                                    <input type="text" value="<?php echo $row['vendor_id'] ?>" class="vendorId hidden">
+                                                    <input type="text" value="<?php echo $row['request_id'] ?>" class="vendorId hidden">
                                                     <button data-id="<?php echo $i ?>" class="accept flex justify-center items-center space-x-1 w-full py-2 px-1 text-green-600">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">
@@ -330,7 +330,7 @@ $currentData = $_SESSION['currentData'];
                                                     </button>
                                                 </div>
                                                 <div class="w-full">
-                                                    <input type="text" value="<?php echo $row['vendor_id'] ?>" class="vendor_id hidden">
+                                                    <input type="text" value="<?php echo $row['request_id'] ?>" class="vendor_id hidden">
                                                     <button data-id="<?php echo $i ?>" class="cancel flex justify-center items-center space-x-1 w-full py-2 px-1 text-red-600">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 511.76 511.76" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-5">

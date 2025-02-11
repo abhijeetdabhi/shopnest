@@ -150,7 +150,7 @@ function displayRandomProducts($con, $limit)
     foreach ($vendorLatitudes as $index => $lat) {
         $lng = isset($vendorLongitudes[$index]) ? $vendorLongitudes[$index] : 'N/A'; // Get longitude for the same index
 
-        $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng' AND action = 'Accept'";
+        $get_vendor = "SELECT * FROM vendor_registration WHERE latitude = '$lat' AND longitude = '$lng'";
         $query = mysqli_query($con, $get_vendor);
 
         if(mysqli_num_rows($query)){

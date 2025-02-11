@@ -17,7 +17,7 @@ if (!isset($_SESSION['existingData'])) {
 
 include '../include/connect.php';
 
-$newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+$newData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
 $newDataQuery = mysqli_query($con, $newData);
 
 $newCount = mysqli_num_rows($newDataQuery);

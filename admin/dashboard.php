@@ -127,7 +127,7 @@ if (isset($_COOKIE['adminEmail'])) {
         $_SESSION['existingData'] = 0;
     }
 
-    $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+    $newData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
     $newDataQuery = mysqli_query($con, $newData);
 
     $newCount = mysqli_num_rows($newDataQuery);

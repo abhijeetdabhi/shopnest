@@ -31,7 +31,6 @@ if (isset($_COOKIE['adminEmail'])) {
           FROM vendor_registration vr
           LEFT JOIN products p ON vr.vendor_id = p.vendor_id
           LEFT JOIN orders o ON vr.vendor_id = o.vendor_id
-          WHERE vr.action = 'Accept'
           GROUP BY vr.vendor_id
           ORDER BY total_products DESC
           LIMIT 10
@@ -84,7 +83,7 @@ if (isset($_COOKIE['adminEmail'])) {
         $_SESSION['existingData'] = 0;
     }
 
-    $newData = "SELECT * FROM vendor_registration WHERE action = 'Not Accept'";
+    $newData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
     $newDataQuery = mysqli_query($con, $newData);
 
     $newCount = mysqli_num_rows($newDataQuery);

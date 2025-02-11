@@ -34,7 +34,7 @@
         } elseif (mysqli_num_rows($search_query) == 0) {
             echo "email_not_found";
         } elseif(mysqli_num_rows($search_query) > 0){
-            $validVendor = "SELECT * FROM vendor_registration WHERE email = '$email' AND action = 'Accept'";
+            $validVendor = "SELECT * FROM vendor_registration WHERE email = '$email'";
             $validVendorQuery = mysqli_query($con, $validVendor);
 
             if(mysqli_num_rows($validVendorQuery) > 0){
