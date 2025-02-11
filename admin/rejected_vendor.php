@@ -1,27 +1,96 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
+?>
+
+<?php
+
+include "../include/connect.php";
 
 session_start();
 
-if (!isset($_SESSION['existingData'])) {
-    $_SESSION['existingData'] = 0;
+if (isset($_COOKIE['adminEmail'])) {
+
+    // top seller Vendors
+    $topVendors = "
+          SELECT 
+              vr.vendor_id,
+              vr.username,
+              vr.name,
+              vr.email,
+              vr.dp_image,
+              COUNT(DISTINCT p.product_id) AS total_products,
+              COUNT(DISTINCT o.order_id) AS total_sales
+          FROM vendor_registration vr
+          LEFT JOIN products p ON vr.vendor_id = p.vendor_id
+          LEFT JOIN orders o ON vr.vendor_id = o.vendor_id
+          GROUP BY vr.vendor_id
+          ORDER BY total_products DESC
+          LIMIT 10
+    ";
+
+    $vendor_query = mysqli_query($con, $topVendors);
+
+    // top buyer
+    $topBuyer = "
+      SELECT 
+          ur.user_id,
+          ur.first_name,
+          ur.last_name,
+          ur.email,
+          ur.profile_image,
+          COUNT(DISTINCT o.order_id) AS total_buy
+      FROM user_registration ur
+      LEFT JOIN orders o ON ur.user_id = o.user_id
+      GROUP BY ur.user_id, ur.first_name, ur.last_name, ur.email, ur.profile_image
+      ORDER BY total_buy DESC
+      LIMIT 10
+      ";
+
+    $buyer_queyr = mysqli_query($con, $topBuyer);
+
+
+    // top rated product
+    $topRated = "SELECT 
+              product_id, 
+              COUNT(*) AS totalRatings,
+              AVG(Rating) AS averageRating
+          FROM user_review
+          GROUP BY product_id
+          ORDER BY averageRating DESC
+          LIMIT 10";
+
+    $topRated_query = mysqli_query($con, $topRated);
+
+    // top buying products
+    $topBuying = "
+          SELECT order_title, order_image, total_price, product_id, COUNT(*) AS totalProducts
+          FROM orders
+          GROUP BY product_id
+          ORDER BY totalProducts DESC
+          LIMIT 10";
+    $topBuying_query = mysqli_query($con, $topBuying);
+
+
+    if (!isset($_SESSION['existingData'])) {
+        $_SESSION['existingData'] = 0;
+    }
+
+    $newData = "SELECT * FROM vendor_registration";
+    $newDataQuery = mysqli_query($con, $newData);
+
+    $newCount = mysqli_num_rows($newDataQuery);
+
+    $_SESSION['currentData'] = $newCount;
 }
 
-include "../include/connect.php";
-$newData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
-$newDataQuery = mysqli_query($con, $newData);
-
-$newCount = mysqli_num_rows($newDataQuery);
-
-$_SESSION['currentData'] = $newCount;
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +117,8 @@ $_SESSION['currentData'] = $newCount;
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <!-- title -->
-    <title>View Vendors</title>
+    <title>Rejected Vendors</title>
+
     <style>
         .scrollBar::-webkit-scrollbar-track {
             border-radius: 10px;
@@ -64,18 +134,6 @@ $_SESSION['currentData'] = $newCount;
         .scrollBar::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background-color: #bfbfbf;
-        }
-
-        @media (max-width: 343px) {
-
-            #custInqContainer {
-                font-size: 0.75rem
-                    /* 12px */
-                ;
-                line-height: 1rem
-                    /* 16px */
-                ;
-            }
         }
 
         #logoutPopUp {
@@ -115,7 +173,7 @@ $_SESSION['currentData'] = $newCount;
                 </div>
                 <nav class="mt-10 mb-3">
                     <a class="group flex items-center px-6 py-2 mt-3 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="dashboard.php">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                         </svg>
@@ -123,11 +181,11 @@ $_SESSION['currentData'] = $newCount;
                     </a>
 
                     <a class="group flex items-center px-6 py-2 mt-3 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="tables.php">
-                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                             <g>
-                                <path d="M21.5 23h-19A2.503 2.503 0 0 1 0 20.5v-17C0 2.122 1.122 1 2.5 1h19C22.878 1 24 2.122 24 3.5v17c0 1.378-1.122 2.5-2.5 2.5zM2.5 2C1.673 2 1 2.673 1 3.5v17c0 .827.673 1.5 1.5 1.5h19c.827 0 1.5-.673 1.5-1.5v-17c0-.827-.673-1.5-1.5-1.5z" fill="" opacity="1" data-original="#000000" class=""></path>
-                                <path d="M23.5 8H.5a.5.5 0 0 1 0-1h23a.5.5 0 0 1 0 1zM23.5 13H.5a.5.5 0 0 1 0-1h23a.5.5 0 0 1 0 1zM23.5 18H.5a.5.5 0 0 1 0-1h23a.5.5 0 0 1 0 1z" fill="" opacity="1" data-original="#000000" class=""></path>
-                                <path d="M6.5 23a.5.5 0 0 1-.5-.5v-15a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5zM12 23a.5.5 0 0 1-.5-.5v-15a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5zM17.5 23a.5.5 0 0 1-.5-.5v-15a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5z" fill="" opacity="1" data-original="#000000" class=""></path>
+                                <path d="M21.5 23h-19A2.503 2.503 0 0 1 0 20.5v-17C0 2.122 1.122 1 2.5 1h19C22.878 1 24 2.122 24 3.5v17c0 1.378-1.122 2.5-2.5 2.5zM2.5 2C1.673 2 1 2.673 1 3.5v17c0 .827.673 1.5 1.5 1.5h19c.827 0 1.5-.673 1.5-1.5v-17c0-.827-.673-1.5-1.5-1.5z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                <path d="M23.5 8H.5a.5.5 0 0 1 0-1h23a.5.5 0 0 1 0 1zM23.5 13H.5a.5.5 0 0 1 0-1h23a.5.5 0 0 1 0 1zM23.5 18H.5a.5.5 0 0 1 0-1h23a.5.5 0 0 1 0 1z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                                <path d="M6.5 23a.5.5 0 0 1-.5-.5v-15a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5zM12 23a.5.5 0 0 1-.5-.5v-15a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5zM17.5 23a.5.5 0 0 1-.5-.5v-15a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
                             </g>
                         </svg>
                         <span class="mx-3">Tables</span>
@@ -173,9 +231,8 @@ $_SESSION['currentData'] = $newCount;
                             ?>
                         </div>
                     </a>
-
-                    <a class="group flex items-center px-6 py-2 mt-3 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="rejected_vendor.php">
-                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 511.792 511.792" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                    <a class="flex items-center px-6 py-2 mt-3 text-gray-100 bg-gray-700 bg-opacity-25" href="rejected_vendor.php">
+                        <svg class="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 511.792 511.792" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                             <g>
                                 <path d="M496.085 120.75 120.75 496.085c-10.943 10.943-28.685 10.943-39.629 0l-65.414-65.414c-10.943-10.943-10.943-28.685 0-39.629L391.042 15.707c10.943-10.943 28.685-10.943 39.629 0l65.414 65.414c10.943 10.944 10.943 28.686 0 39.629z" style="stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" data-original="currentColor" class=""></path>
                                 <path d="M97.244 249.153 296.531 49.866c16.666-16.666 43.686-16.666 60.352 0h0L49.866 356.883h0c-16.666-16.666-16.666-43.686 0-60.352l24.459-24.459M392.502 284.685l69.424-69.424c16.666-16.666 16.666-43.686 0-60.352h0L154.909 461.926h0c16.666 16.666 43.686 16.666 60.352 0L366.927 310.26M198.246 345.645s8.962.028 11.126-7.537c1.068-3.733-.054-7.751-2.799-10.497l-29.904-29.904M142.417 332.302l-15.621 15.621 37.073 37.074 15.621-15.622M159.802 351.99l-14.47 14.47M216.957 257.762l-15.621 15.621 37.073 37.074 15.621-15.622M234.342 277.451l-14.47 14.469M343.069 131.65l-15.621 15.621 37.073 37.074 15.621-15.622M360.454 151.339l-14.47 14.469M366.927 108.632l35.681 35.681M409.989 101.803c10.004 10.004 12.368 23.473 3.713 32.436-2.881 2.984-10.431 10.591-10.431 10.591s-13.199-13.104-18.241-18.147c-4.142-4.142-18.141-18.088-18.141-18.088l10.283-10.283c9.663-9.663 22.813-6.513 32.817 3.491zM269.491 211.276a26.33 26.33 0 0 0-13.654 7.265c-10.332 10.332-10.332 27.083 0 37.415s27.083 10.332 37.415 0c4.196-4.196 6.266-9.029 6.553-13.982a21.338 21.338 0 0 0-.048-3.085M285.288 189.089l20.663-20.662M296.772 179.994l36.221 36.221M107.165 406.328l33.574 2.14M83.095 391.282l37.415 37.415M113.048 380.777c5.37 5.37 5.015 14.433-.55 19.998-2.76 2.76-9.83 9.916-9.83 9.916s-7.104-7.015-9.811-9.722c-2.223-2.223-9.749-9.699-9.749-9.699l9.942-9.942c5.565-5.566 14.628-5.921 19.998-.551z" style="stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" data-original="currentColor" class=""></path>
@@ -193,8 +250,8 @@ $_SESSION['currentData'] = $newCount;
                         <span class="mx-3">Products</span>
                     </a>
 
-                    <a class="flex items-center px-6 py-2 mt-3 text-gray-100 bg-gray-700 bg-opacity-25" href="contact_page.php">
-                        <svg class="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                    <a class="group flex items-center px-6 py-2 mt-3 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="contact_page.php">
+                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                             <g>
                                 <path d="M255.986 368.994c69.385 0 125.834-56.437 125.834-125.807a125.977 125.977 0 0 0-125.834-125.834c-69.37 0-125.806 56.449-125.806 125.834a126.3 126.3 0 0 0 33.62 85.588l-13.013 48.547a15 15 0 0 0 21.993 16.872l50.895-29.408a125.582 125.582 0 0 0 32.311 4.208zm-41.747-33.4-25.091 14.5 5.868-21.89a15 15 0 0 0-4.268-14.863 94.89 94.89 0 0 1-30.568-70.149 95.775 95.775 0 1 1 66.2 91.128 15 15 0 0 0-12.141 1.271zM503.8 253.9c.163-6.138.332-12.485.039-19.093a71.337 71.337 0 0 0-71.782-68.279C402.4 98.677 334.645 51.136 255.986 51.136S109.6 98.676 79.942 166.527a71.339 71.339 0 0 0-71.779 68.257c-.294 6.632-.125 12.98.038 19.119.173 6.486.351 13.193.018 20.73a71.432 71.432 0 0 0 68.18 74.36q1.678.078 3.349.078a70.393 70.393 0 0 0 27.415-5.54 14.973 14.973 0 0 0 8.114-19.377 8.044 8.044 0 0 0-.824-2.021 162.3 162.3 0 0 1-20.491-78.946c0-89.355 72.684-162.051 162.024-162.051s162.052 72.7 162.052 162.051a161.532 161.532 0 0 1-132.157 159.287 41.584 41.584 0 1 0 1.328 30.209 192.361 192.361 0 0 0 130.075-85.231 70.237 70.237 0 0 0 14.951 1.62q1.653 0 3.315-.076a71.366 71.366 0 0 0 68.23-74.383c-.332-7.513-.153-14.226.02-20.713zM77.733 319.023a41.405 41.405 0 0 1-39.543-43.085c.379-8.579.178-16.151 0-22.833-.156-5.875-.3-11.423-.055-17.014a41.394 41.394 0 0 1 31.274-38.35 192.359 192.359 0 0 0 8.3 116.877l-.018.007q.876 2.232 1.809 4.443-.877-.004-1.767-.045zm170.118 111.841a11.589 11.589 0 1 1 11.588-11.593v.022a11.6 11.6 0 0 1-11.588 11.571zm225.958-154.947a41.366 41.366 0 0 1-39.591 43.108q-.864.041-1.724.044a.255.255 0 0 0 .011-.177 192.27 192.27 0 0 0 10.086-121.15 41.391 41.391 0 0 1 31.275 38.371c.247 5.568.1 11.116-.056 16.99-.178 6.682-.38 14.255-.001 22.814zm-252.869-34.2a14.464 14.464 0 0 1 .07 1.47 14.661 14.661 0 0 1-.07 1.48c-.05.48-.13.97-.22 1.45s-.22.96-.36 1.43-.31.93-.5 1.38-.4.9-.63 1.33-.48.85-.75 1.26a12.819 12.819 0 0 1-.87 1.18c-.31.39-.65.75-.99 1.1a14.668 14.668 0 0 1-1.1.99c-.38.31-.78.6-1.18.88-.41.26-.83.52-1.27.75a13.2 13.2 0 0 1-1.32.62 14.253 14.253 0 0 1-1.38.5c-.47.14-.95.26-1.43.36a14.512 14.512 0 0 1-1.45.22 15.681 15.681 0 0 1-2.96 0 14.512 14.512 0 0 1-1.45-.22c-.48-.1-.96-.22-1.43-.36a14.253 14.253 0 0 1-1.38-.5 13.2 13.2 0 0 1-1.32-.62c-.44-.23-.86-.49-1.27-.75-.4-.28-.8-.57-1.18-.88a14.668 14.668 0 0 1-1.1-.99c-.34-.35-.68-.71-.99-1.1a12.819 12.819 0 0 1-.87-1.18q-.4-.615-.75-1.26c-.23-.43-.44-.88-.63-1.33s-.35-.91-.5-1.38-.26-.95-.36-1.43a14.086 14.086 0 0 1-.29-2.93c0-.49.03-.98.07-1.47s.13-.98.22-1.46.22-.95.36-1.42.31-.93.5-1.38.4-.9.63-1.33a15.584 15.584 0 0 1 1.62-2.45c.31-.38.65-.75.99-1.09a14.668 14.668 0 0 1 1.1-.99c.38-.31.78-.61 1.18-.88a14.6 14.6 0 0 1 1.27-.75q.645-.345 1.32-.63c.45-.18.92-.35 1.38-.49a14.242 14.242 0 0 1 1.43-.36 14.718 14.718 0 0 1 5.86 0 14.242 14.242 0 0 1 1.43.36c.46.14.93.31 1.38.49s.89.4 1.32.63a14.6 14.6 0 0 1 1.27.75c.4.27.8.57 1.18.88a14.668 14.668 0 0 1 1.1.99c.34.34.68.71.99 1.09a15.584 15.584 0 0 1 1.62 2.45c.23.43.44.88.63 1.33s.35.91.5 1.38.26.95.36 1.42.17.966.22 1.456zm20.06 1.47a14.988 14.988 0 0 1 14.986-15h.028a15 15 0 1 1-15.014 15zm50.06 1.476a14.661 14.661 0 0 1-.07-1.48 14.464 14.464 0 0 1 .07-1.47c.05-.49.13-.98.22-1.46s.22-.95.36-1.42a13.353 13.353 0 0 1 .5-1.38c.18-.45.4-.9.62-1.33a16.64 16.64 0 0 1 1.63-2.45c.31-.38.65-.75.99-1.09a14.668 14.668 0 0 1 1.1-.99 12.913 12.913 0 0 1 1.18-.88q.615-.4 1.26-.75c.43-.23.88-.44 1.33-.63s.92-.35 1.38-.49a14.242 14.242 0 0 1 1.43-.36 14.684 14.684 0 0 1 4.4-.22 14.277 14.277 0 0 1 1.46.22 13.41 13.41 0 0 1 1.42.36c.47.14.94.31 1.39.49s.89.4 1.32.63a14.6 14.6 0 0 1 1.27.75c.4.27.8.57 1.18.88a12.8 12.8 0 0 1 1.09.99c.35.34.68.71 1 1.09.3.38.6.78.87 1.19a14.425 14.425 0 0 1 .75 1.26c.23.43.44.88.63 1.33a13.294 13.294 0 0 1 .49 1.38 11.812 11.812 0 0 1 .36 1.42 11.959 11.959 0 0 1 .22 1.46 14.479 14.479 0 0 1 .08 1.47 14.676 14.676 0 0 1-.08 1.48 12.1 12.1 0 0 1-.22 1.45 11.967 11.967 0 0 1-.36 1.43 14.174 14.174 0 0 1-.49 1.38c-.19.45-.4.9-.63 1.33s-.48.85-.75 1.26-.57.81-.87 1.18c-.32.39-.65.75-1 1.1a12.8 12.8 0 0 1-1.09.99c-.38.31-.78.6-1.18.87a14.692 14.692 0 0 1-1.27.76 13.2 13.2 0 0 1-1.32.62 13.525 13.525 0 0 1-1.39.5c-.46.14-.94.26-1.42.36a14.461 14.461 0 0 1-2.93.29 14.661 14.661 0 0 1-1.48-.07 14.512 14.512 0 0 1-1.45-.22c-.48-.1-.96-.22-1.43-.36a14.253 14.253 0 0 1-1.38-.5 13.359 13.359 0 0 1-1.33-.62c-.43-.23-.85-.49-1.26-.76a12.819 12.819 0 0 1-1.18-.87 14.668 14.668 0 0 1-1.1-.99c-.34-.35-.68-.71-.99-1.1a12.819 12.819 0 0 1-.87-1.18c-.27-.41-.53-.83-.76-1.26s-.44-.88-.62-1.33a14.253 14.253 0 0 1-.5-1.38c-.14-.47-.26-.95-.36-1.43s-.17-.97-.22-1.45z" fill="" opacity="1" data-original="#000000"></path>
                             </g>
@@ -202,7 +259,7 @@ $_SESSION['currentData'] = $newCount;
                         <span class="mx-3">Contacts</span>
                     </a>
 
-                    <a class="group flex items-center px-6 py-2 mt-3 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="customer_complaint.php">
+                    <a class="relative group flex items-center px-6 py-2 mt-3 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="customer_complaint.php">
                         <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 18062 18062" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd" class="">
                             <g>
                                 <path d="M5557 16496H3939l-71 892h1689zM4877 5133c-43 0-87-9-127-28L2217 3939l-1289 1c-168 0-305-137-305-305V369c0-169 137-305 305-305h5305c168 0 305 136 305 305v3266c0 168-137 305-305 305H5182v888c0 167-140 305-305 305zM1233 3330h1051c44 0 87 9 127 27l2161 995v-717c0-169 137-305 305-305h1051V674H1233zm1674 7885H1889c-159 0-292-123-304-282l-351-4563c-13-175 129-329 304-329h1720c175 0 318 154 304 329l-351 4563c-12 159-144 282-304 282zm-735-610h453l304-3954H1867zm735 2682H1889c-168 0-305-137-305-305v-1099c0-169 137-305 305-305h1018c169 0 305 136 305 305v1099c0 168-136 305-305 305zm-713-610h408v-489h-408zm14589-5158h-1018c-159 0-292-123-304-282l-351-4563c-13-175 129-328 304-328h1720c175 0 318 153 304 328l-351 4563c-12 159-145 282-304 282zm-735-610h453l304-3954h-1062zm735 2682h-1018c-168 0-305-136-305-305V8187c0-169 137-305 305-305h1018c169 0 305 136 305 305v1099c0 169-136 305-305 305zm-713-610h408v-489h-408zM2398 2307h-379c-169 0-305-137-305-305 0-169 136-305 305-305h379c169 0 305 136 305 305 0 168-136 305-305 305zm1388 0h-380c-168 0-304-137-304-305 0-169 136-305 304-305h380c168 0 305 136 305 305 0 168-137 305-305 305zm1388 0h-380c-168 0-305-137-305-305 0-169 137-305 305-305h380c168 0 305 136 305 305 0 168-137 305-305 305zm7975 7165h-1065c-142 312-348 662-647 1022l360 1527 2597 625c1037 243 1195 1014 1201 1082l316 3941c14 175-128 329-304 329H3537c-175 0-318-154-304-329l317-3941c5-68 164-838 1203-1083l2595-624 359-1527c-31-38-62-76-91-114h-976c-169 0-305-136-305-305v-603h-340c-168 0-305-137-305-305V7432c0-169 137-305 305-305h375c-315-1320-38-2432 813-3145 264-222 957-758 1691-955 1147-309 2571-195 3293 673 399 478 280 815 674 1283 486 579 355 1383 82 2144h226c169 0 305 136 305 305v1735c0 168-136 305-305 305zm-1557-394c5-16 11-31 18-46 149-385 176-663 181-739-239-1581-836-2434-1279-2434-108 0-219 52-329 154-425 393-829 584-1235 584-273 0-491-87-651-151-46-19-105-43-144-54-23 37-69 127-124 333-124 467-337 1098-659 1541 23 229 123 840 559 1504h1516c168 0 305 137 305 305 0 169-137 305-305 305h-966c262 206 670 458 1086 448l40 1c657 0 1288-643 1344-701 321-382 520-747 643-1050zm713-216h539V7737h-168l-278 613c-7 93-29 273-93 512zm-5231 610h-130v298h275c-55-102-103-201-145-298zm-522-1735h-252v1125h560c-76-290-98-512-104-620-77-171-145-339-204-505zm-2564 8149h1569v-271c0-168 137-305 305-305 169 0 305 137 305 305v1773h6810v-1773c0-168 136-305 305-305 168 0 305 137 305 305v271h1569l-167-2083c-24-76-163-432-734-563l-2640-635-1855 1447c-110 87-265 87-375 0l-1855-1447-2637 634c-574 132-714 488-737 564zm3955-3732 1629 1271 1629-1271-282-1201c-908 649-1787 647-2693 0zm5644 5234h1690l-72-892h-1618zM10047 3480c-333 0-684 47-1015 136-616 166-1224 638-1457 833-987 827-762 2166-460 3043 120-256 231-570 325-924 68-257 211-791 685-791 506 0 772 594 1644-212 223-207 480-316 743-316 716 0 1340 777 1691 2044 307-725 534-1485 171-1918-466-554-379-929-675-1285-328-394-915-610-1652-610zm-446 12133c-168 0-304-136-304-305v-395c0-169 136-305 304-305 169 0 305 136 305 305v395c0 169-136 305-305 305zm0 1304c-168 0-304-136-304-305v-395c0-169 136-305 304-305 169 0 305 136 305 305v395c0 169-136 305-305 305z" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
@@ -298,69 +355,67 @@ $_SESSION['currentData'] = $newCount;
                         }
                     });
                 </script>
-                <main class="verflow-x-hidden overflow-y-auto scrollBar bg-gray-200">
-                    <div class="container mx-auto p-6">
-                        <?php
-                        if (isset($_COOKIE['adminEmail'])) {
-                        ?>
-                            <h1 class="text-4xl font-bold text-center mb-8 text-black">Customer inquiries</h1>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
-                                <?php
-
-                                $get_contacts = "SELECT * FROM contact_us";
-                                $contact_query = mysqli_query($con, $get_contacts);
-
-                                if (mysqli_num_rows($contact_query) > 0) {
-                                    while ($res = mysqli_fetch_assoc($contact_query)) {
-                                ?>
-                                        <div class="bg-white shadow-lg rounded-tl-xl rounded-br-xl p-4 sm:p-6">
-                                            <div id="custInqContainer" class=" flex flex-col gap-y-4 text-sm sm:text-base">
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Name:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['name'] ?></p>
-                                                </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Email:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['user_email'] ?></p>
-                                                </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Subject:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['subject'] ?></p>
-                                                </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Message:</p>
-                                                    <p class="font-medium text-gray-800"><?php echo $res['message'] ?></p>
-                                                </div>
-
-                                                <div class="flex gap-1 sm:gap-2">
-                                                    <p class="font-bold">Date:</p>
-                                                    <p class="font-medium text-gray-500"><?php echo $res['date'] ?></p>
-                                                </div>
-                                            </div>
-                                            <div class="text-right">
-                                                <a href="mailto:<?php echo $res['user_email'] ?>" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Contact</a>
-                                            </div>
-                                        </div>
+                <main class="overflow-y-auto scrollBar">
+                    <?php
+                    if (isset($_COOKIE['adminEmail'])) {
+                    ?>
+                        <!-- top seller -->
+                        <section class="container mx-auto p-6">
+                            <h2 class="font-manrope font-bold text-4xl leading-10 text-black mb-5">Top seller vendors</h2>
+                            <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg bg-white">
+                                <div class="w-full overflow-x-auto h-max text-center">
                                     <?php
-                                    }
-                                } else {
+                                    if (mysqli_num_rows($vendor_query) > 0) {
                                     ?>
-                                    <div class="col-span-full font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
-                                <?php
-                                }
-                                ?>
+                                        <table class="w-full">
+                                            <thead>
+                                                <tr class="text-md font-semibold tracking-wide text-center text-gray-900 bg-gray-100 border-b border-gray-600">
+                                                    <th class="px-4 py-3">Rank</th>
+                                                    <th class="px-4 py-3">Vendor profile</th>
+                                                    <th class="px-4 py-3">User name</th>
+                                                    <th class="px-4 py-3">Vendor name</th>
+                                                    <th class="px-4 py-3">Vendor email</th>
+                                                    <th class="px-4 py-3">Total products</th>
+                                                    <th class="px-4 py-3">Total sale products</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                        }
+
+                                        $i = 1;
+                                        if (mysqli_num_rows($vendor_query) > 0) {
+                                            while ($top = mysqli_fetch_array($vendor_query)) {
+                                            ?>
+                                                <tbody class="bg-white border">
+                                                    <tr class="text-gray-700">
+                                                        <td class="px-4 py-3 border"><?php echo $i; ?></td>
+                                                        <td class="px-4 py-3 border"><img class="h-10 w-10 object-cover rounded-full m-auto" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $top['dp_image'] : 'Vendor_profile Img'; ?>" alt="" class="w-20 h-20 m-auto"></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['username'] : 'username'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['name'] : 'name'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['email'] : 'email'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['total_products'] : 'totalProducts'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['total_sales'] : 'totalSales'; ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            <?php
+                                                $i++;
+                                            }
+                                        } else {
+                                            ?>
+                                            <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No data available for this period.</div>
+                                        <?php
+                                        }
+                                        ?>
+                                        </table>
+                                </div>
                             </div>
-                        <?php
-                        } else {
-                        ?>
-                            <div class="font-bold text-xl md:text-2xl w-max m-auto py-4">No Inquiries Found for this period.</div>
-                        <?php
-                        }
-                        ?>
-                    </div>
+                        </section>
+                    <?php
+                    } else {
+                        echo '<div class="font-bold text-2xl mt-12 flex items-center justify-center m-auto">No data available for this period.</div>';
+                    }
+                    ?>
+
                 </main>
             </div>
         </div>
@@ -368,6 +423,7 @@ $_SESSION['currentData'] = $newCount;
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
+
 
 </body>
 
