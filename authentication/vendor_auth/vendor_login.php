@@ -186,7 +186,6 @@ unset(
         </div>
     </div>
 
-
     <!-- Error message container -->
     <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 rounded-lg border-red-500 py-3 px-6 bg-red-100 z-50" id="popUp" style="display: none;">
         <div class="flex items-center m-auto justify-center text-sm text-red-500">
@@ -220,6 +219,25 @@ unset(
                 <p class="text-center">Your account is still pending approval from the admin.</p>
             </span>
             <span id="closePopup">
+                <button class="bg-red-700 text-white w-32 h-8 rounded-md">Close</button>
+            </span>
+        </div>
+    </div>
+
+
+    <div id="cancelRequest" style="display: none;" class="absolute p-5 bg-black/30 h-full w-full flex justify-center items-center backdrop-blur-md z-50">
+        <div class="bg-white rounded-xl p-5 w-96 flex flex-col items-center justify-center space-y-4 shadow-lg shadow-black/30">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 347.442 347.442" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-20 text-yellow-500">
+                    <g>
+                        <path d="M173.721 347.442c95.919 0 173.721-77.802 173.721-173.721S269.64 0 173.721 0 0 77.802 0 173.721s77.802 173.721 173.721 173.721zm-12.409-272.99c0-6.825 5.584-12.409 12.409-12.409s12.409 5.584 12.409 12.409v93.313l57.39 45.912c5.336 4.281 6.204 12.098 1.923 17.434a12.342 12.342 0 0 1-9.679 4.653c-2.73 0-5.46-.869-7.755-2.73L165.966 183.4c-2.916-2.358-4.653-5.894-4.653-9.679V74.452z" fill="currentColor" opacity="1" data-original="currentColor"></path>
+                    </g>
+                </svg>
+            </span>
+            <span class="bg-yellow-50 text-yellow-600 p-2 rounded-md">
+                <p class="text-center">Your request was canceled by the admin. Please create a new account.</p>
+            </span>
+            <span id="closeRequestPopup">
                 <button class="bg-red-700 text-white w-32 h-8 rounded-md">Close</button>
             </span>
         </div>
@@ -282,6 +300,18 @@ unset(
                 notAccept.style.display = 'none';
             })
         }
+
+        function displayCancelPopUp() {
+            let notAccept = document.getElementById('cancelRequest');
+            notAccept.style.display = 'flex';
+
+            let closePopup = document.getElementById('closeRequestPopup');
+
+            closePopup.addEventListener('click', function() {
+                notAccept.style.display = 'none';
+                window.location.href = 'vendor_register.php';
+            })
+        }
     </script>
 
 
@@ -309,13 +339,20 @@ unset(
                             if (response === 'success') {
                                 loader();
                                 displaySuccessMessage("Login Successfully!");
-                            } else if (response === 'pass_not_matching') {
+                            } 
+                            else if (response === 'pass_not_matching') {
                                 displayErrorMessage("Please Enter Valid Email Or password.");
-                            } else if (response === 'email_not_found') {
+                            } 
+                            else if (response === 'email_not_found') {
                                 displayErrorMessage("The email address you've entered doesn't exist.");
-                            } else if (response === 'not_accept') {
-                                displayNotAcceptPopUp()
-                            } else if (response === 'admin_success') {
+                            } 
+                            else if (response === 'not_accept') {
+                                displayNotAcceptPopUp();
+                            } 
+                            else if (response === 'request_cancel') {
+                                displayCancelPopUp();
+                            } 
+                            else if (response === 'admin_success') {
                                 loader();
                                 adminLogin("Admin Login Successfully!");
                             }

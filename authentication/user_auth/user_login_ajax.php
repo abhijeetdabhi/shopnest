@@ -10,15 +10,33 @@
         $email_search = "SELECT * FROM user_registration WHERE email = '$email'";
         $search_query = mysqli_query($con, $email_search);
  
+        if(mysqli_num_rows($search_query) > 0){
+            if(mysqli_num_rows($search_query) > 0){
+                $emailPass = mysqli_fetch_assoc($search_query);
     
-        if($email === 'vishvjit+admin@gmail.com' || $email === 'abhijeet+admin@gmail.com'){
-            $admin_email = $_POST['userEmail'];
-            $admin_pass = $_POST['userPass'];
+                $userPass = $emailPass['password'];
+                $userId = $emailPass['user_id'];
+                $userFirstName = $emailPass['first_name'];
     
-            $search_admin = "SELECT * FROM admin WHERE email = '$admin_email'";
+                if(password_verify($password, $userPass)){
+                    setcookie('user_id', $userId, time() + (365 * 24 * 60 * 60), "/");
+                    setcookie('fname', $userFirstName, time() + (365 * 24 * 60 * 60), "/");
+    
+                    echo 'success';
+                }else{
+                    echo "pass_not_matching";
+                }
+            }else{
+                echo "email_not_found";
+            }
+        }else{
+            // for the admin
+            $search_admin = "SELECT * FROM admin WHERE email = '$email'";
             $admin_query = mysqli_query($con, $search_admin);
-
-            if (mysqli_num_rows($admin_query) > 0){
+            if(mysqli_num_rows($admin_query) > 0){
+                $admin_email = $_POST['userEmail'];
+                $admin_pass = $_POST['userPass'];
+                
                 $findAdmin = mysqli_fetch_assoc($admin_query);
     
                 $myEmail = $findAdmin['email'];
@@ -28,26 +46,11 @@
                     
                     setcookie('adminEmail', $admin_email, time() + (365 * 24 * 60 * 60), "/");
                     setcookie('adminPass', $admin_pass, time() + (365 * 24 * 60 * 60), "/");
+                }else{
+                    echo "pass_not_matching";
                 }
-            } else{
-                echo "pass_not_matching";
-            }
-        }elseif (mysqli_num_rows($search_query) == 0) {
-            echo "email_not_found";
-        }elseif(mysqli_num_rows($search_query) > 0){
-            $emailPass = mysqli_fetch_assoc($search_query);
-
-            $userPass = $emailPass['password'];
-            $userId = $emailPass['user_id'];
-            $userFirstName = $emailPass['first_name'];
-
-            if(password_verify($password, $userPass)){
-                setcookie('user_id', $userId, time() + (365 * 24 * 60 * 60), "/");
-                setcookie('fname', $userFirstName, time() + (365 * 24 * 60 * 60), "/");
-
-                echo 'success';
             }else{
-                echo "pass_not_matching";
+                echo "email_not_found";
             }
         }
     }

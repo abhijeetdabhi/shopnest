@@ -601,6 +601,13 @@ if (isset($_POST['submitBtn'])) {
     $check_query = mysqli_query($con, $email_check);
     $emailCount = mysqli_num_rows($check_query);
 
+    $request_email_check = "SELECT * FROM vendor_request WHERE email = '$email'";
+    $request_check_query = mysqli_query($con, $request_email_check);
+    $requestEmailCount = mysqli_num_rows($request_check_query);
+
+    $cancel_email_check = "SELECT * FROM vendor_cancel_request WHERE email = '$email'";
+    $cancel_check_query = mysqli_query($con, $email_check);
+    $cancelEmailCount = mysqli_num_rows($cancel_check_query);
 
     // Check if phone Number already exists
     $phone_check = "SELECT * FROM vendor_registration WHERE phone = '$phone'";
@@ -619,21 +626,49 @@ if (isset($_POST['submitBtn'])) {
 
     if ($emailCount > 0) {
         echo '<script>displayErrorMessage("Email already Exists.");</script>';
+        unset(
+            $_SESSION['vendor_email']
+        );
+        exit();
+    }
+
+    if ($requestEmailCount > 0) {
+        echo '<script>displayErrorMessage("Email already Exists.");</script>';
+        unset(
+            $_SESSION['vendor_email']
+        );
+        exit();
+    }
+
+    if ($cancelEmailCount > 0) {
+        echo '<script>displayErrorMessage("Email already Exists.");</script>';
+        unset(
+            $_SESSION['vendor_email']
+        );
         exit();
     }
 
     if ($phoneCount > 0) {
         echo '<script>displayErrorMessage("Phone Number already Exists.");</script>';
+        unset(
+            $_SESSION['vendor_phone']
+        );
         exit();
     }
 
     if ($usernameCount > 0) {
         echo '<script>displayErrorMessage("Username already Exists.");</script>';
+        unset(
+            $_SESSION['username']
+        );
         exit();
     }
 
     if ($gstCount > 0) {
         echo '<script>displayErrorMessage("GST already Exists.");</script>';
+        unset(
+            $_SESSION['vendor_gst']
+        );
         exit();
     }
 
