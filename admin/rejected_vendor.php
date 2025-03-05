@@ -18,72 +18,11 @@ session_start();
 
 if (isset($_COOKIE['adminEmail'])) {
 
-    // top seller Vendors
-    $topVendors = "
-          SELECT 
-              vr.vendor_id,
-              vr.username,
-              vr.name,
-              vr.email,
-              vr.dp_image,
-              COUNT(DISTINCT p.product_id) AS total_products,
-              COUNT(DISTINCT o.order_id) AS total_sales
-          FROM vendor_registration vr
-          LEFT JOIN products p ON vr.vendor_id = p.vendor_id
-          LEFT JOIN orders o ON vr.vendor_id = o.vendor_id
-          GROUP BY vr.vendor_id
-          ORDER BY total_products DESC
-          LIMIT 10
-    ";
-
-    $vendor_query = mysqli_query($con, $topVendors);
-
-    // top buyer
-    $topBuyer = "
-      SELECT 
-          ur.user_id,
-          ur.first_name,
-          ur.last_name,
-          ur.email,
-          ur.profile_image,
-          COUNT(DISTINCT o.order_id) AS total_buy
-      FROM user_registration ur
-      LEFT JOIN orders o ON ur.user_id = o.user_id
-      GROUP BY ur.user_id, ur.first_name, ur.last_name, ur.email, ur.profile_image
-      ORDER BY total_buy DESC
-      LIMIT 10
-      ";
-
-    $buyer_queyr = mysqli_query($con, $topBuyer);
-
-
-    // top rated product
-    $topRated = "SELECT 
-              product_id, 
-              COUNT(*) AS totalRatings,
-              AVG(Rating) AS averageRating
-          FROM user_review
-          GROUP BY product_id
-          ORDER BY averageRating DESC
-          LIMIT 10";
-
-    $topRated_query = mysqli_query($con, $topRated);
-
-    // top buying products
-    $topBuying = "
-          SELECT order_title, order_image, total_price, product_id, COUNT(*) AS totalProducts
-          FROM orders
-          GROUP BY product_id
-          ORDER BY totalProducts DESC
-          LIMIT 10";
-    $topBuying_query = mysqli_query($con, $topBuying);
-
-
     if (!isset($_SESSION['existingData'])) {
         $_SESSION['existingData'] = 0;
     }
 
-    $newData = "SELECT * FROM vendor_registration";
+    $newData = "SELECT * FROM vendor_request WHERE status = 'Pending'";
     $newDataQuery = mysqli_query($con, $newData);
 
     $newCount = mysqli_num_rows($newDataQuery);
@@ -365,36 +304,40 @@ if (isset($_COOKIE['adminEmail'])) {
                             <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg bg-white">
                                 <div class="w-full overflow-x-auto h-max text-center">
                                     <?php
-                                    if (mysqli_num_rows($vendor_query) > 0) {
+                                    $rejectedVendor = "SELECT * FROM vendor_cancel_request";
+                                    $rejectedVendorQuery = mysqli_query($con, $rejectedVendor);
+                                    if (mysqli_num_rows($rejectedVendorQuery) > 0) {
                                     ?>
                                         <table class="w-full">
                                             <thead>
                                                 <tr class="text-md font-semibold tracking-wide text-center text-gray-900 bg-gray-100 border-b border-gray-600">
                                                     <th class="px-4 py-3">Rank</th>
                                                     <th class="px-4 py-3">Vendor profile</th>
-                                                    <th class="px-4 py-3">User name</th>
                                                     <th class="px-4 py-3">Vendor name</th>
                                                     <th class="px-4 py-3">Vendor email</th>
-                                                    <th class="px-4 py-3">Total products</th>
-                                                    <th class="px-4 py-3">Total sale products</th>
+                                                    <th class="px-4 py-3">User name</th>
+                                                    <th class="px-4 py-3">Phone</th>
+                                                    <th class="px-4 py-3">GST</th>
+                                                    <th class="px-4 py-3">Rejected Date</th>
                                                 </tr>
                                             </thead>
                                             <?php
                                         }
 
                                         $i = 1;
-                                        if (mysqli_num_rows($vendor_query) > 0) {
-                                            while ($top = mysqli_fetch_array($vendor_query)) {
+                                        if (mysqli_num_rows($rejectedVendorQuery) > 0) {
+                                            while ($row = mysqli_fetch_array($rejectedVendorQuery)) {
                                             ?>
                                                 <tbody class="bg-white border">
                                                     <tr class="text-gray-700">
                                                         <td class="px-4 py-3 border"><?php echo $i; ?></td>
-                                                        <td class="px-4 py-3 border"><img class="h-10 w-10 object-cover rounded-full m-auto" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $top['dp_image'] : 'Vendor_profile Img'; ?>" alt="" class="w-20 h-20 m-auto"></td>
-                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['username'] : 'username'; ?></td>
-                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['name'] : 'name'; ?></td>
-                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['email'] : 'email'; ?></td>
-                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['total_products'] : 'totalProducts'; ?></td>
-                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $top['total_sales'] : 'totalSales'; ?></td>
+                                                        <td class="px-4 py-3 border"><img class="h-10 w-10 object-cover rounded-full m-auto" src="<?php echo isset($_COOKIE['adminEmail']) ? '../src/vendor_images/vendor_profile_image/' . $row['dp_image'] : 'Vendor_profile Img'; ?>" alt="" class="w-20 h-20 m-auto"></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $row['name'] : 'name'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $row['email'] : 'email'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $row['username'] : 'username'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $row['phone'] : 'Phone Number'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $row['GST'] : 'GST'; ?></td>
+                                                        <td class="px-4 py-3 border"><?php echo isset($_COOKIE['adminEmail']) ? $row['date'] : 'date'; ?></td>
                                                     </tr>
                                                 </tbody>
                                             <?php

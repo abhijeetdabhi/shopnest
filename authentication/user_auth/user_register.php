@@ -4,6 +4,11 @@ if (isset($_COOKIE['user_id'])) {
     exit;
 }
 
+if (!isset($_COOKIE['latitude']) && !isset($_COOKIE['longitude'])) {
+    header("Location: ../../index.php");
+    exit;
+}
+
 if (isset($_COOKIE['vendor_id'])) {
     header("Location: ../../vendor/vendor_dashboard.php");
     exit;

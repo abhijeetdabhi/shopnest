@@ -20,7 +20,7 @@
             $vendorDp_image = $res['dp_image'];
             $vendorLatitude = $res['latitude'];
             $vendorLongitude = $res['longitude'];
-            $vendorRegiDate = $res['date'];
+            $vendorRegiDate = date('d-m-Y');
 
             $insert_data = "INSERT INTO vendor_cancel_request(name, email, password, username, phone, Bio, GST, cover_image, dp_image, latitude, longitude, date) VALUES ('$vendorName','$vendorEmail','$vendorPassword','$vendorUsername','$vendorPhone','$vendorBio','$vendorGST','$vendorCover_image','$vendorDp_image','$vendorLatitude','$vendorLongitude','$vendorRegiDate')";
             $insert_sql = mysqli_query($con, $insert_data);

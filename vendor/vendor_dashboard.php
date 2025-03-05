@@ -21,7 +21,6 @@ if (isset($_COOKIE['vendor_id'])) {
 
     $row = mysqli_fetch_assoc($retrieve_query);
 
-
     // for sales
     $sale_orders = "SELECT * FROM orders WHERE vendor_id = '$vendor_id'";
     $sale_query = mysqli_query($con, $sale_orders);
@@ -32,23 +31,42 @@ if (isset($_COOKIE['vendor_id'])) {
         $totalSale += $trimPrice;
     }
 
-    $fetch_orders_query = "
-            SELECT date, COUNT(*) AS product_count
-            FROM orders
-            WHERE vendor_id = '$vendor_id'
-            GROUP BY date
-        ";
+    $fetch_orders_query = "SELECT DATE_FORMAT(STR_TO_DATE(date, '%d-%m-%Y %h:%i:%s %p'), '%d-%m-%Y') AS formated_date, COUNT(*) as countOrder 
+        FROM orders 
+        WHERE vendor_id = '$vendor_id' 
+        AND STR_TO_DATE(date, '%d-%m-%Y %h:%i:%s %p') >= CURDATE() - INTERVAL 16 DAY
+        GROUP BY formated_date
+        ORDER BY formated_date DESC
+    ";
     $orders_result = mysqli_query($con, $fetch_orders_query);
 
-    $data = [];
+    $weekData = [];
     while ($order = mysqli_fetch_assoc($orders_result)) {
-        $data[] = [
-            'date' => $order['date'], // Date field
-            'product_count' => (int)$order['product_count'] // Count of products sold
+        $weekData[] = [
+            'date' => $order['formated_date'],
+            'count' => (int)$order['countOrder']
         ];
     }
+    $week_json = json_encode($weekData);
 
-    $data_json = json_encode($data);
+
+    $monthly = "SELECT DATE_FORMAT(STR_TO_DATE(date, '%d-%m-%Y %h:%i:%s %p'), '%d-%m-%Y') AS formated_date, COUNT(*) as countOrder 
+        FROM orders 
+        WHERE vendor_id = '$vendor_id'
+        AND STR_TO_DATE(date, '%d-%m-%Y %h:%i:%s %p') >= CURDATE() - INTERVAL 2 MONTH
+        GROUP BY formated_date
+        ORDER BY formated_date DESC
+    ";
+    $monthlyQuery = mysqli_query($con, $monthly);
+
+    $monthData = [];
+    while ($order = mysqli_fetch_assoc($monthlyQuery)) {
+        $monthData[] = [
+            'date' => $order['formated_date'],
+            'count' => (int)$order['countOrder']
+        ];
+    }
+    $month_json = json_encode($monthData);
 
     // for earning
     $earning_orders = "SELECT * FROM orders WHERE vendor_id = '$vendor_id'";
@@ -86,6 +104,9 @@ if (isset($_COOKIE['vendor_id'])) {
 
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -351,36 +372,130 @@ if (isset($_COOKIE['vendor_id'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white shadow-xl rounded-md px-4 py-3 mt-12">
-                        <h1 class="text-2xl font-bold text-gray-950">Sales</h1>
-                        <div id="chart" style="height: 250px;"></div>
-                        <script>
-                            $(document).ready(function() {
-                                var chartData = <?php echo $data_json; ?>;
-
-                                if (chartData.length === 0) {
-                                    $('#chart').html('<div style="text-align: center; margin-top: 80px; font-size: 30px; color: #000;">No data available for this period.</div>');
-                                } else {
-                                    new Morris.Bar({
-                                        element: 'chart',
-                                        data: chartData,
-                                        xkey: 'date',
-                                        ykeys: ['product_count'],
-                                        labels: ['Number of Products Sold'],
-                                        barColors: ['#00a65a'],
-                                        hideHover: 'auto',
-                                        resize: true,
-                                        xLabelAngle: 60,
-                                        xLabels: 'day',
-                                    });
-                                }
-                            });
-                        </script>
+                    <div class="mt-12">
+                        <div class="w-full bg-white rounded-xl p-4 h-full">
+                            <div class="space-y-3 py-4">
+                                <div class="space-x-1 text-xs">
+                                    <span class="border-2 px-4 border-[#ff0000] bg-[#ffe6e6]">
+                                    </span>
+                                    <span>Less than 10 view</span>
+                                </div>
+                                <div class="space-x-1 text-xs">
+                                    <span class="border-2 px-4 border-[#2563eb] bg-[#ece6ff]">
+                                    </span>
+                                    <span>More than 10 view</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between flex-wrap mb-4">
+                                <h2 class="text-xl font-bold md:text-4xl">Visitors analytics</h2>
+                                <div class="flex items-center gap-3">
+                                    <button id="weekButton" class="rounded-md text-[#2563eb] border-2 border-[#2563eb] bg-[#2563eb33] p-1 active:scale-90 transition">Weekly</button>
+                                    <button id="monthButton" class="rounded-md text-[#2563eb] border-2 border-[#2563eb] bg-[#2563eb33] p-1 active:scale-90 transition">Monthly</button>
+                                </div>
+                            </div>
+                            <div class="chart-container w-full h-full rounded-md">
+                                <canvas id="conversionChart" width="100" height="80"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
         </div>
     </div>
+
+    <script>
+        // Total Visitors
+        const weekFromData = <?php echo $week_json ?>;
+        const weekDate = weekFromData.map(week => week.date);
+        const weekCount = weekFromData.map(week => week.count);
+
+        const monthFromData = <?php echo $month_json ?>;
+        const monthDate = monthFromData.map(month => month.date);
+        const monthCount = monthFromData.map(month => month.count);
+
+        var backgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        var borderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBackgroundColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBorderColor = weekCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+
+        var backgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)');
+        var borderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBackgroundColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+        var pointBorderColor = monthCount.map(c => c < 10 ? 'rgba(255, 0, 0, 1)' : '#2563eb');
+
+        const data = {
+            labels: weekDate,
+            datasets: [{
+                label: "Page Views",
+                data: weekCount,
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                pointBackgroundColor: pointBackgroundColor,
+                pointBorderWidth: 2,
+                pointRadius: 4,
+            }]
+        };
+
+        const options = {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw; // Example: Conversion Rate: 50%
+                        }
+                    }
+                }
+            }
+        };
+
+        window.onload = function() {
+            const ctx = document.getElementById('conversionChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: ' ',
+                data: data,
+                options: options
+            });
+
+            document.getElementById('weekButton').addEventListener('click', function() {
+                myChart.data.labels = weekDate;
+                myChart.data.datasets[0].data = weekCount;
+                myChart.update();
+            });
+
+            // Update chart for monthly data
+            document.getElementById('monthButton').addEventListener('click', function() {
+                myChart.data.labels = monthDate;
+                myChart.data.datasets[0].data = monthCount;
+                myChart.update();
+            });
+        };
+
+
+        function adjustCanvasHeight() {
+            const canvas = document.getElementById('conversionChart');
+            if (window.innerWidth > 425) {
+                canvas.height = 40;
+            } else {
+                canvas.height = 100;
+            }
+        }
+
+        window.addEventListener('resize', adjustCanvasHeight);
+        adjustCanvasHeight();
+    </script>
 
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
