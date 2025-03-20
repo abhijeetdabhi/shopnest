@@ -342,6 +342,8 @@ if (isset($_SESSION['cartUrl'])) {
                                                         echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">On the Way</span>';
                                                     } elseif ($time4Formatted <= $currentTime) {
                                                         echo '<span class="block bg-green-200 text-green-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Delivered</span>';
+                                                    }else{
+                                                        echo '<span class="block bg-green-200 text-green-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Delivered</span>';
                                                     }
                                                     ?>
                                                 </div>
