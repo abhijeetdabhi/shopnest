@@ -263,7 +263,7 @@ session_start();
                 </div>
             </div>
             <div class="space-x-5 mt-3 flex items-center">
-                <button id="back2" onclick="window.location.href='forgotPass_otp_user.php'" type="button" class="bg-black px-2 w-28 md:w-32 text-white tracking-wide h-10 rounded-tl-xl rounded-br-xl flex items-center justify-center gap-1">
+                <button id="back2" onclick="window.location.href='forgotPass_email_user.php'" type="button" class="bg-black px-2 w-28 md:w-32 text-white tracking-wide h-10 rounded-tl-xl rounded-br-xl flex items-center justify-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 31.418 31.418" style="enable-background:new 0 0 512 512" xml:space="preserve" class="w-3">
                         <g>
                             <path d="M26.585 3v25.418a3.002 3.002 0 0 1-4.883 2.335L5.949 18.044a2.999 2.999 0 0 1 0-4.67L21.703.665a3.004 3.004 0 0 1 3.178-.372A3.003 3.003 0 0 1 26.585 3z" fill="currentColor" opacity="1" data-original="currentColor"></path>
