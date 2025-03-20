@@ -257,9 +257,17 @@ if (isset($_COOKIE['user_id'])) {
                             $retrive_reivew_query = mysqli_query($con, $retrive_reivew);
 
                             while ($rev = mysqli_fetch_assoc($retrive_reivew_query)) {
+                                $product_id = $rev['product_id'];
+                                $retrive_product = "SELECT * FROM products WHERE product_id = '$product_id'";
+                                $retrive_product_query = mysqli_query($con, $retrive_product);
+
+                                $pr = mysqli_fetch_assoc($retrive_product_query);
                         ?>
                                 <div class="bg-white shadow-lg h-max rounded-tl-xl rounded-br-xl overflow-hidden">
                                     <a href="">
+                                        <div>
+                                            <img class="w-full h-full" src="<?php echo '../src/product_image/product_profile/' . $pr['profile_image_1']?>" alt="">
+                                        </div>
                                         <div class="flex flex-col gap-y-4 items-start justify-between md:flex-row px-3 pt-3">
                                             <div class="flex item-center justify-center gap-3">
                                                 <img class="w-12 h-12 rounded-full object-cover" src="<?php echo '../src/user_dp/' . $rev['profile_image'] ?>" alt="">
