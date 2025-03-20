@@ -229,7 +229,7 @@ include "../include/connect.php";
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
-                window.location.href = "vendor_account.php";
+                window.location.href = "";
             }, 2000);
         }
     </script>
@@ -272,7 +272,7 @@ include "../include/connect.php";
                         message: message
                     },
                     success: function(response) {
-                        loader();;
+                        loader();
                         displaySuccessMessage("Thank you! Your message has been successfully sent. We'll get back to you soon!")
                     }
                 });
