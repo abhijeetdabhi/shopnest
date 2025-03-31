@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="/shopnest/src/logo/favicon.svg">
+    <link rel="shortcut icon" href="../src/logo/favicon.svg">
 
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -34,85 +34,85 @@
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-20 gap-y-10 px-10">
         <!-- asus -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Asus">
-                <img src="/shopnest/src/company_partner/asus.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Asus">
+                <img src="../src/company_partner/asus.svg" alt="">
             </a>
         </div>
 
         <!-- sony -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Sony">
-                <img src="/shopnest/src/company_partner/sony.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Sony">
+                <img src="../src/company_partner/sony.svg" alt="">
             </a>
         </div>
 
         <!-- canon -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Canon">
-                <img src="/shopnest/src/company_partner/canon.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Canon">
+                <img src="../src/company_partner/canon.svg" alt="">
             </a>
         </div>
 
         <!-- casio -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Casio">
-                <img src="/shopnest/src/company_partner/casio.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Casio">
+                <img src="../src/company_partner/casio.svg" alt="">
             </a>
         </div>
 
         <!-- Bose -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Bose">
-                <img src="/shopnest/src/company_partner/bose.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Bose">
+                <img src="../src/company_partner/bose.svg" alt="">
             </a>
         </div>
 
         <!-- hyperX -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=HyperX">
-                <img class="pt-2" src="/shopnest/src/company_partner/hyperx.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=HyperX">
+                <img class="pt-2" src="../src/company_partner/hyperx.svg" alt="">
             </a>
         </div>
 
         <!-- citizen -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=citizen">
-                <img class="pt-1" src="/shopnest/src/company_partner/citizen.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=citizen">
+                <img class="pt-1" src="../src/company_partner/citizen.svg" alt="">
             </a>
         </div>
 
         <!-- puma -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Puma">
-                <img src="/shopnest/src/company_partner/puma.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Puma">
+                <img src="../src/company_partner/puma.svg" alt="">
             </a>
         </div>
 
         <!-- msi -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Msi">
-                <img class="pt-1" src="/shopnest/src/company_partner/msi.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Msi">
+                <img class="pt-1" src="../src/company_partner/msi.svg" alt="">
             </a>
         </div>
 
         <!-- louis philippe -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Louis Philippe">
-                <img src="/shopnest/src/company_partner/louisphilippe.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Louis Philippe">
+                <img src="../src/company_partner/louisphilippe.svg" alt="">
             </a>
         </div>
 
         <!-- lenovo -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=Lenovo">
-                <img src="/shopnest/src/company_partner/lenovo.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=Lenovo">
+                <img src="../src/company_partner/lenovo.svg" alt="">
             </a>
         </div>
 
         <!-- nvidia -->
         <div class="cursor-pointer">
-            <a href="/shopnest/pages/brands_products.php?brandName=nvidia">
-                <img src="/shopnest/src/company_partner/nvidia.svg" alt="">
+            <a href="../pages/brands_products.php?brandName=nvidia">
+                <img src="../src/company_partner/nvidia.svg" alt="">
             </a>
         </div>
     </div>
