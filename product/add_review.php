@@ -41,8 +41,8 @@ if (isset($_GET['product_id'])) {
     exit();
 }
 
+$product_id = $_GET['product_id'];
 if (isset($_GET['product_id'])) {
-    $product_id = $_GET['product_id'];
 
     $product_find = "SELECT * FROM products WHERE product_id = '$product_id'";
     $product_query = mysqli_query($con, $product_find);
@@ -126,15 +126,21 @@ if (isset($_COOKIE['user_id'])) {
 </head>
 
 <body style="font-family: 'Outfit', sans-serif;">
-
+    <!-- Header -->
+    <header class="flex items-center bg-white p-2 h-14 shadow-md border-b-2 border-gray-400 mb-6">
+        <a href="../product/product_detail.php?product_id=<?php echo $product_id; ?>" class="p-2">
+            <!-- Left Arrow Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492 492" class="w-5 h-5">
+                <path d="M198.608 246.104 382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024 0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084-.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864 7.208 0 13.964-2.792 19.032-7.864l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" fill="currentColor"></path>
+            </svg>
+        </a>
+        <h1 class="flex-grow text-center text-lg font-semibold">Write your review</h1>
+    </header>
 
     <div class="w-[100%] mx-auto px-4 py-12 md:m-auto md:w-[70%]">
-        <div class="grid grid-col-1 gap-y-4">
-            <h2 class="font-bold text-2xl text-black">Write review</h2>
-            <div class="flex flex-col item-center justify-start gap-2 md:flex-row">
-                <img class="w-20 h-auto" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $row['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="">
-                <span class="text-xl font-medium line-clamp-1 my-auto h-7 cursor-default" title="<?php echo isset($product_id) ? $title : 'product_title' ?>"><?php echo isset($product_id) ? $title : 'product_title' ?></span>
-            </div>
+        <div class="flex flex-col item-center justify-start gap-2 md:flex-row">
+            <img class="w-24 h-auto" src="<?php echo isset($product_id) ? '../src/product_image/product_profile/' . $row['profile_image_1'] : '../src/sample_images/product_1.jpg' ?>" alt="">
+            <span class="text-xl font-medium line-clamp-1 my-auto h-7 cursor-default" title="<?php echo isset($product_id) ? $title : 'product_title' ?>"><?php echo isset($product_id) ? $title : 'product_title' ?></span>
         </div>
         <hr class="my-5">
         <form action="" method="post">

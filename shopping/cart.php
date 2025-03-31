@@ -194,7 +194,7 @@ if (isset($_SESSION['travelTime'])) {
 
                                             <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                                                 <div class="flex flex-col gap-y-2">
-                                                    <a href="/product/product_detail.php?product_id=<?php echo isset($_COOKIE['Cart_products']) ? $cart_products_id : '' ?>" class="text-base font-medium hover:underline line-clamp-2"><?php echo isset($_COOKIE['Cart_products']) ? $cart_products_title : '' ?></a>
+                                                    <a href="../product/product_detail.php?product_id=<?php echo isset($_COOKIE['Cart_products']) ? $cart_products_id : '' ?>" class="text-base font-medium hover:underline line-clamp-2"><?php echo isset($_COOKIE['Cart_products']) ? $cart_products_title : '' ?></a>
                                                     <div class="flex justify-between md:justify-normal gap-5">
                                                         <h1>
                                                             <span class="text-gray-600 mr-1">Color:</span>
