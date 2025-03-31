@@ -231,7 +231,7 @@ if (isset($_COOKIE['user_id'])) {
                             $total_price = (int)$product_quantity * (int)$cart_price;
                 ?>
                             <div class="flex flex-col min-[580px]:flex-row items-center justify-center rounded-lg bg-gray-100  mt-8 space-y-3 px-2 py-4 shadow-md">
-                                <img class="m-2 h-52 md:h-36 rounded-md object-cover object-center mix-blend-multiply" src="<?php echo isset($myCookie) ? '../src/product_image/product_profile/' . $cart_products_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
+                                <img class="m-2 h-52 md:h-36 rounded-md object-cover object-center" src="<?php echo isset($myCookie) ? '../src/product_image/product_profile/' . $cart_products_image : '../src/sample_images/product_1.jpg' ?>" alt="" />
                                 <div class="flex w-full flex-col px-4 py-4 gap-y-3">
                                     <span class="font-semibold line-clamp-2"><?php echo isset($myCookie) ? $cart_products_title : 'product title' ?></span>
                                     <p class="text-lg font-semibold text-green-500">₹<?php echo isset($myCookie) ? number_format($total_price) : 'MRP' ?></p>
@@ -421,8 +421,8 @@ if (isset($_COOKIE['user_id'])) {
 
     <!-- loader  -->
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
-        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
+        <div id="spin1" class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div id="spin2" class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
         <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
 
@@ -458,6 +458,12 @@ if (isset($_COOKIE['user_id'])) {
         function displaySuccessMessage(message) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
+
+            let spin1 = document.getElementById('spin1');
+            let spin2 = document.getElementById('spin2');
+
+            spin1.classList.remove('outer-line');
+            spin2.classList.remove('inner-line');
 
             // Show the success message
             setTimeout(() => {

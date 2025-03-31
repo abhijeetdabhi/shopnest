@@ -1,16 +1,16 @@
 <?php
 if (!isset($_GET['product_id'])) {
-    header("Location: /user/profile.php");
+    header("Location: view_products.php");
     exit;
 }
 
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /user/profile.php");
+    header("Location: ../user/profile.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -133,14 +133,14 @@ if (isset($_COOKIE['vendor_id'])) {
 
     <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-gray-600">
         <div class="flex items-center justify-center">
-            <a class="flex items-center" href="choose_product.php">
+            <a class="flex items-center" href="">
                 <!-- icon logo div -->
                 <div class="mr-2">
-                    <img class="w-7 sm:w-14" src="/src/logo/black_cart_logo.svg" alt="Cart Logo">
+                    <img class="w-7 sm:w-14" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
                 </div>
                 <!-- text logo -->
                 <div>
-                    <img class="w-20 sm:w-36" src="/src/logo/black_text_logo.svg" alt="Shopnest Logo">
+                    <img class="w-20 sm:w-36" src="../src/logo/black_text_logo.svg" alt="Shopnest Logo">
                 </div>
             </a>
         </div>

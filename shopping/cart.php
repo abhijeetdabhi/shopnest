@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -53,7 +53,7 @@ if (isset($_SESSION['travelTime'])) {
     <link rel="stylesheet" href="">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="/src/logo/favIcon.svg">
+    <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <!-- title -->
     <title>Cart</title>
@@ -163,7 +163,7 @@ if (isset($_SESSION['travelTime'])) {
                                     <div class="rounded-lg bg-white p-4 shadow-md md:p-6">
                                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                             <a href="" class="shrink-0 md:order-1">
-                                                <img class="md:h-32 w-full mix-blend-multiply" src="<?php echo isset($_COOKIE['Cart_products']) ? '/src/product_image/product_profile/' . $cart_products_image : '' ?>" alt="imac image" />
+                                                <img class="md:h-32 w-full mix-blend-multiply" src="<?php echo isset($_COOKIE['Cart_products']) ? '../src/product_image/product_profile/' . $cart_products_image : '' ?>" alt="imac image" />
                                             </a>
 
                                             <label for="counter-input" class="sr-only">Choose quantity:</label>
@@ -324,7 +324,7 @@ if (isset($_SESSION['travelTime'])) {
 
                         <div class="flex items-center justify-center gap-2">
                             <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
-                            <a href="/index.php" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+                            <a href="../index.php" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
                                 Continue shopping
                                 <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
@@ -404,7 +404,7 @@ if (isset($_SESSION['travelTime'])) {
                             <div class=" flex justify-center">
                                 <div class="product-card ring-2 ring-gray-300  rounded-tl-xl rounded-br-xl h-[23.7rem] w-60 overflow-hidden relative">
                                     <div class="p-2" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
-                                        <img src="<?php echo '/src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
+                                        <img src="<?php echo '../src/product_image/product_profile/' . $res['profile_image_1']; ?>" alt="" class="product-card__hero-image css-1fxh5tw h-56 w-full object-contain rounded-tl-2xl rounded-br-2xl mix-blend-multiply" loading="lazy" sizes="">
                                     </div>
                                     <div class="mt-2 space-y-3" onclick="window.location.href = '/product/product_detail.php?product_id=<?php echo $res['product_id']; ?>'">
                                         <a href="/product/product_detail.php?product_id=<?php echo $res['product_id'] ?>" class="text-sm font-medium line-clamp-2 cursor-pointer px-2"><?php echo $res['title'] ?></a>
@@ -428,7 +428,7 @@ if (isset($_SESSION['travelTime'])) {
                                         <?php
                                         if ($qty > 0) {
                                         ?>
-                                            <a href="<?php echo $qty > 0 ? '/shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
+                                            <a href="<?php echo $qty > 0 ? '../shopping/add_to_cart.php?product_id=' . urlencode($product_id) . '&size=' . $product_size . '&qty=' . $qty . '&MRP=' . $MRP : '#'; ?>" class="bg-white border-2 border-gray-800 text-gray-900 rounded-tl-xl rounded-br-xl w-40 py-1 text-sm font-semibold text-center">Add to cart</a>
                                         <?php
                                         } else {
                                         ?>

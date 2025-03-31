@@ -1,17 +1,17 @@
 <?php
 
 if (!isset($_GET['order_id']) || !isset($_COOKIE['user_id'])) {
-    header("Location: /user/show_orders.php");
+    header("Location: ../user/show_orders.php");
     exit;
 }
 
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>

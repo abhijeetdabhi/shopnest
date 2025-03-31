@@ -1,11 +1,11 @@
 <?php
-if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+if(isset($_COOKIE['vendor_id'])){
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
-if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+if(isset($_COOKIE['adminEmail'])){
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>

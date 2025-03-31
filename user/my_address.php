@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -111,14 +111,14 @@ if (isset($_COOKIE['user_id'])) {
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity h-screen bg-black opacity-50 lg:hidden" x-cloak></div>
             <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0" x-cloak>
                 <div class="flex items-center justify-center mt-8 mr-2">
-                    <a class="flex w-fit" href="/index.php">
+                    <a class="flex w-fit" href="../index.php">
                         <!-- icon logo div -->
                         <div>
-                            <img class="w-12 sm:w-14 mt-0.5" src="/src/logo/white_cart_logo.svg" alt="">
+                            <img class="w-12 sm:w-14 mt-0.5" src="../src/logo/white_cart_logo.svg" alt="">
                         </div>
                         <!-- text logo -->
                         <div>
-                            <img class="w-28 sm:w-36" src="/src/logo/white_text_logo.svg" alt="">
+                            <img class="w-28 sm:w-36" src="../src/logo/white_text_logo.svg" alt="">
                         </div>
                     </a>
                 </div>

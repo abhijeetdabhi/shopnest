@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['user_id'])) {
-    header("Location: /index.php");
+    header("Location: ../index.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -254,7 +254,7 @@ if (isset($_COOKIE['vendor_id'])) {
                     <div class="mx-4 md:mx-12 mb-12 bg-white shadow-lg">
                         <div class="relative">
                             <div class="relative">
-                                <img class="h-40 md:h-80 w-full" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png' ?>" alt="">
+                                <img class="h-40 md:h-80 w-full object-cover object-top" src="<?php echo isset($_COOKIE['vendor_id']) ? '../src/vendor_images/vendor_cover_image/' . $row['cover_image'] : 'https://cdn-icons-png.freepik.com/512/3682/3682323.png' ?>" alt="">
                             </div>
                         </div>
                         <div class="relative m-auto -translate-y-[3rem] md:-translate-y-[4rem]">

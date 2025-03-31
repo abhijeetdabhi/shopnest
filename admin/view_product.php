@@ -315,7 +315,6 @@ $_SESSION['currentData'] = $newCount;
                                             <span class="absolute top-2 right-2 <?php echo $conditionClass; ?> px-2 pt-0.5 pb-1 text-white text-xs font-semibold tracking-wide rounded-tl-lg rounded-br-lg">
                                                 <?php echo isset($_COOKIE['adminEmail']) ? $res['Item_Condition'] : 'Item_Condition'; ?>
                                             </span>
-                                            <!-- php for change background color for item condition -->
                                         </div>
                                         <div class="px-4 pt-2">
                                             <h2 class="text-lg font-semibold text-gray-800 mb-1 line-clamp-2"><?php echo isset($_COOKIE['adminEmail']) ? $res['title'] : 'title' ?></h2>
@@ -330,15 +329,23 @@ $_SESSION['currentData'] = $newCount;
                                                 <p class="text-sm font-medium text-gray-500 line-through">₹<?php echo isset($_COOKIE['adminEmail']) ? $res['vendor_price'] : 'Delete Price' ?></p>
                                             </div>
                                         </div>
-                                        <div class="w-full flex justify-between h-10 divide-x-2 border-t-2 mt-2 absolute bottom-0">
-                                            <a href="edit_vendor_products.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
-                                                <i class="fa-regular fa-pen-to-square"></i>
-                                                <span>Edit</span>
-                                            </a>
-                                            <a href="remove_product.php?product_id=<?php echo $res['product_id'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer">
-                                                <i class="fa-solid fa-trash text-base"></i>
-                                                <span>Remove</span>
-                                            </a>
+                                        <div class="flex flex-col w-full absolute bottom-0 border-t-2">
+                                            <div>
+                                                <a href="showProductReviews.php?product_id=<?php echo $res['product_id'] ?>" class="px-1 h-10 w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                    <span>Show all Reviews</span>
+                                                </a>
+                                            </div>
+                                            <div class="w-full flex justify-between h-10 divide-x-2 border-t-2">
+                                                <a href="edit_vendor_products.php?product_id=<?php echo $res['product_id'] ?>&name=<?php echo $res['Category'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-green-500 hover:text-green-600 transition duration-200 cursor-pointer">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                    <span>Edit</span>
+                                                </a>
+                                                <a href="remove_product.php?product_id=<?php echo $res['product_id'] ?>" class="px-1 w-full inline-flex justify-center items-center gap-1 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer">
+                                                    <i class="fa-solid fa-trash text-base"></i>
+                                                    <span>Remove</span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 <?php

@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -262,7 +262,9 @@ if (isset($_POST['updateReview'])) {
         $selectedStars = $_POST['stars'];
         $starString = implode(", ", $selectedStars);
 
-        $updateReview = "UPDATE user_review SET Rating='$starString',Headline='$headline',description='$description',public_name='$public_Name',date='$review_insert_Date' WHERE review_id = '$review_id'";
+        $updateReviewDate = date('d-m-Y');
+
+        $updateReview = "UPDATE user_review SET Rating='$starString',Headline='$headline',description='$description',public_name='$public_Name', date='$updateReviewDate' WHERE review_id = '$review_id'";
         $review_query = mysqli_query($con, $updateReview);
 
         if ($review_query) {

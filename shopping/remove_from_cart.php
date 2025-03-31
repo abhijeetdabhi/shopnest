@@ -1,11 +1,11 @@
 <?php
 if (isset($_COOKIE['vendor_id'])) {
-    header("Location: /vendor/vendor_dashboard.php");
+    header("Location: ../vendor/vendor_dashboard.php");
     exit;
 }
 
 if (isset($_COOKIE['adminEmail'])) {
-    header("Location: /admin/dashboard.php");
+    header("Location: ../admin/dashboard.php");
     exit;
 }
 ?>
@@ -39,14 +39,43 @@ if (isset($_GET['product_id'])) {
         }
 
 ?>
+        <style>
+            @keyframes clock-wise {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes anti-clock-wise {
+                0% {
+                    transform: rotate(360deg);
+                }
+
+                100% {
+                    transform: rotate(0deg);
+                }
+            }
+
+            .outer-line {
+                animation: clock-wise 1s linear infinite;
+            }
+
+            .inner-line {
+                animation: anti-clock-wise 1.3s linear infinite;
+            }
+        </style>
         <!-- Tailwind Script  -->
         <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
         <!-- loader -->
-        <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
-            <div class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full">
-                <div class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-gray-900 rounded-full"></div>
-            </div>
+        <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: flex;">
+            <div id="spin1" class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+            <div id="spin2" class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"></div>
+            <img class="w-10 absolute" src="../src/logo/black_cart_logo.svg" alt="Cart Logo">
         </div>
         <!-- Successfully message container -->
         <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 m-auto rounded-lg border-green-500 py-3 px-6 bg-green-100 z-50" id="SpopUp" style="display: none;">
@@ -57,7 +86,7 @@ if (isset($_GET['product_id'])) {
                     </g>
                 </svg>
                 <span class="sr-only">Info</span>
-                <div class="capitalize font-medium text-center" id="Successfully"></div>
+                <div class="capitalize font-medium text-center" id="Successfully">Product Remove Successfully</div>
             </div>
         </div>
 
@@ -68,9 +97,16 @@ if (isset($_GET['product_id'])) {
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
 
+            let spin1 = document.getElementById('spin1');
+            let spin2 = document.getElementById('spin2');
+
             let SpopUp = document.getElementById('SpopUp');
 
+                
             setTimeout(() => {
+                spin1.classList.remove('outer-line')
+                spin2.classList.remove('inner-line')
+                
                 SpopUp.style.display = 'flex';
                 SpopUp.style.opacity = '100';
                 window.location.href = '../shopping/cart.php';
