@@ -523,6 +523,26 @@ if (isset($_COOKIE['user_id'])) {
                 drift: -1, // Drift direction
             });
         }
+
+        function checkButton (event){
+            let COD = document.getElementById('COD');
+            let placeOrder = document.getElementById('placeOrder');
+
+            if(COD.checked) {
+                placeOrder.disabled = false;
+                placeOrder.classList.remove('opacity-25');
+                placeOrder.classList.add('cursor-pointer');
+                placeOrder.classList.remove('cursor-not-allowed');
+            } else {
+                placeOrder.disabled = true;
+                placeOrder.classList.add('opacity-25');
+                placeOrder.classList.remove('cursor-pointer');
+                placeOrder.classList.add('cursor-not-allowed');
+            }
+        }
+        let COD = document.getElementById('COD');
+        COD.addEventListener('change', checkButton);
+        checkButton();
     </script>
 
     <!-- footer -->
