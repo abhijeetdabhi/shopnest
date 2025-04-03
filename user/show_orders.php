@@ -335,7 +335,7 @@ if (isset($_SESSION['cartUrl'])) {
                                                     $time4Formatted = $date4->format("h:i:s A");
 
                                                     if($res['Status'] === 'pending'){
-                                                        echo '<span class="block bg-yellow-200 text-yellow-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Your order is pending until the vendor accepts it. Please wait.</span>';
+                                                        echo '<span class="block bg-yellow-200 text-yellow-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Order Placed.</span>';
                                                     }else{
                                                         if ($time1Formatted <= $currentTime && $time2Formatted >= $currentTime) {
                                                             echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Order Confirmed</span>';
