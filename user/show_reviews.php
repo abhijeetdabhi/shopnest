@@ -265,12 +265,12 @@ if (isset($_COOKIE['user_id'])) {
                         ?>
                                 <div class="bg-white shadow-lg h-max rounded-tl-xl rounded-br-xl overflow-hidden w-full">
                                     <div class="w-full">
-                                        <a href="">
+                                        <div>
                                             <div class="flex gap-y-4 items-start justify-between flex-row md:items-center px-3 pt-3 w-full">
                                                 <div class="flex items-center justify-center gap-x-3">
                                                     <img class="w-8 h-8 rounded-full object-cover" src="<?php echo '../src/user_dp/' . $rev['profile_image'] ?>" alt="">
                                                     <div class="flex flex-col gap-0">
-                                                        <h2 class="font-medium text-base text-neutral-800"><?php echo isset($_COOKIE['user_id']) ? $rev['public_name'] : 'public_name' ?></span></h2>
+                                                        <a href="../product/product_detail.php?product_id=<?php echo $res['product_id']; ?>" class="font-medium text-base text-neutral-800"><?php echo isset($_COOKIE['user_id']) ? $rev['public_name'] : 'public_name' ?></span></h>
                                                         <p class="font-medium text-sm text-gray-500"><?php echo isset($_COOKIE['user_id']) ? $rev['date'] : 'date' ?></p>
                                                     </div>
                                                 </div>
@@ -295,7 +295,7 @@ if (isset($_COOKIE['user_id'])) {
                                                     </p>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                     <div class="flex item-center justify-between bg-gray-600 px-3 py-2">
                                         <a href="edit_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-green-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg rounded-br-lg">Edit</a>

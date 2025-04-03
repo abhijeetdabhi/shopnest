@@ -41,12 +41,9 @@
             $insert_sql = mysqli_query($con, $insert_data);
         }
 
-        $deleteRequestData = "DELETE FROM orders WHERE order_id = '$orderId'";
-        $deleteQuery = mysqli_query($con, $deleteRequestData);
-
         include '../pages/mail.php';
 
-        if ($deleteQuery) {
+        if ($vendor_query) {
             $retrieve_order = "SELECT * FROM orders WHERE order_id = '$orderId' AND vendor_id = '$vendorId'";
             $retrieve_order_query = mysqli_query($con, $retrieve_order);
             $res = mysqli_fetch_assoc($retrieve_order_query);
@@ -137,6 +134,11 @@
                 echo "No order found with the given orderId and vendorId.";
             }
         }
+
+        $deleteRequestData = "DELETE FROM orders WHERE order_id = '$orderId'";
+        $deleteQuery = mysqli_query($con, $deleteRequestData);
+
+        
         
     }
 

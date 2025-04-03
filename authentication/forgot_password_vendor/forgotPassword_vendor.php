@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if (isset($_COOKIE['user_id'])) {
     header("Location: ../index.php");
     exit;
@@ -14,7 +16,6 @@ if (isset($_COOKIE['adminEmail'])) {
     exit;
 }
 
-session_start();
 
 ?>
 

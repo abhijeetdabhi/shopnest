@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if (isset($_COOKIE['user_id'])) {
     header("Location: /shopnest/index.php");
     exit;
@@ -13,132 +15,6 @@ if (isset($_COOKIE['adminEmail'])) {
     header("Location: /shopnest/admin/dashboard.php");
     exit;
 }
-?>
-
-<?php
-
-if (isset($_POST['GetMail'])) {
-
-    $email = $_POST['userEmail'];
-    $email_pattern = "/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
-
-
-    if (!preg_match($email_pattern, $email)) {
-?>
-        <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp_2" style="display: none;">
-            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">Enter Valid Email.</span>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            let EpopUp_2 = document.getElementById('EpopUp_2');
-
-            EpopUp_2.style.display = 'flex';
-            EpopUp_2.style.opacity = '100';
-
-            setTimeout(() => {
-                EpopUp_2.style.display = 'none';
-                EpopUp_2.style.opacity = '0';
-            }, 1500);
-        </script>
-    <?php
-    }
-
-    session_start();
-    function generateOTP($length = 6)
-    {
-        $otp = random_int(100000, 999999); // Generates a 6-digit OTP
-        return $otp;
-    }
-
-    $otp = generateOTP();
-    $_SESSION['otp'] = $otp;
-    $_SESSION['email'] = $email;
-    $_SESSION['otp_expiry'] = time() + 300;
-
-    include "mailOTP_verify_user.php";
-
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $mail->addAddress($email);
-    } else {
-    ?>
-        <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="EpopUp_2" style="display: none;">
-            <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">Enter Valid Email.</span>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            let EpopUp_2 = document.getElementById('EpopUp_2');
-
-            EpopUp_2.style.display = 'flex';
-            EpopUp_2.style.opacity = '100';
-
-            setTimeout(() => {
-                EpopUp_2.style.display = 'none';
-                EpopUp_2.style.opacity = '0';
-            }, 1500);
-        </script>
-<?php
-    }
-    $mail->isHTML(true);
-    $mail->Body = "<!DOCTYPE html>
-                    <html lang='en'>
-                    <head>
-                        <meta charset='UTF-8'>
-                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                        <title>Password Reset OTP</title>
-                        <style>
-                            h2 {
-                                color: #333333;
-                            }
-                            .otp {
-                                font-size: 24px;
-                                font-weight: bold;
-                                color: #4CAF50;
-                            }
-                        </style>
-                    </head>
-                    <body>
-
-                    <div class='container'>
-                        <h2>Password Reset Request</h2>
-                        <p>Dear Customer,</p>
-                        <p>We received a request to reset your password. To proceed, please use the one-time password (OTP) below:</p>
-
-                        <p class='otp'>Your OTP: $otp</p>
-
-                        <p>This OTP is valid for the next 10 minutes. Please enter it in the designated field on the password reset page.</p>
-
-                        <p>If you did not request a password reset, please ignore this email.</p>
-
-                        <div class='footer'>
-                            <p>Thank you!</p>
-                            <p>Best regards,<br>shopNest<br>shopNest2603@gmail.com</p>
-                        </div>
-                    </div>
-
-                    </body>
-                    </html>";
-
-    $mail->send();
-
-    header("Location: forgotPass_otp_user.php");
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -186,10 +62,85 @@ if (isset($_POST['GetMail'])) {
             color: red;
             margin-left: 3px;
         }
+
+        @keyframes clock-wise {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes anti-clock-wise {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-line {
+            animation: clock-wise 1s linear infinite;
+        }
+
+        .inner-line {
+            animation: anti-clock-wise 1.3s linear infinite;
+        }
     </style>
 </head>
 
 <body class="h-[100vh] flex flex-col justify-center items-center outfit">
+    <!-- Error message container -->
+    <div class="validInfo fixed top-3 left-1/2 transform -translate-x-1/2 w-[18rem] min-[410px]:w-[22rem] min-[760px]:w-max border-2 rounded-lg border-red-500 py-3 px-6 bg-red-100 z-50" id="popUp" style="display: none;">
+        <div class="flex items-center m-auto justify-center text-sm text-red-500">
+            <svg class="flex-shrink-0 inline w-5 h-5 me-3" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                <g>
+                    <path d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1zm4.242 13.829a1 1 0 1 1-1.414 1.414L12 13.414l-2.828 2.829a1 1 0 0 1-1.414-1.414L10.586 12 7.758 9.171a1 1 0 1 1 1.414-1.414L12 10.586l2.828-2.829a1 1 0 1 1 1.414 1.414L13.414 12z" data-name="Layer 2" fill="currentColor" opacity="1" data-original="currentColor" class=""></path>
+                </g>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="capitalize font-medium text-center" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- loader  -->
+    <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
+        <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
+        <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"></div>
+        <img class="w-10 absolute" src="../../src/logo/black_cart_logo.svg" alt="Cart Logo">
+    </div>
+
+    <script>
+        function loader() {
+            let loader = document.getElementById('loader');
+            let body = document.body;
+            let dataForm = document.getElementById('dataForm');
+
+            // Display the loader
+            loader.style.display = 'flex';
+            body.style.overflow = 'hidden';
+            dataForm.style.opacity = '0.4';
+        }
+
+        function displayErrorMessage(message) {
+            let popUp = document.getElementById('popUp');
+            let errorMessage = document.getElementById('errorMessage');
+
+            errorMessage.innerHTML = '<span class="font-medium">' + message + '</span>';
+            popUp.style.display = 'flex';
+            popUp.style.opacity = '100';
+
+            setTimeout(() => {
+                popUp.style.display = 'none';
+                popUp.style.opacity = '0';
+            }, 1800);
+        }
+    </script>
+        
     <div class="p-2 flex items-center justify-center">
         <a class="flex items-center mb-2" href="/shopnest/index.php">
             <!-- icon logo div -->
@@ -222,19 +173,6 @@ if (isset($_POST['GetMail'])) {
             </a>
         </form>
     </div>
-
-    <!-- Error message container -->
-    <div class="validInfo fixed top-0 mt-2 w-full transition duration-300 z-50" id="popUp" style="display: none;">
-        <div class="flex items-center m-auto justify-center px-6 py-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div id="errorMessage"></div>
-        </div>
-    </div>
-
-
     <script>
         // E-mail
         const mails = document.getElementById('userEmail')
@@ -257,6 +195,96 @@ if (isset($_POST['GetMail'])) {
     <!-- chatboat script -->
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/47227404.js"></script>
 
-</body>
-
+</body> 
 </html>
+
+<?php
+    if (isset($_POST['GetMail'])) {
+        $email = $_POST['userEmail'];
+        $email_pattern = "/^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+
+        if (!preg_match($email_pattern, $email)) {
+            ?>
+                <script>
+                    displayErrorMessage('Enter Valid Email.')  
+                </script>
+            <?php
+        }
+
+        function generateOTP($length = 6)
+        {
+            $otp = random_int(100000, 999999); // Generates a 6-digit OTP
+            return $otp;
+        }
+
+        $otp = generateOTP();
+        $_SESSION['otp'] = $otp;
+        $_SESSION['email'] = $email;
+        $_SESSION['otp_expiry'] = time() + 300;
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            ?>
+                <script>
+                    loader();
+                </script>
+            <?php
+
+            include "mailOTP_verify_user.php";
+
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Body = "<!DOCTYPE html>
+            <html lang='en'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Password Reset OTP</title>
+                <style>
+                    h2 {
+                        color: #333333;
+                    }
+                    .otp {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #4CAF50;
+                    }
+                </style>
+            </head>
+            <body>
+    
+            <div class='container'>
+                <h2>Password Reset Request</h2>
+                <p>Dear Customer,</p>
+                <p>We received a request to reset your password. To proceed, please use the one-time password (OTP) below:</p>
+    
+                <p class='otp'>Your OTP: $otp</p>
+    
+                <p>This OTP is valid for the next 10 minutes. Please enter it in the designated field on the password reset page.</p>
+    
+                <p>If you did not request a password reset, please ignore this email.</p>
+    
+                <div class='footer'>
+                    <p>Thank you!</p>
+                    <p>Best regards,<br>shopNest<br>shopNest2603@gmail.com</p>
+                </div>
+            </div>
+    
+            </body>
+            </html>";
+            $mail->send();
+
+            ?>
+                <script>
+                    window.location.href = 'forgotPass_otp_user.php';
+                </script>
+            <?php
+
+        } else {
+            ?>
+                <script>
+                    displayErrorMessage('Enter Valid Email.')  
+                </script>
+            <?php
+        }
+    }    
+?>

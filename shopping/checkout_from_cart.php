@@ -392,7 +392,7 @@ if (isset($_COOKIE['user_id'])) {
                     </div>
                 </div>
                 <div>
-                    <input type="submit" name="placeOrder" value="Place order" class="cursor-pointer hover:bg-gray-800 mt-4 mb-8 w-full rounded-tl-xl rounded-br-xl bg-gray-700 px-6 py-3 font-medium text-white transition duration-200">
+                    <input type="submit" name="placeOrder" id="placeOrder" value="Place order" class="cursor-pointer hover:bg-gray-800 mt-4 mb-8 w-full rounded-tl-xl rounded-br-xl bg-gray-700 px-6 py-3 font-medium text-white transition duration-200">
                 </div>
             </div>
         </div>
@@ -661,14 +661,14 @@ if (isset($_POST['placeOrder'])) {
                             $today = date('d-m-Y', strtotime($res['date']));
                             $delivery_date = date('d-m-Y', strtotime('+5 days', strtotime($today)));
 
-                            $mail->Subject = "New Order Confirmation - #$order_id";
+                            $mail->Subject = "Order Placed - #$order_id (Pending Confirmation)";
                             $mail->Body = "<html>
                             <head>
-                            <title>Order Confirmation</title>
+                            <title>Order Placed - Pending Confirmation</title>
                             </head>
                             <body>
                             <p>Dear $username,</p>
-                            <p>Thank you for placing an order with us! We are excited to confirm the details of your purchase. Below are the specifics of your order:</p>
+                            <p>Thank you for placing an order with us! We are excited to inform you that your order has been received and is currently pending confirmation. The details of your order are as follows:</p>
                             <p><strong>Order Number:</strong> $order_id<br>
                             <strong>Order Date:</strong> $order_date</p>
                             <h3>Items Ordered:</h3>
@@ -703,7 +703,8 @@ if (isset($_POST['placeOrder'])) {
                             <p><strong>Billing Address:</strong> $user_address</p>
                             <p><strong>Order Total Price:</strong> $total_price</p>
                             <p><strong>Estimated Delivery Date:</strong> $delivery_date</p>
-                            <p>We will send you an update when your order is on its way. If you have any questions or need further assistance, please do not hesitate to contact us.</p>
+                            <p>Your order is currently pending confirmation from the vendor. Once the vendor accepts your order, we will send you a confirmation and update you on the shipping details.</p>
+                            <p>If you have any questions or need further assistance, please do not hesitate to contact us.</p>
                             <p>Thank you for choosing shopNest. We look forward to serving you again!</p>
                             <p>Best regards,<br>
                             shopNest<br>

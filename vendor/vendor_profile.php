@@ -47,6 +47,9 @@ if (isset($_COOKIE['vendor_id'])) {
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -168,18 +171,32 @@ if (isset($_COOKIE['vendor_id'])) {
                             </g>
                         </svg>
                         <span class="mx-3">Orders Request</span>
-                        <?php
-                            if (isset($_SESSION['existingOrder'])) {
-                                if ($_SESSION['existingOrder'] < $_SESSION['currentOrder']) {
-                            ?>  
-                                    <span class="relative flex size-2">
-                                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                                        <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
-                                    </span>
-                            <?php
-                                }
+                        <span id="order-dot" class="relative flex size-2" style="display: none;">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+                        </span>
+                        <script>
+                            function checkNewOrder() {
+                                $.ajax({
+                                    url: 'orderNotification.php',
+                                    method: 'POST',
+                                    data: { checkNewOrder: true },
+                                    success: function(response) {
+                                        const newOrder = JSON.parse(response);
+                                        if (newOrder === 1) {
+                                            $('#order-dot').show();
+                                        } else {
+                                            $('#order-dot').hide();
+                                        }
+                                    }
+                                });
                             }
-                        ?>
+
+                            $(document).ready(function() {
+                                checkNewOrder();
+                                setInterval(checkNewOrder, 5000);
+                            });
+                        </script>
                     </a>
 
                     <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="rejected_orders.php">

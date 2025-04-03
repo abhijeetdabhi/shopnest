@@ -513,6 +513,16 @@ if (isset($_GET['product_id'])) {
 
     <script>
         $(document).ready(function() {
+
+            let checkOutBtn = document.getElementById('checkOutBtn');
+            let COD = document.getElementById('COD')
+            checkOutBtn.addEventListener('click', function(e){
+                if(COD.checked){
+                    loader();
+                }
+            });
+
+
             $('#dataForm').on('submit', function(e) {
 
                 e.preventDefault();
@@ -570,6 +580,7 @@ if (isset($_GET['product_id'])) {
                     }
                 });
             });
+            
         });
     </script>
 

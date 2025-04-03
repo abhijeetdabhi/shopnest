@@ -157,18 +157,32 @@ if (isset($_COOKIE['vendor_id'])) {
                             </g>
                         </svg>
                         <span class="mx-3">Orders Request</span>
-                        <?php
-                            if (isset($_SESSION['existingOrder'])) {
-                                if ($_SESSION['existingOrder'] < $_SESSION['currentOrder']) {
-                            ?>  
-                                    <span class="relative flex size-2">
-                                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                                        <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
-                                    </span>
-                            <?php
-                                }
+                        <span id="order-dot" class="relative flex size-2" style="display: none;">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+                        </span>
+                        <script>
+                            function checkNewOrder() {
+                                $.ajax({
+                                    url: 'orderNotification.php',
+                                    method: 'POST',
+                                    data: { checkNewOrder: true },
+                                    success: function(response) {
+                                        const newOrder = JSON.parse(response);
+                                        if (newOrder === 1) {
+                                            $('#order-dot').show();
+                                        } else {
+                                            $('#order-dot').hide();
+                                        }
+                                    }
+                                });
                             }
-                        ?>
+
+                            $(document).ready(function() {
+                                checkNewOrder();
+                                setInterval(checkNewOrder, 5000);
+                            });
+                        </script>
                     </a>
 
                     <a class="group flex items-center px-6 py-2 mt-4 bg-gray-700 bg-opacity-25 text-gray-100" href="rejected_orders.php">
