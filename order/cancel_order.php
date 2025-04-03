@@ -331,7 +331,23 @@ if (isset($_COOKIE['user_id'])) {
 
     <script>
         $(document).ready(function() {
+            let CancelProduct = document.getElementById('CancelProduct');
+            CancelProduct.addEventListener('click', function(e){
+                let cancelCheckboxes = [
+                    'Cancle_1', 'Cancle_2', 'Cancle_3', 'Cancle_4', 
+                    'Cancle_5', 'Cancle_6', 'Cancle_7', 'Cancle_8', 'Cancle_9'
+                ];
+
+                let isChecked = cancelCheckboxes.some(function(id) {
+                    return document.getElementById(id).checked;
+                });
+                
+                if (isChecked) {
+                    loader();
+                }
+            });
             $("#cancelForm").on('submit', function(e) {
+                
                 e.preventDefault();
 
                 let billingEmail = $('#billingEmail').val().trim()
@@ -412,6 +428,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $insert_cancle_order = "INSERT INTO cancel_orders(order_id, product_id, user_id, vendor_id, user_name, user_email, user_phone, receive_payment, cancle_order_title, cancle_order_image, cancle_order_price, cancle_order_color, cancle_order_size, cancle_order_qty, reason, date) VALUES ('$order_id','$product_id','$user_id','$vendor_id','$user_name','$user_email','$user_phone','COD','$cancle_order_title','$cancle_order_image','$cancle_order_price','$cancle_order_color','$cancle_order_size', '$cancle_order_qty','$reason','$date')";
     $cancle_order_query = mysqli_query($con, $insert_cancle_order);
+
+    include '../pages/mail.php';
+
+    if ($cancle_order_query) {
+        $retrieve_order = "SELECT * FROM orders WHERE order_id = '$order_id'";
+        $retrieve_order_query = mysqli_query($con, $retrieve_order);
+        $res = mysqli_fetch_assoc($retrieve_order_query);
+
+        $mail->addAddress($user_email);
+        $mail->isHTML(true);
+
+        if ($res) {
+            $username = $res['user_first_name'] . ' ' . $res['user_last_name'];
+            $order_id = $res['order_id'];
+            $order_date = $res['date'];
+            $order_title = $res['order_title'];
+            $order_image = '../src/product_image/product_profile/' . $res['order_image'];
+            $order_price = $res['order_price'];
+            $order_color = $res['order_color'];
+            $order_size = $res['order_size'];
+            $order_qty = $res['qty'];
+            $user_email = $res['user_email'];
+            $user_mobile = $res['user_mobile'];
+            $user_address = $res['user_address'];
+            $total_price = $res['total_price'];
+            $today = date('d-m-Y', strtotime($res['date']));
+            $delivery_date = date('d-m-Y', strtotime('+5 days', strtotime($today)));
+            $cancellation_reason = $reason;
+
+            $mail->Subject = "Order Cancelled by You - #$order_id";
+            $mail->Body = "<html>
+            <head>
+            <title>Order Cancelled by You</title>
+            </head>
+            <body>
+            <p>Dear $username,</p>
+            <p>We have received your request to cancel your order. We regret to inform you that your order has been successfully cancelled. The details of your cancelled order are as follows:</p>
+            <p><strong>Order Number:</strong> $order_id<br>
+            <strong>Order Date:</strong> $order_date</p>
+            <h3>Items Ordered:</h3>
+            <table border='1' cellpadding='10'>
+                <tr>
+                <td><strong>Product Name:</strong></td>
+                <td>$order_title</td>
+                </tr>
+                <tr>
+                <td><strong>Image:</strong></td>
+                <td><img src='$order_image' alt='Product Image' width='100'></td>
+                </tr>
+                <tr>
+                <td><strong>Price:</strong></td>
+                <td>$order_price</td>
+                </tr>
+                <tr>
+                <td><strong>Quantity:</strong></td>
+                <td>$order_qty</td>
+                </tr>
+                <tr>
+                <td><strong>Color:</strong></td>
+                <td>$order_color</td>
+                </tr>
+                <tr>
+                    <td><strong>Size:</strong></td>
+                    <td>$order_size</td>
+                </tr>
+            </table>
+            <p><strong>Mobile Number:</strong> $user_mobile</p>
+            <p><strong>Billing E-mail:</strong> $user_email</p>
+            <p><strong>Billing Address:</strong> $user_address</p>
+            <p><strong>Order Total Price:</strong> $total_price</p>
+            <p><strong>Cancellation Reason:</strong> $cancellation_reason</p> <!-- Added cancellation reason -->
+            <p>We confirm that your order has been cancelled. If you have any further questions or concerns, please feel free to contact us.</p>
+            <p>Thank you for being a valued customer of shopNest. We hope to serve you again in the future!</p>
+            <p>Best regards,<br>
+            shopNest<br>
+            shopnest2603@gmail.com</p>
+            </body>
+            </html>";
+
+            $mail->send();
+        }
+    }
+
 
     $delete_order = "DELETE FROM orders WHERE order_id = '$order_id'";
     $delete_query = mysqli_query($con, $delete_order);

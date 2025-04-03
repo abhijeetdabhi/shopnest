@@ -337,6 +337,21 @@ if (isset($_COOKIE['user_id'])) {
 
     <script>
         $(document).ready(function() {
+            let ReturnProduct = document.getElementById('ReturnProduct');
+            ReturnProduct.addEventListener('click', function(e){
+                let returnCheckboxes = [
+                    'Return_1', 'Return_2', 'Return_3', 'Return_4', 
+                    'Return_5', 'Return_6', 'Return_7', 'Return_8', 'Return_9'
+                ];
+
+                let isChecked = returnCheckboxes.some(function(id) {
+                    return document.getElementById(id).checked;
+                });
+                
+                if (isChecked) {
+                    loader();
+                }
+            });
             $('#returnForm').on('submit', function(e) {
                 e.preventDefault();
 
@@ -424,6 +439,101 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $insert_return_order = "INSERT INTO return_orders(order_id, product_id, user_id, vendor_id, user_name, user_email, user_phone, return_order_image, return_order_title, return_order_price, return_order_color, return_order_size, return_order_qty, payment_type, reason, date) VALUES ('$order_id','$product_id','$user_id','$vendor_id','$user_name','$user_email','$user_phone','$return_order_image','$return_order_title','$return_order_price','$return_order_color','$return_order_size','$return_order_qty','$receive_payment','$reason','$date')";
     $return_order_query = mysqli_query($con, $insert_return_order);
+
+    include '../pages/mail.php';
+
+    if ($return_order_query) {
+        $retrieve_order = "SELECT * FROM orders WHERE order_id = '$order_id'";
+        $retrieve_order_query = mysqli_query($con, $retrieve_order);
+        $res = mysqli_fetch_assoc($retrieve_order_query);
+
+        $mail->addAddress($user_email);
+        $mail->isHTML(true);
+
+        if ($res) {
+            $username = $res['user_first_name'] . ' ' . $res['user_last_name'];
+            $order_id = $res['order_id'];
+            $order_date = $res['date'];
+            $order_title = $res['order_title'];
+            $order_image = '../src/product_image/product_profile/' . $res['order_image'];
+            $order_price = $res['order_price'];
+            $order_color = $res['order_color'];
+            $order_size = $res['order_size'];
+            $order_qty = $res['qty'];
+            $user_email = $res['user_email'];
+            $user_mobile = $res['user_mobile'];
+            $user_address = $res['user_address'];
+            $payment_type = $res['payment_type'];
+            $total_price = $res['total_price'];
+            $today = date('d-m-Y', strtotime($res['date']));
+            $delivery_date = date('d-m-Y', strtotime('+5 days', strtotime($today)));
+            $cancellation_reason = $reason;
+
+            $mail->Subject = "Order Return Request - #$order_id";
+            $mail->Body = "<html>
+            <head>
+            <title>Order Return Request</title>
+            </head>
+            <body>
+            <p>Dear $username,</p>
+
+            <p>We have received your request to return the following order. We are sorry to hear that you are not fully satisfied with your purchase, and we will begin processing the return as soon as possible. Below are the details of your order and the return request:</p>
+
+            <p><strong>Order Number:</strong> $order_id<br>
+            <strong>Order Date:</strong> $order_date</p>
+
+            <h3>Items Returned:</h3>
+            <table border='1' cellpadding='10'>
+                <tr>
+                    <td><strong>Product Name:</strong></td>
+                    <td>$order_title</td>
+                </tr>
+                <tr>
+                    <td><strong>Image:</strong></td>
+                    <td><img src='$order_image' alt='Product Image' width='100'></td>
+                </tr>
+                <tr>
+                    <td><strong>Price:</strong></td>
+                    <td>$order_price</td>
+                </tr>
+                <tr>
+                    <td><strong>Quantity:</strong></td>
+                    <td>$order_qty</td>
+                </tr>
+                <tr>
+                    <td><strong>Color:</strong></td>
+                    <td>$order_color</td>
+                </tr>
+                <tr>
+                    <td><strong>Size:</strong></td>
+                    <td>$order_size</td>
+                </tr>
+            </table>
+
+            <p><strong>Mobile Number:</strong> $user_mobile</p>
+            <p><strong>Billing E-mail:</strong> $user_email</p>
+            <p><strong>Billing Address:</strong> $user_address</p>
+            <p><strong>Order Total Price:</strong> $total_price</p>
+            <p><strong>Payment Type:</strong> $payment_type</p>
+
+            <p><strong>Reason for Return:</strong> $reason</p>
+
+            <p>We will process your return request and notify you once it has been approved. Please make sure the product is in its original condition, and follow any return instructions we provide.</p>
+
+            <p>If you have any questions or need assistance, feel free to reach out to our customer support team.</p>
+
+            <p>Thank you for your understanding, and we apologize for any inconvenience caused. We hope to serve you better in the future!</p>
+
+            <p>Best regards,<br>
+            shopNest<br>
+            shopnest2603@gmail.com</p>
+
+            </body>
+            </html>";
+
+            $mail->send();
+        }
+    }
 
     $delete_order = "DELETE FROM orders WHERE order_id = '$order_id'";
     $delete_query = mysqli_query($con, $delete_order);
