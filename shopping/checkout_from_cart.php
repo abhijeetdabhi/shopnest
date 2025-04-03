@@ -440,12 +440,19 @@ if (isset($_COOKIE['user_id'])) {
             let loader = document.getElementById('loader');
             let body = document.body;
             let dataForm = document.getElementById('dataForm');
+            let spin1 = document.getElementById('spin1');
+            let spin2 = document.getElementById('spin2');
+
+            // Add animation classes
+            spin1.classList.add('outer-line');
+            spin2.classList.add('inner-line');
 
             // Display the loader
             loader.style.display = 'flex';
             body.style.overflow = 'hidden';
             dataForm.style.opacity = '0.4';
         }
+
 
         // Display error message
         function displayErrorMessage(message) {
@@ -467,13 +474,7 @@ if (isset($_COOKIE['user_id'])) {
             let SpopUp = document.getElementById('SpopUp');
             let Successfully = document.getElementById('Successfully');
 
-            let spin1 = document.getElementById('spin1');
-            let spin2 = document.getElementById('spin2');
-
-            spin1.classList.remove('outer-line');
-            spin2.classList.remove('inner-line');
-
-            // Show the success message
+            // Keep animation classes active
             setTimeout(() => {
                 Successfully.innerHTML = '<span class="font-medium">' + message + '</span>';
                 SpopUp.style.display = 'flex';
@@ -483,12 +484,13 @@ if (isset($_COOKIE['user_id'])) {
                 fireExplosiveConfettiFromLeft();
                 fireExplosiveConfettiFromRight();
 
-                // Delay the redirect to allow confetti animation to play
+                // Redirect after animation
                 setTimeout(() => {
-                    window.location.href = '../user/show_orders.php'; // Redirect after the confetti animation
-                }, 2000); // Adjust time as needed
+                    window.location.href = '../user/show_orders.php';
+                }, 2000);
             }, 2000);
         }
+
 
         // Explosive Confetti from the left bottom corner
         function fireExplosiveConfettiFromLeft() {
@@ -714,7 +716,7 @@ if (isset($_POST['placeOrder'])) {
 
                             $mail->send();
                         }
-                    echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
+                        echo '<script>displaySuccessMessage("Your order has been placed.");</script>';
                     }
 
                     $url = 'http://localhost/shopnest/shopping/checkout_from_cart.php';
