@@ -329,7 +329,7 @@ if (isset($_COOKIE['user_id'])) {
                             <label class="require" for="">Vendor store name :</label>
                             <div class="relative">
                                 <input class="h-12 w-full rounded-md border-2 border-gray-300 hover:border-gray-500 focus:border-gray-700 focus:ring-0 hover:transition" type="text" name="vendorStore" id="vendorStore" value="<?php echo isset($_GET['vendorId']) ? $vendor_name : '' ?>">
-                                <div id="vendorSuggestions" class="hidden absolute top-14 left-0 w-full p-2 border rounded-md bg-white shadow-lg shadow-black/50 z-40 min-[0px]:grid grid-cols-1 gap-y-4 h-auto max-h-[13rem] overflow-y-auto scrollBar">
+                                <div id="vendorSuggestions" style="display: none;" class="hidden absolute top-14 left-0 w-full p-2 border rounded-md bg-white shadow-lg shadow-black/50 z-40 min-[0px]:grid grid-cols-1 gap-y-4 h-auto max-h-[13rem] overflow-y-auto scrollBar">
                                     <?php
                                     foreach ($vendorId as $vd) {
                                         $findVendor = "SELECT * FROM vendor_registration WHERE vendor_id = $vd";

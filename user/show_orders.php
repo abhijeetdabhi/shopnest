@@ -276,7 +276,7 @@ if (isset($_SESSION['cartUrl'])) {
                             ?>
                                     <div class="flex flex-col md:flex-row items-center py-5 bg-gray-100 px-5 gap-6 w-full mb-7 rounded-xl shadow-lg md:h-44">
                                         <div class="img-box w-full md:w-auto">
-                                            <a href="/order/track_order.php?order_id=<?php echo $res['order_id']; ?>">
+                                            <a href="../order/track_order.php?order_id=<?php echo $res['order_id']; ?>">
                                                 <img class="aspect-square w-full md:w-32 lg:w-36 object-cover rounded-lg mix-blend-multiply" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image">
                                             </a>
                                         </div>
@@ -334,17 +334,22 @@ if (isset($_SESSION['cartUrl'])) {
                                                     $date4->modify("+" . $travelTime . " minutes");
                                                     $time4Formatted = $date4->format("h:i:s A");
 
-                                                    if ($time1Formatted <= $currentTime && $time2Formatted >= $currentTime) {
-                                                        echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Order Confirmed</span>';
-                                                    } elseif ($time2Formatted <= $currentTime && $time3Formatted >= $currentTime) {
-                                                        echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Order Packed</span>';
-                                                    } elseif ($time3Formatted <= $currentTime && $time4Formatted >= $currentTime) {
-                                                        echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">On the Way</span>';
-                                                    } elseif ($time4Formatted <= $currentTime) {
-                                                        echo '<span class="block bg-green-200 text-green-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Delivered</span>';
+                                                    if($res['Status'] === 'pending'){
+                                                        echo '<span class="block bg-yellow-200 text-yellow-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Your order is pending until the vendor accepts it. Please wait.</span>';
                                                     }else{
-                                                        echo '<span class="block bg-green-200 text-green-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Delivered</span>';
+                                                        if ($time1Formatted <= $currentTime && $time2Formatted >= $currentTime) {
+                                                            echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Order Confirmed</span>';
+                                                        } elseif ($time2Formatted <= $currentTime && $time3Formatted >= $currentTime) {
+                                                            echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Order Packed</span>';
+                                                        } elseif ($time3Formatted <= $currentTime && $time4Formatted >= $currentTime) {
+                                                            echo '<span class="block bg-blue-200 text-blue-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">On the Way</span>';
+                                                        } elseif ($time4Formatted <= $currentTime) {
+                                                            echo '<span class="block bg-green-200 text-green-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Delivered</span>';
+                                                        }else{
+                                                            echo '<span class="block bg-green-200 text-green-600 rounded-tl-lg rounded-br-lg px-3 py-1 w-44">Delivered</span>';
+                                                        }
                                                     }
+
                                                     ?>
                                                 </div>
                                             </div>

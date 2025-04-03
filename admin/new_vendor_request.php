@@ -57,7 +57,7 @@ $currentData = $_SESSION['currentData'];
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <!-- title -->
-    <title>View Vendors</title>
+    <title>New Vendor Requests</title>
     <style>
         .scrollBar::-webkit-scrollbar-track {
             border-radius: 10px;

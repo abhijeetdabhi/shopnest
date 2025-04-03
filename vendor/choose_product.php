@@ -55,6 +55,17 @@ if (isset($_COOKIE['vendor_id'])) {
     $retrieve_query = mysqli_query($con, $retrieve_data);
 
     $row = mysqli_fetch_assoc($retrieve_query);
+
+    if (!isset($_SESSION['existingOrder'])) {
+        $_SESSION['existingOrder'] = 0;
+    }
+    
+    $newData = "SELECT * FROM orders WHERE vendor_id = '$vendor_id' AND status = 'pending'";
+    $newDataQuery = mysqli_query($con, $newData);
+    
+    $newCount = mysqli_num_rows($newDataQuery);
+    
+    $_SESSION['currentOrder'] = $newCount;
 }
 ?>
 <!DOCTYPE html>
@@ -164,6 +175,38 @@ if (isset($_COOKIE['vendor_id'])) {
                             </svg>
                         </span>
                         <span class="mx-3">Product Purchasers</span>
+                    </a>
+
+                    <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="order_request.php">
+                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                            <g>
+                                <path d="M124 53h-8a4.004 4.004 0 0 0-4 4v2.068l-2.51.07a1.802 1.802 0 0 0-.145.008 4.268 4.268 0 0 1-4.134-1.46A17.653 17.653 0 0 0 92.17 52l-20.487.126a7.058 7.058 0 0 0-4.982 2.034 5.591 5.591 0 0 0-1.646 3.996c.045 3.272 3.056 5.92 6.724 5.92h.04l9.583-.062H86l5.259 9.303a2 2 0 0 0 3.482-1.968l-5.833-10.32a2 2 0 0 0-1.741-1.015l-15.37.062h-.019c-1.463 0-2.708-.901-2.722-1.972a1.622 1.622 0 0 1 .503-1.144 3.038 3.038 0 0 1 2.152-.834L92.196 56a13.456 13.456 0 0 1 10.081 4.404 8.001 8.001 0 0 0 6.244 2.787q.557 0 1.15-.057l2.329-.065v21.467l-1.98-.074a8.11 8.11 0 0 0-7.364 2.828 13.259 13.259 0 0 1-9.936 4.518l-8.72.055V68.605l-.334-.591h-2.263L80 68.023V98H61.698A5.806 5.806 0 0 0 56 103.896V124H5.999A1.973 1.973 0 0 1 4 122.058V5.942A1.973 1.973 0 0 1 5.999 4h72.002A1.973 1.973 0 0 1 80 5.942v42.133l4-.025V5.942A5.978 5.978 0 0 0 78.001 0H5.999A5.978 5.978 0 0 0 0 5.942v116.116A5.978 5.978 0 0 0 5.999 128h51.076a2 2 0 0 0 1.424-.595l24.925-25.252a2.002 2.002 0 0 0 .576-1.405v-4.885l8.745-.055a17.442 17.442 0 0 0 12.9-5.859 4.16 4.16 0 0 1 4.076-1.498l.101.007 2.178.081V91a4.004 4.004 0 0 0 4 4h8a4.004 4.004 0 0 0 4-4V57a4.004 4.004 0 0 0-4-4Zm-64 67.19v-16.294A1.807 1.807 0 0 1 61.698 102h16.257ZM124 91h-8V57h8Z" fill="CurrentColor" opacity="1" data-original="#000000" class=""></path>
+                                <path d="M58 15a2 2 0 0 0 0-4H26a2 2 0 0 0 0 4ZM72 23H32a2 2 0 0 0 0 4h40a2 2 0 0 0 0-4ZM72 31H32a2 2 0 0 0 0 4h40a2 2 0 0 0 0-4ZM74 45a2 2 0 0 0-2-2H32a2 2 0 0 0 0 4h40a2 2 0 0 0 2-2ZM72 71H32a2 2 0 0 0 0 4h40a2 2 0 0 0 0-4ZM72 83H32a2 2 0 0 0 0 4h40a2 2 0 0 0 0-4ZM74 93a2 2 0 0 0-2-2H32a2 2 0 0 0 0 4h40a2 2 0 0 0 2-2ZM62.464 63H32a2 2 0 0 0 0 4h35.006a10.57 10.57 0 0 1-4.542-4ZM32 55h29.587a9.768 9.768 0 0 1 2.259-3.64c.124-.127.26-.24.391-.36H32a2 2 0 0 0 0 4ZM10 117h28a2 2 0 0 0 0-4H10a2 2 0 0 0 0 4ZM16 37a8 8 0 1 0-8-8 8.01 8.01 0 0 0 8 8Zm0-12a4 4 0 1 1-4 4 4.004 4.004 0 0 1 4-4ZM16 57a8 8 0 1 0-8-8 8.01 8.01 0 0 0 8 8Zm0-12a4 4 0 1 1-4 4 4.004 4.004 0 0 1 4-4ZM16 77a8 8 0 1 0-8-8 8.01 8.01 0 0 0 8 8Zm0-12a4 4 0 1 1-4 4 4.004 4.004 0 0 1 4-4ZM16 97a8 8 0 1 0-8-8 8.01 8.01 0 0 0 8 8Zm0-12a4 4 0 1 1-4 4 4.004 4.004 0 0 1 4-4Z" fill="CurrentColor" opacity="1" data-original="#000000" class=""></path>
+                            </g>
+                        </svg>
+                        <span class="mx-3">Orders Request</span>
+                        <?php
+                            if (isset($_SESSION['existingOrder'])) {
+                                if ($_SESSION['existingOrder'] < $_SESSION['currentOrder']) {
+                            ?>  
+                                    <span class="relative flex size-2">
+                                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                                        <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+                                    </span>
+                            <?php
+                                }
+                            }
+                        ?>
+                    </a>
+
+                    <a class="group flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="rejected_orders.php">
+                        <svg class="w-6 h-6 fill-gray-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 511.792 511.792" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                            <g>
+                                <path d="M496.085 120.75 120.75 496.085c-10.943 10.943-28.685 10.943-39.629 0l-65.414-65.414c-10.943-10.943-10.943-28.685 0-39.629L391.042 15.707c10.943-10.943 28.685-10.943 39.629 0l65.414 65.414c10.943 10.944 10.943 28.686 0 39.629z" style="stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" data-original="currentColor" class=""></path>
+                                <path d="M97.244 249.153 296.531 49.866c16.666-16.666 43.686-16.666 60.352 0h0L49.866 356.883h0c-16.666-16.666-16.666-43.686 0-60.352l24.459-24.459M392.502 284.685l69.424-69.424c16.666-16.666 16.666-43.686 0-60.352h0L154.909 461.926h0c16.666 16.666 43.686 16.666 60.352 0L366.927 310.26M198.246 345.645s8.962.028 11.126-7.537c1.068-3.733-.054-7.751-2.799-10.497l-29.904-29.904M142.417 332.302l-15.621 15.621 37.073 37.074 15.621-15.622M159.802 351.99l-14.47 14.47M216.957 257.762l-15.621 15.621 37.073 37.074 15.621-15.622M234.342 277.451l-14.47 14.469M343.069 131.65l-15.621 15.621 37.073 37.074 15.621-15.622M360.454 151.339l-14.47 14.469M366.927 108.632l35.681 35.681M409.989 101.803c10.004 10.004 12.368 23.473 3.713 32.436-2.881 2.984-10.431 10.591-10.431 10.591s-13.199-13.104-18.241-18.147c-4.142-4.142-18.141-18.088-18.141-18.088l10.283-10.283c9.663-9.663 22.813-6.513 32.817 3.491zM269.491 211.276a26.33 26.33 0 0 0-13.654 7.265c-10.332 10.332-10.332 27.083 0 37.415s27.083 10.332 37.415 0c4.196-4.196 6.266-9.029 6.553-13.982a21.338 21.338 0 0 0-.048-3.085M285.288 189.089l20.663-20.662M296.772 179.994l36.221 36.221M107.165 406.328l33.574 2.14M83.095 391.282l37.415 37.415M113.048 380.777c5.37 5.37 5.015 14.433-.55 19.998-2.76 2.76-9.83 9.916-9.83 9.916s-7.104-7.015-9.811-9.722c-2.223-2.223-9.749-9.699-9.749-9.699l9.942-9.942c5.565-5.566 14.628-5.921 19.998-.551z" style="stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" data-original="currentColor" class=""></path>
+                            </g>
+                        </svg>
+                        <span class="mx-3">Rejected Orders</span>
                     </a>
 
                     <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100" href="view_orders.php">

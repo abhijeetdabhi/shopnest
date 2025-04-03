@@ -48,7 +48,7 @@ $_SESSION['currentData'] = $newCount;
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <!-- title -->
-    <title>View Vendors</title>
+    <title>Customer inquiries</title>
     <style>
         .scrollBar::-webkit-scrollbar-track {
             border-radius: 10px;

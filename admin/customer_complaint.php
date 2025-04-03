@@ -49,7 +49,7 @@ $_SESSION['currentData'] = $newCount;
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <!-- title -->
-    <title>View Vendors</title>
+    <title>Customer Complaint</title>
     <style>
         .scrollBar::-webkit-scrollbar-track {
             border-radius: 10px;
@@ -347,7 +347,7 @@ $_SESSION['currentData'] = $newCount;
                                                 </div>
                                             </div>
                                             <div class="text-right">
-                                                <a href="" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Add Comment</a>
+                                                <a href="mailto:<?php echo $res['user_email'] ?>" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-tl-xl rounded-br-xl hover:bg-gray-700 transition cursor-pointer">Reply Via Email</a>
                                             </div>
                                         </div>
                                     <?php

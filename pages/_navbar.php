@@ -301,7 +301,7 @@ if (isset($_COOKIE['latitude']) && isset($_COOKIE['longitude'])) {
     <div id="loader" class="flex-col gap-4 w-full flex items-center justify-center bg-black/30 fixed top-0 h-full backdrop-blur-sm z-40" style="display: none;">
         <div class="w-24 h-24 border-4 border-transparent outer-line border-t-gray-700 rounded-full flex items-center justify-center"></div>
         <div class="w-20 h-20 border-4 border-transparent rotate-180 inner-line border-t-gray-900 rounded-full absolute"> </div>
-        <img class="w-10 absolute" src="/shopnest/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
+        <img class="w-10 absolute" src="/shopnest/src/logo/black_cart_logo.svg" alt="Cart Logo">
     </div>
     <script>
         function loader() {

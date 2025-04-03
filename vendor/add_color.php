@@ -76,7 +76,7 @@ if (isset($_COOKIE['vendor_id'])) {
     <link rel="shortcut icon" href="../src/logo/favIcon.svg">
 
     <!-- title -->
-    <title>Add Products</title>
+    <title>Add Product Color</title>
 
     <style>
         .require:after {

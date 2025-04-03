@@ -204,7 +204,7 @@ if (isset($_COOKIE['adminEmail'])) {
         ?>
     </div>
     <div>
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>ok
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
             <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0" x-cloak>
@@ -269,7 +269,7 @@ if (isset($_COOKIE['adminEmail'])) {
                             <?php
                             if (isset($_SESSION['existingData'])) {
                                 if ($_SESSION['existingData'] < $_SESSION['currentData']) {
-                            ?>
+                            ?>  
                                     <span class="relative flex size-2">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
                                         <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
