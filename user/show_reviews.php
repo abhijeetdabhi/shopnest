@@ -297,9 +297,13 @@ if (isset($_COOKIE['user_id'])) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex item-center justify-between bg-gray-600 px-3 py-2">
-                                        <a href="edit_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-green-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg rounded-br-lg">Edit</a>
-                                        <a href="delete_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-red-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg rounded-br-lg">Delete</a>
+                                    <div class="flex justify-between bg-gray-600 px-3 py-2">
+                                        <div class="w-full flex justify-start">
+                                            <a href="edit_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-green-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg  rounded-br-lg">Edit</a>
+                                        </div>
+                                        <div class="w-full flex justify-end">
+                                            <a href="delete_review.php?product_id=<?php echo $rev['product_id'] ?>&review_id=<?php echo $rev['review_id'] ?>" class="text-red-600 bg-white w-24 text-center border-2 border-gray-800 px-4 py-0.5 rounded-tl-lg rounded-br-lg">Delete</a>
+                                        </div>
                                     </div>
                                 </div>
                         <?php
