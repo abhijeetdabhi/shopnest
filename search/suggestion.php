@@ -73,7 +73,7 @@ if (isset($_POST["query"])) {
                     $encodedKey = urlencode($keyword);
                     $output .= '
                         <li id="suggestion" class="cursor-pointer hover:bg-gray-200 p-2 transition duration-150 ease-in-out">
-                            <a href="../search/search_items.php?searchName=' . $encodedKey . '" class="block text-gray-800">' . htmlspecialchars($keyword) . '</a>
+                            <a href="search/search_items.php?searchName=' . $encodedKey . '" class="block text-gray-800">' . htmlspecialchars($keyword) . '</a>
                         </li>';
                 }
             }
