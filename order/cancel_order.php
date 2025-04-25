@@ -341,8 +341,10 @@ if (isset($_COOKIE['user_id'])) {
                 let isChecked = cancelCheckboxes.some(function(id) {
                     return document.getElementById(id).checked;
                 });
+
+                let billingEmail = $('#billingEmail').val();
                 
-                if (isChecked) {
+                if (isChecked && billingEmail != '') {
                     loader();
                 }
             });

@@ -348,7 +348,9 @@ if (isset($_COOKIE['user_id'])) {
                     return document.getElementById(id).checked;
                 });
                 
-                if (isChecked) {
+                let billingEmail = $('#billingEmail').val();
+                
+                if (isChecked && billingEmail != '') {
                     loader();
                 }
             });
