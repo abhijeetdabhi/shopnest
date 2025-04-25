@@ -96,12 +96,25 @@ if (isset($_GET['order_id'])) {
         #invoice {
             padding: 20px;
         }
+
+        .pdf-container {
+            max-width: 100%;
+            width: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Fixing text overflow issues */
+        .pdf-title {
+            word-wrap: break-word;
+            word-break: break-word;
+        }
     </style>
 
 </head>
 
 <body style="font-family: 'Outfit', sans-serif;">
-    <div id="invoice" class="max-w-4xl mx-auto p-8 bg-white shadow-xl rounded-lg mt-10">
+    <div id="invoice" class="max-w-4xl mx-auto p-8 bg-white shadow-xl rounded-lg mt-10 pdf-container">
         <!-- Header -->
         <header class="flex items-center justify-between flex-wrap gap-x-12 gap-y-5 border-b-2 border-gray-300 pb-4 mb-8">
             <div class="flex items-center">
@@ -119,22 +132,38 @@ if (isset($_GET['order_id'])) {
         <!-- Product Details -->
         <section class="mb-20 md:mb-8 mt-10 md:mt-0">
             <h2 class="text-2xl font-semibold text-gray-800 mb-10">Product details</h2>
-            <div class=" p-4 bg-gray-50 ring-2 ring-gray-300 gap-y-3 rounded-lg shadow-md">
+            <div class=" p-4 bg-gray-50 border-2 border-gray-300 gap-y-3 rounded-lg shadow-md">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-normal gap-y-2 md:gap-y-0">
                     <img src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image" class="w-32 h-32 object-cover rounded-md md:mr-6 mix-blend-multiply">
-                    <h3 class="text-xl font-bold text-gray-800 line-clamp-2"><?php echo isset($_COOKIE['user_id']) ? $res['order_title'] : 'product title' ?></h3>
+                    <h3 class="text-xl font-bold text-gray-800 break-words w-full">
+                        <?php echo isset($_COOKIE['user_id']) ? htmlspecialchars($res['order_title']) : 'product title' ?>
+                    </h3>
                 </div>
-                <div>
-                    <p class="text-gray-700 font-semibold">Price: <span class="font-normal text-green-500">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></span></p>
-                    <div class="text-gray-700 flex items-center gap-2 mt-1">
-                        <span class="max-w-max font-semibold">Color:</span>
-                        <h1 class="my-auto"><?php echo isset($_COOKIE['user_id']) ? htmlspecialchars($product_colo) : 'Product Color' ?></h1>
-                    </div>
-                    <p class="text-gray-700 mt-1 font-semibold">Size: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['order_size'] : 'Product size' ?></span></p>
-                    <p class="text-gray-700 mt-1 font-semibold">Quantity: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'Product size' ?></span></p>
-                    <p class="text-gray-700 mt-1 font-semibold">Order Date: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $res['date'] : 'Order Date' ?></span></p>
-                    <p class="text-gray-700 mt-1 font-semibold">Vendor: <span class="font-normal"><?php echo isset($_COOKIE['user_id']) ? $ven['username'] : 'vendor name' ?></span></p>
+                <div class="overflow-x-auto bg-white shadow-lg rounded-lg mt-3">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-200 text-gray-800">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Color</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Size</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Quantity</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Order Date</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Vendor</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm text-gray-700">
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap"><?php echo isset($_COOKIE['user_id']) ? htmlspecialchars($product_colo) : 'Product Color' ?></td>
+                                <td class="px-4 py-3 whitespace-nowrap"><?php echo isset($_COOKIE['user_id']) ? $res['order_size'] : 'Product size' ?></td>
+                                <td class="px-4 py-3 whitespace-nowrap"><?php echo isset($_COOKIE['user_id']) ? $res['qty'] : 'Product quantity' ?></td>
+                                <td class="px-4 py-3 whitespace-nowrap"><?php echo isset($_COOKIE['user_id']) ? $res['date'] : 'Order Date' ?></td>
+                                <td class="px-4 py-3 whitespace-nowrap"><?php echo isset($_COOKIE['user_id']) ? $ven['username'] : 'Vendor name' ?></td>
+                                <td class="px-4 py-3 whitespace-nowrap font-semibold">₹<?php echo isset($_COOKIE['user_id']) ? $res['total_price'] : 'total_price' ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </section>
 
@@ -142,13 +171,13 @@ if (isset($_GET['order_id'])) {
         <section class="mb-16 md:mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">User information</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-y-0 md:gap-6">
-                <div class="p-4 bg-gray-50 ring-2 ring-gray-300 rounded-lg shadow-sm space-y-4">
+                <div class="p-4 bg-gray-50 border-2 border-gray-300 rounded-lg shadow-sm space-y-4">
                     <p class="text-gray-700"><span class="font-semibold">First name:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_first_name'] : 'user first name' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">Last name:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_last_name'] : 'user last name' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">Email:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_email'] : 'user email' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">Address:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_address'] : 'user address' ?></p>
                 </div>
-                <div class="p-4 bg-gray-50 ring-2 ring-gray-300 rounded-lg shadow-sm space-y-4">
+                <div class="p-4 bg-gray-50 border-2 border-gray-300 rounded-lg shadow-sm space-y-4">
                     <p class="text-gray-700"><span class="font-semibold">Mobile number:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_mobile'] : 'user mobile number' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">State:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_state'] : 'user state' ?></p>
                     <p class="text-gray-700"><span class="font-semibold">City:</span> <?php echo isset($_COOKIE['user_id']) ? $res['user_city'] : 'user city' ?></p>
@@ -157,13 +186,17 @@ if (isset($_GET['order_id'])) {
             </div>
         </section>
 
-        <!-- Payment Type -->
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Payment type</h2>
-            <div class="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm border-l-4 border-l-gray-600">
-                <p class="text-gray-700 text-sm">Payment method: <span class="font-semibold"><?php echo isset($_COOKIE['user_id']) ? $res['payment_type'] : 'user first name' ?></span></p>
+        <!-- payment type -->
+        <section class="mb-16 md:mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Payment Type</h2>
+            <div class="flex items-center gap-x-1 border-2 rounded-lg p-2 bg-gray-50 w-fit shadow-md shadow-gray-200">
+                <p class="text-gray-500">Payment Method:</p>
+                <p class="font-semibold text-gray-700">
+                    <?php echo isset($_COOKIE['user_id']) ? $res['payment_type'] : 'User payment method' ?>
+                </p>
             </div>
         </section>
+
 
         <!-- Total Price -->
         <section class="border-t-2 border-gray-300 pt-6">
@@ -199,7 +232,7 @@ if (isset($_GET['order_id'])) {
                     scale: 3, // Higher scale for better resolution
                     useCORS: true, // Handle cross-origin content
                     windowWidth: element.scrollWidth, // Set dynamic content width
-                    windowHeight: element.scrollHeight, // Set dynamic content Height
+                    windowHeight: element.scrollHeight, // Set dynamic content height
                 },
                 jsPDF: {
                     unit: 'in',
