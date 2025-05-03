@@ -275,6 +275,14 @@ if (isset($_COOKIE['user_id'])) {
                                                         ₹<?php echo isset($_COOKIE['user_id']) ? $res['return_order_price'] : 'return_order_price' ?>
                                                     </span>
                                                 </p>
+                                                <p class="mt-2">
+                                                    <span class="font-medium text-gray-600">Reason :</span>
+                                                    <span>Product is over price</span>
+                                                </p>
+                                                <p class="mt-2">
+                                                    <span class="font-medium text-gray-600">Recive Payment In :</span>
+                                                    <span>COD</span>
+                                                </p>
                                             </div>
                                             <div class="flex items-center justify-between md:justify-normal gap-5 md:gap-10 w-full md:w-auto">
                                                 <div class="text-center">

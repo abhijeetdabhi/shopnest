@@ -280,6 +280,10 @@ if (isset($_COOKIE['user_id'])) {
                                                         ₹<?php echo isset($_COOKIE['user_id']) ? $res['cancle_order_price'] : '0.00'; ?>
                                                     </span>
                                                 </p>
+                                                <p class="mt-2">
+                                                    <span class="font-medium text-gray-600">Reason :</span>
+                                                    <span>Product is over price</span>
+                                                </p>
                                             </div>
 
                                             <!-- Status and Canceled Date Section -->
