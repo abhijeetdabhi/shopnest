@@ -274,7 +274,7 @@ if (isset($_SESSION['cartUrl'])) {
                                     $future_date = date('Y-m-d', strtotime('+5 days', strtotime($today)));
 
                             ?>
-                                    <div class="flex flex-col md:flex-row items-center py-5 bg-gray-100 px-5 gap-6 w-full mb-7 rounded-xl shadow-lg md:h-44">
+                                    <div class="flex flex-col md:flex-row items-center py-5 bg-gray-100 px-5 gap-6 w-full mb-7 rounded-xl shadow-lg md:h-fit">
                                         <div class="img-box w-full md:w-auto">
                                             <a href="../order/track_order.php?order_id=<?php echo $res['order_id']; ?>">
                                                 <img class="aspect-square w-full md:w-32 lg:w-36 object-cover rounded-lg mix-blend-multiply" src="<?php echo isset($_COOKIE['user_id']) ? '../src/product_image/product_profile/' . $res['order_image'] : '../src/sample_images/product_1.jpg' ?>" alt="Product Image">
