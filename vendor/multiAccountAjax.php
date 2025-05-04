@@ -9,107 +9,92 @@ if (isset($_COOKIE['adminEmail'])) {
     exit;
 }
 
-header('Content-Type: application/json');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
+    
     include "../include/connect.php";
+
     $data = json_decode(file_get_contents("php://input"), true);
 
-    
-    
     if ($data) {
         foreach ($data as $form) {
             $vendor_id = $form['vendorId'];
 
+            // Fetch vendor details
             $getVendor = "SELECT * FROM vendor_registration WHERE vendor_id = '$vendor_id'";
             $getVendorQuery = mysqli_query($con, $getVendor);
-
             $res = mysqli_fetch_array($getVendorQuery);
 
-            $name = $res['name'];
-            $bio = $res['Bio'];
-            $gst = $res['GST'];
-            $CoverImage = $res['cover_image'];
-            $ProfileImage = $res['dp_image'];
-            
-            $newEmail = $form['email'];
-            $newPassword = $form['password'];
-            $newShopname = $form['shopname'];
-            $newPhone = $form['phone'];
-            $newLat = $form['lat'];
-            $newLng = $form['lng'];
-
-            $Vendor_reg_date = date('d-m-Y');
-            $pass = password_hash($newPassword, PASSWORD_BCRYPT);
-
-            $vendorName = $name;
-            $vendorEmail = $newEmail;
-            $vendorPassword = $pass;
-            $vendorUsername = $newShopname;
-            $vendorPhone = $newPhone;
-            $vendorBio = $bio;
-            $vendorGST = $gst;
-            $vendorCover_image = $CoverImage;
-            $vendorDp_image = $ProfileImage;
-            $vendorLatitude = $newLat;
-            $vendorLongitude = $newLng;
-            $vendorRegiDate = $Vendor_reg_date;
-            
-            $insert_data = "INSERT INTO vendor_registration(name, email, password, username, phone, Bio, GST, cover_image, dp_image, latitude, longitude, date) VALUES ('$vendorName','$vendorEmail','$vendorPassword','$vendorUsername','$vendorPhone','$vendorBio','$vendorGST','$vendorCover_image','$vendorDp_image','$vendorLatitude','$vendorLongitude','$vendorRegiDate')";
-            $insert_sql = mysqli_query($con, $insert_data);
-
-            $LstVendor_id = mysqli_insert_id($con);
-
-            $product_find = "SELECT * FROM products WHERE vendor_id = '$vendor_id'";
-            $product_query = mysqli_query($con, $product_find);
-
-            while($ven = mysqli_fetch_assoc($product_query)){
-                $same_id = $ven['same_id'];
-                $vendor_id = $LstVendor_id;
-                $full_name = $ven['title'];
-                $profileImage1 = $ven['profile_image_1'];
-                $profileImage2 = $ven['profile_image_2'];
-                $profileImage3 = $ven['profile_image_3'];
-                $profileImage4 = $ven['profile_image_4'];
-                $coverImage1 = $ven['cover_image_1'];
-                $coverImage2 = $ven['cover_image_2'];
-                $coverImage3 = $ven['cover_image_3'];
-                $coverImage4 = $ven['cover_image_4'];
-                $Company_name = $ven['company_name'];
-                $Category = $ven['Category'];
-                $type = $ven['Type'];
-                $json_size_encode = $ven['MRP'];
-                $MRP = $ven['vendor_mrp'];
-                $your_price = $ven['vendor_price'];
-                $quantity = $ven['Quantity'];
-                $condition = $ven['Item_Condition'];
-                $description = $ven['Description'];
-                $pcolor = $ven['color'];
-                $size_filter = $ven['size'];
-                $keywords_value = $ven['keywords'];
-                $avg_rating = $ven['avg_rating'];
-                $total_reviews = $ven['total_reviews'];
-                $Product_insert_Date = $vendorRegiDate;
-            }
-            
-
-            $product_insert = "INSERT INTO products(same_id, vendor_id, title, profile_image_1, profile_image_2, profile_image_3, profile_image_4, cover_image_1, cover_image_2, cover_image_3, cover_image_4, company_name, Category, Type, MRP, vendor_mrp, vendor_price, Quantity, Item_Condition, Description, color, size, keywords, avg_rating, total_reviews, date) VALUES ('$same_id','$vendor_id','$full_name','$profileImage1','$profileImage2','$profileImage3','$profileImage4','$coverImage1','$coverImage2','$coverImage3','$coverImage4','$Company_name','$Category','$type','$json_size_encode','$MRP','$your_price','$quantity','$condition','$description','$pcolor','$size_filter','$keywords_value','$avg_rating','$total_reviews','$Product_insert_Date')";
-            $product_query = mysqli_query($con, $product_insert);
-
-            if ($insert_sql && $product_query) {
-                $status = 'success';
-            } else {
-                $status = 'error';
+            if($res){
+                $newPassword = $form['password'];
+                $pass = password_hash($newPassword, PASSWORD_BCRYPT);
+    
+                $vendorName = mysqli_real_escape_string($con, $res['name']);
+                $vendorEmail = mysqli_real_escape_string($con, $form['email']);
+                $vendorPassword = $pass;
+                $vendorUsername = mysqli_real_escape_string($con, $form['shopname']);
+                $vendorPhone = mysqli_real_escape_string($con, $form['phone']);
+                $vendorBio = mysqli_real_escape_string($con, $res['Bio']);
+                $vendorGST = mysqli_real_escape_string($con, $res['GST']);
+                $vendorCover_image = mysqli_real_escape_string($con, $res['cover_image']);
+                $vendorDp_image = mysqli_real_escape_string($con, $res['dp_image']);
+                $vendorLatitude = mysqli_real_escape_string($con, $form['lat']);
+                $vendorLongitude = mysqli_real_escape_string($con, $form['lng']);
+                $Vendor_reg_date = date('Y-m-d');
+    
+                $insert_new_vendor = "INSERT INTO vendor_registration(name, email, password, username, phone, Bio, GST, cover_image, dp_image, latitude, longitude, date) VALUES ('$vendorName', '$vendorEmail', '$vendorPassword', '$vendorUsername', '$vendorPhone', '$vendorBio', '$vendorGST', '$vendorCover_image', '$vendorDp_image', '$vendorLatitude', '$vendorLongitude', '$Vendor_reg_date')";
+    
+                if (mysqli_query($con, $insert_new_vendor)) {
+                    $LstVendor_id = mysqli_insert_id($con);
+    
+                    $get_products = "SELECT * FROM products WHERE vendor_id = '$vendor_id'";
+                    $product_query = mysqli_query($con, $get_products);
+    
+                    while ($ven = mysqli_fetch_assoc($product_query)) {
+                        $same_id = mysqli_real_escape_string($con, $ven['same_id']);
+                        $title = mysqli_real_escape_string($con, $ven['title']);
+                        $profileImage1 = mysqli_real_escape_string($con, $ven['profile_image_1']);
+                        $profileImage2 = mysqli_real_escape_string($con, $ven['profile_image_2']);
+                        $profileImage3 = mysqli_real_escape_string($con, $ven['profile_image_3']);
+                        $profileImage4 = mysqli_real_escape_string($con, $ven['profile_image_4']);
+                        $coverImage1 = mysqli_real_escape_string($con, $ven['cover_image_1']);
+                        $coverImage2 = mysqli_real_escape_string($con, $ven['cover_image_2']);
+                        $coverImage3 = mysqli_real_escape_string($con, $ven['cover_image_3']);
+                        $coverImage4 = mysqli_real_escape_string($con, $ven['cover_image_4']);
+                        $Company_name = mysqli_real_escape_string($con, $ven['company_name']);
+                        $Category = mysqli_real_escape_string($con, $ven['Category']);
+                        $type = mysqli_real_escape_string($con, $ven['Type']);
+                        $MRP = mysqli_real_escape_string($con, $ven['MRP']);
+                        $vendor_mrp = mysqli_real_escape_string($con, $ven['vendor_mrp']);
+                        $your_price = mysqli_real_escape_string($con, $ven['vendor_price']);
+                        $quantity = mysqli_real_escape_string($con, $ven['Quantity']);
+                        $condition = mysqli_real_escape_string($con, $ven['Item_Condition']);
+                        $description = mysqli_real_escape_string($con, $ven['Description']);
+                        $pcolor = mysqli_real_escape_string($con, $ven['color']);
+                        $size_filter = mysqli_real_escape_string($con, $ven['size']);
+                        $keywords = mysqli_real_escape_string($con, $ven['keywords']);
+                        $avg_rating = mysqli_real_escape_string($con, $ven['avg_rating']);
+                        $total_reviews = mysqli_real_escape_string($con, $ven['total_reviews']);
+                        $Product_insert_Date = date('Y-m-d');
+    
+                        $insert_vendor_products = "INSERT INTO products(same_id, vendor_id, title, profile_image_1, profile_image_2, profile_image_3, profile_image_4, cover_image_1, cover_image_2, cover_image_3, cover_image_4, company_name, Category, Type, MRP, vendor_mrp, vendor_price, Quantity, Item_Condition, Description, color, size, keywords, avg_rating, total_reviews, date) VALUES ('$same_id', '$LstVendor_id', '$title', '$profileImage1', '$profileImage2', '$profileImage3', '$profileImage4', '$coverImage1', '$coverImage2', '$coverImage3', '$coverImage4', '$Company_name', '$Category', '$type', '$MRP', '$vendor_mrp', '$your_price', '$quantity', '$condition', '$description', '$pcolor', '$size_filter', '$keywords', '$avg_rating', '$total_reviews', '$Product_insert_Date')";
+    
+                        if (!mysqli_query($con, $insert_vendor_products)) {
+                            echo json_encode(['status' => 'error', 'message' => 'Failed to insert product']);
+                            exit;
+                        }
+                    }
+    
+                    // Successful insert
+                    echo json_encode(['status' => 'success', 'message' => 'Account and products added successfully']);
+                    exit;
+    
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to register vendor']);
+                    exit;
+                }
             }
         }
-
-        echo json_encode(['status' => 'success', 'message' => 'Data inserted successfully']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'No data received or data is invalid']);
     }
-} else {
-    http_response_code(405);
-    echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed']);
 }
-
 ?>

@@ -282,7 +282,7 @@ if (isset($_COOKIE['user_id'])) {
                                                 </p>
                                                 <p class="mt-2">
                                                     <span class="font-medium text-gray-600">Reason :</span>
-                                                    <span>Product is over price</span>
+                                                    <span><?php echo isset($_COOKIE['user_id']) ? $res['reason'] : 'Reason'; ?></span>
                                                 </p>
                                             </div>
 

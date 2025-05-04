@@ -277,11 +277,11 @@ if (isset($_COOKIE['user_id'])) {
                                                 </p>
                                                 <p class="mt-2">
                                                     <span class="font-medium text-gray-600">Reason :</span>
-                                                    <span>Product is over price</span>
+                                                    <span><?php echo isset($_COOKIE['user_id']) ? $res['reason'] : 'Reason'; ?></span>
                                                 </p>
                                                 <p class="mt-2">
                                                     <span class="font-medium text-gray-600">Recive Payment In :</span>
-                                                    <span>COD</span>
+                                                    <span><?php echo isset($_COOKIE['user_id']) ? $res['payment_type'] : 'Reason'; ?></span>
                                                 </p>
                                             </div>
                                             <div class="flex items-center justify-between md:justify-normal gap-5 md:gap-10 w-full md:w-auto">

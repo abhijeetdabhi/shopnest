@@ -251,6 +251,23 @@ if (isset($_COOKIE['adminEmail'])) {
         let divCount = 0;
 
         addBox.addEventListener("click", function() {
+            let isValid = true;
+            document.querySelectorAll(".map-container").forEach((container, index) => {
+                let email = container.querySelector(`#email${index + 1}`).value.trim();
+                let password = container.querySelector(`#password${index + 1}`).value.trim();
+                let shopname = container.querySelector(`#shopname${index + 1}`).value.trim();
+                let phone = container.querySelector(`#phone${index + 1}`).value.trim();
+                let lat = container.querySelector(`#lat${index + 1}`).value.trim();
+
+                if (!email || !password || !shopname || !phone || !lat) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                displayErrorMessage("Please fill in all fields in the existing form before adding a new one.");
+                return; // Stop form from being added
+            }
             divCount++
 
             if (divCount >= 1) {
@@ -354,6 +371,8 @@ if (isset($_COOKIE['adminEmail'])) {
             let formData = [];
             let vendorId = <?php echo $_COOKIE['vendor_id'] ?>;
 
+            let formIsComplete = true;
+
             document.querySelectorAll(".map-container").forEach((container, index) => {
                 let email = container.querySelector(`#email${index + 1}`).value;
                 let password = container.querySelector(`#password${index + 1}`).value;
@@ -364,26 +383,31 @@ if (isset($_COOKIE['adminEmail'])) {
 
                 if (email === "") {
                     displayErrorMessage("Please Enter Email Address");
+                    formIsComplete = false;
                     return;
                 }
 
                 if (password === "") {
                     displayErrorMessage("Please Enter Password");
+                    formIsComplete = false;
                     return;
                 }
 
                 if (shopname === "") {
                     displayErrorMessage("Please Enter Shopname");
+                    formIsComplete = false;
                     return;
                 }
 
                 if (phone === "") {
                     displayErrorMessage("Please Enter Phone Number");
+                    formIsComplete = false;
                     return;
                 }
 
                 if (lat === "") {
                     displayErrorMessage("Please Enter Your Shop Location");
+                    formIsComplete = false;
                     return;
                 }
 
@@ -399,14 +423,29 @@ if (isset($_COOKIE['adminEmail'])) {
                 });
             });
 
+            if (!formIsComplete) return;
+
             $.ajax({
                 url: 'multiAccountAjax.php',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(formData),
                 success: function(response) {
-                    loader();
-                    displaySuccessMessage('Account Added Successfully');
+                    console.log(response);
+                    if (response.status === 'success') {
+                        loader();
+                        displaySuccessMessage('Account Added Successfully');
+                    } else {
+                        console.error('Unexpected response:', response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    try {
+                        let json = JSON.parse(xhr.responseText);
+                        console.error('Server Error:', json);
+                    } catch (e) {
+                        console.error('Unexpected Error:', xhr.responseText || error);
+                    }
                 }
             });
         });
