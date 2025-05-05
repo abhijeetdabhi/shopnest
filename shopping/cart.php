@@ -298,7 +298,7 @@ if (isset($_SESSION['travelTime'])) {
                             $_SESSION['qty'] = $encode_josn;
                             $_SESSION['travelTime'] = $totalTime;
                         } else {
-                            $url = '/authentication/user_auth/user_login.php';
+                            $url = '/shopnest/authentication/user_auth/user_login.php';
                         }
                         ?>
                         <?php
